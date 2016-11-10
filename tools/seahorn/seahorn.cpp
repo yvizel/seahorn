@@ -34,6 +34,8 @@
 #include "seahorn/Transforms/Scalar/LowerCstExpr.hh"
 #include "seahorn/Transforms/Utils/RemoveUnreachableBlocksPass.hh"
 
+#include "seahorn/HornUnroll.hh"
+
 #ifdef HAVE_CRAB_LLVM
 #include "crab_llvm/CrabLlvm.hh"
 #include "crab_llvm/Transforms/InsertInvariants.hh"
@@ -143,6 +145,15 @@ PredAbs ("horn-pred-abs",
         llvm::cl::desc ("Use Predicate Abstraction to generate inductive invariants"),
         llvm::cl::init (false));
 
+static llvm::cl::opt<bool>
+HornUnroll ("horn-unroll",
+               llvm::cl::desc ("Enable unrolling of recursive CHC to bound N"),
+               llvm::cl::init (false));
+
+static llvm::cl::opt<unsigned>
+UnrollBound ("horn-unroll-bound",
+        llvm::cl::Hidden,
+        llvm::cl::init (1));
 
 // removes extension from filename if there is one
 std::string getFileName(const std::string &str) {
@@ -278,8 +289,10 @@ int main(int argc, char **argv) {
   // --- verify if an undefined value can be read
   pass_manager.add (seahorn::createCanReadUndefPass ());
 
-  if (!Bmc)
+  if (!Bmc) {
     pass_manager.add (new seahorn::HornifyModule ());
+    pass_manager.add(new seahorn::HornUnroll(UnrollBound.getValue()));
+  }
   if (!AsmOutputFilename.empty ())
   {
     if (!KeepShadows)
