@@ -291,7 +291,8 @@ int main(int argc, char **argv) {
 
   if (!Bmc) {
     pass_manager.add (new seahorn::HornifyModule ());
-    pass_manager.add(new seahorn::HornUnroll(UnrollBound.getValue()));
+    if (UnrollBound.getValue() > 1)
+        pass_manager.add(new seahorn::HornUnroll(UnrollBound.getValue()));
   }
   if (!AsmOutputFilename.empty ())
   {
