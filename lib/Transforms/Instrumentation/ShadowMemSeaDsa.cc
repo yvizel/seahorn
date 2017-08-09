@@ -16,9 +16,9 @@
 #include "boost/range/algorithm/set_algorithm.hpp"
 #include "boost/range/algorithm/binary_search.hpp"
 
-#include "seahorn/Analysis/DSA/CallSite.hh"
-#include "seahorn/Analysis/DSA/Mapper.hh"
-#include "seahorn/Analysis/DSA/DsaAnalysis.hh"
+#include "sea_dsa/CallSite.hh"
+#include "sea_dsa/Mapper.hh"
+#include "sea_dsa/DsaAnalysis.hh"
 
 static llvm::cl::opt<bool>
 SplitFields("horn-sea-dsa-split",
@@ -33,7 +33,7 @@ LocalReadMod ("horn-sea-dsa-local-mod",
 namespace seahorn
 {
   using namespace llvm;
-  using namespace dsa;
+  using namespace sea_dsa;
 
   namespace sea_dsa_impl 
   {
@@ -384,7 +384,7 @@ namespace seahorn
   }
 
   unsigned ShadowMemSeaDsa::getOffset (const Cell &c)
-  {return SplitFields ? c.getOffset() : 0;}
+  {return (SplitFields ? c.getOffset() : 0);}    
   
   bool ShadowMemSeaDsa::runOnFunction (Function &F)
   {
@@ -467,17 +467,40 @@ namespace seahorn
             if (!G.hasCell(*call)) continue;
             const Cell &c = G.getCell (*call);
             if (c.isNull ()) continue;
-
-            // TODO: handle multiple nodes
-            assert (c.getOffset () == 0 && "TODO");
-            B.SetInsertPoint (call);
-            AllocaInst *v = allocaForNode (c);
-            B.CreateStore (B.CreateCall3 (m_memStoreFn,
-                                          B.getInt32 (getId (c)),
-                                          B.CreateLoad (v),
-                                          getUniqueScalar (ctx, B, c)),
-                           v);
+            
+	    if (c.getOffset () == 0) {
+	      B.SetInsertPoint (call);
+	      AllocaInst *v = allocaForNode (c);
+	      B.CreateStore (B.CreateCall3 (m_memStoreFn,
+					    B.getInt32 (getId (c)),
+					    B.CreateLoad (v),
+					    getUniqueScalar (ctx, B, c)), v);
+	    } else {
+	      // TODO: handle multiple nodes
+	      errs () << "WARNING: missing calloc instrumentation because cell offset is not zero\n";
+	    }
           }
+          else if (MemSetInst *MSI = dyn_cast<MemSetInst>(&inst))
+          {
+	    Value &dst = *(MSI->getDest ());
+	    
+            if (!G.hasCell(dst)) continue;
+            const Cell &c = G.getCell (dst);
+            if (c.isNull ()) continue;
+
+	    if (c.getOffset () == 0) {
+	      B.SetInsertPoint (&inst);
+	      AllocaInst *v = allocaForNode (c);
+	      B.CreateStore (B.CreateCall3 (m_memStoreFn,
+					    B.getInt32 (getId (c)),
+					    B.CreateLoad (v),
+					    getUniqueScalar (ctx, B, c)), v);
+	    } else {
+	      // TODO: handle multiple nodes
+	      errs () << "WARNING: missing memset instrumentation because cell offset is not zero\n";
+	    }
+          }
+	  
 
           const Function &CF = *CS.getCallee ();
           
@@ -492,7 +515,7 @@ namespace seahorn
 
           // -- compute mapping between callee and caller graphs
           SimulationMapper simMap;
-          dsa::Graph::computeCalleeCallerMapping (CS, calleeG, G, simMap); 
+          Graph::computeCalleeCallerMapping (CS, calleeG, G, simMap); 
           
           /// generate mod, ref, new function, based on whether the
           /// remote node reads, writes, or creates the corresponding node.

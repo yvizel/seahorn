@@ -35,6 +35,7 @@
 #include "seahorn/Transforms/Utils/RemoveUnreachableBlocksPass.hh"
 
 #include "seahorn/HornUnroll.hh"
+#include "sea_dsa/DsaAnalysis.hh"
 
 #ifdef HAVE_CRAB_LLVM
 #include "crab_llvm/CrabLlvm.hh"
@@ -131,6 +132,12 @@ Bmc ("horn-bmc",
      llvm::cl::init (false));
 
 static llvm::cl::opt<bool>
+OneAssumePerBlock ("horn-one-assume-per-block", 
+                   llvm::cl::desc ("Make sure there is at most one call to verifier.assume per block"), 
+                   llvm::cl::init (false));
+
+// To switch between llvm-dsa and sea-dsa
+static llvm::cl::opt<bool>
 SeaHornDsa ("horn-sea-dsa",
             llvm::cl::desc ("Use Seahorn Dsa analysis"),
             llvm::cl::init (false));
@@ -154,6 +161,10 @@ static llvm::cl::opt<unsigned>
 UnrollBound ("horn-unroll-bound",
         llvm::cl::Hidden,
         llvm::cl::init (1));
+static llvm::cl::opt<bool>
+MemDot("mem-dot",
+       llvm::cl::desc("Print SeaHorn Dsa memory graph of a function to dot format"),
+       llvm::cl::init(false));
 
 // removes extension from filename if there is one
 std::string getFileName(const std::string &str) {
@@ -265,16 +276,25 @@ int main(int argc, char **argv) {
   // -- it invalidates DSA passes so it should be run before
   // -- ShadowMemDsa
   pass_manager.add (llvm::createGlobalDCEPass ()); // kill unused internal global
+
+  // -- initialize any global variables that are left
+  pass_manager.add (new seahorn::LowerGvInitializers ());
   if (SeaHornDsa)
     pass_manager.add (seahorn::createShadowMemSeaDsaPass ());
   else
     pass_manager.add (seahorn::createShadowMemDsaPass ());
+
   // lowers shadow.mem variables created by ShadowMemDsa pass
   pass_manager.add (seahorn::createPromoteMemoryToRegisterPass ());
 
   pass_manager.add (new seahorn::RemoveUnreachableBlocksPass ());
   pass_manager.add (seahorn::createStripLifetimePass ());
   pass_manager.add (seahorn::createDeadNondetElimPass ());
+
+  if (OneAssumePerBlock) {
+    // -- it must be called after all the cfg simplifications
+    pass_manager.add (seahorn::createOneAssumePerBlockPass ());
+  }
 
 #ifdef HAVE_CRAB_LLVM
   if (Crab)
@@ -294,6 +314,17 @@ int main(int argc, char **argv) {
     if (UnrollBound.getValue() > 1)
         pass_manager.add(new seahorn::HornUnroll(UnrollBound.getValue()));
   }
+
+  // FIXME: if StripShadowMemPass () is executed then DsaPrinterPass
+  // crashes because the callgraph has not been updated so it can
+  // access to a callsite for which the callee function is a null
+  // pointer corresponding to a stripped shadow memory function. The
+  // solution for now is to make sure that DsaPrinterPass is called
+  // before StripShadowMemPass. A better solution is to make sure that
+  // createStripShadowMemPass updates the callgraph.
+  if (MemDot)
+    pass_manager.add (sea_dsa::createDsaPrinterPass ());
+
   if (!AsmOutputFilename.empty ())
   {
     if (!KeepShadows)
@@ -323,7 +354,8 @@ int main(int argc, char **argv) {
           if (Cex) pass_manager.add (new seahorn::HornCex ());
     }
   }
-
+  
+  
   pass_manager.run(*module.get());
 
   if (!AsmOutputFilename.empty ()) asmOutput->keep ();

@@ -26,13 +26,19 @@ DM-0002198
 namespace seahorn
 {
   llvm::Pass* createMarkInternalInlinePass ();
+  llvm::Pass* createMarkInternalAllocOrDeallocInlinePass ();
+  llvm::Pass* createMarkInternalConstructOrDestructInlinePass ();
   llvm::Pass* createNondetInitPass ();
   llvm::Pass* createDeadNondetElimPass ();
   llvm::Pass* createDummyExitBlockPass ();
+  llvm::Pass* createDummyMainFunctionPass ();
+  llvm::Pass* createOneAssumePerBlockPass ();
   llvm::Pass* createExternalizeAddressTakenFunctionsPass ();
+  llvm::Pass* createExternalizeFunctionsPass ();
+  llvm::Pass* createSliceFunctionsPass ();
   llvm::Pass* createDevirtualizeFunctionsPass ();
+  llvm::Pass* createAbstractMemoryPass ();        
   llvm::Pass* createPromoteMemoryToRegisterPass ();
-
   llvm::Pass* createLoadCrabPass ();
   llvm::Pass* createShadowMemDsaPass (); // llvm dsa
   llvm::Pass* createShadowMemSeaDsaPass (); // seahorn dsa
@@ -43,7 +49,12 @@ namespace seahorn
 
   llvm::Pass* createPromoteMallocPass ();
   llvm::Pass* createKillVarArgFnPass ();
-
+  llvm::Pass* createLowerArithWithOverflowIntrinsicsPass ();
+  llvm::Pass* createLowerLibCxxAbiFunctionsPass ();
+  llvm::Pass* createSimplifyPointerLoopsPass ();
+  llvm::Pass* createSymbolizeConstantLoopBoundsPass ();
+  llvm::Pass* createLowerAssertPass ();
+  llvm::Pass* createUnfoldLoopForDsaPass ();
   llvm::Pass* createStripLifetimePass ();
   llvm::Pass* createStripUselessDeclarationsPass ();
 
@@ -62,9 +73,11 @@ namespace seahorn
   llvm::Pass* createCFGOnlyPrinterPass ();
   llvm::Pass* createCFGViewerPass ();
   llvm::Pass* createCFGOnlyViewerPass ();
+  llvm::Pass* createDsaPrinterPass ();
+  llvm::Pass* createDsaViewerPass ();  
 
+  llvm::Pass* createPromoteSeahornAssumePass ();
   llvm::Pass* createKleeInternalizePass ();
-
   llvm::Pass* createWrapMemPass ();  
   llvm::Pass* createRenameNondetPass();
 }

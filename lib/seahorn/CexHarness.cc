@@ -58,11 +58,18 @@ namespace seahorn
         if (const CallInst *ci = dyn_cast<CallInst> (&I))
         {
           ImmutableCallSite CS(ci);
-          const Function *CF = CS.getCalledFunction ();
-          if (!CF) continue;
+	  // Go through bitcasts
+	  const Value *CV = CS.getCalledValue ();
+          const Function *CF = dyn_cast<Function> (CV->stripPointerCasts ());
+          if (!CF) {
+	    LOG ("cex",
+		 errs () << "Skipping harness for " << *ci
+		         << " because callee cannot be resolved\n");
+	    continue;
+	  }
 
           LOG("cex",
-              errs () << "Considering harness for: " << CF->getName () << "\n";);
+	      errs () << "Considering harness for: " << CF->getName () << "\n";);
 
           if (!CF->hasName()) continue;
           if (CF->isIntrinsic ()) continue;
@@ -73,18 +80,21 @@ namespace seahorn
           if (!CF->isExternalLinkage (CF->getLinkage ())) continue;
           if (!CF->getReturnType()->isIntegerTy () &&
               !CF->getReturnType()->isPointerTy()) {
-            LOG("cex",
-                errs () << "Skipping harness for " << CF->getName () << " because it returns type: " << *CF->getReturnType() << "\n";);
+            // LOG("cex",
+            //     errs () << "Skipping harness for " << CF->getName ()
+	    //             << " because it returns type: " << *CF->getReturnType()
+	    //             << "\n";);
             continue;
           }
 
-          // TODO: Port detection of well-known library functions from KleeInternalize
+          // TODO: Port detection of well-known library functions from
+          // KleeInternalize
           if (CF->getName().equals ("calloc")) continue;
           
           Expr V = trace.eval (loc, I, true);
           if (!V) continue;
           LOG("cex",
-              errs () << "Producing harness for " << CF->getName () << "\n";);
+	      errs () << "Producing harness for " << CF->getName () << "\n";);
           FuncValueMap[CF].push_back(V);
         }
       }

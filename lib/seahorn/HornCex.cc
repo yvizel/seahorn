@@ -35,13 +35,12 @@
 #include "llvm/IR/DebugLoc.h"
 #include "llvm/IR/DebugInfo.h"
 #include "llvm/IR/GlobalValue.h"
+#include "llvm/IR/ValueMap.h"
+#include "llvm/IR/IRBuilder.h"
 #include "llvm/IR/Verifier.h"
-
 #include "llvm/Bitcode/ReaderWriter.h"
-
 #include "llvm/IR/DataLayout.h"
 #include "llvm/Target/TargetLibraryInfo.h"
-
 
 #include <gmpxx.h>
 
@@ -111,9 +110,9 @@ namespace seahorn
     // -- only run if result is true, skip if it is false or unknown
     if (hs.getResult ()) ; else return false;
 
-    LOG ("cex", 
-         errs () << "Analyzed Function:\n"
-         << F << "\n";);
+    // LOG ("cex", 
+    //      errs () << "Analyzed Function:\n"
+    //      << F << "\n";);
 
     HornifyModule &hm = getAnalysis<HornifyModule> ();
     const CutPointGraph &cpg = getAnalysis<CutPointGraph> (F);

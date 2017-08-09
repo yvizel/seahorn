@@ -4,13 +4,16 @@
 #include "llvm/Pass.h"
 #include "llvm/IR/Module.h"
 #include "llvm/IR/IRBuilder.h"
-#include "llvm/Analysis/CallGraph.h"
+
+namespace llvm {
+   class CallGraph;
+}
 
 namespace seahorn
 {
   using namespace llvm;
-  
-  class NullCheck : public llvm::ModulePass {
+
+   class NullCheck : public llvm::ModulePass {
 
    public:
     
@@ -21,6 +24,7 @@ namespace seahorn
     unsigned  ChecksAdded; 
     unsigned  TrivialChecks; 
     Function* ErrorFn;
+    Function* AssumeFn;
     // Call graph of the program
     CallGraph * CG;    
 
@@ -29,14 +33,16 @@ namespace seahorn
 
    public:
     
-    NullCheck () : 
-        llvm::ModulePass (ID), 
-        ChecksAdded (0), TrivialChecks (0), ErrorFn (nullptr), CG (nullptr) { }
+    NullCheck ()
+        : llvm::ModulePass (ID), 
+          ChecksAdded (0), TrivialChecks (0), 
+          ErrorFn (nullptr), AssumeFn (nullptr), 
+          CG (nullptr) { }
     
-    virtual bool runOnModule (llvm::Module &M);
-    virtual bool runOnFunction (Function &F);
+    virtual bool runOnModule (llvm::Module &M) override;
+    bool runOnFunction (Function &F);
     
-    virtual void getAnalysisUsage (llvm::AnalysisUsage &AU) const;
+    virtual void getAnalysisUsage (llvm::AnalysisUsage &AU) const override;
     virtual const char* getPassName () const {return "NullCheck";}
     
   };

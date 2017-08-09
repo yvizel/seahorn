@@ -20,12 +20,13 @@ target_link_libraries (shadow avy)
 if (HAVE_DSA)
   target_link_libraries (shadow ${DSA_LIBS})
 endif()
+target_link_libraries (shadow ${SEA_DSA_LIBS})
+
 install (TARGETS shadow LIBRARY DESTINATION lib)
 
 add_llvm_loadable_module (checks
   Transforms/Scalar/LowerCstExpr.cc
   Transforms/Instrumentation/BufferBoundsCheck.cc
-  Transforms/Instrumentation/IntegerOverflowCheck.cc
   Analysis/CanAccessMemory.cc
 )
 
