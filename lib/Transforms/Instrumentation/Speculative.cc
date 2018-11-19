@@ -60,6 +60,29 @@ bool Speculative::insertSpeculation(IRBuilder<> &B, BranchInst &BI) {
   return true;
 }
 
+bool Speculative::isFenced(BranchInst & inst) {
+  Value *cond = inst.getCondition();
+  assert (cond != nullptr && "Branch condition is expected to be an instruction.");
+
+  BasicBlock *BB = inst.getParent();
+  BasicBlock::iterator I = BB->begin();
+  for (;I != BB->end(); I++) {
+	Instruction *curr = cast<Instruction>(I);
+	if (CallInst *CI = dyn_cast<CallInst>(curr)) {
+	  Function *f = CI->getCalledFunction();
+	  if (f == nullptr) {
+		  f = dyn_cast<Function>(CI->getCalledValue()->stripPointerCasts());
+	  }
+	  StringRef funcName = f->getName();
+	  if (funcName.equals("spec_fence")) {
+		return true;
+	  }
+	}
+  }
+
+  return false;
+}
+
 bool Speculative::runOnBasicBlock(BasicBlock &BB) {
   BranchInst *BI = dyn_cast<BranchInst>(BB.getTerminator());
   if (BI == nullptr)
@@ -68,13 +91,16 @@ bool Speculative::runOnBasicBlock(BasicBlock &BB) {
   if (!BI->isConditional())
     return false;
 
+  if (isFenced(*BI))
+	  return false;
+
   // For now, let's not worry about PHI nodes.
   // Handling them is straight forward, but will require the insertion
   // of an extra basic block.
   BasicBlock::iterator first = BB.begin();
   if (isa<PHINode>(first)) {
 	  errs() << "Not supporting PHI nodes for now...\n";
-	  exit(-1);
+	  return false;
   }
 
   LLVMContext &ctx = BB.getContext();
@@ -106,6 +132,7 @@ bool Speculative::runOnModule(llvm::Module &M) {
   if (M.begin() == M.end())
     return false;
 
+  M.print(outs(), nullptr);
   LLVMContext &ctx = M.getContext();
 
   m_BoolTy = Type::getInt1Ty(ctx);

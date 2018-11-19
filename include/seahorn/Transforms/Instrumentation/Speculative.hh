@@ -44,6 +44,8 @@ namespace seahorn
     	return false;
     }
 
+    bool isFenced(BranchInst & inst);
+
 
   public:
 
