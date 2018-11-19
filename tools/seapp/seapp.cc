@@ -216,6 +216,11 @@ static llvm::cl::opt<bool>
                    llvm::cl::desc("Abstract memory instructions"),
                    llvm::cl::init(false));
 
+static llvm::cl::opt<bool>
+    Speculative("speculative-exe",
+                   llvm::cl::desc("Speculative execution semantics."),
+                   llvm::cl::init(false));
+
 // removes extension from filename if there is one
 std::string getFileName(const std::string &str) {
   std::string filename = str;
@@ -423,6 +428,10 @@ int main(int argc, char **argv) {
     pass_manager.add(llvm::createPromoteMemoryToRegisterPass());
     // -- Turn undef into nondet
     pass_manager.add (seahorn::createNondetInitPass());
+
+    if (Speculative) {
+		pass_manager.add(seahorn::createSpeculativeExe());
+	}
 
     // -- Promote memcpy to loads-and-stores for easier alias analysis.
     pass_manager.add (seahorn::createPromoteMemcpyPass());

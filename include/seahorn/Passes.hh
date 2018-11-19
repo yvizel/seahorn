@@ -101,6 +101,8 @@ namespace seahorn
   llvm::FunctionPass* createPromoteMemcpyPass();
 
   llvm::Pass* createBoogieWriterPass(llvm::raw_ostream* out, bool use_crab);
+
+  llvm::Pass *createSpeculativeExe();
 }
 
 #ifdef HAVE_LLVM_SEAHORN

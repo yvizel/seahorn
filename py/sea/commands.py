@@ -308,6 +308,9 @@ class Seapp(sea.LimitedCmd):
         ap.add_argument ('--internalize', help='Create dummy definitions for all ' +
                          'external functions', default=self._internalize,
                          action='store_true', dest='internalize')
+        ap.add_argument ('--speculative-exe', help='Create speculative execution ' +
+                         'semantics', default=False,
+                         action='store_true', dest='speculative_exe')
         ap.add_argument ('--log', dest='log', default=None,
                          metavar='STR', help='Log level')
         add_in_out_args (ap)
@@ -385,6 +388,9 @@ class Seapp(sea.LimitedCmd):
 
             if args.entry is not None:
                 argv.append ('--entry-point={0}'.format (args.entry))
+
+            if args.speculative_exe:
+                argv.append('--speculative-exe')
 
             if args.kill_vaarg:
                 argv.append('--kill-vaarg=true')
