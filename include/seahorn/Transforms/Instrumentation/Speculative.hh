@@ -5,8 +5,15 @@
 #include "llvm/IR/Module.h"
 #include "llvm/IR/IRBuilder.h"
 #include "llvm/IR/DataLayout.h"
+#include "llvm/IR/GlobalVariable.h"
 #include "llvm/Analysis/CallGraph.h"
 #include "llvm/Transforms/Utils/BasicBlockUtils.h"
+
+#include "seahorn/Analysis/StaticTaint.hh"
+
+#include <map>
+#include <vector>
+#include <set>
 
 namespace seahorn
 {
@@ -18,12 +25,15 @@ namespace seahorn
     bool m_dump;
     Function * m_errorFn;
     Function * m_assumeFn;
+    Function * m_assertFn;
     Function * m_ndBoolFn;
     CallGraph * m_CG; // Call graph of the program
+    StaticTaint m_taint;
 
-    Value* m_speculation;
-    Value* m_nd;
-    Type *m_BoolTy;
+    std::map<BranchInst*, Value*> m_bb2spec;
+    Value * m_nd;
+    Type * m_BoolTy;
+    GlobalVariable * m_SpecCount;
 
     unsigned m_numOfSpec;
 
@@ -33,7 +43,8 @@ namespace seahorn
     void addSpeculation(IRBuilder<>& B, std::string name, Value *cond, Value *spec, BasicBlock* bb);
     bool insertSpeculation(IRBuilder<>& B, BranchInst& inst);
 
-    BasicBlock* createErrorBlock (Function &F, IRBuilder<> B, AllocaInst* specVar);
+    BasicBlock* createErrorBlock (Function &F, IRBuilder<> &B, AllocaInst* specVar);
+    void insertSpecCheck(Function &F, IRBuilder<> &B, Instruction &inst, std::set<Value*> & S);
 
     bool isErrorBB(BasicBlock *bb) {
     	Instruction *inst = bb->getFirstNonPHI();
@@ -46,6 +57,15 @@ namespace seahorn
 
     bool isFenced(BranchInst & inst);
 
+    void collectCOI(Instruction *src, std::set<Value*> & coi);
+    void getSpecForInst(Instruction *I, std::set<Value*> & spec);
+    void getSpecForInst_rec(Instruction *I, std::set<Value*> & spec, std::set<BasicBlock*> & processed);
+
+    void splitSelectInst(Function &F, IRBuilder<> &B, SelectInst *SI);
+
+    void initSpecCount(IRBuilder<> &B, LoadInst & spec);
+    void incrementSpecCount(IRBuilder<> &B, Instruction &inst);
+
 
   public:
 
@@ -56,9 +76,10 @@ namespace seahorn
 		m_dump(dump),
         m_errorFn (nullptr),
 		m_assumeFn(nullptr),
+		m_assertFn(nullptr),
 		m_ndBoolFn(nullptr),
         m_CG (nullptr),
-		m_speculation(nullptr),
+		m_bb2spec(),
 		m_nd(nullptr),
 		m_BoolTy(nullptr),
 		m_numOfSpec(0) { }
@@ -67,6 +88,8 @@ namespace seahorn
     virtual bool runOnFunction (Function &F);
     virtual bool runOnBasicBlock(BasicBlock &B);
     
+    void addAssertions(Function &F, IRBuilder<> &B , std::vector<Instruction*> & WorkList);
+
     virtual void getAnalysisUsage (llvm::AnalysisUsage &AU) const;
     virtual StringRef getPassName () const {return "SpeculativeExecution";}
     

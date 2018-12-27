@@ -8,6 +8,7 @@
 
 #include "llvm/IR/InstIterator.h"
 #include "llvm/IR/GlobalVariable.h"
+#include "llvm/IR/CFG.h"
 
 #include "llvm/Support/Debug.h"
 
@@ -27,8 +28,48 @@ char Speculative::ID = 0;
 
 void Speculative::addSpeculation(IRBuilder<> &B, std::string name, Value *cond, Value *spec, BasicBlock *bb) {
   B.SetInsertPoint(bb->getFirstNonPHI());
-  Value *assumption = B.CreateBinOp(Instruction::Or, cond, spec, name + "__or");
+  // The assumption for speculation is a XOR between the actual condition and
+  // the speculation variable. This is because we want to have mutual exclusion.
+  // Meaning, if the condition holds, the branch is taken anyway, so no need
+  // to assume it was taken due to speculative execution.
+  Value *assumption = B.CreateBinOp(Instruction::Xor, cond, spec, name + "__xor");
   B.CreateCall(m_assumeFn, assumption, "");
+}
+
+void Speculative::initSpecCount(IRBuilder<> &B, LoadInst & spec) {
+  LLVMContext &ctx = B.getContext();
+
+  BasicBlock *Orig = spec.getParent();
+  BasicBlock *Cont = Orig->splitBasicBlock(spec.getNextNode());
+
+  outs() << "Spliting BB\n";
+  BasicBlock *initSpecCount = BasicBlock::Create(ctx, "spec_count_init", Orig->getParent(), Cont);
+  B.SetInsertPoint(initSpecCount);
+
+  outs() << "New BB created\n";
+  B.CreateAlignedStore(ConstantInt::get(ctx, APInt(32,1)), m_SpecCount, 4);
+
+  outs() << "Spec Count initialized\n";
+  BranchInst::Create(Cont, initSpecCount);
+
+  Orig->getTerminator()->eraseFromParent();
+  BranchInst::Create(initSpecCount, Cont, &spec, Orig);
+
+}
+
+void Speculative::incrementSpecCount(IRBuilder<> &B, Instruction &inst) {
+
+  // XXX
+  // XXX The Cost should be computed relative to where speculation started
+  // XXX
+  unsigned cost = 1; //getInstructionCost()
+  B.SetInsertPoint(&inst);
+  Value *Load = B.CreateAlignedLoad(m_SpecCount, 4, "load_count");
+  Value *Inc = B.CreateAdd(
+		  Load,
+		  ConstantInt::get(inst.getContext(), APInt(32, cost)),
+		  "spec_count_int");
+  Value *Store = B.CreateAlignedStore(Inc, m_SpecCount, 4, false);
 }
 
 bool Speculative::insertSpeculation(IRBuilder<> &B, BranchInst &BI) {
@@ -49,13 +90,20 @@ bool Speculative::insertSpeculation(IRBuilder<> &B, BranchInst &BI) {
   specVar->setAlignment(1);
   Value *nd = B.CreateCall(m_ndBoolFn, None, name + "__nd");
   B.CreateAlignedStore(nd, specVar, 1);
-  Value *spec = B.CreateAlignedLoad(specVar, 1);
+  LoadInst *spec = B.CreateAlignedLoad(specVar, 1);
   Value *condNd = B.CreateCall(m_ndBoolFn, None, name + "__cond_nd");
 
   BI.setCondition(condNd);
 
   addSpeculation(B, name + "__then", cond, spec, thenBB);
   addSpeculation(B, name + "__else", negCond, spec, elseBB);
+
+  // Now initialize the counter
+  initSpecCount(B, *spec);
+
+  // Store the Speculation variable associated with this conditional branch.
+  // This should help us add the proper assertions.
+  m_bb2spec.emplace(&BI, cast<Value>(specVar));
 
   return true;
 }
@@ -83,6 +131,38 @@ bool Speculative::isFenced(BranchInst & inst) {
   return false;
 }
 
+void Speculative::splitSelectInst(Function &F, IRBuilder<> &B, SelectInst *SI) {
+
+  B.SetInsertPoint(SI);
+
+  BasicBlock *orig = SI->getParent();
+  BasicBlock *Cont = orig->splitBasicBlock(B.GetInsertPoint());
+
+  BasicBlock *thenBB = BasicBlock::Create(
+    B.getContext(), "SplitSelect_then_" + SI->getName().str(), &F, Cont);
+  BasicBlock *elseBB = BasicBlock::Create(
+	B.getContext(), "SplitSelect_else_" + SI->getName().str(), &F, Cont);
+
+  Instruction *term = orig->getTerminator ();
+  B.SetInsertPoint(term);
+  BranchInst *newTerm = B.CreateCondBr(SI->getCondition(), thenBB, elseBB);
+  term->eraseFromParent();
+
+  B.SetInsertPoint(thenBB);
+  B.CreateBr(Cont);
+  B.SetInsertPoint(elseBB);
+  B.CreateBr(Cont);
+
+  B.SetInsertPoint(Cont->getFirstNonPHI());
+  PHINode *phi = B.CreatePHI(SI->getType(), 2);
+  phi->addIncoming(SI->getTrueValue(), thenBB);
+  phi->addIncoming(SI->getFalseValue(), elseBB);
+
+  SI->replaceAllUsesWith(phi);
+
+  SI->eraseFromParent();
+}
+
 bool Speculative::runOnBasicBlock(BasicBlock &BB) {
   BranchInst *BI = dyn_cast<BranchInst>(BB.getTerminator());
   if (BI == nullptr)
@@ -94,9 +174,9 @@ bool Speculative::runOnBasicBlock(BasicBlock &BB) {
   if (isFenced(*BI))
 	  return false;
 
+  // TODO
   // For now, let's not worry about PHI nodes.
-  // Handling them is straight forward, but will require the insertion
-  // of an extra basic block.
+  // XXX DO WE NEED SPECIAL HANDLING? XXX
   BasicBlock::iterator first = BB.begin();
   if (isa<PHINode>(first)) {
 	  errs() << "Not supporting PHI nodes for now...\n";
@@ -120,12 +200,110 @@ bool Speculative::runOnFunction(Function &F) {
     assert(false);
   }
 
-  bool changed = false;
-  for (auto & B : F) {
-	  changed |= runOnBasicBlock(B);
+  std::vector<Instruction*> WorkList;
+  for (inst_iterator i = inst_begin(F), e = inst_end(F); i != e; ++i) {
+    if (isa<SelectInst>(&*i)) WorkList.push_back(&*i);
   }
 
+  for (Instruction *I : WorkList)
+	  splitSelectInst(F, B, cast<SelectInst>(I));
+
+  WorkList.clear();
+  for (inst_iterator i = inst_begin(F), e = inst_end(F); i != e; ++i) {
+    Instruction *I = &*i;
+  	WorkList.push_back (I);
+  }
+
+  std::vector<BasicBlock*> BBWorkList;
+  bool changed = false;
+  for (auto & B : F) {
+	  BBWorkList.push_back(&B);
+  }
+
+  for (auto * B : BBWorkList)
+	  changed |= runOnBasicBlock(*B);
+
+  if (changed)
+	  addAssertions(F, B, WorkList);
+
   return changed;
+}
+
+void Speculative::collectCOI(Instruction *src, std::set<Value*> & coi) {
+  outs() << "Collecting for: "; src->print(outs()); outs() << "\n";
+  if (StoreInst *SI = dyn_cast<StoreInst>(src)) {
+    if (Instruction *I = dyn_cast<Instruction>(src->getOperand(0))) {
+	  if (coi.find(I) == coi.end()) {
+	    coi.insert(I);
+		collectCOI(I, coi);
+	  }
+	}
+  } else {
+    for (Use &U : src->operands()) {
+	  Value *v = U.get();
+	  if (Instruction *I = dyn_cast<Instruction>(v)) {
+	    if (coi.find(I) == coi.end()) {
+		  coi.insert(I);
+		  collectCOI(I, coi);
+	    }
+	  }
+    }
+  }
+
+  /*for (User *U : src->users()) {
+	outs() << "User: "; U->print(outs()); outs() << "\n";
+	if (StoreInst *SI = dyn_cast<StoreInst>(U))
+	  if (!src->isSameOperationAs(SI)) {
+		  outs() << "Adding: "; U->print(outs()); outs() << "\n";
+		  coi.insert(SI);
+	  }
+  }*/
+
+  BasicBlock *BB = src->getParent();
+  for (BasicBlock *Pred : predecessors(BB)) {
+    if (BranchInst *BI = dyn_cast<BranchInst>(Pred->getTerminator())) {
+	  Value *cond = BI->isConditional() ? BI->getCondition() : nullptr;
+	  if (cond && isa<Instruction>(cond) && coi.find(cond) == coi.end()) {
+		coi.insert(cond);
+		collectCOI(cast<Instruction>(cond), coi);
+	  }
+    }
+  }
+}
+
+void Speculative::getSpecForInst(Instruction *I, std::set<Value*> & spec) {
+  std::set<BasicBlock*> processed;
+  getSpecForInst_rec(I, spec, processed);
+}
+
+void Speculative::getSpecForInst_rec(Instruction *I, std::set<Value*> & spec, std::set<BasicBlock*> & processed) {
+  BasicBlock *BB = I->getParent();
+  if (processed.find(BB) != processed.end()) return;
+  processed.insert(BB);
+  for (BasicBlock *Pred : predecessors(BB)) {
+	if (BranchInst *BI = dyn_cast<BranchInst>(Pred->getTerminator())) {
+		if (m_bb2spec.find(BI) != m_bb2spec.end() && m_taint.isTainted(BI))
+			spec.insert(m_bb2spec[BI]);
+		getSpecForInst_rec(BI, spec, processed);
+	}
+  }
+}
+
+void Speculative::addAssertions(Function &F, IRBuilder<> &B , std::vector<Instruction*> & WorkList) {
+  outs() << "Starting to add assertions...\n";
+  for (Instruction *I : WorkList) {
+	if (isa<LoadInst>(I) || isa<StoreInst>(I)) {
+	  outs() << "\n\n Looking for spec vars for "; I->print(outs()); outs() << "\n";
+	  std::set<Value*> COI;
+	  collectCOI(I, COI);
+	  std::set<Value*> S;
+	  for (Value *coi : COI) {
+		  getSpecForInst(cast<Instruction>(coi), S);
+	  }
+	  outs() << "COI size: " << COI.size() << " and SPEC size: " << S.size() << "\n";
+	  insertSpecCheck(F, B, *I, S);
+	}
+  }
 }
 
 bool Speculative::runOnModule(llvm::Module &M) {
@@ -137,13 +315,26 @@ bool Speculative::runOnModule(llvm::Module &M) {
 
   m_BoolTy = Type::getInt1Ty(ctx);
 
-  if (HasErrorFunc) {
-    AttrBuilder B;
 
+  m_SpecCount = new GlobalVariable(
+		  M,
+		  Type::getInt32Ty(ctx),
+		  false,
+		  GlobalValue::CommonLinkage,
+		  ConstantInt::get(ctx, APInt(32,0)),
+		  "__Spec_Counter__");
+  m_SpecCount->setAlignment(4);
+
+  if (HasErrorFunc) {
+
+    AttrBuilder B;
     AttributeList as = AttributeList::get(ctx, AttributeList::FunctionIndex, B);
 
     m_assumeFn = dyn_cast<Function>(M.getOrInsertFunction(
    		"verifier.assume", as, Type::getVoidTy (ctx), m_BoolTy));
+
+    m_assertFn = dyn_cast<Function>(M.getOrInsertFunction(
+		"verifier.assert", as, Type::getVoidTy (ctx), m_BoolTy));
 
     m_ndBoolFn = dyn_cast<Function>(M.getOrInsertFunction(
 		"verifier.nondet.bool", as, m_BoolTy));
@@ -151,10 +342,16 @@ bool Speculative::runOnModule(llvm::Module &M) {
     B.addAttribute(Attribute::NoReturn);
     B.addAttribute(Attribute::ReadNone);
 
+    as = AttributeList::get(ctx, AttributeList::FunctionIndex, B);
+
     m_errorFn = dyn_cast<Function>(M.getOrInsertFunction(
-        "verifier.error", as, Type::getVoidTy(ctx), m_BoolTy));
+        "verifier.error", as, Type::getVoidTy(ctx)));
 
   }
+
+  outs() << "Computing taint...\n";
+  m_taint.runOnModule(M);
+  outs() << "Done - computing taint...\n";
 
   bool change = false;
   for (Function &F : M) {
@@ -176,8 +373,8 @@ void Speculative::getAnalysisUsage(llvm::AnalysisUsage &AU) const {
  * Unused code for now.
  * Will use it in case we want to add our own checks.
  */
-/*
-BasicBlock *Speculative::createErrorBlock(Function &F, IRBuilder<> B,
+
+BasicBlock *Speculative::createErrorBlock(Function &F, IRBuilder<> & B,
                                          AllocaInst *specVar) {
   BasicBlock *errBB = BasicBlock::Create(
       B.getContext(), "SpeculationCheck_" + specVar->getName().str(), &F);
@@ -195,19 +392,25 @@ BasicBlock *Speculative::createErrorBlock(Function &F, IRBuilder<> B,
   return errBB;
 }
 
-void Speculative::insertTaintCheck(Function &F, IRBuilder<> &B,
-                                  Instruction &inst, Value *specVar) {
+void Speculative::insertSpecCheck(Function &F, IRBuilder<> &B,
+                                  Instruction &inst, std::set<Value*> & S) {
 
   // Create error blocks
   LLVMContext &ctx = B.getContext();
   BasicBlock *err_spec_bb = BasicBlock::Create(ctx, "spec_error_bb", &F);
 
+  outs() << "Added error block...\n";
+
+  if (m_errorFn == nullptr) outs() << "Something is wrong...\n";
+
   B.SetInsertPoint(err_spec_bb);
   CallInst *ci_spec = B.CreateCall(m_errorFn);
+  outs() << "Call to error function created...\n";
   ci_spec->setDebugLoc(inst.getDebugLoc());
   B.CreateUnreachable();
 
   B.SetInsertPoint(&inst);
+  outs() << "Insertion point set...\n";
 
   BasicBlock *OldBB0 = inst.getParent();
   BasicBlock *Cont0 = OldBB0->splitBasicBlock(B.GetInsertPoint());
@@ -216,23 +419,37 @@ void Speculative::insertTaintCheck(Function &F, IRBuilder<> &B,
 
   B.SetInsertPoint(Cont0->getFirstNonPHI());
 
+  outs() << "Iterating over specs...\n";
+
   /// --- spec: add check var_spec == false
-  Value *specCheck =
-      B.CreateICmpEQ(B.CreateAlignedLoad(specVar, 1),
-                     ConstantInt::get(m_BoolTy, 0), "spec_check");
+  Value *specOr = ConstantInt::get(m_BoolTy, 0);
+  for (Value *s : S) {
+    specOr = B.CreateBinOp(
+			Instruction::Or,
+			specOr,
+			B.CreateAlignedLoad(s,1));
+  }
+
+  outs() << "Create or of specs...\n";
+
+  Value *specCheck = B.CreateICmpEQ(specOr, ConstantInt::get(m_BoolTy, 0), "spec_check");
+
+  outs() << "Assertion expression created...\n";
+
 
   BasicBlock *OldBB1 = Cont0;
   BasicBlock *Cont1 = OldBB1->splitBasicBlock(B.GetInsertPoint());
   OldBB1->getTerminator()->eraseFromParent();
   BranchInst::Create(Cont1, err_spec_bb, specCheck, OldBB1);
 
-}*/
+  outs() << "Added A SPECULATION check...\n";
+}
 
 
 } // namespace seahorn
 
 namespace seahorn {
-llvm::Pass *createSpeculativeExe() { return new Speculative(); }
+llvm::Pass *createSpeculativeExe() { return new Speculative(true); }
 } // namespace seahorn
 
 static llvm::RegisterPass<seahorn::Speculative> X("speculative-exe",
