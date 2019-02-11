@@ -429,10 +429,6 @@ int main(int argc, char **argv) {
     // -- Turn undef into nondet
     pass_manager.add (seahorn::createNondetInitPass());
 
-    if (Speculative) {
-		pass_manager.add(seahorn::createSpeculativeExe());
-	}
-
     // -- Promote memcpy to loads-and-stores for easier alias analysis.
     pass_manager.add (seahorn::createPromoteMemcpyPass());
 
@@ -524,6 +520,10 @@ int main(int argc, char **argv) {
       pass_manager.add(seahorn::createPromoteMallocPass());
       pass_manager.add(seahorn::createRemoveUnreachableBlocksPass());
     }
+
+    if (Speculative) {
+		pass_manager.add(seahorn::createSpeculativeExe());
+	}
 
     // -- EVERYTHING IS MORE EXPENSIVE AFTER INLINING
     // -- BEFORE SCHEDULING PASSES HERE, THINK WHETHER THEY BELONG BEFORE
