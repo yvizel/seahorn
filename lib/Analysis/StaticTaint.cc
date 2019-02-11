@@ -1,7 +1,6 @@
 /*
- * Insert Speculative Execution Logic.
-
- * Limitation: Currently not taking into account PHI nodes.
+ * Collecing static Taint Analysis
+ * Limitations: No robust support for complex data structures and arrays
  */
 
 #include "seahorn/Transforms/Instrumentation/StaticTaint.hh"
