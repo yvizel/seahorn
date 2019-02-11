@@ -5,7 +5,7 @@
 #include "llvm/Support/raw_ostream.h"
 #include "llvm/Support/CommandLine.h"
 
-#include "avy/AvyDebug.h"
+#include "seahorn/Support/SeaDebug.h"
 #include "boost/range.hpp"
 
 using namespace llvm;
@@ -13,7 +13,7 @@ using namespace llvm;
 static llvm::cl::list<std::string>
 InlineOnly("horn-inline-only",
            llvm::cl::desc("Inline only selected functions"),
-           llvm::cl::ZeroOrMore);
+           llvm::cl::ZeroOrMore, llvm::cl::CommaSeparated);
 
 namespace seahorn
 {

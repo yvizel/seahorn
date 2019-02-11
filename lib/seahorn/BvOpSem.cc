@@ -1,18 +1,17 @@
 // Symbolic execution (loosely) based on semantics used in UFO
 #include "llvm/IR/GetElementPtrTypeIterator.h"
+#include "llvm/Support/CommandLine.h"
 
 #include "seahorn/BvOpSem.hh"
 #include "seahorn/Support/CFG.hh"
 #include "seahorn/Transforms/Instrumentation/ShadowMemDsa.hh"
 
-#include "ufo/ufo_iterators.hpp"
-#include "llvm/Support/CommandLine.h"
-
-//#include <queue>
+#include "ufo/ExprLlvm.hpp"
+#include "seahorn/Support/IteratorExtras.hh"
+#include "seahorn/Support/SeaDebug.h"
 
 using namespace seahorn;
 using namespace llvm;
-using namespace ufo;
 
 static llvm::cl::opt<bool> GlobalConstraints(
     "horn-bv-global-constraints",
@@ -65,7 +64,7 @@ static llvm::cl::list<std::string> IgnoreExternalFunctions(
     "horn-bv-ignore-external-functions",
     llvm::cl::desc(
         "These functions are not modeled as uninterpreted functions"),
-    llvm::cl::ZeroOrMore);
+    llvm::cl::ZeroOrMore, llvm::cl::CommaSeparated);
 
 static const Value *extractUniqueScalar(CallSite &cs) {
   if (!EnableUniqueScalars)
@@ -1009,7 +1008,7 @@ Expr BvOpSem::errorFlag(const BasicBlock &BB) {
   // -- if BB belongs to a function that cannot fail, errorFlag is always false
   if (m_canFail && !m_canFail->canFail(BB.getParent()))
     return falseE;
-  return this->OpSem::errorFlag(BB);
+  return this->LegacyOperationalSemantics::errorFlag(BB);
 }
 
 Expr BvOpSem::memStart(unsigned id) {
@@ -1052,7 +1051,7 @@ Expr BvOpSem::symbolicIndexedOffset(SymStore &s, GetElementPtrInst& gep) {
   // symbolic offset
   Expr soffset;
 
-  for(auto TI = gep_type_begin(&gep), TE = gep_type_end(&gep); TI != TE; ++TI) {  
+  for(auto TI = gep_type_begin(&gep), TE = gep_type_end(&gep); TI != TE; ++TI) {
     Value* CurVal = TI.getOperand();
     if (StructType *STy = TI.getStructTypeOrNull()) {
       unsigned fieldNo = cast<ConstantInt>(CurVal)->getZExtValue();
@@ -1175,7 +1174,7 @@ Expr BvOpSem::symb(const Value &I) {
   return Expr(0);
 }
 
-const Value &BvOpSem::conc(Expr v) {
+const Value &BvOpSem::conc(Expr v) const {
   assert(isOpX<FAPP>(v));
   // name of the app
   Expr u = bind::fname(v);
@@ -1185,7 +1184,7 @@ const Value &BvOpSem::conc(Expr v) {
   return *getTerm<const Value *>(v);
 }
 
-bool BvOpSem::isTracked(const Value &v) {
+bool BvOpSem::isTracked(const Value &v) const {
   const Value *scalar = nullptr;
 
   // -- shadow values represent memory regions

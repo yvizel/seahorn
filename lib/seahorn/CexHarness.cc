@@ -9,6 +9,7 @@
 
 #include "boost/algorithm/string/replace.hpp"
 #include <memory>
+#include "seahorn/Support/SeaDebug.h"
 
 using namespace llvm;
 namespace seahorn {
@@ -61,22 +62,22 @@ Constant *exprToLlvm(Type *ty, Expr e, LLVMContext &ctx, const DataLayout &dl) {
     // return Constant::getNullValue (ty);
     return ConstantInt::getFalse(ctx);
   } else if (isOpX<MPZ>(e) || bv::is_bvnum(e)) {
-      mpz_class mpz;
-      mpz = isOpX<MPZ> (e) ? getTerm<mpz_class> (e) : getTerm<mpz_class> (e->arg (0));
+    mpz_class mpz;
+    mpz = isOpX<MPZ>(e) ? getTerm<mpz_class>(e) : getTerm<mpz_class>(e->arg(0));
     if (ty->isIntegerTy() || ty->isPointerTy()) {
       // JN: I think we can have the same issue as above but for now I leave
       // like it is.
       return Constant::getIntegerValue(
           ty, toAPInt(dl.getTypeStoreSizeInBits(ty), mpz));
-      }
-      llvm_unreachable("Unhandled type");
-  } else {
-      // if all fails, try 0
-      LOG("cex", errs () << "WARNING: Not handled value: " << *e << "\n";);
-      return Constant::getNullValue (ty);
     }
-    llvm_unreachable("Unhandled expression");
+    llvm_unreachable("Unhandled type");
+  } else {
+    // if all fails, try 0
+    LOG("cex", errs() << "WARNING: Not handled value: " << *e << "\n";);
+    return Constant::getNullValue(ty);
   }
+  llvm_unreachable("Unhandled expression");
+}
 
 // return true if success
 template <typename IndexToValueMap>
@@ -115,37 +116,35 @@ bool extractArrayContents(Expr e, IndexToValueMap &out, Expr &default_value) {
 
 std::unique_ptr<Module> createCexHarness(BmcTraceWrapper &trace,
                                          const DataLayout &dl,
-                                         const TargetLibraryInfo &tli) {
-
-  static LLVMContext TheContext;  
-  std::unique_ptr<Module> Harness =
-      make_unique<Module>("harness", TheContext);
+                                         const TargetLibraryInfo &tli,
+                                         LLVMContext &TheContext) {
+  std::unique_ptr<Module> Harness = make_unique<Module>("harness", TheContext);
   Harness->setDataLayout(dl);
 
-    ValueMap<const Function*, ExprVector> FuncValueMap;
+  ValueMap<const Function *, ExprVector> FuncValueMap;
   // map a dsa node to start and end addresses
   std::map<unsigned, std::pair<Expr, Expr>> DsaAllocMap;
   // map a dsa node to its contents (as a pair of a default value
   // and a map from index to value)
   std::map<unsigned, std::pair<Expr, std::map<Expr, Expr>>> DsaContentMap;
 
-    // Look for calls in the trace
+  // Look for calls in the trace
   for (unsigned loc = 0; loc < trace.size(); loc++) {
-      const BasicBlock &BB = *trace.bb(loc);
+    const BasicBlock &BB = *trace.bb(loc);
     for (auto &I : BB) {
       if (const CallInst *ci = dyn_cast<CallInst>(&I)) {
-          ImmutableCallSite CS(ci);
-	  // Go through bitcasts
-	  const Value *CV = CS.getCalledValue ();
-          const Function *CF = dyn_cast<Function> (CV->stripPointerCasts ());
-          if (!CF) {
+        ImmutableCallSite CS(ci);
+        // Go through bitcasts
+        const Value *CV = CS.getCalledValue();
+        const Function *CF = dyn_cast<Function>(CV->stripPointerCasts());
+        if (!CF) {
           LOG("cex", errs() << "Skipping harness for " << *ci
-		         << " because callee cannot be resolved\n");
-	    continue;
-	  }
+                            << " because callee cannot be resolved\n");
+          continue;
+        }
 
-          LOG("cex",
-	      errs () << "Considering harness for: " << CF->getName () << "\n";);
+        LOG("cex",
+            errs() << "Considering harness for: " << CF->getName() << "\n";);
 
         if (CF->getName().equals("shadow.mem.init")) {
           unsigned id = shadow_dsa::getShadowId(CS);
@@ -175,21 +174,23 @@ std::unique_ptr<Module> createCexHarness(BmcTraceWrapper &trace,
           continue;
         if (CF->isIntrinsic())
           continue;
-          // We want to ignore seahorn functions, but not nondet
-          // functions created by strip-extern or dummyMainFunction
-          if (CF->getName().find_first_of('.') != StringRef::npos &&
-              !CF->getName().startswith("verifier.nondet")) continue;
-          if (!CF->isExternalLinkage (CF->getLinkage ())) continue;
-          if (!CF->getReturnType()->isIntegerTy () &&
-              !CF->getReturnType()->isPointerTy()) {
-            // LOG("cex",
-            //     errs () << "Skipping harness for " << CF->getName ()
-	    //             << " because it returns type: " << *CF->getReturnType()
-	    //             << "\n";);
-            continue;
-          }
+        // We want to ignore seahorn functions, but not nondet
+        // functions created by strip-extern or dummyMainFunction
+        if (CF->getName().find_first_of('.') != StringRef::npos &&
+            !CF->getName().startswith("verifier.nondet"))
+          continue;
+        if (!CF->isExternalLinkage(CF->getLinkage()))
+          continue;
+        if (!CF->getReturnType()->isIntegerTy() &&
+            !CF->getReturnType()->isPointerTy()) {
+          // LOG("cex",
+          //     errs () << "Skipping harness for " << CF->getName ()
+          //             << " because it returns type: " << *CF->getReturnType()
+          //             << "\n";);
+          continue;
+        }
 
-          // KleeInternalize
+        // KleeInternalize
         if (CF->getName().equals("calloc"))
           continue;
 
@@ -198,44 +199,46 @@ std::unique_ptr<Module> createCexHarness(BmcTraceWrapper &trace,
         if (tli.getLibFunc(CF->getName(), libfn))
           continue;
 
-          Expr V = trace.eval (loc, I, true);
+        Expr V = trace.eval(loc, I, true);
         if (!V)
           continue;
-          LOG("cex",
-	      errs () << "Producing harness for " << CF->getName () << "\n";);
-          FuncValueMap[CF].push_back(V);
-        }
+        LOG("cex",
+            errs() << "Producing harness for " << CF->getName() << "\n";);
+        FuncValueMap[CF].push_back(V);
       }
     }
+  }
 
-    // Build harness functions
-    for (auto CFV : FuncValueMap) {
+  // Build harness functions
+  for (auto CFV : FuncValueMap) {
 
-      auto CF = CFV.first;
-      auto& values = CFV.second;
+    auto CF = CFV.first;
+    auto &values = CFV.second;
 
-      // This is where we will build the harness function
+    // This is where we will build the harness function
     Function *HF = cast<Function>(Harness->getOrInsertFunction(
         CF->getName(), cast<FunctionType>(CF->getFunctionType())));
 
-      Type *RT = CF->getReturnType();
-      Type *pRT = nullptr;
+    Type *RT = CF->getReturnType();
+    Type *pRT = nullptr;
     if (RT->isIntegerTy())
       pRT = RT->getPointerTo();
     else
       pRT = Type::getInt8PtrTy(TheContext);
 
-      ArrayType* AT = ArrayType::get(RT, values.size());
+    ArrayType *AT = ArrayType::get(RT, values.size());
 
     // Convert Expr to LLVM constants
     SmallVector<Constant *, 20> LLVMarray;
     std::transform(values.begin(), values.end(), std::back_inserter(LLVMarray),
-                   [RT, dl](Expr e) { return exprToLlvm(RT, e, TheContext, dl); });
+                   [&RT, &dl, &TheContext](Expr e) {
+                     return exprToLlvm(RT, e, TheContext, dl);
+                   });
 
-      // This is an array containing the values to be returned
+    // This is an array containing the values to be returned
     GlobalVariable *CA =
         new GlobalVariable(*Harness, AT, true, GlobalValue::PrivateLinkage,
-                                              ConstantArray::get(AT, LLVMarray));
+                           ConstantArray::get(AT, LLVMarray));
 
     // Build the body of the harness function
     BasicBlock *BB = BasicBlock::Create(TheContext, "entry", HF);
@@ -244,48 +247,55 @@ std::unique_ptr<Module> createCexHarness(BmcTraceWrapper &trace,
     Type *CountType = Type::getInt32Ty(TheContext);
     GlobalVariable *Counter = new GlobalVariable(
         *Harness, CountType, false, GlobalValue::PrivateLinkage,
-                                                   ConstantInt::get(CountType, 0));
+        ConstantInt::get(CountType, 0));
 
-      Value *LoadCounter = Builder.CreateLoad(Counter);
+    Value *LoadCounter = Builder.CreateLoad(Counter);
 
     Builder.CreateStore(
         Builder.CreateAdd(LoadCounter, ConstantInt::get(CountType, 1)),
-                          Counter);
+        Counter);
 
-      std::string name;
+    std::string name;
     std::vector<Type *> ArgTypes = {CountType, pRT, CountType};
     std::vector<Value *> Args = {LoadCounter, Builder.CreateBitCast(CA, pRT),
-         ConstantInt::get(CountType, values.size())};
+                                 ConstantInt::get(CountType, values.size())};
 
     if (RT->isIntegerTy()) {
-        std::string RS;
-        llvm::raw_string_ostream RSO(RS);
-        RT->print(RSO);
+      std::string RS;
+      llvm::raw_string_ostream RSO(RS);
+      RT->print(RSO);
 
-        name = Twine("__seahorn_get_value_").concat(RSO.str()).str();
-    } else if (RT->getSequentialElementType()) {
+      name = Twine("__seahorn_get_value_").concat(RSO.str()).str();
+    } else if (RT->isPointerTy() ||
+               RT->getTypeID() == llvm::ArrayType::ArrayTyID) {
+      Type *elmTy = nullptr;
+      if (RT->isPointerTy())
+        elmTy = RT->getPointerElementType();
+      else
+        elmTy = RT->getSequentialElementType();
+
       name = "__seahorn_get_value_ptr";
       ArgTypes.push_back(Type::getInt32Ty(TheContext));
 
-        // If we can tell how big the return type is, tell the
-        // callback function.  Otherwise pass zero.
-        if (RT->getSequentialElementType ()->isSized ())
-        Args.push_back(ConstantInt::get(
-            Type::getInt32Ty(TheContext),
-            dl.getTypeStoreSizeInBits(RT->getSequentialElementType())));
+      // If we can tell how big the return type is, tell the
+      // callback function.  Otherwise pass zero.
+      if (elmTy->isSized())
+        Args.push_back(ConstantInt::get(Type::getInt32Ty(TheContext),
+                                        dl.getTypeStoreSizeInBits(elmTy)));
       else
-        Args.push_back(
-            ConstantInt::get(Type::getInt32Ty(TheContext), 0));
-    } else
-        assert (false && "Unknown return type");
+        Args.push_back(ConstantInt::get(Type::getInt32Ty(TheContext), 0));
+    } else {
+      errs() << "WARNING: Unknown type: " << *RT << "\n";
+      assert(false && "Unknown return type");
+    }
 
     Constant *GetValue = Harness->getOrInsertFunction(
         name, FunctionType::get(RT, makeArrayRef(ArgTypes), false));
-      assert(GetValue);
-      Value* RetValue = Builder.CreateCall(GetValue, makeArrayRef (Args));
+    assert(GetValue);
+    Value *RetValue = Builder.CreateCall(GetValue, makeArrayRef(Args));
 
-      Builder.CreateRet(RetValue);
-    }
+    Builder.CreateRet(RetValue);
+  }
 
   {
     Type *intTy = IntegerType::get(TheContext, 64);
@@ -295,8 +305,8 @@ std::unique_ptr<Module> createCexHarness(BmcTraceWrapper &trace,
     // Hook for gdb-like tools. Used to translate virtual addresses to
     // physical ones if that's the case. This is useful so we can
     // inspect content of virtual addresses.
-    Function *EmvMapF = cast<Function>(
-        Harness->getOrInsertFunction("__emv", i8PtrTy, i8PtrTy));
+    Function *EmvMapF =
+        cast<Function>(Harness->getOrInsertFunction("__emv", i8PtrTy, i8PtrTy));
     EmvMapF->addFnAttr(Attribute::NoInline);
 
     // Build function to initialize dsa nodes
@@ -307,12 +317,13 @@ std::unique_ptr<Module> createCexHarness(BmcTraceWrapper &trace,
     IRBuilder<> Builder(BB);
 
     // Hook to allocate a dsa node
-    Function *m_memAlloc = cast<Function>(
-        Harness->getOrInsertFunction("__seahorn_mem_alloc", Type::getVoidTy(TheContext),
-                                     i8PtrTy, i8PtrTy, intTy, intTy));
+    Function *m_memAlloc = cast<Function>(Harness->getOrInsertFunction(
+        "__seahorn_mem_alloc", Type::getVoidTy(TheContext), i8PtrTy, i8PtrTy,
+        intTy, intTy));
     // Hook to initialize a dsa node
     Function *m_memInit = cast<Function>(Harness->getOrInsertFunction(
-        "__seahorn_mem_init", Type::getVoidTy(TheContext), i8PtrTy, intTy, intTy));
+        "__seahorn_mem_init", Type::getVoidTy(TheContext), i8PtrTy, intTy,
+        intTy));
 
     for (auto &kv : DsaAllocMap) {
       unsigned id = kv.first;
@@ -363,6 +374,6 @@ std::unique_ptr<Module> createCexHarness(BmcTraceWrapper &trace,
     Builder.CreateRetVoid();
   } // end AllocateMem
 
-    return (Harness);
-  }
+  return (Harness);
+}
 } // namespace seahorn

@@ -1,4 +1,5 @@
 #include "seahorn/MemSimulator.hh"
+#include "seahorn/Support/SeaDebug.h"
 #include "ufo/Expr.hpp"
 #include "llvm/IR/InstVisitor.h"
 
@@ -88,7 +89,6 @@ struct MemSimVisitor : public InstVisitor<MemSimVisitor> {
       u = v;
   }
 
-
   void addPtrDiff(Expr gep, Expr base, const mpz_class &diff) {
     if (diff == 0)
       addEq(gep, base);
@@ -98,7 +98,7 @@ struct MemSimVisitor : public InstVisitor<MemSimVisitor> {
       add(mk<EQ>(mk<BSUB>(gep, base), ptrVal(diff)));
   }
 
-  Expr ptrVal(const mpz_class &v) {return bv::bvnum(v, ptrSz(), efac());}
+  Expr ptrVal(const mpz_class &v) { return bv::bvnum(v, ptrSz(), efac()); }
   Expr symb(const Value &V) { return m_sim.trace().symb(m_loc, V); }
   Expr oidE(Expr e) { return bind::fapp(m_oidFn, e); }
   Expr startE(Expr e) { return bind::fapp(m_oidStartFn, oidE(e)); }

@@ -10,12 +10,12 @@
 #include "seahorn/Support/CFG.hh"
 #include "seahorn/Transforms/Instrumentation/ShadowMemDsa.hh"
 
-#include "ufo/ufo_iterators.hpp"
-
+#include "ufo/ExprLlvm.hpp"
+#include "seahorn/Support/IteratorExtras.hh"
+#include "seahorn/Support/SeaDebug.h"
 
 using namespace seahorn;
 using namespace llvm;
-using namespace ufo;
 
 namespace
 {
@@ -587,7 +587,7 @@ namespace seahorn
   {
     // -- if BB belongs to a function that cannot fail, errorFlag is always false
     if (m_canFail && !m_canFail->canFail (BB.getParent ())) return falseE;
-    return this->OpSem::errorFlag (BB);
+    return this->LegacyOperationalSemantics::errorFlag (BB);
   }
 
   void ClpOpSem::exec (SymStore &s, const BasicBlock &bb, ExprVector &side,
@@ -617,7 +617,7 @@ namespace seahorn
     Value& base = *gep.getPointerOperand ();
     Expr res = lookup (s, base);
     if (!res) return res;
-    
+
     for(auto GTI = gep_type_begin(&gep), GTE = gep_type_end(&gep); GTI != GTE; ++GTI) {
       if (const StructType *st = GTI.getStructTypeOrNull()) {
 	if (const ConstantInt *ci = dyn_cast<const ConstantInt>(GTI.getOperand())) {
@@ -704,7 +704,7 @@ namespace seahorn
     return Expr(0);
   }
 
-  const Value &ClpOpSem::conc (Expr v)
+  const Value &ClpOpSem::conc (Expr v) const
   {
     assert (isOpX<FAPP> (v));
     // name of the app
@@ -716,7 +716,7 @@ namespace seahorn
   }
 
 
-  bool ClpOpSem::isTracked (const Value &v)
+  bool ClpOpSem::isTracked (const Value &v) const
   {
     const Value* scalar;
 

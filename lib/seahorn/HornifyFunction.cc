@@ -2,10 +2,11 @@
 #include "seahorn/LiveSymbols.hh"
 #include "seahorn/Support/CFG.hh"
 #include "seahorn/Support/ExprSeahorn.hh"
-#include "ufo/Stats.hh"
+#include "seahorn/Support/Stats.hh"
 
 #include "llvm/Support/CommandLine.h"
 #include "llvm/Support/FileSystem.h"
+#include "seahorn/Support/SeaDebug.h"
 
 static llvm::cl::opt<bool>
     ReduceFalse("horn-reduce-constraints",
@@ -21,7 +22,6 @@ static llvm::cl::opt<bool>
                llvm::cl::desc("Use weak solver for reducing constraints"),
                llvm::cl::init(true));
 
-#include "ufo/Stats.hh"
 namespace seahorn {
 
 void HornifyFunction::extractFunctionInfo(const BasicBlock &BB) {
@@ -121,7 +121,7 @@ void HornifyFunction::extractFunctionInfo(const BasicBlock &BB) {
   Expr trueE = mk<TRUE>(m_efac);
   Expr falseE = mk<FALSE>(m_efac);
   ExprVector postArgs{trueE, trueE, trueE};
-  fi.evalArgs(m_sem, s, std::back_inserter(postArgs));
+  evalArgs(fi, m_sem, s, std::back_inserter(postArgs));
   // -- use a mutable gate to put everything together
   expr::filter(mknary<OUT_G>(postArgs), bind::IsConst(),
                std::inserter(allVars, allVars.begin()));
@@ -270,7 +270,7 @@ void SmallHornifyFunction::runOnFunction(Function &F) {
     Expr falseE = mk<FALSE>(m_efac);
     ExprVector postArgs{mk<TRUE>(m_efac), falseE, falseE};
     const FunctionInfo &fi = m_sem.getFunctionInfo(F);
-    fi.evalArgs(m_sem, s, std::back_inserter(postArgs));
+    evalArgs(fi, m_sem, s, std::back_inserter(postArgs));
     // -- use a mutable gate to put everything together
     expr::filter(mknary<OUT_G>(postArgs), bind::IsConst(),
                  std::inserter(allVars, allVars.begin()));
@@ -337,7 +337,7 @@ void LargeHornifyFunction::runOnFunction(Function &F) {
     params.set(":smt.arith.ignore_int", true);
   smt.set(params);
 
-  VCGen lsem(m_sem);
+  VCGen vcgen(m_sem);
 
   DenseSet<const BasicBlock *> reached;
   reached.insert(&cpg.begin()->bb());
@@ -362,7 +362,7 @@ void LargeHornifyFunction::runOnFunction(Function &F) {
 
       ExprVector side;
       side.push_back(boolop::lneg((s.read(m_sem.errorFlag(cp.bb())))));
-      lsem.execCpEdg(s, *edge, side);
+      vcgen.genVcForCpEdgeLegacy(s, *edge, side);
       Expr tau = mknary<AND>(mk<TRUE>(m_efac), side);
       expr::filter(tau, bind::IsConst(),
                    std::inserter(allVars, allVars.begin()));
@@ -377,8 +377,8 @@ void LargeHornifyFunction::runOnFunction(Function &F) {
       // allVars.insert (args.begin (), args.end ());
 
       if (ReduceFalse) {
-        ufo::ScopedStats __st__("HornifyFunction.reduce-false");
-        ufo::Stats::count("HornifyFunction.edge");
+        ScopedStats __st__("HornifyFunction.reduce-false");
+        Stats::count("HornifyFunction.edge");
         bind::IsConst isConst;
         for (auto &e : side) {
           // ignore uninterpreted functions, makes the problem easier to solve
@@ -409,7 +409,7 @@ void LargeHornifyFunction::runOnFunction(Function &F) {
                                << edge->target().bb().getName() << "\n";);
 
         if (!res) {
-          ufo::Stats::count("HornifyFunction.edge.false");
+          Stats::count("HornifyFunction.edge.false");
           continue; /* skip a rule with an inconsistent body */
         }
       }
@@ -492,7 +492,7 @@ void LargeHornifyFunction::runOnFunction(Function &F) {
     Expr falseE = mk<FALSE>(m_efac);
     ExprVector postArgs{mk<TRUE>(m_efac), falseE, falseE};
     const FunctionInfo &fi = m_sem.getFunctionInfo(F);
-    fi.evalArgs(m_sem, s, std::back_inserter(postArgs));
+    evalArgs(fi, m_sem, s, std::back_inserter(postArgs));
     // -- use a mutable gate to put everything together
     expr::filter(mknary<OUT_G>(postArgs), bind::IsConst(),
                  std::inserter(allVars, allVars.begin()));

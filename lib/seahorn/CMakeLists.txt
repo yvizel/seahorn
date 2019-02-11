@@ -2,7 +2,6 @@ add_llvm_library (seahorn.LIB
   LoadCrab.cc
   LiveSymbols.cc
   SymStore.cc
-  OpSem.cc
   UfoOpSem.cc
   ClpOpSem.cc
   HornifyModule.cc
@@ -25,10 +24,13 @@ add_llvm_library (seahorn.LIB
   Bmc.cc    
   BmcPass.cc
   BvOpSem.cc
-  BvInt.cc
+  # BvInt.cc
   MemSimulator.cc
   ZOption.cc
   BoogieWriter.cc
+  BvOpSem2.cc
+  BvOpSem2Mem.cc
+  VCGen.cc
   )
 
 if (HAVE_CRAB_LLVM)

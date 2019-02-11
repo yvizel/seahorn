@@ -1,6 +1,6 @@
 #include "seahorn/Transforms/Instrumentation/BufferBoundsCheck.hh"
 #include "seahorn/Analysis/CanAccessMemory.hh"
-#include "ufo/Passes/NameValues.hpp"
+#include "seahorn/Transforms/Utils/NameValues.hh"
 
 #include "llvm/ADT/SmallSet.h"
 #include "llvm/ADT/SmallVector.h"
@@ -14,7 +14,6 @@
 #include "llvm/Transforms/Utils/BasicBlockUtils.h"
 #include "llvm/Transforms/Utils/Cloning.h"
 #include "llvm/Transforms/Utils/Local.h"
-#include "llvm/Transforms/Utils/UnifyFunctionExitNodes.h"
 
 #include "boost/format.hpp"
 
@@ -92,13 +91,13 @@ static llvm::cl::opt<bool> InstrumentMemIntrinsics(
 static llvm::cl::list<std::string> InstrumentOnlyType(
     "abc-instrument-only-type",
     llvm::cl::desc("Only instrument pointers of this user-defined type"),
-    llvm::cl::ZeroOrMore);
+    llvm::cl::ZeroOrMore, llvm::cl::CommaSeparated);
 // Consider only user-defined types
 static llvm::cl::list<std::string> InstrumentExceptType(
     "abc-instrument-except-type",
     llvm::cl::desc(
         "Instrument all pointers except those from this user-defined type"),
-    llvm::cl::ZeroOrMore);
+    llvm::cl::ZeroOrMore, llvm::cl::CommaSeparated);
 
 namespace seahorn {
 
@@ -110,13 +109,13 @@ protected:
   DsaWrapper(llvm::Pass *abc) : m_abc(abc) {}
 
 public:
+  virtual ~DsaWrapper() = default;
   /* tag only for debugging purposes */
   virtual bool shouldBeTrackedPtr(const llvm::Value &ptr,
                                   const llvm::Function &fn, int tag) = 0;
   virtual unsigned int getAllocSiteId(const llvm::Value &ptr) = 0;
   virtual const llvm::Value *getAllocValue(unsigned int id) = 0;
   virtual const char *getDsaName() const = 0;
-  virtual ~DsaWrapper() {}
 };
 
 // A wrapper for seahorn dsa
@@ -1468,7 +1467,6 @@ void Local::getAnalysisUsage(llvm::AnalysisUsage &AU) const {
   AU.addRequired<seahorn::DSAInfo>();     // run llvm dsa
   AU.addRequired<sea_dsa::DsaInfoPass>(); // run seahorn dsa
   AU.addRequired<llvm::TargetLibraryInfoWrapperPass>();
-  AU.addRequired<llvm::UnifyFunctionExitNodes>();
   AU.addRequired<CanAccessMemory>();
 }
 
@@ -2808,10 +2806,9 @@ void Global::getAnalysisUsage(llvm::AnalysisUsage &AU) const {
   AU.addRequired<seahorn::DSAInfo>();     // run llvm dsa
   AU.addRequired<sea_dsa::DsaInfoPass>(); // run seahorn dsa
   AU.addRequired<llvm::TargetLibraryInfoWrapperPass>();
-  AU.addRequired<llvm::UnifyFunctionExitNodes>();
   AU.addRequired<llvm::CallGraphWrapperPass>();
   // for debugging
-  // AU.addRequired<ufo::NameValues> ();
+  // AU.addRequired<seahorn::NameValues> ();
 }
 
 char Global::ID = 0;
@@ -3228,7 +3225,6 @@ void GlobalCCallbacks::getAnalysisUsage(llvm::AnalysisUsage &AU) const {
   AU.addRequired<seahorn::DSAInfo>();     // run llvm dsa
   AU.addRequired<sea_dsa::DsaInfoPass>(); // run seahorn dsa
   AU.addRequired<llvm::TargetLibraryInfoWrapperPass>();
-  AU.addRequired<llvm::UnifyFunctionExitNodes>();
   AU.addRequired<llvm::CallGraphWrapperPass>();
 }
 

@@ -1,56 +1,36 @@
-#ifndef __STATIC_TAINT__HH__
-#define __STATIC_TAINT__HH__
+#pragma once 
 
-#include "llvm/Pass.h"
-#include "llvm/IR/Module.h"
-#include "llvm/IR/IRBuilder.h"
+#include "llvm/Analysis/CallGraph.h"
 #include "llvm/IR/DataLayout.h"
 #include "llvm/IR/Dominators.h"
-#include "llvm/Analysis/CallGraph.h"
+#include "llvm/IR/IRBuilder.h"
+#include "llvm/IR/Module.h"
+#include "llvm/Pass.h"
 #include "llvm/Transforms/Utils/BasicBlockUtils.h"
+#include "llvm/ADT/DenseSet.h"
 
-#include <map>
-#include <vector>
-#include <set>
+namespace seahorn {
 
-namespace seahorn
-{
-  using namespace llvm;
-  
-  class StaticTaint : public llvm::ModulePass
-  {
-	class Taint {
-	  Value * m_value;
-	  int size;
-	};
+class StaticTaint : public llvm::ModulePass {
+  llvm::DenseSet<llvm::Value*> m_taint;
 
-    std::set<Value*> m_taint;
-    DominatorTreeBase<BasicBlock,true> m_dm;
+  llvm::DominatorTreeBase<llvm::BasicBlock, true> m_dm;
 
-    void propagateTaint(Instruction *I);
-    void taintBB(BasicBlock &BB);
-    void collectCOI(Instruction *src, std::set<Value*> & coi);
+  void taintBB(llvm::BasicBlock &BB);
 
-  public:
+public:
+  static char ID;
 
-    static char ID;
+  StaticTaint(bool dump = false) : llvm::ModulePass(ID), m_dm() {}
 
-    StaticTaint (bool dump = false) :
-    	llvm::ModulePass (ID),
-		m_dm()
-    { }
-    
-    bool isTainted(Value *v) { return m_taint.find(v) != m_taint.end(); }
+  bool isTainted(llvm::Value *v) { return m_taint.find(v) != m_taint.end(); }
 
-    virtual bool runOnModule (llvm::Module &M);
-    virtual void runOnFunction (Function &F);
-    virtual bool runOnBasicBlock(BasicBlock &B);
+  virtual bool runOnModule(llvm::Module &M) override;
+  void runOnFunction(llvm::Function &F);
+  bool runOnBasicBlock(llvm::BasicBlock &B);
 
-    virtual void getAnalysisUsage (llvm::AnalysisUsage &AU) const;
-    virtual StringRef getPassName () const {return "StaticTaint";}
-    
-  };
-
+  void getAnalysisUsage(llvm::AnalysisUsage &AU) const override;
+  llvm::StringRef getPassName() const override { return "StaticTaint"; }
+};
 }
 
-#endif //__STATIC_TAINT__HH__

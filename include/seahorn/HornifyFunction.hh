@@ -28,14 +28,14 @@ namespace seahorn
 {
   using namespace expr;
   using namespace llvm;
-  using namespace ufo;
+  
 
   class HornifyFunction
   {
   protected:
     HornifyModule &m_parent;
 
-    OpSem &m_sem;
+    LegacyOperationalSemantics &m_sem;
     HornClauseDB &m_db;
     EZ3 &m_zctx;
     ExprFactory &m_efac;

@@ -3,7 +3,7 @@
 
 #include "llvm/Pass.h"
 #include "llvm/IR/DataLayout.h"
-#include "seahorn/OpSem.hh"
+#include "seahorn/LegacyOperationalSemantics.hh"
 #include "seahorn/Analysis/CanFail.hh"
 
 namespace llvm {
@@ -19,7 +19,7 @@ namespace seahorn
      Very imprecise/inaccurate. Only interesting for comparing with
      CLP-based analysis tools.
   */
-  class ClpOpSem : public OpSem
+  class ClpOpSem : public LegacyOperationalSemantics
   {
     Pass &m_pass;
     TrackLevel m_trackLvl;
@@ -33,7 +33,7 @@ namespace seahorn
   public:
     ClpOpSem (ExprFactory &efac, Pass &pass, const DataLayout &dl,
 		     TrackLevel trackLvl = MEM) :
-      OpSem (efac), m_pass (pass), m_trackLvl (trackLvl), m_td(&dl)
+      LegacyOperationalSemantics (efac), m_pass (pass), m_trackLvl (trackLvl), m_td(&dl)
     {
       m_canFail = pass.getAnalysisIfAvailable<CanFail> ();
       zero = mkTerm<mpz_class> (0, m_efac);
@@ -41,7 +41,7 @@ namespace seahorn
     }
 
     ClpOpSem (const ClpOpSem& o) :
-      OpSem (o), m_pass (o.m_pass), m_trackLvl (o.m_trackLvl),
+      LegacyOperationalSemantics (o), m_pass (o.m_pass), m_trackLvl (o.m_trackLvl),
       m_td (o.m_td), m_canFail (o.m_canFail) {}
 
     Expr errorFlag (const BasicBlock &BB) override;
@@ -64,8 +64,8 @@ namespace seahorn
                          ExprVector &side, Expr act);
 
     virtual Expr symb (const Value &v);
-    virtual const Value &conc (Expr v);
-    virtual bool isTracked (const Value &v);
+    virtual const Value &conc (Expr v) const;
+    virtual bool isTracked (const Value &v) const;
     virtual Expr lookup (SymStore &s, const Value &v);
     Expr ptrArith (SymStore &s, llvm::GetElementPtrInst& gep);
     unsigned storageSize (const llvm::Type *t);

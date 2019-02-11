@@ -2,6 +2,7 @@
 #define __SHADOW_MEM_DSA__HH__
 
 #include "llvm/Pass.h"
+#include "llvm/ADT/DenseSet.h"
 #include "llvm/IR/Module.h"
 #include "llvm/IR/CallSite.h"
 #include "llvm/IR/Constants.h"
@@ -164,13 +165,18 @@ namespace seahorn
     {
        
       // work list
-      std::queue<const Value*> wl;
+      std::queue<const Value *> wl;
+      llvm::DenseSet<const Value *> visited;
        
       wl.push (&V);
       while (!wl.empty ())
       {
         const Value *val = wl.front ();
         wl.pop ();
+
+        if (visited.count(val) > 0)
+          continue;
+        visited.insert(val);
          
         if (const CallInst *ci = dyn_cast<const CallInst> (val))
         {
@@ -182,11 +188,19 @@ namespace seahorn
           }
            
           return false;
-        }   
+        }
         else if (const PHINode *phi = dyn_cast<const PHINode> (val))
         {
           for (unsigned i = 0; i < phi->getNumIncomingValues (); ++i)
             wl.push (phi->getIncomingValue (i));
+        }
+        else if (const SelectInst *gamma = dyn_cast<const SelectInst> (val))
+        {
+          if (gamma->getName().startswith("seahorn.gsa")) {
+            wl.push (gamma->getTrueValue());
+            wl.push (gamma->getFalseValue());
+          }
+          else return false;
         }
         else return false;
       }

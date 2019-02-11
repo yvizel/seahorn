@@ -96,12 +96,13 @@ class Clang(sea.LimitedCmd):
 
         if not all (_bc_or_ll_file (f) for f  in args.in_files):
             argv = ['-c', '-emit-llvm', '-D__SEAHORN__']
-            
-            # New for clang 5.0: to avoid add optnone if -O0
-            # Otherwise, seaopt cannot optimize.
-            argv.append('-Xclang')
-            argv.append('-disable-O0-optnone')
-            
+
+            # in clang-5.0 to ensure that compilation is done without
+            # optimizations and also does not mark produced bitcode
+            # to not be optimized or not be inlined, compile
+            # with optimizations (-O1) and ask clang to not apply them
+            argv.extend (['-O1', '-Xclang', '-disable-llvm-optzns'])
+
             if not self.plusplus:
                 ## this is an invalid argument with C++/ObjC++ with clang 3.8
                 argv.append('-fgnu89-inline')
@@ -678,7 +679,8 @@ class SimpleMemoryChecks(sea.LimitedCmd):
                          help='Check id to instrement', default=0)
         ap.add_argument ('--smc-instrument-alloc', type=int, dest='smc_instrument_alloc',
                          help='Allocation site id to instrument', default=0)
-
+        ap.add_argument ('--sea-dsa-type-aware', default=False, action='store_true',
+                         dest='smc_type_aware', help='Use type-aware SeaDsa')
 
         add_in_out_args (ap)
         _add_S_arg (ap)
@@ -694,6 +696,7 @@ class SimpleMemoryChecks(sea.LimitedCmd):
         if args.llvm_asm: argv.append ('-S')
 
         argv.append('--smc')
+        argv.append('--sea-dsa-type-aware={t}'.format(t=args.smc_type_aware))
 
         if args.print_smc_stats:
             argv.append('--print-smc-stats')
@@ -1404,6 +1407,8 @@ class InspectBitcode(sea.LimitedCmd):
                          dest='mem_viewer', help='View memory graph of all functions to dot format')
         ap.add_argument ('--mem-stats', default=False, action='store_true',
                          dest='mem_stats', help='Print stats about all memory graphs')
+        ap.add_argument ('--cha', default=False, action='store_true',
+                         dest='cha', help='Print results of the Class Hierarchy Analysis (for C++)')
         return ap
 
     def run (self, args, extra):
@@ -1424,7 +1429,8 @@ class InspectBitcode(sea.LimitedCmd):
         if args.mem_dot or args.mem_viewer:
             if args.dot_outdir is not "":
                 argv.extend(['-sea-dsa-dot-outdir={0}'.format(args.dot_outdir)])
-
+        if args.cha: argv.extend (['-cha'])
+        
         dsa = get_sea_horn_dsa (extra)
         if dsa is not None:
             ## we select the sea-dsa variant
@@ -1568,6 +1574,8 @@ LfeClp= sea.SeqCmd ('lfe-clp', 'alias for lfe|horn-clp', [LegacyFrontEnd(), Seah
 BndSmt = sea.SeqCmd ('bnd-smt', 'alias for fe|unroll|cut-loops|ms|opt|horn',
                      FrontEnd.cmds + [Unroll(), CutLoops(), MixedSem (),
                                       Seaopt(), Seahorn()])
+BndFrontEnd = sea.SeqCmd('bnd-fe', 'Bounded front-end: alias for fe|unroll|cut-loops|opt',
+                         FrontEnd.cmds + [Unroll(), CutLoops(), Seaopt()])
 Bpf = sea.SeqCmd ('bpf', 'alias for fe|unroll|cut-loops|opt|horn --solve',
                   FrontEnd.cmds + [Unroll(), CutLoops(), Seaopt(), Seahorn(solve=True)])
 Crab = sea.SeqCmd ('crab', 'alias for fe|crab-inst', FrontEnd.cmds + [CrabInst()])

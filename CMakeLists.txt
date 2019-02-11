@@ -15,7 +15,6 @@ if (NOT PACKAGE_VERSION)
   set (SeaHorn_VERSION_INFO ${PACKAGE_VERSION})
 endif()
 
-
 if (CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR )
   message (FATAL_ERROR
     "In-source builds are not allowed. Please clean your source tree and try again.")
@@ -27,9 +26,27 @@ if(NOT CMAKE_BUILD_TYPE)
     "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel." FORCE)
 endif()
 
+option(SEA_ENABLE_LLD "Use lld as C and C++ linker." OFF)
+
+option(SEA_ENABLE_ASSERTIONS "Enable assertions." OFF)
+
+option(USE_SEAHORN_EXPR "User SeaHorn version of Expr library" OFF)
+if(${USE_SEAHORN_EXPR})
+  add_definitions(-DUSE_SEAHORN_EXPR=1)
+endif()
+
 # Add path for custom modules
 list (APPEND CMAKE_MODULE_PATH
   "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+
+# Getting git SHA-1
+list(APPEND CMAKE_MODULE_PATH 
+  "${CMAKE_CURRENT_SOURCE_DIR}/cmake/getGitRevisionModule/")
+
+include(GetGitRevisionDescription)
+get_git_head_revision(GIT_REFSPEC GIT_SHA1)
+
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/lib/Support/GitSHA1.cc.in" "${CMAKE_CURRENT_SOURCE_DIR}/lib/Support/GitSHA1.cc" @ONLY)
 
 find_package (Git)
 if (GIT_FOUND)
@@ -45,7 +62,7 @@ if (GIT_FOUND)
   add_custom_target (llvm-dsa-git
     ${GIT_EXECUTABLE} clone -b llvm-5.0 ${LLVM_DSA_REPO} ${CMAKE_SOURCE_DIR}/llvm-dsa)
   add_custom_target (sea-dsa-git
-    ${GIT_EXECUTABLE} clone -b llvm-5.0 ${SEA_DSA_REPO} ${CMAKE_SOURCE_DIR}/sea-dsa)  
+    ${GIT_EXECUTABLE} clone -b llvm-5.0 ${SEA_DSA_REPO} ${CMAKE_SOURCE_DIR}/sea-dsa)
   add_custom_target (seahorn-llvm-git
     ${GIT_EXECUTABLE} clone -b llvm-5.0 ${SEAHORN_LLVM_REPO} ${CMAKE_SOURCE_DIR}/llvm-seahorn)
   add_custom_target (crab-llvm-git
@@ -103,7 +120,9 @@ ExternalProject_Add(z3
   GIT_TAG ${Z3_TAG}
   INSTALL_DIR ${CMAKE_BINARY_DIR}/run
   CMAKE_ARGS
-  -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER} -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+  -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
+  -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+  -DCMAKE_LINKER=${CMAKE_LINKER}
   -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
   -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
   -DBUILD_LIBZ3_SHARED:BOOL=FALSE  
@@ -118,7 +137,6 @@ if (NOT Z3_FOUND)
   ExternalProject_Get_Property (z3 INSTALL_DIR)
   set(Z3_ROOT ${INSTALL_DIR} CACHE PATH "Forced location of Z3" FORCE)
   message(WARNING "No Z3 found. Run \n\tcmake --build . && cmake ${CMAKE_SOURCE_DIR}")
-  return()
 else()
   set_target_properties(z3 PROPERTIES EXCLUDE_FROM_ALL ON)
   include_directories(${Z3_INCLUDE_DIR})
@@ -127,21 +145,27 @@ else()
   install (PROGRAMS ${Z3_EXECUTABLE} DESTINATION bin)
 endif()
 
+option(SEAHORN_REQUIRES_RTTI "Enable RTTI support" ON)
+option(SEAHORN_REQUIRES_EH "Enable Exceptions" ON)
+ 
 ExternalProject_Add (llvm
   SVN_REPOSITORY http://llvm.org/svn/llvm-project/llvm/tags/RELEASE_500/final/  
   SOURCE_DIR ${CMAKE_SOURCE_DIR}/ext/llvm
   INSTALL_DIR ${CMAKE_BINARY_DIR}/run
   CMAKE_ARGS
-  -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER} -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+  -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
+  -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
   -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
   -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
   -DLLVM_TARGETS_TO_BUILD:STRING=X86 -DWITH_POLY:BOOL=OFF
   -DLLVM_ENABLE_PEDANTIC=OFF
-  -DLLVM_ENABLE_PIC=ON -DLLVM_REQUIRES_RTTI:BOOL=TRUE
+  -DLLVM_ENABLE_LLD=${SEA_ENABLE_LLD}
+  -DLLVM_ENABLE_ASSERTIONS=${SEA_ENABLE_ASSERTIONS}
+  -DLLVM_ENABLE_PIC=ON -DLLVM_REQUIRES_RTTI:BOOL=${SEAHORN_REQUIRES_RTTI}
   -DLLVM_INCLUDE_TESTS:BOOL=OFF
   -DLLVM_INCLUDE_GO_TESTS=OFF
   -DLLVM_INCLUDE_EXAMPLES=OFF
-  -DLLVM_INCLUDE_DOCS=OFF    
+  -DLLVM_INCLUDE_DOCS=OFF
   -DLLVM_BINDINGS_LIST=" "
   TEST_AFTER_INSTALL 1
   TEST_COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_LIST_FILE}
@@ -156,7 +180,6 @@ if (NOT LLVM_FOUND)
   set (LLVM_DIR ${LLVM_ROOT}/lib/cmake/llvm CACHE PATH
     "Forced location of LLVM cmake config" FORCE)
   message (WARNING "No llvm found. Run \n\tcmake --build . && cmake ${CMAKE_SOURCE_DIR}")
-  return()
 else()
   set_target_properties(llvm PROPERTIES EXCLUDE_FROM_ALL ON)
 
@@ -173,13 +196,24 @@ else()
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${LLVM_CXXFLAGS}")
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${LLVM_LDFLAGS}")
 
-  set(LLVM_REQUIRES_RTTI TRUE)
-  set(LLVM_REQUIRES_EH TRUE)
+  set(LLVM_REQUIRES_RTTI ${SEAHORN_REQUIRES_RTTI})
+  set(LLVM_REQUIRES_EH ${SEAHORN_REQUIRES_EH})
 
   include_directories(${LLVM_INCLUDE_DIRS})
   link_directories(${LLVM_LIBRARY_DIRS})
   add_definitions(${LLVM_DEFINITIONS})
 
+endif()
+
+if (NOT Z3_FOUND)
+  message(WARNING "No suitable version of Z3 found.\
+                   Follow instructions above.")
+  return()
+endif()
+if(NOT LLVM_FOUND)
+  message(WARNING "No suitable version of LLVM found.\
+                   Follow instructions above.")
+  return()
 endif()
 
 set (PACKAGE_NAME SeaHorn)
@@ -344,15 +378,6 @@ else()
   message (WARNING "No LLVM-SEAHORN found in ${CMAKE_SOURCE_DIR}/llvm-seahorn. Run\n\tcmake --build . --target extra && cmake ${CMAKE_SOURCE_DIR}")
 endif()
 
-if (IS_DIRECTORY ${CMAKE_SOURCE_DIR}/crab-llvm AND
-    EXISTS ${CMAKE_SOURCE_DIR}/crab-llvm/CMakeLists.txt)
-  add_subdirectory(${CMAKE_SOURCE_DIR}/crab-llvm)
-  set (HAVE_CRAB_LLVM TRUE)
-  include_directories (${CRABLLVM_INCLUDE_DIRS})  
-else()
-  message (WARNING "No CRAB-LLVM found in ${CMAKE_SOURCE_DIR}/crab-llvm. Run\n\tcmake --build . --target extra && cmake ${CMAKE_SOURCE_DIR}")
-endif()
-
 if (IS_DIRECTORY ${CMAKE_SOURCE_DIR}/sea-dsa AND
     EXISTS ${CMAKE_SOURCE_DIR}/sea-dsa/src/DsaAnalysis.cc)
   include_directories (BEFORE sea-dsa/include)
@@ -361,6 +386,15 @@ if (IS_DIRECTORY ${CMAKE_SOURCE_DIR}/sea-dsa AND
 else()
   message (WARNING "No SEA DSA found in ${CMAKE_SOURCE_DIR}/sea-dsa. Run\n\tcmake --build . --target extra && cmake ${CMAKE_SOURCE_DIR}")
   return()
+endif()
+
+if (IS_DIRECTORY ${CMAKE_SOURCE_DIR}/crab-llvm AND
+    EXISTS ${CMAKE_SOURCE_DIR}/crab-llvm/CMakeLists.txt)
+  add_subdirectory(${CMAKE_SOURCE_DIR}/crab-llvm)
+  set (HAVE_CRAB_LLVM TRUE)
+  include_directories (BEFORE ${CRABLLVM_INCLUDE_DIRS})  
+else()
+  message (WARNING "No CRAB-LLVM found in ${CMAKE_SOURCE_DIR}/crab-llvm. Run\n\tcmake --build . --target extra && cmake ${CMAKE_SOURCE_DIR}")
 endif()
 
 ### add our include directories to the front, overriding directories

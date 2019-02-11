@@ -8,7 +8,7 @@
 **/
 
 #include "seahorn/config.h"
-#include "ufo/Passes/NameValues.hpp"
+#include "seahorn/Transforms/Utils/NameValues.hh"
 #include "seahorn/Support/CFG.hh"
 
 #ifdef HAVE_CRAB_LLVM
@@ -27,7 +27,6 @@
 #include "llvm/Support/Debug.h"
 #include "llvm/Support/raw_ostream.h"
 #include "llvm/Support/ErrorHandling.h"
-#include "llvm/Transforms/Utils/UnifyFunctionExitNodes.h"
 
 #include "boost/unordered_map.hpp"
 #include "boost/unordered_set.hpp"
@@ -1013,8 +1012,7 @@ namespace seahorn
       AU.setPreservesAll();
       
       AU.addRequired<TargetLibraryInfoWrapperPass>();
-      AU.addRequired<UnifyFunctionExitNodes>();
-      AU.addRequired<ufo::NameValues>();
+      AU.addRequired<seahorn::NameValues>();
       
       #ifdef HAVE_CRAB_LLVM
       AU.addRequired<seahorn::TopologicalOrder>();      

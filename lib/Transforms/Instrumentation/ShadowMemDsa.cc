@@ -8,7 +8,7 @@
 #include "llvm/Transforms/Utils/BasicBlockUtils.h"
 #include "llvm/Transforms/Utils/Local.h"
 
-#include "avy/AvyDebug.h"
+#include "seahorn/Support/SeaDebug.h"
 #include "boost/range.hpp"
 #include "boost/range/algorithm/sort.hpp"
 #include "boost/range/algorithm/set_algorithm.hpp"
@@ -456,6 +456,7 @@ namespace seahorn
     // AU.addRequiredTransitive<llvm::EQTDDataStructures>();
     AU.addRequiredTransitive<llvm::SteensgaardDataStructures> ();
     AU.addRequired<llvm::UnifyFunctionExitNodes> ();
+    AU.addPreserved<llvm::UnifyFunctionExitNodes>();
   } 
     
   //// XXX: Defined already in ShadowMemSeaDsa

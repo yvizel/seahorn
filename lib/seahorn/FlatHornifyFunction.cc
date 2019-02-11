@@ -3,6 +3,8 @@
 #include "seahorn/Support/CFG.hh"
 #include "seahorn/Support/ExprSeahorn.hh"
 
+#include "seahorn/Support/SeaDebug.h"
+
 namespace seahorn
 {
 
@@ -82,11 +84,13 @@ namespace seahorn
         s.reset ();
         args.clear ();
 
-        // create step(pc,x1,...,xn) for pre
+    // create step(pc,x1,...,xn) for pre
         s.write (pc, mkTerm<mpz_class> (bbOrder [bb], m_efac));
         args.push_back (s.read (pc));
         for (const Expr &v : glive) args.push_back (s.read (v));
         allVars.insert (++args.begin (), args.end ());
+        assert(std::all_of(allVars.begin(), allVars.end(), bind::IsConst()));
+
         Expr pre = bind::fapp (step, args);
 
         // create tau
@@ -94,18 +98,32 @@ namespace seahorn
         side.push_back (boolop::lneg ((s.read (m_sem.errorFlag (BB)))));
         m_sem.execEdg (s, BB, *dst, side);
 
-        Expr tau = mknary<AND> (mk<TRUE> (m_efac), side);
-
-        expr::filter (tau, bind::IsConst(),
-                      std::inserter (allVars, allVars.begin ()));
 
         // create step(pc,x1,...,xn) for post
         args.clear ();
         s.write (pc, mkTerm<mpz_class> (bbOrder [dst], m_efac));
         args.push_back (s.read (pc));
-        for (const Expr &v : glive) args.push_back (s.read (v));
+        for (const Expr &v : glive) {
+          Expr argV = s.read(v);
+          // -- if arg is an expression, create a new symbolic constant
+          // -- to represent it
+          if (bind::IsConst()(argV)) {
+            args.push_back (argV);
+          } else {
+            // -- create symbolic constant u and make it equal argument value
+            Expr u = s.havoc(v);
+            args.push_back(u);
+            side.push_back(mk<EQ>(u, argV));
+          }
+        }
         allVars.insert (++args.begin (), args.end ());
+        assert(std::all_of(allVars.begin(), allVars.end(), bind::IsConst()));
         Expr post = bind::fapp (step, args);
+
+
+        Expr tau = mknary<AND> (mk<TRUE>(m_efac), side);
+        expr::filter (tau, bind::IsConst(),
+                      std::inserter (allVars, allVars.begin ()));
 
         LOG("seahorn", errs() << "Adding rule : "
             << *mk<IMPL> (boolop::land (pre, tau), post) << "\n";);
@@ -182,7 +200,7 @@ namespace seahorn
       Expr falseE = mk<FALSE> (m_efac);
       ExprVector postArgs {mk<TRUE> (m_efac), falseE, falseE};
       const FunctionInfo &fi = m_sem.getFunctionInfo (F);
-      fi.evalArgs (m_sem, s, std::back_inserter (postArgs));
+      evalArgs (fi, m_sem, s, std::back_inserter (postArgs));
       std::copy_if (postArgs.begin () + 3, postArgs.end (),
                     std::inserter (allVars, allVars.begin ()),
                     bind::IsConst());
@@ -268,7 +286,7 @@ namespace seahorn
     m_db.addRule (allVars, rule);
     allVars.clear ();
 
-    VCGen lsem (m_sem);
+    VCGen vcgen(m_sem);
 
     for (const CutPoint &cp : cpg)
       {
@@ -288,7 +306,7 @@ namespace seahorn
 
           ExprVector side;
           side.push_back (boolop::lneg ((s.read (m_sem.errorFlag (cp.bb ())))));
-          lsem.execCpEdg (s, *edge, side);
+          vcgen.genVcForCpEdgeLegacy(s, *edge, side);
           Expr tau = mknary<AND> (mk<TRUE> (m_efac), side);
           expr::filter (tau, bind::IsConst(),
                         std::inserter (allVars, allVars.begin ()));
@@ -376,7 +394,7 @@ namespace seahorn
       Expr falseE = mk<FALSE> (m_efac);
       ExprVector postArgs {mk<TRUE> (m_efac), falseE, falseE};
       const FunctionInfo &fi = m_sem.getFunctionInfo (F);
-      fi.evalArgs (m_sem, s, std::back_inserter (postArgs));
+      evalArgs (fi, m_sem, s, std::back_inserter (postArgs));
       std::copy_if (postArgs.begin () + 3, postArgs.end (),
                     std::inserter (allVars, allVars.begin ()),
                     bind::IsConst());
