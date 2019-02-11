@@ -53,7 +53,13 @@ void Speculative::initSpecCount(IRBuilder<> &B, LoadInst & spec) {
   BranchInst::Create(Cont, initSpecCount);
 
   Orig->getTerminator()->eraseFromParent();
-  BranchInst::Create(initSpecCount, Cont, &spec, Orig);
+  B.SetInsertPoint(Orig);
+  LoadInst *loadSpecCount = B.CreateAlignedLoad(m_SpecCount, 4);
+  Value *initCond = B.CreateAnd(
+		  &spec,
+		  B.CreateICmpEQ(loadSpecCount, ConstantInt::get(ctx, APInt(32,0)), "spec_count_is_zero"),
+		  "spec_count_init_cond");
+  BranchInst::Create(initSpecCount, Cont, initCond, Orig);
 
 }
 
@@ -77,6 +83,8 @@ bool Speculative::insertSpeculation(IRBuilder<> &B, BranchInst &BI) {
   BasicBlock *thenBB = BI.getSuccessor(0);
   BasicBlock *elseBB = BI.getSuccessor(1);
 
+  // If any of the branches is an Error Block (meaning, an assertion)
+  // do not add speculation
   if (isErrorBB(thenBB) || isErrorBB(elseBB))
 	  return false;
 
@@ -200,29 +208,37 @@ bool Speculative::runOnFunction(Function &F) {
     assert(false);
   }
 
+  // First collect selection instructions
   std::vector<Instruction*> WorkList;
   for (inst_iterator i = inst_begin(F), e = inst_end(F); i != e; ++i) {
     if (isa<SelectInst>(&*i)) WorkList.push_back(&*i);
   }
 
+  // Select Instructions have a condition by which a value is picked.
+  // Break them down to different basic blocks.
   for (Instruction *I : WorkList)
 	  splitSelectInst(F, B, cast<SelectInst>(I));
 
+  // Collect all instructions.
+  // This work list does not include the added speculation instructions
   WorkList.clear();
   for (inst_iterator i = inst_begin(F), e = inst_end(F); i != e; ++i) {
     Instruction *I = &*i;
   	WorkList.push_back (I);
   }
 
+  // Collect all basic blocks
   std::vector<BasicBlock*> BBWorkList;
   bool changed = false;
   for (auto & B : F) {
 	  BBWorkList.push_back(&B);
   }
 
+  // Iterate through the basic blocks
   for (auto * B : BBWorkList)
 	  changed |= runOnBasicBlock(*B);
 
+  // If speculation was added, add the proper assertions
   if (changed)
 	  addAssertions(F, B, WorkList);
 
