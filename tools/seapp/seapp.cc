@@ -237,6 +237,10 @@ static llvm::cl::opt<bool>
     Speculative("speculative-exe",
                    llvm::cl::desc("Speculative execution semantics."),
                    llvm::cl::init(false));
+static llvm::cl::opt<bool>
+    StaticTaint("static-taint",
+                   llvm::cl::desc("Static taint analysis."),
+                   llvm::cl::init(false));
 
 // removes extension from filename if there is one
 std::string getFileName(const std::string &str) {
@@ -573,9 +577,12 @@ int main(int argc, char **argv) {
       pm_wrapper.add(seahorn::createRemoveUnreachableBlocksPass());
     }
 
-    if (Speculative) {
-		pass_manager.add(seahorn::createSpeculativeExe());
+    if (StaticTaint) {
+	  pm_wrapper.add(seahorn::createStaticTaintPass(true));
 	}
+    if (Speculative) {
+      pm_wrapper.add(seahorn::createSpeculativeExe());
+    }
 
     // -- EVERYTHING IS MORE EXPENSIVE AFTER INLINING
     // -- BEFORE SCHEDULING PASSES HERE, THINK WHETHER THEY BELONG BEFORE

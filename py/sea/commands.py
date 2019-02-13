@@ -312,6 +312,9 @@ class Seapp(sea.LimitedCmd):
         ap.add_argument ('--speculative-exe', help='Create speculative execution ' +
                          'semantics', default=False,
                          action='store_true', dest='speculative_exe')
+        ap.add_argument ('--static-taint', help='Run static taint ' +
+                         'analysis', default=False,
+                         action='store_true', dest='static_taint')
         ap.add_argument ('--log', dest='log', default=None,
                          metavar='STR', help='Log level')
         add_in_out_args (ap)
@@ -392,6 +395,9 @@ class Seapp(sea.LimitedCmd):
 
             if args.speculative_exe:
                 argv.append('--speculative-exe')
+
+            if args.static_taint:
+                argv.append('--static-taint')
 
             if args.kill_vaarg:
                 argv.append('--kill-vaarg=true')
