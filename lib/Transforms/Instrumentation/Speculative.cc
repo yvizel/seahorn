@@ -14,8 +14,6 @@
 
 #include "llvm/CodeGen/MachineDominators.h"
 
-#include "avy/AvyDebug.h"
-
 static llvm::cl::opt<bool> HasErrorFunc(
     "speculative-exe-has-error-function",
     llvm::cl::desc("Available verifier.error function to denote error."),
