@@ -106,6 +106,8 @@ llvm::ModulePass *createControlDependenceAnalysisPass();
 llvm::ModulePass *createGateAnalysisPass();
 llvm::Pass *createCHAPass();
 llvm::ModulePass *createDebugVerifierPass(int instanceID);
+llvm::Pass *createSpeculativeExe();
+llvm::Pass *createStaticTaintPass(bool bPrint);
 } // namespace seahorn
 
 #ifdef HAVE_LLVM_SEAHORN
