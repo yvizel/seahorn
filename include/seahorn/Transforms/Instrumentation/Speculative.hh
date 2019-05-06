@@ -49,7 +49,8 @@ namespace seahorn
     bool isErrorBB(BasicBlock *bb) {
     	Instruction *inst = bb->getFirstNonPHI();
     	if (CallInst *call = dyn_cast<CallInst>(inst)) {
-    		if (call->getCalledFunction()->getName().contains("verifier.error"))
+    		if (call->getCalledFunction() != nullptr &&
+    		    call->getCalledFunction()->getName().contains("verifier.error"))
     			return true;
     	}
     	return false;

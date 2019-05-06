@@ -45,7 +45,9 @@ void Speculative::initSpecCount(IRBuilder<> &B, LoadInst & spec) {
   B.SetInsertPoint(initSpecCount);
 
   outs() << "New BB created\n";
-  B.CreateAlignedStore(ConstantInt::get(ctx, APInt(32,1)), m_SpecCount, 4);
+  Value *nd = B.CreateCall(m_ndBoolFn, None, "spec_init");
+  nd = B.CreateSExtOrBitCast(nd, Type::getInt32Ty(ctx), "spec_cast");
+  B.CreateAlignedStore(nd, m_SpecCount, 4);
 
   outs() << "Spec Count initialized\n";
   BranchInst::Create(Cont, initSpecCount);
@@ -81,15 +83,20 @@ bool Speculative::insertSpeculation(IRBuilder<> &B, BranchInst &BI) {
   BasicBlock *thenBB = BI.getSuccessor(0);
   BasicBlock *elseBB = BI.getSuccessor(1);
 
+    outs() << "Here1...\n";
   // If any of the branches is an Error Block (meaning, an assertion)
   // do not add speculation
   if (isErrorBB(thenBB) || isErrorBB(elseBB))
 	  return false;
 
+  outs() << "Here...\n";
+
   std::string name = "spec" + std::to_string(++m_numOfSpec);
   Value *cond = BI.getCondition();
   B.SetInsertPoint(&BI);
   Value *negCond = B.CreateNot(cond, name + "__cond_neg");
+
+
 
   // Determine speculation
   AllocaInst *specVar = B.CreateAlloca(m_BoolTy, 0, name);
@@ -174,7 +181,7 @@ bool Speculative::runOnBasicBlock(BasicBlock &BB) {
   if (BI == nullptr)
     return false;
 
-  if (!BI->isConditional())
+  if (!BI->isConditional() || !m_taint.isTainted(BI->getCondition()))
     return false;
 
   if (isFenced(*BI))
@@ -296,7 +303,7 @@ void Speculative::getSpecForInst_rec(Instruction *I, std::set<Value*> & spec, st
   processed.insert(BB);
   for (BasicBlock *Pred : predecessors(BB)) {
 	if (BranchInst *BI = dyn_cast<BranchInst>(Pred->getTerminator())) {
-		if (m_bb2spec.find(BI) != m_bb2spec.end() && m_taint.isTainted(BI))
+		if (m_bb2spec.find(BI) != m_bb2spec.end())
 			spec.insert(m_bb2spec[BI]);
 		getSpecForInst_rec(BI, spec, processed);
 	}
@@ -310,12 +317,21 @@ void Speculative::addAssertions(Function &F, IRBuilder<> &B , std::vector<Instru
 	  outs() << "\n\n Looking for spec vars for "; I->print(outs()); outs() << "\n";
 	  std::set<Value*> COI;
 	  collectCOI(I, COI);
+	  bool mem = false;
+	  for (Value *v : COI) {
+	      if (isa<GetElementPtrInst>(v)) {
+	          mem = true;
+	          break;
+	      }
+	  }
+	  if (!mem) continue;
 	  std::set<Value*> S;
 	  for (Value *coi : COI) {
 		  getSpecForInst(cast<Instruction>(coi), S);
 	  }
 	  outs() << "COI size: " << COI.size() << " and SPEC size: " << S.size() << "\n";
-	  insertSpecCheck(F, B, *I, S);
+	  if (S.size() > 0)
+	      insertSpecCheck(F, B, *I, S);
 	}
   }
 }
