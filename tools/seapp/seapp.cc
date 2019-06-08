@@ -455,6 +455,14 @@ int main(int argc, char **argv) {
     };    
     pm_wrapper.add(llvm::createInternalizePass(PreserveMain));
 
+    if (StaticTaint) {
+	  pm_wrapper.add(seahorn::createStaticTaintPass(true));
+	}
+    if (Speculative) {
+      pm_wrapper.add(seahorn::createSpeculativeExe());
+    }
+
+
     if (LowerInvoke) {
       // -- lower invoke's
       pm_wrapper.add(llvm::createLowerInvokePass());
@@ -575,13 +583,6 @@ int main(int argc, char **argv) {
           llvm::createGlobalDCEPass()); // kill unused internal global
       pm_wrapper.add(seahorn::createPromoteMallocPass());
       pm_wrapper.add(seahorn::createRemoveUnreachableBlocksPass());
-    }
-
-    if (StaticTaint) {
-	  pm_wrapper.add(seahorn::createStaticTaintPass(true));
-	}
-    if (Speculative) {
-      pm_wrapper.add(seahorn::createSpeculativeExe());
     }
 
     // -- EVERYTHING IS MORE EXPENSIVE AFTER INLINING

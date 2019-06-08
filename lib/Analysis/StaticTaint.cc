@@ -70,29 +70,29 @@ bool StaticTaint::runOnBasicBlock(BasicBlock &B) {
         if (m_taint.find(ptr) != m_taint.end())
           m_taint.insert(I);
       } else if (StoreInst *SI = dyn_cast<StoreInst>(I)) {
-    	  /*Value *ptr = SI->getPointerOperand();
-    	  Value *src = SI->getOperand(0);
-    	  if (m_taint.find(src) != m_taint.end())
-    		m_taint.insert(ptr);
-    	  else
-    		m_taint.erase(ptr);*/
+        /*Value *ptr = SI->getPointerOperand();
+        Value *src = SI->getOperand(0);
+        if (m_taint.find(src) != m_taint.end())
+          m_taint.insert(ptr);
+        else
+          m_taint.erase(ptr);*/
       } else if (PHINode *PHI = dyn_cast<PHINode>(I)) {
-    	  PHINode::value_op_iterator it = PHI->value_op_begin();
-    	  PHINode::value_op_iterator end = PHI->value_op_end();
-    	  for (; it != end; it++) {
-    		Value *v = *it;
-    		if (m_taint.find(v) != m_taint.end()) {
-              LOG("taint", errs() << "Tainting..."; I->print(errs()); errs() << "\n";);
-              m_taint.insert(I);
-              break;
-    		}
-    	  }
+        PHINode::value_op_iterator it = PHI->value_op_begin();
+        PHINode::value_op_iterator end = PHI->value_op_end();
+        for (; it != end; it++) {
+          Value *v = *it;
+          if (m_taint.find(v) != m_taint.end()) {
+            LOG("taint", errs() << "Tainting..."; I->print(errs()); errs() << "\n";);
+            m_taint.insert(I);
+            break;
+          }
+        }
       } else {
         for (Use &U : I->operands()) {
           Value *v = U.get();
           if (m_taint.find(v) != m_taint.end() &&
               !v->getType()->isPointerTy()) {
-        	LOG("taint", errs() << "Tainting..."; I->print(errs()); errs() << "\n";);
+            LOG("taint", errs() << "Tainting..."; I->print(errs()); errs() << "\n";);
             m_taint.insert(I);
             break;
           }
@@ -144,7 +144,7 @@ void StaticTaint::runOnFunction(Function &F) {
         WorkList.push_back(cast<BasicBlock>(Br->getOperand(1)));
         WorkList.push_back(cast<BasicBlock>(Br->getOperand(2)));
       } else {
-    	WorkList.push_back(cast<BasicBlock>(Br->getOperand(0)));
+        WorkList.push_back(cast<BasicBlock>(Br->getOperand(0)));
       }
     }
   }
@@ -161,18 +161,17 @@ bool StaticTaint::runOnModule(llvm::Module &M) {
   }
 
   if (m_bPrintAnalysis) {
-	outs() << "\n==================== TAINT ANALYSIS ====================\n";
-	for (CallInst * CI : m_tainted) {
-	  outs() << "Tainted expression found at: ";
-	  DILocation *loc = CI->getDebugLoc().get();
-	  if (loc != nullptr) {
+    outs() << "\n==================== TAINT ANALYSIS ====================\n";
+    for (CallInst * CI : m_tainted) {
+      outs() << "Tainted expression found at: ";
+      DILocation *loc = CI->getDebugLoc().get();
+      if (loc != nullptr) {
         outs() << loc->getFilename().str() << " line: " << loc->getLine();
-	  }
-	  else outs() << "-- No Debug Info";
-	  outs() << "\n";
-	}
-
-	outs() << "\n========================== END =========================\n";
+      }
+      else outs() << "-- No Debug Info";
+      outs() << "\n";
+    }
+    outs() << "\n========================== END =========================\n";
   }
 
   return false;
