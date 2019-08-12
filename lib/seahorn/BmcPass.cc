@@ -24,6 +24,7 @@
 // prerequisite for CrabLlvm
 #include "seahorn/Support/SeaDebug.h"
 #include "seahorn/Support/SeaLog.hh"
+#include "seahorn/Support/Stats.hh"
 #include "seahorn/Transforms/Scalar/LowerCstExpr.hh"
 #ifdef HAVE_CRAB_LLVM
 #include "crab_llvm/CrabLlvm.hh"
@@ -89,20 +90,22 @@ public:
   }
 
   void getAnalysisUsage(AnalysisUsage &AU) const {
+#ifdef HAVE_CRAB_LLVM    
+    if (m_engine == path_bmc) {
+      if (XHornBmcCrab) {
+        AU.addRequired<crab_llvm::CrabLlvmPass>();
+        AU.addRequired<seahorn::LowerCstExprPass>();
+	// XXX: NameValues must be executed after LowerCstExprPass
+	// because the latter might introduce unnamed instructions.
+      }
+    }
+#endif
+        
     AU.addRequired<seahorn::CanFail>();
     AU.addRequired<seahorn::NameValues>();
     AU.addRequired<seahorn::TopologicalOrder>();
     AU.addRequired<CutPointGraph>();
     AU.addRequired<TargetLibraryInfoWrapperPass>();
-
-    if (m_engine == path_bmc) {
-#ifdef HAVE_CRAB_LLVM
-      if (XHornBmcCrab) {
-        AU.addRequired<crab_llvm::CrabLlvmPass>();
-        AU.addRequired<seahorn::LowerCstExprPass>();
-      }
-#endif
-    }
 
     if (HornGSA)
       AU.addRequired<seahorn::GateAnalysisPass>();
@@ -201,7 +204,7 @@ public:
         ERR << "Crab requested (by --horn-bmc-crab) but not available!";
       }
         bmc = llvm::make_unique<PathBasedBmcEngine>(
-            static_cast<LegacyOperationalSemantics &>(*sem), zctx, tli;
+	    static_cast<LegacyOperationalSemantics &>(*sem), zctx, tli);
 #endif
       break;
     }
@@ -218,16 +221,24 @@ public:
     LOG("bmc", errs() << "BMC from: " << src.bb().getName() << " to "
                       << dst->bb().getName() << "\n";);
 
+    Stats::resume("BMC");    
     bmc->encode();
+
+    const size_t dagSize = bmc->getFormulaDagSize();
+    Stats::sset("BMC_DAG_SIZE", std::to_string(dagSize));
+
+    const size_t circuitSize = bmc->getFormulaCircuitSize();
+    Stats::sset("BMC_CIRCUIT_SIZE", std::to_string(circuitSize));
+
     if (m_out)
       bmc->toSmtLib(*m_out);
 
     if (!m_solve) {
       LOG("bmc", errs() << "Stopping before solving\n";);
+      Stats::stop("BMC");      
       return false;
     }
 
-    Stats::resume("BMC");
     auto res = bmc->solve();
     Stats::stop("BMC");
 
@@ -240,9 +251,9 @@ public:
     outs() << "\n";
 
     if (res)
-      Stats::sset("Result", "FALSE");
+      Stats::sset("BMC_result", "FALSE");
     else if (!res)
-      Stats::sset("Result", "TRUE");
+      Stats::sset("BMC_result", "TRUE");
 
     LOG("bmc_core",
 

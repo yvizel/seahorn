@@ -123,6 +123,10 @@ public:
   /// get side condition
   const ExprVector &getFormula() const { return m_side; }
 
+  size_t getFormulaDagSize() { return expr::dagSize(m_side); }
+
+  size_t getFormulaCircuitSize() { return expr::dagSize(m_side); }
+
   /// get cut-point trace
   const SmallVector<const CutPoint *, 8> &getCps() const { return m_cps; }
 
@@ -137,6 +141,10 @@ class BmcTrace {
   BmcEngine &m_bmc;
 
   ufo::ZModel<ufo::EZ3> m_model;
+
+  // for trace specific implicant
+  ExprVector m_trace;
+  ExprMap m_bool_map;
 
   /// the trace of basic blocks
   SmallVector<const BasicBlock *, 8> m_bbs;
@@ -173,6 +181,12 @@ public:
   Expr eval(unsigned loc, const llvm::Value &inst, bool complete = false);
   Expr eval(unsigned loc, Expr v, bool complete = false);
   template <typename Out> Out &print(Out &out);
+
+  ExprVector &get_implicant_formula() { return m_trace; }
+  ExprMap &get_implicant_bools_map() { return m_bool_map; }
+
+  const ExprVector &get_implicant_formula() const { return m_trace; }
+  const ExprMap &get_implicant_bools_map() const { return m_bool_map; }
 };
 } // namespace seahorn
 
