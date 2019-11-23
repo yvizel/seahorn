@@ -49,7 +49,7 @@ private:
 llvm::ModulePass *createControlDependenceAnalysisPass();
 
 /// Exposes Control Dependence Information on the basic-block-level.
-/// A basic block X is control dependent on a bacic block Y iff:
+/// A basic block X is control dependent on a basic block Y iff:
 ///   1) X != Y, and
 ///   2) there's some control flow from Y that reaches X, Y ~> X, and at least
 ///      one successor of Y can never reach X.
@@ -67,8 +67,13 @@ public:
   ///          CFG.
   virtual llvm::ArrayRef<llvm::BasicBlock *>
   getCDBlocks(llvm::BasicBlock *BB) const = 0;
+  /// \brief Returns true if there is a CFG path from Src to Dst
   virtual bool isReachable(llvm::BasicBlock *Src,
                            llvm::BasicBlock *Dst) const = 0;
+  /// \brief Returns internal id of a basic block
+  ///
+  /// Ensures getBBTopoIdx(bb1) < getBBTopoIdx(bb2) ==> topo_lt(bb1, bb2)
+  /// where topo_lt(x, y) the topological partial order on CFG
   virtual unsigned getBBTopoIdx(llvm::BasicBlock *BB) const = 0;
 };
 

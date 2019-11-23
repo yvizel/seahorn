@@ -3,13 +3,10 @@
 
 #define SEAHORN_VERSION_INFO "${SeaHorn_VERSION_INFO}"
 
-/** Define whether crab is available */
-#cmakedefine HAVE_CRAB ${HAVE_CRAB}
-
 /** Define whether crab-llvm is available */
-#cmakedefine HAVE_CRAB_LLVM ${HAVE_CRAB_LLVM}
+#cmakedefine HAVE_CLAM ${HAVE_CLAM}
 
-/** Define whether DSA library is available */
+/** Define whether llvm-dsa library is available */
 #cmakedefine HAVE_DSA ${HAVE_DSA}
 
 /** Define whether llvm-seahorn is available */
@@ -17,5 +14,8 @@
 
 /** Define whether ldd is available */
 #cmakedefine HAVE_LDD ${HAVE_LDD}
+
+/** Use shadow mem pass from sea-dsa */
+#cmakedefine USE_SHADOW_MEM_FROM_SEA_DSA ${USE_SHADOW_MEM_FROM_SEA_DSA}
 
 #endif

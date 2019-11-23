@@ -6,8 +6,9 @@
 /debug/
 /static/
 /dsa-seahorn/
-/crab-llvm/
+/clam/
 /sea-dsa/
+/sea-svf/
 /llvm-dsa/
 *.pyc
 *.pyo
@@ -15,3 +16,5 @@
 /seahorn-llvm/
 /gtags.files
 /lib/Support/GitSHA1.cc
+.lsp-cache.d
+.mainframer

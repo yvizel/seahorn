@@ -48,18 +48,6 @@ public:
   }
   const DataLayout& getDataLayout() {return getTD();}
 
-  /// \brief Returns a concrete value to which a constant evaluates
-  /// Adapted from llvm::ExecutionEngine
-  Optional<GenericValue> getConstantValue(const Constant *C);
-
-  /// \brief Initializes memory pointed by \p Addr with the value of the contant
-  /// \p Init. Assumes that \p Addr is sufficiently large
-  void initMemory(const Constant *Init, void *Addr);
-
-  /// \brief Stores a value in \p Val to memory pointed by \p Ptr. The store is
-  /// of type \p Ty
-  void storeValueToMemory(const GenericValue &Val, GenericValue *Ptr, Type *Ty); 
-
   /// \brief Creates a new context
   OpSemContextPtr mkContext(SymStore &values, ExprVector &side) override;
 
@@ -132,7 +120,9 @@ public:
   Expr getOperandValue(const Value &v, seahorn::details::Bv2OpSemContext &ctx);
   /// \brief Deprecated
   Expr lookup(SymStore &s, const Value &v) { llvm_unreachable(nullptr); }
-
+  /// Convert aggregate GenericValue to APInt
+  Optional<APInt> agg(Type *ty, const std::vector<GenericValue> &elements,
+      seahorn::details::Bv2OpSemContext &ctx);
   using gep_type_iterator = generic_gep_type_iterator<>;
   /// \brief Returns symbolic representation of the gep offset
   Expr symbolicIndexedOffset(gep_type_iterator it, gep_type_iterator end,

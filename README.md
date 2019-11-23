@@ -2,13 +2,13 @@
 
 <table>
   <tr>
-    <th>Windows</th><th>Ubuntu</th><th>OS X</th><th>Chat with us</th><th>Stories</th>
+    <th>Windows</th><th>Ubuntu</th><th>OS X</th><th>Chat with us</th><th>Coverage</th>
   </tr>
     <td>TBD</td>
-    <td><a href="https://travis-ci.org/seahorn/seahorn"><img src="https://travis-ci.org/seahorn/seahorn.svg?branch=deep-dev-5.0" title="Ubuntu 12.04 LTS 64bit, g++-5"/></a></td>
+    <td><a href="https://travis-ci.org/seahorn/seahorn"><img src="https://travis-ci.org/seahorn/seahorn.svg?branch=master" title="Ubuntu 12.04 LTS 64bit, g++-5"/></a></td>
     <td>TBD</td>
     <td><a href="https://gitter.im/seahorn/seahorn?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge"><img src="https://badges.gitter.im/seahorn/seahorn.svg" title="Gitter"/></a></td>
-    <td> <a href="http://waffle.io/seahorn/seahorn/"><img src="https://badge.waffle.io/seahorn/seahorn.svg?label=ready&title=Ready"/></a></td>
+    <td><a href="https://codecov.io/gh/seahorn/seahorn"><img src="https://codecov.io/gh/seahorn/seahorn/branch/master/graph/badge.svg" /></a></td>
   </tr>
 </table>
 
@@ -24,14 +24,14 @@ _Note: this branch is deprecated. LLVM-5 support was merged into the master bran
 
 # Installation #
 
-* `cd seahorn ; mkdir build ; cd build`
-* `cmake -DCMAKE_INSTALL_PREFIX=run ../ `
+1. `cd seahorn ; mkdir build ; cd build` (The build directory can also be outside the source directory.)
+1. `cmake -DCMAKE_INSTALL_PREFIX=run ../ `
   (Add `-GNinja` to use the [Ninja](https://ninja-build.org/) generator instead of the default one.
    Build types (Release, Debug) can be set with `-DCMAKE_BUILD_TYPE=<TYPE>`.)
-* `cmake --build .` to build dependencies (Z3 and LLVM)
-* `cmake --build . --target extra && cmake ..` to download extra packages
-* `cmake --build . --target crab && cmake ..` to configure crab-llvm (if `extra` target was run)
-* `cmake --build . --target install` to build seahorn and install everything in `run` directory
+1. `cmake --build .` to build dependencies (Z3 and LLVM)
+1. `cmake --build . --target extra && cmake ..` to download extra packages
+1. `cmake --build . --target crab && cmake ..` to configure crab (if `extra` target was run)
+1. `cmake --build . --target install` to build seahorn and install everything in `run` directory
 
 _Note that the *install* target is required!_
 
@@ -45,10 +45,11 @@ other options on Linux. The magic cmake configuration line is
 something like the following:
 
 ```
- cmake -DCMAKE_INSTALL_PREFIX=run -DCMAKE_BUILD_TYPE="Release" -DCMAKE_CXX_COMPILER="clang++-6.0" -DCMAKE_C_COMPILER="clang-6.0" -DSEA_ENABLE_LLD="ON" -GNinja -DCMAKE_EXPORT_COMPILE_COMMANDS=1 ../
+ cmake -DCMAKE_INSTALL_PREFIX=run -DCMAKE_BUILD_TYPE="Release" -DCMAKE_CXX_COMPILER="clang++-8" -DCMAKE_C_COMPILER="clang-8" -DSEA_ENABLE_LLD="ON" -GNinja -DCMAKE_EXPORT_COMPILE_COMMANDS=1 ../
 ```
+This command should be run instead of the cmake command *2.* in the installation instructions above.
 
-SeaHorn provides several components that are installed via the `extra`
+SeaHorn provides several components that are automatically cloned and installed via the `extra`
 target. These components can be used by other projects outside of
 SeaHorn.
 
@@ -65,10 +66,10 @@ SeaHorn.
   partition of the heap can be generated in presence of function
   calls.
 
-* [crab-llvm](https://github.com/seahorn/crab-llvm): `git clone https://github.com/seahorn/crab-llvm.git`
+* [clam](https://github.com/seahorn/crab-llvm): `git clone https://github.com/seahorn/crab-llvm.git`
 
-  `crab-llvm` provides inductive invariants using abstract
-  interpretation techniques to the rest of SeaHorn's backends.
+  `clam` provides inductive invariants using abstract interpretation
+  techniques to the rest of SeaHorn's backends.
 
 * [llvm-seahorn](https://github.com/seahorn/llvm-seahorn): `git clone https://github.com/seahorn/llvm-seahorn.git`
 
@@ -106,10 +107,41 @@ easy_install pygraphviz
 Tests can be run using:
 
 ``` shell
-$ EXPORT SEAHORN=<install_dir>/bin/sea
+$ export SEAHORN=<install_dir>/bin/sea
 $ cmake --build . --target test-all
 ```
 
+# Coverage #
+We can use `gcov` and `lcov` to generate test coverage information for SeaHorn. To build with coverage enabled,
+we need to run build under a different directory and set `CMAKE_BUILD_TYPE` to `Coverage` during cmake configuration.
+
+Example steps for `opsem` tests coverage:
+1. `mkdir coverage; cd coverage`  create and enter coverage build directory
+2. `cmake -DCMAKE_BUILD_TYPE=Coverage <other flags as you wish> ../`
+configure cmake with `Coverage` build type, follow [Installation](https://github.com/seahorn/seahorn/tree/master#installation) or [Compiling with Clang on Linux
+](https://github.com/seahorn/seahorn/tree/master#compiling-with-clang-on-linux) to set other flags
+3. follow step 3 through 6 in *Installation* section to finish build
+4. `cmake --build . --target test-opsem` Run OpSem tests, now .gcda and .gcno files should be created
+under corresponding `CMakeFiles` directory
+
+5. `lcov -c --directory lib/seahorn/CMakeFiles/seahorn.LIB.dir/ -o coverage.info` collect coverage data from desired module,
+if `clang` is used as the compiler instead of `gcc`, create a bash script `llvm-gcov.sh`:
+```shell script
+#!/bin/bash
+exec llvm-cov gcov "$@"
+```
+```shell script
+$ chmod +x llvm-gcov.sh
+```
+then append `--gcov-tool <path_to_wrapper_script>/llvm-gcov.sh` to the `lcov -c ...` command.
+6. extract data from desired directories and generate html report:
+```shell script
+lcov --extract coverage.info "*/lib/seahorn/*" -o lib.info
+lcov --extract coverage.info "*/include/seahorn/*" -o header.info
+cat header.info lib.info > all.info
+genhtml all.info --output-directory coverage_report
+```
+then open `coverage_report/index.html` in browser to view the coverage report
 
 # Code indexing for IDEs and editors #
 
@@ -130,6 +162,10 @@ For a detailed guide for a remote workflow with CLion check
 [Clion-configuration](CLion-configuration.md).
 
 # Usage #
+
+### Demo ###
+[![Demo](https://asciinema.org/a/261355.svg)](https://asciinema.org/a/261355)
+---
 
 SeaHorn provides a python script called `sea` to interact with
 users. Given a C program annotated with assertions, users just need to
@@ -176,7 +212,6 @@ corresponds to a loop-free fragments.
 
 - `--bmc`: use BMC engine.
 
-
 `sea pf` is a pipeline that runs multiple commands. Individual parts
 of the pipeline can be run separately as well:
 
@@ -211,29 +246,80 @@ To see all the commands, type `sea --help`. To see options for each
 individual command CMD (e.g, `horn`), type `sea CMD --help` (e.g.,
 `sea horn --help`).
 
+## Abstract Interpretation back-end ##
+
+### Inference of Inductive Invariants using Crab ### 
+
+By default, SeaHorn does not use Crab, our abstract interpreter. To enable
+it, add the option `--crab` to the `sea` command.
+
+The abstract interpreter is by default intra-procedural and it uses
+the [Zones](https://jorgenavas.github.io/papers/zones-SAS16.pdf)
+domain as the numerical abstract domain. These default options should
+be enough for normal users.  For developers, if you want to use other
+abstract domains you need to:
+
+1. Compile with `cmake` options `-DCLAM_ALL_DOMAINS=ON -DCRAB_USE_LDD=ON -DCRAB_USE_ELINA=ON`
+2. Run `sea` with option `--crab-dom=DOM` where `DOM` can be:
+   - `int` for intervals
+   - `term-int` for intervals with uninterpreted functions
+   - `boxes`: for disjunctive intervals 
+   - `oct` for octagons 
+   - `pk` for polyhedra 
+
+To use the crab inter-procedural analysis you need to:
+
+1. Compile with cmake option `-DCLAM_ENABLE_INTER=ON`
+2. Run `sea` with option `--crab-inter`
+
+By default, the abstract interpreter only reasons about scalar
+variables (i.e., LLVM registers). Run `sea` with the options
+`--crab-singleton-aliases=true --crab-track=arr` to reason about
+memory contents.
+
+### How to use Invariants generated by Crab in Spacer ###
+
+Crab is mostly path-insensitive while Spacer, our Horn clause solver,
+is path-sensitive. Although path-insensitive analyses are more
+efficient, path-sensitivity is typically required to prove the
+property of interest. This motivates our decision of running first
+Crab (if option `--crab`) and then pass the generated invariants to
+Spacer. There are currently two ways for Spacer to use the invariants
+generated by Crab. The `sea` option `--horn-use-invs=VAL` tells
+`spacer` how to use those invariants:
+
+- If `VAL` is equal to `bg` then invariants are only used to help
+  `spacer` in proving a lemma is inductive.
+- If `VAL` is equal to `always` then the behavior is similar to `bg`
+  but in addition invariants are also used to help `spacer` to block a
+  counterexample.
+
+The default value is `bg`. Of course, if Crab can prove the program is
+safe then Spacer does not incur in any extra cost.
+
 ## Annotating C programs ##
 
 This is an example of a C program annotated with a safety property:
-``` c
-    /* verification command: sea pf --horn-stats test.c */
-    #include "seahorn/seahorn.h"
-    extern int nd();
+``` c 
+/* verification command: sea pf --horn-stats test.c */
+#include "seahorn/seahorn.h"
+extern int nd();
 
-    int main(void){
-      int k=1;
-      int i=1;
-      int j=0;
-      int n = nd();
-      while(i<n) {
-        j=0;
-        while(j<i) {
-          k += (i-j);
-          j++;
+int main(void) {
+    int k = 1;
+    int i = 1;
+    int j = 0;
+    int n = nd();
+    while (i < n) {
+        j = 0;
+        while (j < i) {
+            k += (i - j);
+            j++;
         }
         i++;
-      }
-      sassert(k>=n);
     }
+    sassert(k >= n);
+}
 ```
 SeaHorn follows [SV-COMP](http://sv-comp.sosy-lab.org) convention of
 encoding error locations by a call to the designated error function
@@ -243,7 +329,45 @@ safe. SeaHorn returns `sat` when `__VERIFIER_error()` is reachable and
 the program is unsafe. `sassert()` method is defined in
 `seahorn/seahorn.h`.
 
-## Building SeaHorn on ubuntu 18.04 ##
+## Inspect Code ##
+
+Apart from proving properties or producing counterexamples, it is
+sometimes useful to inspect the code under analysis to get an idea of
+its complexity. For this, SeaHorn provides a command `sea
+inspect`. For instance, given a C program `ex.c` type:
+
+	sea inspect ex.c --sea-dsa=cs+t --mem-dot 
+	 
+The option `--sea-dsa=cs+t` enables the new context-, type-sensitive
+sea-dsa analysis implemented in our
+FMCAD'19
+[paper](https://jorgenavas.github.io/papers/tea-dsa-fmcad19.pdf). This
+command will generate a `FUN.mem.dot` file for each function `FUN` in
+the bitcode program.  To visualize the graph of the main function
+type:
+
+	dot -Tpdf main.mem.dot -o main.mem.pdf
+	open main.mem.pdf  // replace with you favorite pdf viewer
+
+Read this
+[link](https://github.com/seahorn/sea-dsa#visualizing-memory-graphs-and-complete-call-graphs) for
+more details about memory graphs.
+
+Type `sea inspect --help` for all options. Currently, these options are available:
+
+- `sea inspect --profiler` prints the number of functions, basic blocks,
+  loops, etc.
+
+- `sea inspect --mem-callgraph-dot` prints to `dot` format the call
+  graph constructed by SeaDsa.
+
+- `sea inspect --mem-callgraph-stats` prints to standard output some
+  statstics about the call graph construction done by SeaDsa.
+ 
+- `sea inspect --mem-smc-stats` prints the number of memory accesses
+  that can be proven safe by SeaDsa.
+
+## Building SeaHorn on Ubuntu 18.04 ##
 
 The following packages are recommended to build SeaHorn on Ubuntu 18.04. Not
 everything is necessary for all configurations, but it is simpler to have these
@@ -251,17 +375,17 @@ installed. This assumes that `clang` is used as a compiler as per-instructions
 above.
 
 ```
-sudo apt install cmake git build-essential ninja-build llvm-6.0 clang-6.0 lld-6.0 libboost-dev subversion g++-7-multilib gcc-multilib lib32stdc++7 libgmp-dev libgmpxx4ldbl libgraphviz-dev libncurses5-dev ncurses-doc
+sudo apt install cmake git build-essential ninja-build llvm-8 clang-8 clang-tools-8 lld-8 libboost-dev subversion g++-7-multilib gcc-multilib lib32stdc++7 libgmp-dev libgmpxx4ldbl libgraphviz-dev libncurses5-dev ncurses-doc
 ```
 
 # Original Authors 
 
-* [Arie Gurfinkel](arieg.bitbucket.org)
-* [Jorge Navas](http://jorgenavas.github.io/)
+* [Arie Gurfinkel](https://arieg.bitbucket.org/)
+* [Jorge Navas](https://jorgenavas.github.io/)
 * [Temesghen Kahsai](http://www.lememta.info/)
 
 # Contributors
 
-* Jakub Kuderski
-* Nham Le
-
+* [Jakub Kuderski](https://github.com/kuhar)
+* [Nham Le](https://github.com/nhamlv-55)
+* [Charles Lei](https://github.com/mrthefakeperson)

@@ -27,17 +27,31 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 option(SEA_ENABLE_LLD "Use lld as C and C++ linker." OFF)
+if(SEA_ENABLE_LLD) 
+  set(CMAKE_EXE_LINKER_FLAGS "-fuse-ld=lld")
+endif()
+
+option(SEA_USE_SPLIT_DWARF "Use -gsplit-dwarf. Decreases linker pressure." OFF)
 
 option(SEA_ENABLE_ASSERTIONS "Enable assertions." OFF)
 
-option(USE_SEAHORN_EXPR "User SeaHorn version of Expr library" OFF)
-if(${USE_SEAHORN_EXPR})
-  add_definitions(-DUSE_SEAHORN_EXPR=1)
+option(ENABLE_SHADOW_MEM_FROM_SEA_DSA "Use shadow mem pass from SeaDsa" OFF)
+if (ENABLE_SHADOW_MEM_FROM_SEA_DSA)
+  set(USE_SHADOW_MEM_FROM_SEA_DSA TRUE)
 endif()
 
 # Add path for custom modules
 list (APPEND CMAKE_MODULE_PATH
   "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+
+# Configuration for Coverage
+if (CMAKE_BUILD_TYPE STREQUAL Coverage)
+  include(Coverage)
+  # We don't want coverage on external things
+  set(EXT_CMAKE_BUILD_TYPE Release)
+else()
+  set(EXT_CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE})
+endif ()
 
 # Getting git SHA-1
 list(APPEND CMAKE_MODULE_PATH 
@@ -56,24 +70,24 @@ if (GIT_FOUND)
     CACHE STRING "llvm-dsa repo")
   set (SEA_DSA_REPO "https://github.com/seahorn/sea-dsa"
     CACHE STRING "sea-dsa repo")
-  set (CRAB_LLVM_REPO "https://github.com/seahorn/crab-llvm"
-    CACHE STRING "crab-llvm repo")
-
+  set (CLAM_REPO "https://github.com/seahorn/crab-llvm"
+    CACHE STRING "clam repo")
+  
+  add_custom_target (seahorn-llvm-git
+    ${GIT_EXECUTABLE} clone ${SEAHORN_LLVM_REPO} ${CMAKE_SOURCE_DIR}/llvm-seahorn)
   add_custom_target (llvm-dsa-git
     ${GIT_EXECUTABLE} clone ${LLVM_DSA_REPO} ${CMAKE_SOURCE_DIR}/llvm-dsa)
   add_custom_target (sea-dsa-git
     ${GIT_EXECUTABLE} clone ${SEA_DSA_REPO} ${CMAKE_SOURCE_DIR}/sea-dsa)
-  add_custom_target (seahorn-llvm-git
-    ${GIT_EXECUTABLE} clone ${SEAHORN_LLVM_REPO} ${CMAKE_SOURCE_DIR}/llvm-seahorn)
-  add_custom_target (crab-llvm-git
-    ${GIT_EXECUTABLE} clone ${CRAB_LLVM_REPO} ${CMAKE_SOURCE_DIR}/crab-llvm)
+  add_custom_target (clam-git
+    ${GIT_EXECUTABLE} clone ${CLAM_REPO} ${CMAKE_SOURCE_DIR}/clam)
   add_custom_target (extra
     ${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_LIST_FILE}
     DEPENDS
     llvm-dsa-git
     sea-dsa-git    
     seahorn-llvm-git
-    crab-llvm-git
+    clam-git
   )
 
 else()
@@ -123,7 +137,7 @@ ExternalProject_Add(z3
   -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
   -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
   -DCMAKE_LINKER=${CMAKE_LINKER}
-  -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
+  -DCMAKE_BUILD_TYPE:STRING=${EXT_CMAKE_BUILD_TYPE}
   -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
   -DBUILD_LIBZ3_SHARED:BOOL=FALSE  
   TEST_AFTER_INSTALL 1
@@ -145,6 +159,24 @@ else()
   install (PROGRAMS ${Z3_EXECUTABLE} DESTINATION bin)
 endif()
 
+
+# Find Yices
+SET(YICES2_HOME CACHE STRING "Yices2 installation directory")
+find_package(Yices2 2.6.0)
+if (YICES2_FOUND)
+  add_definitions(-DWITH_YICES2)
+  include_directories(${YICES2_INCLUDE_DIR})
+  message("Found Yices2 at ${YICES2_HOME}")
+  install(PROGRAMS ${YICES2_EXECUTABLE} DESTINATION bin)
+  if (YICES2_HOME)
+    file(GLOB _YICES2_LIBRARIES ${YICES2_HOME}/lib/* *.dylib *.so *.a)
+    install(FILES ${_YICES2_LIBRARIES} DESTINATION lib)
+  else()
+    # this may copy only the symbolic link
+    install(FILES ${YICES2_LIBRARY} DESTINATION lib)
+  endif()
+endif()  
+
 option(SEAHORN_REQUIRES_RTTI "Enable RTTI support" ON)
 option(SEAHORN_REQUIRES_EH "Enable Exceptions" ON)
  
@@ -155,11 +187,12 @@ ExternalProject_Add (llvm
   CMAKE_ARGS
   -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
   -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
-  -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
+  -DCMAKE_BUILD_TYPE:STRING=${EXT_CMAKE_BUILD_TYPE}
   -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
   -DLLVM_TARGETS_TO_BUILD:STRING=X86 -DWITH_POLY:BOOL=OFF
   -DLLVM_ENABLE_PEDANTIC=OFF
   -DLLVM_ENABLE_LLD=${SEA_ENABLE_LLD}
+  -DLLVM_USE_SPLIT_DWARF=${SEA_USE_SPLIT_DWARF}
   -DLLVM_ENABLE_ASSERTIONS=${SEA_ENABLE_ASSERTIONS}
   -DLLVM_ENABLE_PIC=ON -DLLVM_REQUIRES_RTTI:BOOL=${SEAHORN_REQUIRES_RTTI}
   -DLLVM_INCLUDE_TESTS:BOOL=OFF
@@ -287,10 +320,10 @@ if (EXISTS ${CMAKE_CURRENT_BINARY_DIR}/z3-prefix/src/z3/build)
   install(FILES ${z3py} DESTINATION lib/z3py)
 endif()
 
-if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/crab-llvm/LICENSE)
-  install (FILES crab-llvm/LICENSE
+if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/clam/LICENSE)
+  install (FILES clam/LICENSE
     DESTINATION share/doc/seahorn
-    RENAME crab_llvm_license.txt)
+    RENAME clam_license.txt)
 endif()
 
 if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/share/seahorn.h)
@@ -312,10 +345,8 @@ find_package(Curses)
 find_package(Gmp REQUIRED)
 if (GMP_FOUND)
   include_directories (${GMP_INCLUDE_DIR})
-  include_directories (${GMPXX_INCLUDE_DIR})
 else()
   set(GMP_LIB "")
-  set(GMPXX_LIB "")
 endif()
 
 find_package(OpenMP)
@@ -388,13 +419,19 @@ else()
   return()
 endif()
 
-if (IS_DIRECTORY ${CMAKE_SOURCE_DIR}/crab-llvm AND
-    EXISTS ${CMAKE_SOURCE_DIR}/crab-llvm/CMakeLists.txt)
-  add_subdirectory(${CMAKE_SOURCE_DIR}/crab-llvm)
-  set (HAVE_CRAB_LLVM TRUE)
-  include_directories (BEFORE ${CRABLLVM_INCLUDE_DIRS})  
+if (IS_DIRECTORY ${CMAKE_SOURCE_DIR}/clam AND
+    EXISTS ${CMAKE_SOURCE_DIR}/clam/CMakeLists.txt)
+  if (NOT CLAM_ALL_DOMAINS)
+    set(CLAM_ALL_DOMAINS OFF CACHE BOOL "Include all crab abstract domains" FORCE)
+  endif()
+  if (NOT CLAM_ENABLE_INTER)
+    set(CLAM_ENABLE_INTER OFF CACHE BOOL "Include crab inter-procedural analysis" FORCE)
+  endif()
+  add_subdirectory(${CMAKE_SOURCE_DIR}/clam)
+  set(HAVE_CLAM TRUE)
+  include_directories (BEFORE ${CLAM_INCLUDE_DIRS})
 else()
-  message (WARNING "No CRAB-LLVM found in ${CMAKE_SOURCE_DIR}/crab-llvm. Run\n\tcmake --build . --target extra && cmake ${CMAKE_SOURCE_DIR}")
+  message (WARNING "No Clam found in ${CMAKE_SOURCE_DIR}/clam. Run\n\tcmake --build . --target extra && cmake ${CMAKE_SOURCE_DIR}")
 endif()
 
 ### add our include directories to the front, overriding directories
@@ -406,7 +443,7 @@ include_directories(BEFORE
 
 add_subdirectory(lib)
 add_subdirectory(tools)
-  add_subdirectory(units)
+add_subdirectory(units)
 add_subdirectory(sea-rt)
 
 configure_file( include/seahorn/config.h.cmake

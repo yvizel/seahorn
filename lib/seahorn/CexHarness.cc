@@ -10,6 +10,8 @@
 #include "boost/algorithm/string/replace.hpp"
 #include <memory>
 #include "seahorn/Support/SeaDebug.h"
+#include "seahorn/Expr/ExprLlvm.hh"
+#include "seahorn/Expr/ExprOpBinder.hh"
 
 using namespace llvm;
 namespace seahorn {
@@ -62,8 +64,8 @@ Constant *exprToLlvm(Type *ty, Expr e, LLVMContext &ctx, const DataLayout &dl) {
     // return Constant::getNullValue (ty);
     return ConstantInt::getFalse(ctx);
   } else if (isOpX<MPZ>(e) || bv::is_bvnum(e)) {
-    mpz_class mpz;
-    mpz = isOpX<MPZ>(e) ? getTerm<mpz_class>(e) : getTerm<mpz_class>(e->arg(0));
+    expr::mpz_class mpz;
+    mpz = isOpX<MPZ>(e) ? getTerm<expr::mpz_class>(e) : getTerm<expr::mpz_class>(e->arg(0));
     if (ty->isIntegerTy() || ty->isPointerTy()) {
       // JN: I think we can have the same issue as above but for now I leave
       // like it is.

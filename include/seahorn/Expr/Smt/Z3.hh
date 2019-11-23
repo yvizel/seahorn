@@ -1,15 +1,11 @@
+#pragma once
 /**
-*/
-
-#ifndef __UFO_Z3N_HPP_
-#define __UFO_Z3N_HPP_
-/**
-   New Z3 interface based of Z3 v4.
+   Z3 interface 
 
  */
 
-#include "z3.h"
 #include "z3++.h"
+#include "z3.h"
 
 #include <sstream>
 
@@ -24,6 +20,7 @@
 #include <boost/range/algorithm/sort.hpp>
 
 #include "seahorn/Expr/Expr.hh"
+#include "seahorn/Expr/ExprLlvm.hh"
 #include "seahorn/Expr/ExprInterp.hh"
 
 namespace z3 {
@@ -41,7 +38,7 @@ struct ast_ptr_equal_to : public std::binary_function<ast, ast, bool> {
 };
 } // namespace z3
 
-namespace ufo {
+namespace seahorn {
 // -- fixedpoint class is missing from z3++.h
 class fixedpoint : public z3::object {
   Z3_fixedpoint m_fixedpoint;
@@ -68,10 +65,17 @@ public:
     check_error();
   }
 };
-} // namespace ufo
+} // namespace seahorn
 
-namespace ufo {
+namespace seahorn {
 using namespace expr;
+
+// forward declarations
+template <typename Z> class ZSimplifier;
+template <typename Z> class ZSolver;
+template <typename Z> class ZModel;
+template <typename Z> class ZFixedPoint;
+template <typename Z> class ZParams;
 
 inline boost::tribool z3l_to_tribool(Z3_lbool l) {
   if (l == Z3_L_TRUE)
@@ -91,6 +95,8 @@ template <typename Z> Expr z3_lite_simplify(Z &z3, Expr e) {
 template <typename Z> Expr z3_simplify(Z &z3, Expr e) {
   return z3_lite_simplify(z3, e);
 }
+
+template <typename Z> Expr z3_simplify(Z &z3, Expr e, ZParams<Z> &params);
 
 template <typename Z> Expr z3_forall_elim(Z &z3, Expr e, const ExprSet &vars) {
   z3::context &ctx = z3.get_ctx();
@@ -135,8 +141,8 @@ template <typename Z> Expr z3_forall_elim(Z &z3, Expr e, const ExprSet &vars) {
 template <typename Z> Expr z3_from_smtlib(Z &z3, std::string smt) {
   z3::context &ctx = z3.get_ctx();
 
-  z3::ast_vector av(ctx, Z3_parse_smtlib2_string(ctx, smt.c_str(), 0, NULL, NULL, 0,
-                                           NULL, NULL));
+  z3::ast_vector av(ctx, Z3_parse_smtlib2_string(ctx, smt.c_str(), 0, NULL,
+                                                 NULL, 0, NULL, NULL));
   ctx.check_error();
   z3::array<Z3_ast> args(av);
   z3::ast ast(ctx, Z3_mk_and(ctx, args.size(), args.ptr()));
@@ -146,8 +152,8 @@ template <typename Z> Expr z3_from_smtlib(Z &z3, std::string smt) {
 
 template <typename Z> Expr z3_from_smtlib_file(Z &z3, const char *fname) {
   z3::context &ctx = z3.get_ctx();
-  z3::ast_vector av(ctx,
-                    Z3_parse_smtlib2_file(ctx, fname, 0, NULL, NULL, 0, NULL, NULL));
+  z3::ast_vector av(
+      ctx, Z3_parse_smtlib2_file(ctx, fname, 0, NULL, NULL, 0, NULL, NULL));
   ctx.check_error();
   z3::array<Z3_ast> args(av);
   z3::ast ast(ctx, Z3_mk_and(ctx, args.size(), args.ptr()));
@@ -159,20 +165,13 @@ template <typename Z> std::string z3_to_smtlib(Z &z3, Expr e) {
   return z3.toSmtLib(e);
 }
 
-} // namespace ufo
+} // namespace seahorn
 
-namespace ufo {
+namespace seahorn {
 
-typedef std::unordered_map<z3::ast, Expr, z3::ast_ptr_hash,
-                           z3::ast_ptr_equal_to>
-    ast_expr_map;
-
-typedef std::unordered_map<Expr, z3::ast> expr_ast_map;
-
-template <typename Z> class ZSolver;
-template <typename Z> class ZModel;
-template <typename Z> class ZFixedPoint;
-template <typename Z> class ZParams;
+using ast_expr_map = std::unordered_map<z3::ast, Expr, z3::ast_ptr_hash,
+                                        z3::ast_ptr_equal_to>;
+using expr_ast_map = std::unordered_map<Expr, z3::ast>;
 
 template <typename V> void z3n_set_param(char const *p, V v) {
   z3::set_param(p, v);
@@ -187,14 +186,18 @@ using namespace boost;
  * \tparam M marshaler that converts from Expr to z3::ast
  * \tparam U unmarshaler that converts from z3::ast to Expr
  */
-template <typename M, typename U> class ZContext : boost::noncopyable {
+template <typename M, typename U>
+class ZContext  {
+public:
+
+  using expr_cache_map = boost::bimaps::unordered_set_of<Expr>;
+  using z_cache_map = boost::bimaps::unordered_set_of<z3::ast, z3::ast_ptr_hash, z3::ast_ptr_equal_to>;
+  using cache_type = boost::bimap<expr_cache_map, z_cache_map>;
+  using expr_cache_type = typename cache_type::left_map;
+  using z_cache_type = typename cache_type::right_map;
+
 private:
   typedef ZContext<M, U> this_type;
-  typedef bimap<
-      bimaps::unordered_set_of<Expr>,
-      bimaps::unordered_set_of<z3::ast, z3::ast_ptr_hash, z3::ast_ptr_equal_to>>
-      cache_type;
-
   ExprFactory &efac;
   z3::config m_c; // default config
   z3::context ctx;
@@ -206,16 +209,26 @@ private:
 protected:
   z3::context &get_ctx() { return ctx; }
 
+  template <typename ExprToAstMap>
+  z3::ast toAst(Expr e, ExprToAstMap &seen) {
+    return M::marshal(e, get_ctx(), cache.left, seen);
+    
+  }
   z3::ast toAst(Expr e) {
     expr_ast_map seen;
-    return M::marshal(e, get_ctx(), cache.left, seen);
+    return toAst(e, seen);
+  }
+
+  template <typename AstToExprMap>
+  Expr toExpr(z3::ast a, AstToExprMap &seen) {
+    if (!a) return Expr();
+    return U::unmarshal(a, get_efac(), cache.right, seen);
+
   }
   Expr toExpr(z3::ast a) {
-    if (!a)
-      return Expr();
-
+    if (!a) return Expr();
     ast_expr_map seen;
-    return U::unmarshal(a, get_efac(), cache.right, seen);
+    return toExpr(a, seen);
   }
 
   ExprFactory &get_efac() { return efac; }
@@ -227,7 +240,8 @@ protected:
     if (Z3_get_ast_kind(ctx, a) != Z3_APP_AST)
       return;
 
-    if (visited.count(a) > 0) return;
+    if (visited.count(a) > 0)
+      return;
     visited.insert(a);
 
     Z3_app app = Z3_to_app(ctx, a);
@@ -245,6 +259,7 @@ protected:
 public:
   ZContext(ExprFactory &ef) : efac(ef), ctx(m_c) { init(); }
   ZContext(ExprFactory &ef, z3::config &c) : efac(ef), ctx(c) { init(); }
+  ZContext(const ZContext &) = delete;
 
   ~ZContext() { cache.clear(); }
 
@@ -272,12 +287,15 @@ public:
   ExprFactory &getExprFactory() { return get_efac(); }
 
   friend class ZParams<this_type>;
+  friend class ZSimplifier<this_type>;
   friend class ZSolver<this_type>;
   friend class ZModel<this_type>;
   friend class ZFixedPoint<this_type>;
 
   friend Expr z3_lite_simplify<this_type>(this_type &z3, Expr e);
   friend Expr z3_simplify<this_type>(this_type &z3, Expr e);
+  friend Expr z3_simplify<this_type>(this_type &z3, Expr e,
+                                     ZParams<this_type> &params);
   friend Expr z3_forall_elim<this_type>(this_type &z3, Expr e,
                                         const ExprSet &vars);
   friend Expr z3_from_smtlib<this_type>(this_type &z3, std::string smt);
@@ -413,6 +431,49 @@ public:
   operator Z3_params() const { return static_cast<Z3_params>(params); }
 };
 
+/// \brief Simplify with user-supplied parameters
+template <typename Z> Expr z3_simplify(Z &z3, Expr e, ZParams<Z> &params) {
+  z3::context &ctx = z3.get_ctx();
+  z3::ast ast(z3.toAst(e));
+
+  return z3.toExpr(z3::ast(ctx, Z3_simplify_ex(ctx, ast, params)));
+}
+
+template <typename Z>
+class ZSimplifier {
+private:
+  Z &z3;
+  z3::context &ctx;
+  ExprFactory &efac;
+
+  expr_ast_map m_expr_to_ast;
+  ast_expr_map m_ast_to_expr;
+  std::unordered_map<Expr,Expr> m_cache;
+public:
+  using this_type = ZSimplifier<Z>;
+  ZSimplifier(Z &z)
+    : z3(z), ctx(z.get_ctx()), efac(z.get_efac()) {}
+
+  ZSimplifier(const ZSimplifier&) = delete;
+
+  Z &getContext() { return z3; }
+
+  Expr simplify(Expr e) {
+    auto it = m_cache.find(e);
+    if (it != m_cache.end()) return it->second;
+
+    z3::ast ast(z3.toAst(e, m_expr_to_ast));
+    Expr res = z3.toExpr(z3::ast(ctx, Z3_simplify(ctx, ast)), m_ast_to_expr);
+    m_cache.insert({e, res});
+    return res;
+  }
+
+  void reset() {
+    m_expr_to_ast.clear();
+    m_ast_to_expr.clear();
+    m_cache.clear();
+  }
+};
 template <typename Z> class ZSolver {
 private:
   Z &z3;
@@ -432,7 +493,10 @@ public:
         efac(z.get_efac()) {}
 
   Z &getContext() { return z3; }
-  void set(const ZParams<Z> &p) { solver.set(p); ctx.check_error();}
+  void set(const ZParams<Z> &p) {
+    solver.set(p);
+    ctx.check_error();
+  }
 
   template <typename OutputStream> OutputStream &toSmtLib(OutputStream &out) {
     ExprVector v;
@@ -451,6 +515,7 @@ public:
     for (const Expr &a : asserts)
       out << "(assert " << z3.toSmtLib(a) << ")\n";
 #else
+    Z3_set_ast_print_mode(z3.get_ctx(), Z3_PRINT_SMTLIB2_COMPLIANT);
     out << "(assert " << z3.toSmtLib(mknary<AND>(mk<TRUE>(efac), asserts))
         << ")\n";
 #endif
@@ -548,7 +613,7 @@ private:
 
   Z &z3;
   z3::context &ctx;
-  ufo::fixedpoint fp;
+  seahorn::fixedpoint fp;
   ExprFactory &efac;
 
   ExprVector m_rels;
@@ -884,9 +949,9 @@ public:
   }
 };
 
-} // namespace ufo
+} // namespace seahorn
 
-namespace ufo {
+namespace seahorn {
 template <typename Z> boost::tribool z3_is_sat(Z &z3, Expr e) {
   ZSolver<Z> s(z3);
   s.assertExpr(e);
@@ -938,6 +1003,5 @@ Expr z3_all_sat(Z &z3, Expr e, const Range &terms) {
   return res;
 }
 
-} // namespace ufo
+} // namespace seahorn
 
-#endif

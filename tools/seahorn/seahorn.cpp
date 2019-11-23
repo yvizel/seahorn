@@ -21,7 +21,6 @@
 #include "llvm/Support/raw_ostream.h"
 #include "llvm/Transforms/IPO.h"
 
-#include "seahorn/Bmc.hh"
 #include "seahorn/HornCex.hh"
 #include "seahorn/HornSolver.hh"
 #include "seahorn/HornWrite.hh"
@@ -36,21 +35,21 @@
 #include "seahorn/Transforms/Utils/RemoveUnreachableBlocksPass.hh"
 #include "seahorn/config.h"
 
-#include "sea_dsa/DsaAnalysis.hh"
-
-#ifdef HAVE_CRAB_LLVM
-#include "crab_llvm/CrabLlvm.hh"
-#include "crab_llvm/Transforms/InsertInvariants.hh"
+#ifdef HAVE_CLAM
+#include "clam/Clam.hh"
 #endif
 
+#include "sea_dsa/DsaAnalysis.hh"
+
+#include "seahorn/Expr/Smt/EZ3.hh"
 #include "seahorn/Support/Stats.hh"
 #include "seahorn/Transforms/Utils/NameValues.hh"
-#include "ufo/Smt/EZ3.hh"
 
 #include "seahorn/Support/GitSHA1.h"
 void print_seahorn_version() {
   llvm::outs() << "SeaHorn (http://seahorn.github.io/):\n"
-               << "  SeaHorn version " << SEAHORN_VERSION_INFO <<"-"<<g_GIT_SHA1<< "\n";
+               << "  SeaHorn version " << SEAHORN_VERSION_INFO << "-"
+               << g_GIT_SHA1 << "\n";
 }
 
 /// XXX HACK to force compiler to link this in
@@ -65,7 +64,7 @@ struct ZVerboseOpt {
 };
 ZVerboseOpt zverbose;
 
-#ifdef HAVE_CRAB_LLVM
+#ifdef HAVE_CLAM
 struct CVerboseOpt {
   void operator=(unsigned level) const { crab::CrabEnableVerbosity(level); }
 };
@@ -86,7 +85,7 @@ static llvm::cl::opt<seahorn::ZVerboseOpt, true, llvm::cl::parser<int>>
                   llvm::cl::value_desc("int"), llvm::cl::ValueRequired,
                   llvm::cl::Hidden);
 
-#ifdef HAVE_CRAB_LLVM
+#ifdef HAVE_CLAM
 static llvm::cl::opt<seahorn::CVerboseOpt, true, llvm::cl::parser<unsigned>>
     CrabVerbose("cverbose", llvm::cl::desc("Enable crab verbose messages"),
                 llvm::cl::location(seahorn::cverbose),
@@ -142,13 +141,16 @@ static llvm::cl::opt<bool>
             "Use BMC. Currently restricted to intra-procedural analysis"),
         llvm::cl::init(false));
 
-static llvm::cl::opt<seahorn::bmc_engine_t>
+// Available BMC engines
+enum class BmcEngineKind { mono_bmc, path_bmc };
+
+static llvm::cl::opt<BmcEngineKind>
     BmcEngine("horn-bmc-engine", llvm::cl::desc("Choose BMC engine"),
-              llvm::cl::values(clEnumValN(seahorn::mono_bmc, "mono",
-                                          "Generate a single formula"),
-                               clEnumValN(seahorn::path_bmc, "path",
+              llvm::cl::values(clEnumValN(BmcEngineKind::mono_bmc, "mono",
+                                          "Solve a single formula"),
+                               clEnumValN(BmcEngineKind::path_bmc, "path",
                                           "Based on path enumeration")),
-              llvm::cl::init(seahorn::bmc_engine_t::mono_bmc));
+              llvm::cl::init(BmcEngineKind::mono_bmc));
 
 static llvm::cl::opt<bool>
     BoogieOutput("boogie", llvm::cl::desc("Translate llvm bitcode to boogie"),
@@ -159,6 +161,11 @@ static llvm::cl::opt<bool> OneAssumePerBlock(
     llvm::cl::desc(
         "Make sure there is at most one call to verifier.assume per block"),
     llvm::cl::init(false));
+
+static llvm::cl::opt<bool>
+    UnifyAssumes("horn-unify-assumes",
+                 llvm::cl::desc("One assume to rule them all"),
+                 llvm::cl::init(false));
 
 // To switch between llvm-dsa and sea-dsa
 static llvm::cl::opt<bool>
@@ -181,6 +188,11 @@ static llvm::cl::opt<bool>
            llvm::cl::desc(
                "Print SeaHorn Dsa memory graph of a function to dot format"),
            llvm::cl::init(false));
+
+static llvm::cl::opt<bool>
+    LowerGlobalInitializers("lower-gv-init",
+                            llvm::cl::desc("Lower some global initializers"),
+                            llvm::cl::init(true));
 
 // removes extension from filename if there is one
 std::string getFileName(const std::string &str) {
@@ -289,6 +301,8 @@ int main(int argc, char **argv) {
   }
   pass_manager.add(new seahorn::RemoveUnreachableBlocksPass());
 
+  pass_manager.add(seahorn::createPromoteMallocPass());
+
   pass_manager.add(llvm::createPromoteMemoryToRegisterPass());
   pass_manager.add(new seahorn::PromoteVerifierCalls());
   pass_manager.add(llvm::createDeadInstEliminationPass());
@@ -304,7 +318,9 @@ int main(int argc, char **argv) {
   pass_manager.add(llvm::createGlobalDCEPass()); // kill unused internal global
 
   // -- initialize any global variables that are left
-  pass_manager.add(new seahorn::LowerGvInitializers());
+  if (LowerGlobalInitializers) {
+    pass_manager.add(new seahorn::LowerGvInitializers());
+  }
   if (SeaHornDsa) {
     pass_manager.add(seahorn::createShadowMemSeaDsaPass());
 #ifndef USE_NEW_SHADOW_SEA_DSA
@@ -330,22 +346,31 @@ int main(int argc, char **argv) {
     pass_manager.add(seahorn::createOneAssumePerBlockPass());
   }
 
-#ifdef HAVE_CRAB_LLVM
-  if (Crab && !BoogieOutput) {
-    /// -- insert invariants in the bitecode
-    pass_manager.add(new crab_llvm::InsertInvariants());
-    /// -- simplify invariants added in the bitecode
-    // pass_manager.add (seahorn::createInstCombine ());
+  if (UnifyAssumes) {
+    pass_manager.add(seahorn::createUnifyAssumesPass());
   }
-#endif
+  // #ifdef HAVE_CLAM
+  //   if (Crab && !BoogieOutput) {
+  //     /// -- insert invariants in the bitecode
+  //     pass_manager.add(new crab_llvm::InsertInvariants());
+  //     /// -- simplify invariants added in the bitecode
+  //     // pass_manager.add (seahorn::createInstCombine ());
+  //   }
+  // #endif
 
   // --- verify if an undefined value can be read
   pass_manager.add(seahorn::createCanReadUndefPass());
 
   // Z3_open_log("log.txt");
 
-  if (!Bmc && !BoogieOutput)
+  if (!Bmc && !BoogieOutput) {
     pass_manager.add(new seahorn::HornifyModule());
+    if (!OutputFilename.empty()) {
+      // -- XXX we dump the horn clauses into a file *before* we strip
+      // -- shadows. Otherwise, HornWrite can crash.
+      pass_manager.add(new seahorn::HornWrite(output->os()));
+    }
+  }
 
   // FIXME: if StripShadowMemPass () is executed then DsaPrinterPass
   // crashes because the callgraph has not been updated so it can
@@ -354,15 +379,16 @@ int main(int argc, char **argv) {
   // solution for now is to make sure that DsaPrinterPass is called
   // before StripShadowMemPass. A better solution is to make sure that
   // createStripShadowMemPass updates the callgraph.
-  if (MemDot)
+  if (MemDot) {
     pass_manager.add(sea_dsa::createDsaPrinterPass());
+  }
 
   if (!AsmOutputFilename.empty()) {
     if (!KeepShadows) {
       pass_manager.add(new seahorn::NameValues());
       // -- XXX might destroy names using by HornSolver later on.
       // -- XXX it is probably dangerous to strip shadows and solve at the same
-      // time
+      // time.
       pass_manager.add(seahorn::createStripShadowMemPass());
     }
     pass_manager.add(createPrintModulePass(asmOutput->os()));
@@ -372,7 +398,16 @@ int main(int argc, char **argv) {
     llvm::raw_ostream *out = nullptr;
     if (!OutputFilename.empty())
       out = &output->os();
-    pass_manager.add(seahorn::createBmcPass(BmcEngine, out, Solve));
+
+    switch (BmcEngine) {
+    case BmcEngineKind::path_bmc:
+      pass_manager.add(seahorn::createPathBmcPass(out, Solve));
+      break;
+    case BmcEngineKind::mono_bmc:
+    default:
+      pass_manager.add(seahorn::createBmcPass(out, Solve));
+    }
+
   } else if (BoogieOutput) {
     llvm::raw_ostream *out = nullptr;
     if (!OutputFilename.empty()) {
@@ -382,10 +417,11 @@ int main(int argc, char **argv) {
     }
     pass_manager.add(seahorn::createBoogieWriterPass(out, Crab));
   } else {
-    if (!OutputFilename.empty())
-      pass_manager.add(new seahorn::HornWrite(output->os()));
-    if (Crab)
-      pass_manager.add(seahorn::createLoadCrabPass());
+    if (HoudiniInv || PredAbs || Solve) {
+      if (Crab) {
+        pass_manager.add(seahorn::createLoadCrabPass());
+      }
+    }
     if (HoudiniInv)
       pass_manager.add(new seahorn::HoudiniPass());
     if (PredAbs)
@@ -393,7 +429,7 @@ int main(int argc, char **argv) {
     if (Solve) {
       pass_manager.add(new seahorn::HornSolver());
       if (Cex)
-        pass_manager.add(new seahorn::HornCex(BmcEngine));
+        pass_manager.add(new seahorn::HornCex());
     }
   }
 

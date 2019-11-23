@@ -20,8 +20,12 @@ add_llvm_library (seahorn.LIB
   ClpWrite.cc
   HornClauseDB.cc
   HornClauseDBTransf.cc
-  PathBasedBmc.cc
-  Bmc.cc    
+  PathBmc.cc
+  PathBmcBoolAbs.cc  
+  PathBmcMuc.cc
+  PathBmcTrace.cc
+  PathBmcUtil.cc  
+  Bmc.cc
   BmcPass.cc
   BvOpSem.cc
   # BvInt.cc
@@ -30,12 +34,19 @@ add_llvm_library (seahorn.LIB
   BoogieWriter.cc
   BvOpSem2.cc
   BvOpSem2Mem.cc
+  BvOpSem2MemRepr.cc
+  BvOpSem2MemManager.cc
+  BvOpSem2Allocators.cc
+  BvOpSem2Alu.cc
+  BvOpSem2ConstEval.cc
   VCGen.cc
+  DfCoiAnalysis.cc
   )
 
-if (HAVE_CRAB_LLVM)
-  target_link_libraries (seahorn.LIB ${CRABLLVM_LIBS})
+add_subdirectory(Smt)
+if (HAVE_CLAM)
+  target_link_libraries (seahorn.LIB ${CLAM_LIBS})
 endif()
 
-set_target_properties (seahorn.LIB PROPERTIES OUTPUT_NAME "seahorn")
 
+set_target_properties (seahorn.LIB PROPERTIES OUTPUT_NAME "seahorn")

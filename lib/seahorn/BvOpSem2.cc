@@ -1,29 +1,41 @@
 #include "seahorn/BvOpSem2.hh"
+
+#include "llvm/CodeGen/IntrinsicLowering.h"
 #include "llvm/IR/GetElementPtrTypeIterator.h"
-
-#include "seahorn/Support/CFG.hh"
-#include "seahorn/Support/SeaLog.hh"
-#include "seahorn/Transforms/Instrumentation/ShadowMemDsa.hh"
-
 #include "llvm/Support/CommandLine.h"
 #include "llvm/Support/Format.h"
 #include "llvm/Support/MathExtras.h"
 
+#include "seahorn/Support/CFG.hh"
 #include "seahorn/Support/SeaDebug.h"
-#include "ufo/ExprLlvm.hpp"
-#include "llvm/CodeGen/IntrinsicLowering.h"
+#include "seahorn/Support/SeaLog.hh"
+#include "seahorn/Support/Stats.hh"
+#include "seahorn/Transforms/Instrumentation/ShadowMemDsa.hh"
 
-using namespace seahorn;
+#include "seahorn/Expr/ExprLlvm.hh"
+#include "seahorn/Expr/ExprOpBinder.hh"
+
+#include "BvOpSem2Context.hh"
+
+#include <fstream>
+#include <memory>
+
 using namespace llvm;
-
+using namespace seahorn;
+using namespace seahorn::details;
 using gep_type_iterator = generic_gep_type_iterator<>;
 
-static llvm::cl::opt<unsigned>
-    WordSize("horn-bv2-word-size", llvm::cl::desc("Word size in bytes: 1, 4"),
-             cl::init(4));
+static llvm::cl::opt<bool>
+    UseLambdas("horn-bv2-lambdas",
+               llvm::cl::desc("Use lambdas for array operations"),
+               cl::init(false));
 
 static llvm::cl::opt<unsigned>
-    PtrSize("horn-bv2-ptr-size", llvm::cl::desc("Pointer size in bytes: 4"),
+    WordSize("horn-bv2-word-size",
+             llvm::cl::desc("Word size in bytes: 1, 4, 8"), cl::init(4));
+
+static llvm::cl::opt<unsigned>
+    PtrSize("horn-bv2-ptr-size", llvm::cl::desc("Pointer size in bytes: 4, 8"),
             cl::init(4), cl::Hidden);
 
 static llvm::cl::opt<bool> EnableUniqueScalars2(
@@ -54,952 +66,56 @@ static llvm::cl::list<std::string> IgnoreExternalFunctions2(
         "These functions are not modeled as uninterpreted functions"),
     llvm::cl::ZeroOrMore, llvm::cl::CommaSeparated);
 
+static llvm::cl::opt<bool> SimplifyOnWrite(
+    "horn-bv2-simplify",
+    llvm::cl::desc("Simplify expressions as they are written to memory"),
+    llvm::cl::init(false));
+
 namespace {
 const Value *extractUniqueScalar(CallSite &cs) {
   if (!EnableUniqueScalars2)
     return nullptr;
   else
-    return seahorn::shadow_dsa::extractUniqueScalar(cs);
+    return shadow_dsa::extractUniqueScalar(cs);
 }
 
 const Value *extractUniqueScalar(const CallInst *ci) {
   if (!EnableUniqueScalars2)
     return nullptr;
   else
-    return seahorn::shadow_dsa::extractUniqueScalar(ci);
+    return shadow_dsa::extractUniqueScalar(ci);
 }
 
 bool isShadowMem(const Value &V, const Value **out) {
   const Value *scalar;
-  bool res = seahorn::shadow_dsa::isShadowMem(V, &scalar);
+  bool res = shadow_dsa::isShadowMem(V, &scalar);
   if (EnableUniqueScalars2 && out)
     *out = scalar;
   return res;
 }
 
 const seahorn::details::Bv2OpSemContext &const_ctx(const OpSemContext &_ctx);
-} // namespace
 
-namespace {
 /// \brief Work-arround for a bug in llvm::CallSite::getCalledFunction
 /// properly handle bitcast
 Function *getCalledFunction(CallSite &CS) {
   Function *fn = CS.getCalledFunction();
-  if (fn) return fn;
+  if (fn)
+    return fn;
 
   Value *v = CS.getCalledValue();
-  if (v) v = v->stripPointerCasts();
+  if (v)
+    v = v->stripPointerCasts();
   fn = dyn_cast<Function>(v);
 
   return fn;
 }
 
-}
+} // namespace
 namespace seahorn {
+
 namespace details {
-class OpSemMemManager;
-
-/// \brief Operational Semantics Context, a.k.a. Semantic Machine
-/// Keeps track of the state of the current semantic machine and provides
-/// API to manipulate the machine.
-class Bv2OpSemContext : public OpSemContext {
-  friend class OpSemBase;
-
-private:
-  /// \brief Set memory manager to be used by the machine
-  void setMemManager(OpSemMemManager *man);
-
-  /// \brief Reference to parent operational semantics
-  Bv2OpSem &m_sem;
-
-  /// \brief currently executing function
-  const Function *m_func;
-
-  /// \brief Currently executing basic block
-  const BasicBlock *m_bb;
-
-  /// \brief Current instruction to be executed
-  BasicBlock::const_iterator m_inst;
-
-  /// \brief Previous basic block (or null if not known)
-  const BasicBlock *m_prev;
-
-  /// \brief Meta register that contains the name of the register to be
-  /// used in next memory load
-  Expr m_readRegister;
-
-  /// \brief Meta register that contains the name of the register to be
-  /// used in next memory store
-  Expr m_writeRegister;
-
-  /// \brief Indicates whether the current in/out memory is a unique scalar
-  /// memory cell. A unique scalar memory cell is a memory cell that contains a
-  /// scalar and is never aliased.
-  bool m_scalar;
-
-  /// \brief An additional memory read register that is used in memory transfer
-  /// instructions that read/write from multiple memory regions
-  Expr m_trfrReadReg;
-
-  /// \brief Argument stack for the current function call
-  ExprVector m_fparams;
-
-  /// \brief Instructions that were treated as a noop by the machine
-  DenseSet<const Instruction *> m_ignored;
-
-  using FlatExprSet = boost::container::flat_set<Expr>;
-
-  /// \brief Declared symbolic registers
-  FlatExprSet m_registers;
-
-  using ValueExprMap = DenseMap<const llvm::Value *, Expr>;
-
-  // \brief Map from \c llvm::Value to a registers
-  ValueExprMap m_valueToRegister;
-
-  using OpSemMemManagerPtr = std::unique_ptr<OpSemMemManager>;
-
-  /// \brief Memory manager for the machine
-  OpSemMemManagerPtr m_memManager;
-
-  /// \brief Pointer to the parent a parent context
-  ///
-  /// If not null, then the current context is a fork of the parent context
-  /// Otherwise, the current context is the main context
-  const Bv2OpSemContext *m_parent = nullptr;
-
-  /// Cache for helper expressions. Avoids creating them on the fly.
-
-  /// \brief Numeric zero
-  Expr zeroE;
-  /// \brief Numeric one
-  Expr oneE;
-  /// \brief 1-bit bit-vector set to 1
-  Expr trueBv;
-  /// \brief 1-bit bit-vector set to 0
-  Expr falseBv;
-  /// \brief bit-precise representation of null pointer
-  Expr nullBv;
-  /// \brief bit-precise representation of maximum pointer value
-  Expr maxPtrE;
-
-public:
-  /// \brief Create a new context with given semantics, values, and side
-  Bv2OpSemContext(Bv2OpSem &sem, SymStore &values, ExprVector &side);
-  /// \brief Clone a context with possibly new values and side condition
-  /// \sa Bv2OpSem::fork
-  Bv2OpSemContext(SymStore &values, ExprVector &side,
-                  const Bv2OpSemContext &other);
-  Bv2OpSemContext(const Bv2OpSemContext &) = delete;
-  ~Bv2OpSemContext() override = default;
-
-  /// \brief Returns size of a memory word
-  unsigned wordSzInBytes() const;
-  /// \brief Returns size in bits of a memory word
-  unsigned wordSzInBits() const { return wordSzInBytes() * 8; }
-  /// \brief Returns size of a pointer in bits
-  unsigned ptrSzInBits() const;
-
-  /// \brief Converts bool expression to bit-vector expression
-  Expr boolToBv(Expr b);
-  /// \brief Converts bit-vector expression to bool expression
-  Expr bvToBool(Expr b);
-
-  /// \brief Returns the memory manager
-  OpSemMemManager *getMemManager() { return m_memManager.get(); }
-
-  /// \brief Push parameter on a stack for a function call
-  void pushParameter(Expr v) { m_fparams.push_back(v); }
-  /// \brief Update the value of \p idx parameter on the stack
-  void setParameter(unsigned idx, Expr v) { m_fparams[idx] = v; }
-  /// \brief Reset all parameters
-  void resetParameters() { m_fparams.clear(); }
-  /// \brief Return the current parameter stack as a vector
-  const ExprVector &getParameters() const { return m_fparams; }
-
-  /// \brief Return the currently executing basic block
-  const BasicBlock *getCurrBb() const { return m_bb; }
-  /// \brief Set the previously executed basic block
-  void setPrevBb(const BasicBlock &prev) { m_prev = &prev; }
-
-  /// \brief Return basic block executed prior to the current one (used to
-  /// resolve PHI instructions)
-  const BasicBlock *getPrevBb() const { return m_prev; }
-  /// \brief Currently executed instruction
-  const Instruction &getCurrentInst() const { return *m_inst; }
-  /// \brief Set instruction to be executed next
-  void setInstruction(const Instruction &inst) {
-    m_inst = BasicBlock::const_iterator(&inst);
-  }
-  /// \brief True if executing the last instruction in the current basic block
-  bool isAtBbEnd() const { return m_inst == m_bb->end(); }
-  /// \brief Move to next instructions in the basic block to execute
-  Bv2OpSemContext &operator++() {
-    ++m_inst;
-    return *this;
-  }
-
-  void setMemReadRegister(Expr r) { m_readRegister = r; }
-  Expr getMemReadRegister() { return m_readRegister; }
-  void setMemWriteRegister(Expr r) { m_writeRegister = r; }
-  Expr getMemWriteRegister() { return m_writeRegister; }
-  bool isMemScalar() { return m_scalar; }
-  void setMemScalar(bool v) { m_scalar = v; }
-
-  void setMemTrsfrReadReg(Expr r) { m_trfrReadReg = r; }
-  Expr getMemTrsfrReadReg() { return m_trfrReadReg; }
-
-  /// \brief Load value of type \p ty with alignment \align pointed by the
-  /// symbolic pointer \ptr. Memory register being read from must be set via
-  /// \f setMemReadRegister
-  Expr loadValueFromMem(Expr ptr, const llvm::Type &ty, uint32_t align);
-
-  /// \brief Store a value \val to symbolic memory at address \p ptr
-  ///
-  /// Read and write memory registers must be set with setMemReadRegister and
-  /// setMemWriteRegister prior to this operation.
-  Expr storeValueToMem(Expr val, Expr ptr, const llvm::Type &ty,
-                       uint32_t align);
-
-  /// \brief Perform symbolic memset
-  Expr MemSet(Expr ptr, Expr val, unsigned len, uint32_t align);
-
-  /// \brief Perform symbolic memcpy
-  Expr MemCpy(Expr dPtr, Expr sPtr, unsigned len, uint32_t align);
-
-  /// \brief Copy concrete memory into symbolic memory
-  Expr MemFill(Expr dPtr, char *sPtr, unsigned len, uint32_t align = 0);
-
-  /// \brief Execute inttoptr
-  Expr inttoptr(Expr intValue, const Type &intTy, const Type &ptrTy) const;
-  /// \brief Execute ptrtoint
-  Expr ptrtoint(Expr ptrValue, const Type &ptrTy, const Type &intTy) const;
-  /// \brief Execute gep
-  Expr gep(Expr ptr, gep_type_iterator it, gep_type_iterator end) const;
-
-  /// \brief Called when a module is entered
-  void onModuleEntry(const Module &M) override;
-  /// \brief Called when a function is entered
-  void onFunctionEntry(const Function &fn) override;
-  /// \brief Called when a function returns
-  void onFunctionExit(const Function &fn) override {}
-
-  /// \brief Call when a basic block is entered
-  void onBasicBlockEntry(const BasicBlock &bb) override {
-    if (!m_func)
-      m_func = bb.getParent();
-    assert(m_func == bb.getParent());
-    if (m_bb)
-      m_prev = m_bb;
-    m_bb = &bb;
-    m_inst = bb.begin();
-  }
-
-  /// \brief declare \p v as a new register for the machine
-  void declareRegister(Expr v);
-  /// \brief Returns true if \p is a known register
-  bool isKnownRegister(Expr v);
-
-  /// \brief Create a register of the correct sort to hold the value returned by
-  /// the instruction
-  Expr mkRegister(const llvm::Instruction &inst);
-  /// \brief Create a register to hold control information of a basic block
-  Expr mkRegister(const llvm::BasicBlock &bb);
-  /// \brief Create a register to hold a pointer to a global variable
-  Expr mkRegister(const llvm::GlobalVariable &gv);
-  /// \brief Create a register to hold a pointer to a function
-  Expr mkRegister(const llvm::Function &fn);
-  /// \brief Create a register to hold a value
-  Expr mkRegister(const llvm::Value &v);
-  /// \brief Return a register that contains \p v, if it exists
-  Expr getRegister(const llvm::Value &v) const {
-    Expr res = m_valueToRegister.lookup(&v);
-    if (!res && m_parent)
-      res = m_parent->getRegister(v);
-    return res;
-  }
-
-  /// \brief Return sort for a function pointer
-  Expr mkPtrRegisterSort(const Function &fn) const;
-  /// \brief Return a sort for a pointer to global variable register
-  Expr mkPtrRegisterSort(const GlobalVariable &gv) const;
-  /// \brief Return a sort for a pointer
-  Expr mkPtrRegisterSort(const Instruction &inst) const;
-  /// \brief Return a sort for a memory register
-  Expr mkMemRegisterSort(const Instruction &inst) const;
-
-  /// \brief Returns symbolic value of a constant expression \p c
-  Expr getConstantValue(const llvm::Constant &c);
-
-  std::pair<char *, unsigned>
-  getGlobalVariableInitValue(const llvm::GlobalVariable &gv);
-
-  /// \brief Return true if \p inst is ignored by the semantics
-  bool isIgnored(const Instruction &inst) const {
-    return m_ignored.count(&inst);
-  }
-
-  // \brief Mark \p inst to be ignored
-  void ignore(const Instruction &inst) { m_ignored.insert(&inst); }
-
-  /// \brief Fork current context and update new copy with a given store and
-  /// side condition
-  OpSemContextPtr fork(SymStore &values, ExprVector &side) {
-    return OpSemContextPtr(new Bv2OpSemContext(values, side, *this));
-  }
-
-private:
-  static Bv2OpSemContext &ctx(OpSemContext &ctx) {
-    return static_cast<Bv2OpSemContext &>(ctx);
-  }
-};
-
-/// \brief Memory manager for OpSem machine
-class OpSemMemManager {
-
-  /// \brief Allocation information
-  struct AllocInfo {
-    /// \brief numeric ID
-    unsigned m_id;
-    /// \brief Start address of the allocation
-    unsigned m_start;
-    /// \brief End address of the allocation
-    unsigned m_end;
-    /// \brief Size of the allocation
-    unsigned m_sz;
-
-    AllocInfo(unsigned id, unsigned start, unsigned end, unsigned sz)
-        : m_id(id), m_start(start), m_end(end), m_sz(sz) {}
-  };
-
-  /// \brief Allocation information for functions whose address is taken
-  struct FuncAllocInfo {
-    /// \brief Pointer to llvm::Function descriptor of the function
-    const Function *m_fn;
-    /// \brief Start address of the allocation
-    unsigned m_start;
-    /// \brief End address of the allocation
-    unsigned m_end;
-
-    FuncAllocInfo(const Function &fn, unsigned start, unsigned end)
-        : m_fn(&fn), m_start(start), m_end(end) {}
-  };
-
-  /// \brief Allocation information for a global variable
-  struct GlobalAllocInfo {
-    /// \brief Pointer to llvm::GlobalVariable descriptor
-    const GlobalVariable *m_gv;
-    /// \brief Start of allocation
-    unsigned m_start;
-    /// \brief End of allocation
-    unsigned m_end;
-    /// \brief Size of allocation
-    unsigned m_sz;
-
-    /// \brief Uninitialized memory for the value of the global on the host
-    /// machine
-    char *m_mem;
-    GlobalAllocInfo(const GlobalVariable &gv, unsigned start, unsigned end,
-                    unsigned sz)
-        : m_gv(&gv), m_start(start), m_end(end), m_sz(sz) {
-
-      m_mem = static_cast<char *>(::operator new(sz));
-    }
-
-    char *getMemory() { return m_mem; }
-  };
-
-  /// \brief Parent Operational Semantics
-  Bv2OpSem &m_sem;
-  /// \brief Parent Semantics Context
-  Bv2OpSemContext &m_ctx;
-  /// \brief Parent expression factory
-  ExprFactory &m_efac;
-
-  /// \brief Ptr size in bytes
-  uint32_t m_ptrSz;
-  /// \brief Word size in bytes
-  uint32_t m_wordSz;
-  /// \brief Preferred alignment in bytes
-  ///
-  /// Must be divisible by \t m_wordSz
-  uint32_t m_alignment;
-
-  /// \brief Base name for non-deterministic allocation
-  Expr m_allocaName;
-  /// \brief Base name for non-deterministic pointer
-  Expr m_freshPtrName;
-
-  /// \brief All known stack allocations
-  std::vector<AllocInfo> m_allocas;
-  /// \brief All known code allocations
-  std::vector<FuncAllocInfo> m_funcs;
-  /// \brief All known global allocations
-  std::vector<GlobalAllocInfo> m_globals;
-
-  /// \brief Register that contains the value of the stack pointer on
-  /// function entry
-  Expr m_sp0;
-
-  /// \brief Source of unique identifiers
-  mutable unsigned m_id;
-
-  /// \brief A null pointer expression (cache)
-  Expr m_nullPtr;
-
-// TODO: turn into user-controlled parameters
-#define MAX_STACK_ADDR 0xC0000000
-#define MIN_STACK_ADDR (MAX_STACK_ADDR - 9437184)
-#define TEXT_SEGMENT_START 0x08048000
-
-public:
-  OpSemMemManager(Bv2OpSem &sem, Bv2OpSemContext &ctx)
-      : m_sem(sem), m_ctx(ctx), m_efac(ctx.getExprFactory()), m_ptrSz(PtrSize),
-        m_wordSz(WordSize), m_alignment(m_wordSz),
-        m_allocaName(mkTerm<std::string>("sea.alloca", m_efac)),
-        m_freshPtrName(mkTerm<std::string>("sea.ptr", m_efac)), m_id(0) {
-    assert((m_wordSz == 1 || m_wordSz == 4) && "Untested word size");
-    assert((m_ptrSz == 4) && "Untested pointer size");
-    m_nullPtr = bv::bvnum(0, ptrSzInBits(), m_efac);
-    m_sp0 = bv::bvConst(mkTerm<std::string>("sea.sp0", m_efac), ptrSzInBits());
-    m_ctx.declareRegister(m_sp0);
-  }
-
-  /// Right now everything is an expression. In the future, we might have other
-  /// types for PtrTy, such as a tuple of expressions
-  using PtrTy = Expr;
-
-  unsigned ptrSzInBits() const { return m_ptrSz * 8; }
-  unsigned wordSzInBytes() const { return m_wordSz; }
-  unsigned wordSzInBits() const { return m_wordSz * 8; }
-
-  /// \brief Creates a non-deterministic pointer that is aligned
-  ///
-  /// Top bits of the pointer are named by \p name and last \c log2(align) bits
-  /// are set to zero
-  PtrTy mkAlignedPtr(Expr name, uint32_t align) const {
-    unsigned alignBits = llvm::Log2_32(align);
-    return bv::concat(bv::bvConst(name, ptrSzInBits() - alignBits),
-                      bv::bvnum(0, alignBits, m_efac));
-  }
-
-  /// \brief Returns sort of a pointer register for an instruction
-  Expr mkPtrRegisterSort(const Instruction &inst) const {
-    const Type *ty = inst.getType();
-    assert(ty);
-    unsigned sz = m_sem.sizeInBits(*ty);
-    assert(ty->isPointerTy());
-    assert(sz == ptrSzInBits());
-
-    return bv::bvsort(m_sem.sizeInBits(*ty), m_efac);
-  }
-
-  /// \brief Returns sort of a pointer register for a function pointer
-  Expr mkPtrRegisterSort(const Function &fn) const {
-    return bv::bvsort(ptrSzInBits(), m_efac);
-  }
-
-  /// \brief Returns sort of a pointer register for a global pointer
-  Expr mkPtrRegisterSort(const GlobalVariable &gv) const {
-    return bv::bvsort(ptrSzInBits(), m_efac);
-  }
-
-  /// \brief Returns sort of memory-holding register for an instruction
-  Expr mkMemRegisterSort(const Instruction &inst) const {
-    Expr ptrTy = bv::bvsort(ptrSzInBits(), m_efac);
-    Expr valTy = bv::bvsort(wordSzInBits(), m_efac);
-    return sort::arrayTy(ptrTy, valTy);
-  }
-
-  /// \brief Returns a fresh aligned pointer value
-  PtrTy freshPtr() {
-    Expr name = op::variant::variant(m_id++, m_freshPtrName);
-    return mkAlignedPtr(name, m_alignment);
-  }
-
-  /// \brief Allocates memory on the stack and returns a pointer to it
-  /// \param align is requested alignment. If 0, default alignment is used
-  PtrTy salloc(unsigned bytes, uint32_t align = 0) {
-
-    align = std::max(align, m_alignment);
-    unsigned start = m_allocas.empty() ? 0 : m_allocas.back().m_end;
-    start = llvm::alignTo(start, align);
-
-    unsigned end = start + bytes;
-    end = llvm::alignTo(end, align);
-
-    m_allocas.emplace_back(m_allocas.size() + 1, start, end, bytes);
-
-    Expr name = op::variant::variant(m_allocas.back().m_id, m_allocaName);
-
-    return mkStackPtr(name, m_allocas.back());
-  }
-
-  /// \brief Returns a pointer value for a given stack allocation
-  PtrTy mkStackPtr(Expr name, AllocInfo &allocInfo) {
-    Expr res = m_ctx.read(m_sp0);
-    res = mk<BSUB>(res, bv::bvnum(allocInfo.m_end, ptrSzInBits(), m_efac));
-    return res;
-  }
-
-  /// \brief Allocates memory on the stack and returns a pointer to it
-  PtrTy salloc(Expr bytes, unsigned align = 0) {
-    LOG("opsem", WARN << "unsound handling of dynamically "
-                         "sized stack allocation of "
-                      << bytes << " bytes";);
-    return freshPtr();
-  }
-
-  /// \brief Address at which heap starts (initial value of \c brk)
-  unsigned brk0Addr() {
-    if (!m_globals.empty())
-      return m_globals.back().m_end;
-    if (!m_funcs.empty())
-      return m_funcs.back().m_end;
-    return TEXT_SEGMENT_START;
-  }
-
-  /// \brief Pointer to start of the heap
-  PtrTy brk0Ptr() { return bv::bvnum(brk0Addr(), ptrSzInBits(), m_efac); }
-
-  /// \brief Allocates memory on the heap and returns a pointer to it
-  PtrTy halloc(unsigned _bytes, unsigned align = 0) {
-    Expr res = freshPtr();
-
-    unsigned bytes = llvm::alignTo(_bytes, std::max(align, m_alignment));
-
-    // -- pointer is in the heap: between brk at the beginning and end of stack
-    m_ctx.addSide(mk<BULT>(
-        res, bv::bvnum(MIN_STACK_ADDR - bytes, ptrSzInBits(), m_efac)));
-    m_ctx.addSide(mk<BUGT>(res, brk0Ptr()));
-    return res;
-  }
-
-  /// \brief Allocates memory on the heap and returns pointer to it
-  PtrTy halloc(Expr bytes, unsigned align = 0) {
-    Expr res = freshPtr();
-
-    // -- pointer is in the heap: between brk at the beginning and end of stack
-    m_ctx.addSide(
-        mk<BULT>(res, bv::bvnum(MIN_STACK_ADDR, ptrSzInBits(), m_efac)));
-    m_ctx.addSide(mk<BUGT>(res, brk0Ptr()));
-    // TODO: take size of pointer into account,
-    // it cannot be that close to the stack
-    return res;
-  }
-
-  /// \brief Allocates memory in global (data/bss) segment for given global
-  PtrTy galloc(const GlobalVariable &gv, unsigned align = 0) {
-    uint64_t gvSz = m_sem.getTD().getTypeAllocSize(gv.getValueType());
-
-    unsigned start =
-        !m_globals.empty()
-            ? m_globals.back().m_end
-            : (m_funcs.empty() ? TEXT_SEGMENT_START : m_funcs.back().m_end);
-
-    start = llvm::alignTo(start, std::max(align, m_alignment));
-    unsigned end = llvm::alignTo(start + gvSz, std::max(align, m_alignment));
-    m_globals.emplace_back(gv, start, end, gvSz);
-    m_sem.initMemory(gv.getInitializer(), m_globals.back().getMemory());
-    return bv::bvnum(start, ptrSzInBits(), m_efac);
-  }
-
-  /// \brief Allocates memory in code segment for the code of a given function
-  PtrTy falloc(const Function &fn) {
-    assert(m_globals.empty() && "Cannot allocate functions after globals");
-    unsigned start = m_funcs.empty() ? 0x08048000 : m_funcs.back().m_end;
-    unsigned end = llvm::alignTo(start + 4, m_alignment);
-    m_funcs.emplace_back(fn, start, end);
-    return bv::bvnum(start, ptrSzInBits(), m_efac);
-  }
-
-  /// \brief Returns a function pointer value for a given function
-  PtrTy getPtrToFunction(const Function &F) {
-    return bv::bvnum(getFunctionAddr(F), ptrSzInBits(), m_efac);
-  }
-
-  /// \brief Returns an address at which a given function resides
-  unsigned getFunctionAddr(const Function &F) {
-    for (auto &fi : m_funcs)
-      if (fi.m_fn == &F)
-        return fi.m_start;
-    falloc(F);
-    return m_funcs.back().m_start;
-  }
-
-  /// \brief Returns a pointer to a global variable
-  PtrTy getPtrToGlobalVariable(const GlobalVariable &gv) {
-    return bv::bvnum(getGlobalVariableAddr(gv), ptrSzInBits(), m_efac);
-  }
-
-  /// \brief Returns an address of a global variable
-  unsigned getGlobalVariableAddr(const GlobalVariable &gv) {
-    for (auto &gi : m_globals)
-      if (gi.m_gv == &gv)
-        return gi.m_start;
-
-    galloc(gv);
-    return m_globals.back().m_start;
-  }
-
-  /// \brief Returns initial value of a global variable
-  ///
-  /// Returns (nullptr, 0) if the global variable has no known initializer
-  std::pair<char *, unsigned>
-  getGlobalVariableInitValue(const GlobalVariable &gv) {
-    for (auto &gi : m_globals) {
-      if (gi.m_gv == &gv)
-        return std::make_pair(gi.m_mem, gi.m_sz);
-    }
-    return std::make_pair(nullptr, 0);
-  }
-
-  /// \brief Loads an integer of a given size from memory register
-  ///
-  /// \param[in] ptr pointer being accessed
-  /// \param[in] memReg memory register into which \p ptr points
-  /// \param[in] byteSz size of the integer in bytes
-  /// \param[in] align known alignment of \p ptr
-  /// \return symbolic value of the read integer
-  Expr loadIntFromMem(PtrTy ptr, Expr memReg, unsigned byteSz, uint64_t align) {
-    Expr mem = m_ctx.read(memReg);
-    SmallVector<Expr, 16> words;
-    // -- read all words
-    for (unsigned i = 0; i < byteSz; i += wordSzInBytes()) {
-      words.push_back(loadAlignedWordFromMem(ptrAdd(ptr, i), mem));
-    }
-
-    assert(!words.empty());
-
-    // -- concatenate the words together into a singe value
-    Expr res;
-    for (Expr &w : words)
-      res = res ? bv::concat(w, res) : w;
-
-    assert(res);
-    assert(byteSz > wordSzInBytes() || words.size() == 1);
-    // -- extract actual bytes read (if fewer than word)
-    if (byteSz < wordSzInBytes())
-      res = bv::extract(byteSz * 8 - 1, 0, res);
-
-    return res;
-  }
-
-  /// \brief Loads a pointer stored in memory
-  /// \sa loadIntFromMem
-  PtrTy loadPtrFromMem(PtrTy ptr, Expr memReg, unsigned byteSz,
-                       uint64_t align) {
-    return loadIntFromMem(ptr, memReg, byteSz, align);
-  }
-
-  /// \brief Loads one word from memory pointed by \p ptr
-  Expr loadAlignedWordFromMem(PtrTy ptr, Expr mem) {
-    return op::array::select(mem, ptr);
-  }
-
-  /// \brief Pointer addition with numeric offset
-  PtrTy ptrAdd(PtrTy ptr, int32_t _offset) const {
-    if (_offset == 0)
-      return ptr;
-    mpz_class offset(_offset);
-    return mk<BADD>(ptr, bv::bvnum(offset, ptrSzInBits(), ptr->efac()));
-  }
-
-  /// \brief Pointer addition with symbolic offset
-  PtrTy ptrAdd(PtrTy ptr, Expr offset) const {
-    if (bv::isBvNum(offset)) {
-      mpz_class _offset = bv::toMpz(offset);
-      return ptrAdd(ptr, _offset.get_si());
-    }
-    return mk<BADD>(ptr, offset);
-  }
-
-  /// \brief Stores an integer into memory
-  ///
-  /// Returns an expression describing the state of memory in \c memReadReg
-  /// after the store
-  /// \sa loadIntFromMem
-  Expr storeIntToMem(Expr _val, PtrTy ptr, Expr memReadReg, unsigned byteSz,
-                     uint64_t align) {
-    Expr val = _val;
-    Expr mem = m_ctx.read(memReadReg);
-
-    SmallVector<Expr, 16> words;
-    if (byteSz == wordSzInBytes()) {
-      words.push_back(val);
-    } else if (byteSz < wordSzInBytes()) {
-      val = bv::zext(val, wordSzInBytes() * 8);
-      words.push_back(val);
-    } else {
-      for (unsigned i = 0; i < byteSz; i += wordSzInBytes()) {
-        unsigned lowBit = i * 8;
-        Expr slice = bv::extract(lowBit + wordSzInBits() - 1, lowBit, val);
-        words.push_back(slice);
-      }
-    }
-
-    Expr res;
-    for (unsigned i = 0; i < words.size(); ++i) {
-      res = storeAlignedWordToMem(words[i], ptrAdd(ptr, i * wordSzInBytes()),
-                                  mem);
-      mem = res;
-    }
-
-    return res;
-  }
-
-  /// \brief Stores a pointer into memory
-  /// \sa storeIntToMem
-  Expr storePtrToMem(PtrTy val, PtrTy ptr, Expr memReadReg, unsigned byteSz,
-                     uint64_t align) {
-    return storeIntToMem(val, ptr, memReadReg, byteSz, align);
-  }
-
-  /// \brief Writes one aligned word into memory
-  Expr storeAlignedWordToMem(Expr val, PtrTy ptr, Expr mem) {
-    return op::array::store(mem, ptr, val);
-  }
-
-  /// \brief Creates bit-vector of a given width filled with 0
-  Expr mkZeroE(unsigned width, ExprFactory &efac) {
-    return bv::bvnum(0, width, efac);
-  }
-  // breif Creates a bit-vector for number 1 of a given width
-  Expr mkOneE(unsigned width, ExprFactory &efac) {
-    return bv::bvnum(1, width, efac);
-  }
-
-  /// \brief Returns an expression corresponding to a load from memory
-  ///
-  /// \param[in] ptr is the pointer being dereferenced
-  /// \param[in] memReg is the memory register being read
-  /// \param[in] ty is the type of value being loaded
-  /// \param[in] align is the known alignment of the load
-  Expr loadValueFromMem(PtrTy ptr, Expr memReg, const llvm::Type &ty,
-                        uint64_t align) {
-    const unsigned byteSz =
-        m_sem.getTD().getTypeStoreSize(const_cast<llvm::Type *>(&ty));
-    ExprFactory &efac = ptr->efac();
-
-    Expr res;
-    switch (ty.getTypeID()) {
-    case Type::IntegerTyID:
-      res = loadIntFromMem(ptr, memReg, byteSz, align);
-      if (res && ty.isIntegerTy(1))
-        res = boolop::lneg(mk<EQ>(res, mkZeroE(byteSz * 8, efac)));
-      break;
-    case Type::FloatTyID:
-    case Type::DoubleTyID:
-    case Type::X86_FP80TyID:
-      errs() << "Error: load of float/double is not supported\n";
-      llvm_unreachable(nullptr);
-      break;
-    case Type::VectorTyID:
-      errs() << "Error: load of vectors is not supported\n";
-    case Type::PointerTyID:
-      res = loadPtrFromMem(ptr, memReg, byteSz, align);
-      break;
-    default:
-      SmallString<256> msg;
-      raw_svector_ostream out(msg);
-      out << "Loading from type: " << ty << " is not supported\n";
-      report_fatal_error(out.str());
-    }
-    return res;
-  }
-
-  Expr storeValueToMem(Expr _val, PtrTy ptr, Expr memReadReg, Expr memWriteReg,
-                       const llvm::Type &ty, uint32_t align) {
-    assert(ptr);
-    Expr val = _val;
-    const unsigned byteSz =
-        m_sem.getTD().getTypeStoreSize(const_cast<llvm::Type *>(&ty));
-    ExprFactory &efac = ptr->efac();
-
-    Expr res;
-    switch (ty.getTypeID()) {
-    case Type::IntegerTyID:
-      if (ty.isIntegerTy(1)) {
-        val = boolop::lite(val, mkOneE(byteSz * 8, efac),
-                           mkZeroE(byteSz * 8, efac));
-      }
-      res = storeIntToMem(val, ptr, memReadReg, byteSz, align);
-      break;
-    case Type::FloatTyID:
-    case Type::DoubleTyID:
-    case Type::X86_FP80TyID:
-      errs() << "Error: store of float/double is not supported\n";
-      llvm_unreachable(nullptr);
-      break;
-    case Type::VectorTyID:
-      errs() << "Error: store of vectors is not supported\n";
-    case Type::PointerTyID:
-      res = storePtrToMem(val, ptr, memReadReg, byteSz, align);
-      break;
-    default:
-      SmallString<256> msg;
-      raw_svector_ostream out(msg);
-      out << "Loading from type: " << ty << " is not supported\n";
-      report_fatal_error(out.str());
-    }
-    m_ctx.write(memWriteReg, res);
-    return res;
-  }
-
-  /// \brief Executes symbolic memset with a concrete length
-  Expr MemSet(PtrTy ptr, Expr _val, unsigned len, Expr memReadReg,
-              Expr memWriteReg, uint32_t align) {
-    Expr res;
-
-    unsigned width;
-    if (bv::isBvNum(_val, width) && width == 8) {
-      unsigned val = bv::toMpz(_val).get_ui();
-      val = val & 0xFF;
-      switch (wordSzInBytes()) {
-      case 1:
-        break;
-      case 4:
-        assert(align == 0 || align == 4);
-        val = val | (val << 8) | (val << 16) | (val << 24);
-        break;
-      default:
-        llvm::report_fatal_error("Unsupported word sz for memset\n");
-      }
-
-      res = m_ctx.read(memReadReg);
-      for (unsigned i = 0; i < len; i += wordSzInBytes()) {
-        Expr idx = ptr;
-        if (i > 0)
-          idx = mk<BADD>(ptr, bv::bvnum(i, ptrSzInBits(), m_efac));
-        res =
-            op::array::store(res, idx, bv::bvnum(val, wordSzInBits(), m_efac));
-      }
-      m_ctx.write(memWriteReg, res);
-    }
-
-    return res;
-  }
-
-  /// \brief Executes symbolic memcpy with concrete length
-  Expr MemCpy(PtrTy dPtr, PtrTy sPtr, unsigned len, Expr memTrsfrReadReg,
-              Expr memReadReg, Expr memWriteReg, uint32_t align) {
-    Expr res;
-
-    if (wordSzInBytes() == 1 || (wordSzInBytes() == 4 && align == 4)) {
-      Expr srcMem = m_ctx.read(memTrsfrReadReg);
-      res = srcMem;
-      for (unsigned i = 0; i < len; i += wordSzInBytes()) {
-        Expr dIdx = dPtr;
-        Expr sIdx = sPtr;
-        if (i > 0) {
-          Expr offset = bv::bvnum(i, ptrSzInBits(), m_efac);
-          dIdx = mk<BADD>(dPtr, offset);
-          sIdx = mk<BADD>(sPtr, offset);
-        }
-        Expr val = op::array::select(srcMem, sIdx);
-        res = op::array::store(res, dIdx, val);
-      }
-      m_ctx.write(memWriteReg, res);
-    }
-    return res;
-  }
-
-  /// \brief Executes symbolic memcpy from physical memory with concrete length
-  Expr MemFill(PtrTy dPtr, char *sPtr, unsigned len, uint32_t align = 0) {
-    // same alignment behavior as galloc - default is word size of machine, can
-    // only be increased
-    align = std::max(align, m_alignment);
-    Expr res = m_ctx.read(m_ctx.getMemReadRegister());
-    unsigned sem_word_sz = wordSzInBytes();
-    for (unsigned i = 0; i < len; i += sem_word_sz) {
-      Expr offset = bv::bvnum(i, ptrSzInBits(), m_efac);
-      Expr dIdx = i == 0 ? dPtr : mk<BADD>(dPtr, offset);
-      unsigned word = 0;
-      for (int byte = sem_word_sz - 1; byte >= 0; byte--) {
-        word = word << 8;
-        if (i + byte < len)
-          word += sPtr[i + byte];
-      }
-      Expr val = bv::bvnum(word, sem_word_sz * 8, m_efac);
-      res = op::array::store(res, dIdx, val);
-    }
-    m_ctx.write(m_ctx.getMemWriteRegister(), res);
-    return res;
-  }
-
-  /// \brief Executes inttoptr conversion
-  PtrTy inttoptr(Expr intVal, const Type &intTy, const Type &ptrTy) const {
-    uint64_t intTySz = m_sem.sizeInBits(intTy);
-    uint64_t ptrTySz = m_sem.sizeInBits(ptrTy);
-    assert(ptrTySz == ptrSzInBits());
-
-    Expr res = intVal;
-    if (ptrTySz > intTySz)
-      res = bv::zext(res, ptrTySz);
-    else if (ptrTySz < intTySz)
-      res = bv::extract(ptrTySz - 1, 0, res);
-    return res;
-  }
-
-  /// \brief Executes ptrtoint conversion
-  Expr ptrtoint(PtrTy ptr, const Type &ptrTy, const Type &intTy) const {
-    uint64_t ptrTySz = m_sem.sizeInBits(ptrTy);
-    uint64_t intTySz = m_sem.sizeInBits(intTy);
-    assert(ptrTySz == ptrSzInBits());
-
-    Expr res = ptr;
-    if (ptrTySz < intTySz)
-      res = bv::zext(res, intTySz);
-    else if (ptrTySz > intTySz)
-      res = bv::extract(intTySz - 1, 0, res);
-    return res;
-  }
-
-  /// \brief Computes a pointer corresponding to the gep instruction
-  PtrTy gep(PtrTy ptr, gep_type_iterator it, gep_type_iterator end) const {
-    Expr offset = m_sem.symbolicIndexedOffset(it, end, m_ctx);
-    return offset ? ptrAdd(ptr, offset) : Expr();
-  }
-
-  /// \brief Called when a function is entered for the first time
-  void onFunctionEntry(const Function &fn) {
-    Expr res = m_ctx.read(m_sp0);
-
-    // XXX hard coded values
-    // align of 4
-    m_ctx.addDef(bv::bvnum(0, 2, m_efac), bv::extract(2 - 1, 0, res));
-    // 3GB upper limit
-    m_ctx.addSide(
-        mk<BULE>(res, bv::bvnum(MAX_STACK_ADDR, ptrSzInBits(), m_efac)));
-    // 9MB stack
-    m_ctx.addSide(
-        mk<BUGE>(res, bv::bvnum(MIN_STACK_ADDR, ptrSzInBits(), m_efac)));
-  }
-
-  /// \breif Called when a module entered for the first time
-  void onModuleEntry(const Module &M) {}
-
-  /// \brief Debug helper
-  void dumpGlobalsMap() {
-    errs() << "Functions: \n";
-    if (m_funcs.empty())
-      errs() << "NONE\n";
-    for (auto &fi : m_funcs) {
-      errs() << llvm::format_hex(fi.m_start, 16, true) << " @"
-             << fi.m_fn->getName() << "\n";
-    }
-
-    errs() << "Globals: \n";
-    if (m_globals.empty())
-      errs() << "NONE\n";
-    for (auto &gi : m_globals) {
-      errs() << llvm::format_hex(gi.m_start, 16, true) << " @"
-             << gi.m_gv->getName() << "\n";
-    }
-  }
-};
-
-struct OpSemBase {
+struct OpSemVisitorBase {
   Bv2OpSemContext &m_ctx;
   ExprFactory &m_efac;
   Bv2OpSem &m_sem;
@@ -1008,34 +124,20 @@ struct OpSemBase {
   Expr falseE;
   Expr zeroE;
   Expr oneE;
-  Expr trueBv;
-  Expr falseBv;
-  Expr nullBv;
 
-  /// -- start of current memory segment
-  Expr m_cur_startMem;
-  /// -- end of current memory segment
-  Expr m_cur_endMem;
-
-  Expr m_maxPtrE;
-
-  OpSemBase(Bv2OpSemContext &ctx, Bv2OpSem &sem)
-      : m_ctx(ctx), m_efac(m_ctx.getExprFactory()), m_sem(sem),
-        m_cur_startMem(nullptr), m_cur_endMem(nullptr), m_maxPtrE(nullptr) {
+  OpSemVisitorBase(Bv2OpSemContext &ctx, Bv2OpSem &sem)
+      : m_ctx(ctx), m_efac(m_ctx.getExprFactory()), m_sem(sem) {
 
     trueE = m_ctx.m_trueE;
     falseE = m_ctx.m_falseE;
     zeroE = m_ctx.zeroE;
     oneE = m_ctx.oneE;
-    trueBv = m_ctx.trueBv;
-    falseBv = m_ctx.falseBv;
-    nullBv = m_ctx.nullBv;
 
-    m_maxPtrE = m_ctx.maxPtrE;
-
-    // XXX AG: this is probably wrong since instances of OpSemBase are created
+    // XXX AG: this is probably wrong since instances of OpSemVisitorBase are
+    // created
     // XXX AG: for each instruction, not just once per function
-    // XXX AG: but not an issue at this point since function calls are not handled by the semantics 
+    // XXX AG: but not an issue at this point since function calls are not
+    // handled by the semantics
     // -- first two arguments are reserved for error flag,
     // -- the other is function activation
     // ctx.pushParameter(falseE);
@@ -1067,18 +169,32 @@ struct OpSemBase {
 
   Expr lookup(const Value &v) { return m_sem.getOperandValue(v, m_ctx); }
 
+  /// \brief Havocs the register corresponding to \p v.
+  ///
+  /// Creates a register for \p v if necessary. Writes a new fresh symbolic
+  /// constant to the store for \p v.
+  ///
+  /// \return the fresh value that was written or null (empty Expr).
   Expr havoc(const Value &v) {
     if (m_sem.isSkipped(v))
       return Expr();
 
-    Expr reg;
-    if (reg = m_ctx.getRegister(v))
-      return m_ctx.havoc(reg);
+    assert(m_ctx.getMemManager());
+    OpSemMemManager &memManager = *m_ctx.getMemManager();
 
-    assert(!isa<Constant>(v));
-    reg = m_ctx.mkRegister(v);
-    if (reg)
-      return m_ctx.havoc(reg);
+    Expr reg;
+    if (reg = m_ctx.getRegister(v)) {
+      Expr h = memManager.coerce(reg, m_ctx.havoc(reg));
+      m_ctx.write(reg, h);
+      return h;
+    }
+
+    if (reg = m_ctx.mkRegister(v)) {
+      Expr h = memManager.coerce(reg, m_ctx.havoc(reg));
+      m_ctx.write(reg, h);
+      return h;
+    }
+
     errs() << "Error: failed to havoc: " << v << "\n";
     llvm_unreachable(nullptr);
   }
@@ -1102,10 +218,6 @@ struct OpSemBase {
     }
   }
 
-  /// convert bv1 to bool
-  Expr bvToBool(Expr bv) { return m_ctx.bvToBool(bv); }
-  Expr boolToBv(Expr b) { return m_ctx.boolToBv(b); }
-
   void setValue(const Value &v, Expr e) {
     if (e)
       write(v, e);
@@ -1116,9 +228,10 @@ struct OpSemBase {
   }
 };
 
-class OpSemVisitor : public InstVisitor<OpSemVisitor>, OpSemBase {
+class OpSemVisitor : public InstVisitor<OpSemVisitor>, OpSemVisitorBase {
 public:
-  OpSemVisitor(Bv2OpSemContext &ctx, Bv2OpSem &sem) : OpSemBase(ctx, sem) {}
+  OpSemVisitor(Bv2OpSemContext &ctx, Bv2OpSem &sem)
+      : OpSemVisitorBase(ctx, sem) {}
 
   // Opcode Implementations
   void visitReturnInst(ReturnInst &I) {
@@ -1158,13 +271,13 @@ public:
         llvm_unreachable(nullptr);
         break;
       case Instruction::Add:
-        res = mk<BADD>(op0, op1);
+        res = m_ctx.alu().doAdd(op0, op1, ty->getScalarSizeInBits());
         break;
       case Instruction::Sub:
-        res = mk<BSUB>(op0, op1);
+        res = m_ctx.alu().doSub(op0, op1, ty->getScalarSizeInBits());
         break;
       case Instruction::Mul:
-        res = mk<BMUL>(op0, op1);
+        res = m_ctx.alu().doMul(op0, op1, ty->getScalarSizeInBits());
         break;
       case Instruction::FAdd:
         break;
@@ -1177,25 +290,25 @@ public:
       case Instruction::FRem:
         break;
       case Instruction::UDiv:
-        res = mk<BUDIV>(op0, op1);
+        res = m_ctx.alu().doUDiv(op0, op1, ty->getScalarSizeInBits());
         break;
       case Instruction::SDiv:
-        res = mk<BSDIV>(op0, op1);
+        res = m_ctx.alu().doSDiv(op0, op1, ty->getScalarSizeInBits());
         break;
       case Instruction::URem:
-        res = mk<BUREM>(op0, op1);
+        res = m_ctx.alu().doURem(op0, op1, ty->getScalarSizeInBits());
         break;
       case Instruction::SRem:
-        res = mk<BSREM>(op0, op1);
+        res = m_ctx.alu().doSRem(op0, op1, ty->getScalarSizeInBits());
         break;
       case Instruction::And:
-        res = ty->isIntegerTy(1) ? mk<AND>(op0, op1) : mk<BAND>(op0, op1);
+        res = m_ctx.alu().doAnd(op0, op1, ty->getScalarSizeInBits());
         break;
       case Instruction::Or:
-        res = ty->isIntegerTy(1) ? mk<OR>(op0, op1) : mk<BOR>(op0, op1);
+        res = m_ctx.alu().doOr(op0, op1, ty->getScalarSizeInBits());
         break;
       case Instruction::Xor:
-        res = ty->isIntegerTy(1) ? mk<XOR>(op0, op1) : mk<BXOR>(op0, op1);
+        res = m_ctx.alu().doXor(op0, op1, ty->getScalarSizeInBits());
         break;
       }
     }
@@ -1257,20 +370,21 @@ public:
 
     Expr addr;
     if (const Constant *cv = dyn_cast<const Constant>(I.getOperand(0))) {
-      auto ogv = m_sem.getConstantValue(cv);
+      ConstantExprEvaluator ce(m_sem.getDataLayout());
+      auto ogv = ce.evaluate(cv);
       if (!ogv.hasValue()) {
         llvm_unreachable(nullptr);
       }
       unsigned nElts = ogv.getValue().IntVal.getZExtValue();
       unsigned memSz = typeSz * nElts;
-      LOG("opsem", errs() << "Alloca of " << memSz << " bytes: " << I << "\n";);
-      addr = m_ctx.getMemManager()->salloc(memSz);
+      LOG("opsem",
+          errs() << "!3 Alloca of " << memSz << " bytes: " << I << "\n";);
+      addr = m_ctx.mem().salloc(memSz);
     } else {
       Expr nElts = lookup(*I.getOperand(0));
-      LOG("opsem", errs() << "Alloca of " << nElts << "*" << typeSz
-                          << " bytes: " << I << "\n";);
-      WARN << "alloca of symbolic size is treated as non-deterministic";
-      addr = m_ctx.getMemManager()->freshPtr();
+      LOG("opsem", errs() << "!4 Alloca of (" << *nElts << " * " << typeSz
+                          << ") bytes: " << I << "\n";);
+      addr = m_ctx.mem().salloc(nElts, typeSz);
     }
 
     setValue(I, addr);
@@ -1392,6 +506,11 @@ public:
   }
 
   void visitIndirectCall(CallSite CS) {
+    if (CS.getInstruction()->getType()->isVoidTy()) {
+      LOG("opsem", WARN << "Interpreting indirect call as noop: "
+                        << *CS.getInstruction() << "\n";);
+      return;
+    }
     // treat as non-det and issue a warning
     setValue(*CS.getInstruction(), Expr());
   }
@@ -1406,7 +525,7 @@ public:
       op = boolop::lneg(op);
 
     if (!isOpX<TRUE>(op)) {
-      m_ctx.addSideSafe(boolop::lor(
+      m_ctx.addScopedSide(boolop::lor(
           m_ctx.read(m_sem.errorFlag(*(CS.getInstruction()->getParent()))),
           op));
     }
@@ -1430,7 +549,7 @@ public:
       // TODO: move into MemManager
       m_ctx.addDef(
           m_ctx.read(m_ctx.getMemWriteRegister()),
-          op::array::constArray(bv::bvsort(ptrSzInBits(), m_efac), nullBv));
+          op::array::constArray(m_ctx.mem().ptrSort(), m_ctx.mem().nullPtr()));
     }
 
     // get a fresh pointer
@@ -1636,7 +755,7 @@ public:
     const BasicBlock &BB = *inst.getParent();
 
     // enabled
-    m_ctx.setParameter(0, m_ctx.getActLit()); // activation literal
+    m_ctx.setParameter(0, m_ctx.getPathCond()); // path condition
     // error flag in
     m_ctx.setParameter(1, m_ctx.read(m_sem.errorFlag(BB)));
     // error flag out
@@ -1708,7 +827,6 @@ public:
         m_ctx.setInstruction(*parent->begin());
       } else {
         m_ctx.setInstruction(*me);
-        ++m_ctx;
       }
     } break;
     default:
@@ -1726,8 +844,10 @@ public:
   }
 
   void visitMemSetInst(MemSetInst &I) {
-    executeMemSetInst(*I.getDest(), *I.getValue(), *I.getLength(),
-                      I.getAlignment(), m_ctx);
+    Expr v = executeMemSetInst(*I.getDest(), *I.getValue(), *I.getLength(),
+                               I.getAlignment(), m_ctx);
+    if (!v)
+      WARN << "skipped memset: " << I << "\n";
   }
   void visitMemCpyInst(MemCpyInst &I) {
     executeMemCpyInst(*I.getDest(), *I.getSource(), *I.getLength(),
@@ -1817,8 +937,103 @@ public:
     llvm_unreachable(nullptr);
   }
 
-  // void visitExtractValueInst(ExtractValueInst &I);
-  // void visitInsertValueInst(InsertValueInst &I);
+  void visitExtractValueInst(ExtractValueInst &I) {
+      if (!I.hasIndices()) {
+          ERR << I;
+          llvm_unreachable("At least one index must be specified.");
+      }
+      Expr val = executeExtractValueInst(I.getType(), *I.getAggregateOperand(),
+                                         I.getIndices(), m_ctx);
+      setValue(I, val);
+  }
+
+  Expr executeExtractValueInst(Type *retTy, Value &aggValue,
+                               ArrayRef<unsigned> indices,
+                               Bv2OpSemContext &ctx) {
+    Expr aggOp = lookup(aggValue);
+    if (!aggOp) {
+      return Expr();
+    }
+    // compute the offsets: begin and end of bits to extract from aggOp
+    const DataLayout DL = m_sem.getDataLayout();
+    Type *curTy = aggValue.getType();
+    uint64_t begin = 0, end = 0;
+    for (unsigned idx : indices) {
+      if (auto *STy = dyn_cast<StructType>(curTy)) {
+        // current struct agg type
+        const StructLayout *SL = DL.getStructLayout(STy);
+        curTy = STy->getElementType(idx);
+        begin += SL->getElementOffsetInBits(idx);
+      } else if (auto *ATy = dyn_cast<ArrayType>(curTy)) {
+        // handle array agg type
+        curTy = ATy->getElementType();
+        uint64_t EltSize = DL.getTypeSizeInBits(curTy);
+        begin += idx * EltSize;
+      } else {
+        errs() << "Unhandled aggregate type to extract from: " << *curTy << "\n";
+        llvm_unreachable(nullptr);
+      }
+    }
+    assert(curTy->getTypeID() == retTy->getTypeID());
+    end = begin + DL.getTypeSizeInBits(retTy) - 1;
+    return bv::extract(end, begin, aggOp);
+  }
+
+  void visitInsertValueInst(InsertValueInst &I) {
+    if (!I.hasIndices()) {
+      ERR << I;
+      llvm_unreachable("At least one index must be specified.");
+    }
+    Expr val = executeInsertValueInst(
+        *I.getAggregateOperand(), *I.getInsertedValueOperand(),
+        I.getIndices(), m_ctx);
+    setValue(I, val);
+  }
+
+  Expr executeInsertValueInst(Value &aggVal, Value &insertedVal,
+                              ArrayRef<unsigned> indices,
+                              Bv2OpSemContext &ctx) {
+    Expr aggOp = lookup(aggVal);
+    Expr insertedOp = lookup(insertedVal);
+    if (!aggOp || !insertedOp) {
+      return Expr();
+    }
+    // compute the offsets: begin and end of bits to extract from aggOp
+    const DataLayout DL = m_sem.getDataLayout();
+    Type *curTy = aggVal.getType();
+    uint64_t begin = 0, end = 0;
+    for (unsigned idx : indices) {
+      if (auto *STy = dyn_cast<StructType>(curTy)) {
+        // current struct agg type
+        const StructLayout *SL = DL.getStructLayout(STy);
+        curTy = STy->getElementType(idx);
+        begin += SL->getElementOffsetInBits(idx);
+      } else if (auto *ATy = dyn_cast<ArrayType>(curTy)) {
+        // handle array agg type
+        curTy = ATy->getElementType();
+        uint64_t EltSize = DL.getTypeSizeInBits(curTy);
+        begin += idx * EltSize;
+      } else {
+        errs() << "Unhandled aggregate type to insert into" << *curTy << "\n";
+        llvm_unreachable(nullptr);
+      }
+    }
+    unsigned insertSize = DL.getTypeSizeInBits(insertedVal.getType());
+    if (insertSize != DL.getTypeSizeInBits(curTy)) {
+      llvm_unreachable("inserted value width not matched!");
+    }
+    unsigned aggSize =  DL.getTypeSizeInBits(aggVal.getType());
+    end = begin + insertSize - 1;
+    Expr ret = insertedOp;
+    if (begin > 0)
+      ret = bv::concat(ret, bv::extract(begin - 1, 0, aggOp));
+
+    if (end < aggSize - 1)
+      ret = bv::concat( bv::extract(aggSize - 1, end + 1, aggOp), ret);
+
+    return ret;
+  }
+
 
   void visitInstruction(Instruction &I) {
     ERR << I;
@@ -1830,7 +1045,7 @@ public:
     if (ty->isVectorTy()) {
       llvm_unreachable(nullptr);
     }
-    return cond && op0 && op1 ? mk<ITE>(cond, op0, op1) : Expr(0);
+    return cond && op0 && op1 ? bind::lite(cond, op0, op1) : Expr(0);
   }
 
   Expr executeTruncInst(const Value &v, const Type &ty, Bv2OpSemContext &ctx) {
@@ -1842,9 +1057,7 @@ public:
     if (!op0)
       return Expr();
 
-    uint64_t width = m_sem.sizeInBits(ty);
-    Expr res = bv::extract(width - 1, 0, op0);
-    return ty.isIntegerTy(1) ? bvToBool(res) : res;
+    return ctx.alu().doTrunc(op0, m_sem.sizeInBits(ty));
   }
 
   Expr executeZExtInst(const Value &v, const Type &ty, Bv2OpSemContext &ctx) {
@@ -1855,9 +1068,7 @@ public:
     Expr op0 = lookup(v);
     if (!op0)
       return Expr();
-    if (v.getType()->isIntegerTy(1))
-      op0 = boolToBv(op0);
-    return bv::zext(op0, m_sem.sizeInBits(ty));
+    return ctx.alu().doZext(op0, m_sem.sizeInBits(ty), m_sem.sizeInBits(v));
   }
 
   Expr executeSExtInst(const Value &v, const Type &ty, Bv2OpSemContext &ctx) {
@@ -1868,17 +1079,15 @@ public:
     Expr op0 = lookup(v);
     if (!op0)
       return Expr();
-    if (v.getType()->isIntegerTy(1))
-      op0 = boolToBv(op0);
-    return bv::sext(op0, m_sem.sizeInBits(ty));
+    return ctx.alu().doSext(op0, m_sem.sizeInBits(ty), m_sem.sizeInBits(v));
   }
 
   Expr executeICMP_EQ(Expr op0, Expr op1, Type *ty, Bv2OpSemContext &ctx) {
     switch (ty->getTypeID()) {
     case Type::IntegerTyID:
-      return mk<EQ>(op0, op1);
+      return ctx.alu().doEq(op0, op1, ty->getScalarSizeInBits());
     case Type::PointerTyID:
-      return mk<EQ>(op0, op1);
+      return ctx.mem().ptrEq(op0, op1);
     default:
       errs() << "Unhandled ICMP_EQ predicate: " << *ty << "\n";
       llvm_unreachable(nullptr);
@@ -1889,9 +1098,9 @@ public:
   Expr executeICMP_NE(Expr op0, Expr op1, Type *ty, Bv2OpSemContext &ctx) {
     switch (ty->getTypeID()) {
     case Type::IntegerTyID:
-      return mk<NEQ>(op0, op1);
+      return ctx.alu().doNe(op0, op1, ty->getScalarSizeInBits());
     case Type::PointerTyID:
-      return mk<NEQ>(op0, op1);
+      return ctx.mem().ptrNe(op0, op1);
     default:
       errs() << "Unhandled ICMP_NE predicate: " << *ty << "\n";
       llvm_unreachable(nullptr);
@@ -1902,9 +1111,9 @@ public:
   Expr executeICMP_ULT(Expr op0, Expr op1, Type *ty, Bv2OpSemContext &ctx) {
     switch (ty->getTypeID()) {
     case Type::IntegerTyID:
-      return mk<BULT>(op0, op1);
+      return ctx.alu().doUlt(op0, op1, ty->getScalarSizeInBits());
     case Type::PointerTyID:
-      return mk<BULT>(op0, op1);
+      return ctx.mem().ptrUlt(op0, op1);
     default:
       errs() << "Unhandled ICMP_ULT predicate: " << *ty << "\n";
       llvm_unreachable(nullptr);
@@ -1915,9 +1124,9 @@ public:
   Expr executeICMP_SLT(Expr op0, Expr op1, Type *ty, Bv2OpSemContext &ctx) {
     switch (ty->getTypeID()) {
     case Type::IntegerTyID:
-      return mk<BSLT>(op0, op1);
+      return ctx.alu().doSlt(op0, op1, ty->getScalarSizeInBits());
     case Type::PointerTyID:
-      return mk<BSLT>(op0, op1);
+      return ctx.mem().ptrSlt(op0, op1);
     default:
       errs() << "Unhandled ICMP_SLT predicate: " << *ty << "\n";
       llvm_unreachable(nullptr);
@@ -1928,9 +1137,9 @@ public:
   Expr executeICMP_UGT(Expr op0, Expr op1, Type *ty, Bv2OpSemContext &ctx) {
     switch (ty->getTypeID()) {
     case Type::IntegerTyID:
-      return mk<BUGT>(op0, op1);
+      return ctx.alu().doUgt(op0, op1, ty->getScalarSizeInBits());
     case Type::PointerTyID:
-      return mk<BUGT>(op0, op1);
+      return ctx.mem().ptrUgt(op0, op1);
     default:
       errs() << "Unhandled ICMP_UGT predicate: " << *ty << "\n";
       llvm_unreachable(nullptr);
@@ -1942,16 +1151,9 @@ public:
 
     switch (ty->getTypeID()) {
     case Type::IntegerTyID:
-      if (ty->isIntegerTy(1)) {
-        if (isOpX<TRUE>(op1))
-          // icmp sgt op0, i1 true  == !op0
-          return boolop::lneg(op0);
-        else
-          return bvToBool(mk<BSGT>(boolToBv(op0), boolToBv(op1)));
-      }
-      return mk<BSGT>(op0, op1);
+      return ctx.alu().doSgt(op0, op1, ty->getScalarSizeInBits());
     case Type::PointerTyID:
-      return mk<BSGT>(op0, op1);
+      return ctx.mem().ptrSgt(op0, op1);
     default:
       errs() << "Unhandled ICMP_SGT predicate: " << *ty << "\n";
       llvm_unreachable(nullptr);
@@ -1962,9 +1164,9 @@ public:
   Expr executeICMP_ULE(Expr op0, Expr op1, Type *ty, Bv2OpSemContext &ctx) {
     switch (ty->getTypeID()) {
     case Type::IntegerTyID:
-      return mk<BULE>(op0, op1);
+      return ctx.alu().doUle(op0, op1, ty->getScalarSizeInBits());
     case Type::PointerTyID:
-      return mk<BULE>(op0, op1);
+      return ctx.mem().ptrUle(op0, op1);
     default:
       errs() << "Unhandled ICMP_ULE predicate: " << *ty << "\n";
       llvm_unreachable(nullptr);
@@ -1975,9 +1177,9 @@ public:
   Expr executeICMP_SLE(Expr op0, Expr op1, Type *ty, Bv2OpSemContext &ctx) {
     switch (ty->getTypeID()) {
     case Type::IntegerTyID:
-      return mk<BSLE>(op0, op1);
+      return ctx.alu().doSle(op0, op1, ty->getScalarSizeInBits());
     case Type::PointerTyID:
-      return mk<BSLE>(op0, op1);
+      return ctx.mem().ptrSle(op0, op1);
     default:
       errs() << "Unhandled ICMP_SLE predicate: " << *ty << "\n";
       llvm_unreachable(nullptr);
@@ -1988,9 +1190,9 @@ public:
   Expr executeICMP_UGE(Expr op0, Expr op1, Type *ty, Bv2OpSemContext &ctx) {
     switch (ty->getTypeID()) {
     case Type::IntegerTyID:
-      return mk<BUGE>(op0, op1);
+      return ctx.alu().doUge(op0, op1, ty->getScalarSizeInBits());
     case Type::PointerTyID:
-      return mk<BUGE>(op0, op1);
+      return ctx.mem().ptrUge(op0, op1);
     default:
       errs() << "Unhandled ICMP_SLE predicate: " << *ty << "\n";
       llvm_unreachable(nullptr);
@@ -2001,9 +1203,9 @@ public:
   Expr executeICMP_SGE(Expr op0, Expr op1, Type *ty, Bv2OpSemContext &ctx) {
     switch (ty->getTypeID()) {
     case Type::IntegerTyID:
-      return mk<BSGE>(op0, op1);
+      return ctx.alu().doSge(op0, op1, ty->getScalarSizeInBits());
     case Type::PointerTyID:
-      return mk<BSGE>(op0, op1);
+      return ctx.mem().ptrSge(op0, op1);
     default:
       errs() << "Unhandled ICMP_SGE predicate: " << *ty << "\n";
       llvm_unreachable(nullptr);
@@ -2041,8 +1243,6 @@ public:
 
     if (ctx.isMemScalar()) {
       res = ctx.read(ctx.getMemReadRegister());
-      if (ty->isIntegerTy(1))
-        res = bvToBool(res);
     } else if (Expr op0 = lookup(addr)) {
       res = ctx.loadValueFromMem(op0, *ty, alignment);
     }
@@ -2057,7 +1257,7 @@ public:
     if (!ctx.getMemReadRegister() || !ctx.getMemWriteRegister() ||
         m_sem.isSkipped(val)) {
       LOG("opsem",
-          errs() << "Skipping store to " << addr << " of " << val << "\n";);
+          WARN << "skipping store to " << addr << " of " << val << "\n";);
       ctx.setMemReadRegister(Expr());
       ctx.setMemWriteRegister(Expr());
       return Expr();
@@ -2066,8 +1266,6 @@ public:
     Expr v = lookup(val);
     Expr res;
     if (v && ctx.isMemScalar()) {
-      if (val.getType()->isIntegerTy(1))
-        v = boolToBv(v);
       res = v;
       ctx.write(ctx.getMemWriteRegister(), res);
     } else {
@@ -2076,9 +1274,9 @@ public:
         res = m_ctx.storeValueToMem(v, p, *val.getType(), alignment);
     }
 
-    if (!res)
-      LOG("opsem",
-          errs() << "Skipping store to " << addr << " of " << val << "\n";);
+    LOG("opsem",
+        if (!res)
+          WARN << "Failed store to " << addr << " of " << val << "\n";);
 
     ctx.setMemReadRegister(Expr());
     ctx.setMemWriteRegister(Expr());
@@ -2090,14 +1288,18 @@ public:
                          Bv2OpSemContext &ctx) {
     if (!ctx.getMemReadRegister() || !ctx.getMemWriteRegister() ||
         m_sem.isSkipped(dst) || m_sem.isSkipped(val)) {
-      LOG("opsem", WARN << "Skipping memset\n");
+      LOG("opsem", WARN << "skipping memset because";
+          if (m_sem.isSkipped(dst)) WARN << "\tskipped dst: " << dst;
+          if (m_sem.isSkipped(val)) WARN << "\tskipped val: " << val;
+          if (!ctx.getMemReadRegister()) WARN << "\tno read register set";
+          if (!ctx.getMemWriteRegister()) WARN << "\tno write register set";);
       ctx.setMemReadRegister(Expr());
       ctx.setMemWriteRegister(Expr());
       return Expr();
     }
 
     if (ctx.isMemScalar()) {
-      ERR << "memset to scalars is not supported";
+      LOG("opsem", ERR << "memset to scalars is not supported";);
       llvm_unreachable(nullptr);
     }
 
@@ -2115,7 +1317,7 @@ public:
     }
 
     if (!res)
-      LOG("opsem", errs() << "Skipping memset\n";);
+      LOG("opsem", WARN << "interpreting memset as noop\n";);
 
     ctx.setMemReadRegister(Expr());
     ctx.setMemWriteRegister(Expr());
@@ -2128,7 +1330,8 @@ public:
     if (!ctx.getMemReadRegister() || !ctx.getMemWriteRegister() ||
         !ctx.getMemTrsfrReadReg() || m_sem.isSkipped(dst) ||
         m_sem.isSkipped(src)) {
-      LOG("opsem", WARN << "skipping memcpy");
+      LOG("opsem",
+          WARN << "skipping memcpy due to src argument: " << src << "\n";);
       ctx.setMemTrsfrReadReg(Expr());
       ctx.setMemReadRegister(Expr());
       ctx.setMemWriteRegister(Expr());
@@ -2146,11 +1349,11 @@ public:
       if (const ConstantInt *ci = dyn_cast<const ConstantInt>(&length)) {
         res = m_ctx.MemCpy(dstAddr, srcAddr, ci->getZExtValue(), alignment);
       } else
-        llvm_unreachable("Unsupported memcpy with symbolic length");
+        LOG("opsem", WARN << "unsupported memcpy with symbolic length";);
     }
 
     if (!res)
-      LOG("opsem", errs() << "Skipping memcpy\n";);
+      LOG("opsem", WARN << "interpreting memcpy as noop\n";);
 
     ctx.setMemTrsfrReadReg(Expr());
     ctx.setMemReadRegister(Expr());
@@ -2198,7 +1401,7 @@ public:
   }
 
   void visitModule(Module &M) {
-    LOG("opsem.module", errs() << M << "\n"; );
+    LOG("opsem.module", errs() << M << "\n";);
     m_ctx.onModuleEntry(M);
 
     for (const Function &fn : M.functions()) {
@@ -2210,12 +1413,14 @@ public:
             fn.getName().equals("seahorn.fail") ||
             fn.getName().startswith("shadow.mem"))
           continue;
+        if (m_sem.isSkipped(fn)) continue;
         Expr symReg = m_ctx.mkRegister(fn);
         assert(symReg);
         setValue(fn, m_ctx.getMemManager()->falloc(fn));
       }
     }
 
+    // -- allocate and layout globals
     for (const GlobalVariable &gv : M.globals()) {
       if (m_sem.isSkipped(gv))
         continue;
@@ -2228,6 +1433,16 @@ public:
       Expr symReg = m_ctx.mkRegister(gv);
       assert(symReg);
       setValue(gv, m_ctx.getMemManager()->galloc(gv));
+    }
+
+    // initialize globals
+    // must be done after allocations to deal with forward references
+    for (const GlobalVariable &gv : M.globals()) {
+      if (m_sem.isSkipped(gv))
+        continue;
+      if (gv.getSection().equals("llvm.metadata"))
+        continue;
+      m_ctx.mem().initGlobalVariable(gv);
     }
 
     LOG("opsem", m_ctx.getMemManager()->dumpGlobalsMap());
@@ -2247,8 +1462,9 @@ public:
   }
 };
 
-struct OpSemPhiVisitor : public InstVisitor<OpSemPhiVisitor>, OpSemBase {
-  OpSemPhiVisitor(Bv2OpSemContext &ctx, Bv2OpSem &sem) : OpSemBase(ctx, sem) {}
+struct OpSemPhiVisitor : public InstVisitor<OpSemPhiVisitor>, OpSemVisitorBase {
+  OpSemPhiVisitor(Bv2OpSemContext &ctx, Bv2OpSem &sem)
+      : OpSemVisitorBase(ctx, sem) {}
 
   void visitBasicBlock(BasicBlock &BB) {
     // -- evaluate all phi-nodes atomically. First read all incoming
@@ -2286,12 +1502,12 @@ Bv2OpSemContext::Bv2OpSemContext(Bv2OpSem &sem, SymStore &values,
                                  ExprVector &side)
     : OpSemContext(values, side), m_sem(sem), m_func(nullptr), m_bb(nullptr),
       m_inst(nullptr), m_prev(nullptr), m_scalar(false) {
-  zeroE = mkTerm<mpz_class>(0, efac());
-  oneE = mkTerm<mpz_class>(1, efac());
-  trueBv = bv::bvnum(1, 1, efac());
-  falseBv = bv::bvnum(0, 1, efac());
+  zeroE = mkTerm<expr::mpz_class>(0UL, efac());
+  oneE = mkTerm<expr::mpz_class>(1UL, efac());
 
-  setMemManager(new OpSemMemManager(m_sem, *this));
+  m_alu = mkBvOpSemAlu(*this);
+  setMemManager(
+      new OpSemMemManager(m_sem, *this, PtrSize, WordSize, UseLambdas));
 }
 
 Bv2OpSemContext::Bv2OpSemContext(SymStore &values, ExprVector &side,
@@ -2301,43 +1517,72 @@ Bv2OpSemContext::Bv2OpSemContext(SymStore &values, ExprVector &side,
       m_readRegister(o.m_readRegister), m_writeRegister(o.m_writeRegister),
       m_scalar(o.m_scalar), m_trfrReadReg(o.m_trfrReadReg),
       m_fparams(o.m_fparams), m_ignored(o.m_ignored),
-      m_registers(o.m_registers), m_memManager(nullptr), m_parent(&o),
-      zeroE(o.zeroE), oneE(o.oneE), trueBv(o.trueBv), falseBv(o.falseBv),
-      nullBv(o.nullBv), maxPtrE(o.maxPtrE) {
-  setActLit(o.getActLit());
+      m_registers(o.m_registers), m_alu(nullptr), m_memManager(nullptr),
+      m_parent(&o), zeroE(o.zeroE), oneE(o.oneE), m_z3(o.m_z3),
+      m_z3_simplifier(o.m_z3_simplifier) {
+  setPathCond(o.getPathCond());
 }
 
-unsigned Bv2OpSemContext::ptrSzInBits() const {
+void Bv2OpSemContext::write(Expr v, Expr u) {
+  if (SimplifyOnWrite) {
+    ScopedStats _st_("opsem.simplify");
+    if (!m_z3) {
+      m_z3.reset(new EZ3(efac()));
+      m_z3_simplifier.reset(new ZSimplifier<EZ3>(*m_z3));
+    }
 
-  assert(m_memManager);
-  if (m_parent)
-    return m_parent->ptrSzInBits();
-  // XXX HACK for refactoring
-  return m_memManager ? m_memManager->ptrSzInBits() : 32;
+    ZParams<EZ3> params(*m_z3);
+    params.set("ctrl_c", true);
+    // params.set("timeout", 10000U /*ms*/);
+    // params.set("flat", false);
+    // params.set("ite_extra_rules", false /*default=false*/);
+    // Expr _u = z3_simplify(*m_z3, u, params);
+    Expr _u = m_z3_simplifier->simplify(u);
+    LOG("opsem.simplify",
+        //
+        if (!isOpX<LAMBDA>(_u) && !isOpX<ITE>(_u) && dagSize(_u) > 100) {
+          errs() << "Term after simplification:\n"
+                 << m_z3->toSmtLib(_u) << "\n";
+        });
+
+    LOG("opsem.dump.subformulae",
+        if ((isOpX<EQ>(_u) || isOpX<NEG>(_u)) && dagSize(_u) > 100) {
+          static unsigned cnt = 0;
+          std::ofstream file("assert." + std::to_string(++cnt) + ".smt2");
+          file << m_z3->toSmtLibDecls(_u) << "\n";
+          file << "(assert " << m_z3->toSmtLib(_u) << ")\n";
+        });
+    u = _u;
+  }
+  OpSemContext::write(v, u);
+}
+unsigned Bv2OpSemContext::ptrSzInBits() const {
+  // XXX refactoring hack
+  if (!m_parent && !m_memManager)
+    return 32;
+
+  return mem().ptrSzInBits();
 }
 
 void Bv2OpSemContext::setMemManager(OpSemMemManager *man) {
   m_memManager.reset(man);
-  // TODO: move into MemManager
-  nullBv = bv::bvnum(0, ptrSzInBits(), efac());
 
   // TODO: move into MemManager
-  mpz_class val;
+  expr::mpz_class val;
   switch (ptrSzInBits()) {
   case 64:
     // TODO: take alignment into account
-    val = 0x000000000FFFFFFF;
+    val = expr::mpz_class(0x000000000FFFFFFFU);
     break;
   case 32:
     // TODO: take alignment into account
-    val = 0x0FFFFFFF;
+    val = expr::mpz_class(0x0FFFFFFFU);
     break;
   default:
     LOG("opsem",
         errs() << "Unsupported pointer size: " << ptrSzInBits() << "\n";);
     llvm_unreachable("Unexpected pointer size");
   }
-  maxPtrE = bv::bvnum(val, ptrSzInBits(), efac());
 }
 
 Expr Bv2OpSemContext::loadValueFromMem(Expr ptr, const llvm::Type &ty,
@@ -2385,31 +1630,34 @@ Expr Bv2OpSemContext::MemFill(Expr dPtr, char *sPtr, unsigned len,
 
 Expr Bv2OpSemContext::inttoptr(Expr intValue, const Type &intTy,
                                const Type &ptrTy) const {
-  if (m_parent)
-    return m_parent->inttoptr(intValue, intTy, ptrTy);
-  return m_memManager->inttoptr(intValue, intTy, ptrTy);
+  return mem().inttoptr(intValue, intTy, ptrTy);
 }
 
 Expr Bv2OpSemContext::ptrtoint(Expr ptrValue, const Type &ptrTy,
                                const Type &intTy) const {
-  assert(m_memManager);
-  if (m_parent)
-    return m_parent->ptrtoint(ptrValue, ptrTy, intTy);
-  return m_memManager->ptrtoint(ptrValue, ptrTy, intTy);
+  return mem().ptrtoint(ptrValue, ptrTy, intTy);
 }
 
 Expr Bv2OpSemContext::gep(Expr ptr, gep_type_iterator it,
                           gep_type_iterator end) const {
-  if (m_parent)
-    return m_parent->gep(ptr, it, end);
-  return m_memManager->gep(ptr, it, end);
+  return mem().gep(ptr, it, end);
 }
 
 void Bv2OpSemContext::onFunctionEntry(const Function &fn) {
-  m_memManager->onFunctionEntry(fn);
+  mem().onFunctionEntry(fn);
 }
 void Bv2OpSemContext::onModuleEntry(const Module &M) {
-  return m_memManager->onModuleEntry(M);
+  return mem().onModuleEntry(M);
+}
+
+void Bv2OpSemContext::onBasicBlockEntry(const BasicBlock &bb) {
+  if (!m_func)
+    m_func = bb.getParent();
+  assert(m_func == bb.getParent());
+  if (m_bb)
+    m_prev = m_bb;
+  m_bb = &bb;
+  m_inst = bb.begin();
 }
 
 void Bv2OpSemContext::declareRegister(Expr v) { m_registers.insert(v); }
@@ -2425,27 +1673,19 @@ Expr Bv2OpSemContext::mkRegister(const llvm::BasicBlock &bb) {
 }
 
 Expr Bv2OpSemContext::mkPtrRegisterSort(const Instruction &inst) const {
-  if (m_parent)
-    return m_parent->mkPtrRegisterSort(inst);
-  return m_memManager->mkPtrRegisterSort(inst);
+  return mem().mkPtrRegisterSort(inst);
 }
 
 Expr Bv2OpSemContext::mkPtrRegisterSort(const Function &fn) const {
-  if (m_parent)
-    return m_parent->mkPtrRegisterSort(fn);
-  return m_memManager->mkPtrRegisterSort(fn);
+  return mem().mkPtrRegisterSort(fn);
 }
 
 Expr Bv2OpSemContext::mkPtrRegisterSort(const GlobalVariable &gv) const {
-  if (m_parent)
-    return m_parent->mkPtrRegisterSort(gv);
-  return m_memManager->mkPtrRegisterSort(gv);
+  return mem().mkPtrRegisterSort(gv);
 }
 
 Expr Bv2OpSemContext::mkMemRegisterSort(const Instruction &inst) const {
-  if (m_parent)
-    return m_parent->mkMemRegisterSort(inst);
-  return m_memManager->mkMemRegisterSort(inst);
+  return mem().mkMemRegisterSort(inst);
 }
 
 Expr Bv2OpSemContext::mkRegister(const llvm::Instruction &inst) {
@@ -2464,9 +1704,9 @@ Expr Bv2OpSemContext::mkRegister(const llvm::Instruction &inst) {
       assert(scalar->getType()->isPointerTy());
       Type &eTy = *cast<PointerType>(scalar->getType())->getElementType();
       // -- create a constant with the name v[scalar]
-      reg = bv::bvConst(
+      reg = bind::mkConst(
           op::array::select(v, mkTerm<const Value *>(scalar, efac())),
-          m_sem.sizeInBits(eTy));
+          alu().intTy(m_sem.sizeInBits(eTy)));
     }
 
     // if tracking memory content, create array-valued register for
@@ -2478,14 +1718,14 @@ Expr Bv2OpSemContext::mkRegister(const llvm::Instruction &inst) {
     const Type &ty = *inst.getType();
     switch (ty.getTypeID()) {
     case Type::IntegerTyID:
-      reg = ty.isIntegerTy(1) ? bind::boolConst(v)
-                              : bv::bvConst(v, m_sem.sizeInBits(ty));
+    case Type::StructTyID: // treat aggregate types in register as int
+      reg = bind::mkConst(v, alu().intTy(m_sem.sizeInBits(ty)));
       break;
     case Type::PointerTyID:
       reg = bind::mkConst(v, mkPtrRegisterSort(inst));
       break;
     default:
-      errs() << "Error: unhandled type: " << ty << " of " << inst << "\n";
+      ERR << "unhandled type: " << ty << " of " << inst << "\n";
       llvm_unreachable(nullptr);
     }
   }
@@ -2539,29 +1779,43 @@ Expr Bv2OpSemContext::mkRegister(const llvm::Value &v) {
 
 Expr Bv2OpSemContext::getConstantValue(const llvm::Constant &c) {
   // -- easy common cases
-  if (c.isNullValue() || isa<ConstantPointerNull>(&c)) {
-    return c.getType()->isIntegerTy(1)
-               ? m_falseE
-               : bv::bvnum(0, m_sem.sizeInBits(c), efac());
+  if (isa<ConstantPointerNull>(&c)) {
+    return mem().nullPtr();
   } else if (const ConstantInt *ci = dyn_cast<const ConstantInt>(&c)) {
     if (ci->getType()->isIntegerTy(1))
-      return ci->isOne() ? m_trueE : m_falseE;
+      return ci->isOne() ? alu().si(1U, 1) : alu().si(0U, 1);
+    else if (ci->isZero())
+      return alu().si(0U, m_sem.sizeInBits(c));
+    else if (ci->isOne())
+      return alu().si(1U, m_sem.sizeInBits(c));
 
-    mpz_class k = toMpz(ci->getValue());
-    return bv::bvnum(k, m_sem.sizeInBits(c), efac());
+    expr::mpz_class k = toMpz(ci->getValue());
+    return alu().si(k, m_sem.sizeInBits(c));
   }
 
   if (c.getType()->isIntegerTy()) {
-    auto GVO = m_sem.getConstantValue(&c);
+    ConstantExprEvaluator ce(m_sem.getDataLayout());
+    auto GVO = ce.evaluate(&c);
     if (GVO.hasValue()) {
       GenericValue gv = GVO.getValue();
-      mpz_class k = toMpz(gv.IntVal);
-      if (c.getType()->isIntegerTy(1)) {
-        return k == 1 ? m_trueE : m_falseE;
-      } else {
-        return bv::bvnum(k, m_sem.sizeInBits(c), efac());
+      expr::mpz_class k = toMpz(gv.IntVal);
+      return alu().si(k, m_sem.sizeInBits(c));
+    }
+  } else if (c.getType()->isStructTy()) {
+    ConstantExprEvaluator ce(m_sem.getDataLayout());
+    auto GVO = ce.evaluate(&c);
+    if (GVO.hasValue()) {
+      GenericValue gv = GVO.getValue();
+      if (!gv.AggregateVal.empty()) {
+        auto aggBvO = m_sem.agg(c.getType(), gv.AggregateVal, *this);
+        if (aggBvO.hasValue()) {
+          const APInt &aggBv = aggBvO.getValue();
+          expr::mpz_class k = toMpz(aggBv);
+          return alu().si(k, aggBv.getBitWidth());
+        }
       }
     }
+    LOG("opsem", WARN << "unhandled constant struct " << c;);
   } else if (c.getType()->isPointerTy()) {
     LOG("opsem", WARN << "unhandled constant pointer " << c;);
   } else {
@@ -2573,22 +1827,6 @@ Expr Bv2OpSemContext::getConstantValue(const llvm::Constant &c) {
 std::pair<char *, unsigned>
 Bv2OpSemContext::getGlobalVariableInitValue(const llvm::GlobalVariable &gv) {
   return m_memManager->getGlobalVariableInitValue(gv);
-}
-
-Expr Bv2OpSemContext::boolToBv(Expr b) {
-  if (isOpX<TRUE>(b))
-    return trueBv;
-  if (isOpX<FALSE>(b))
-    return falseBv;
-  return mk<ITE>(b, trueBv, falseBv);
-}
-
-Expr Bv2OpSemContext::bvToBool(Expr bv) {
-  if (bv == trueBv)
-    return m_trueE;
-  if (bv == falseBv)
-    return m_falseE;
-  return mk<EQ>(bv, trueBv);
 }
 } // namespace details
 
@@ -2606,7 +1844,8 @@ Bv2OpSem::Bv2OpSem(ExprFactory &efac, Pass &pass, const DataLayout &dl,
 }
 
 OpSemContextPtr Bv2OpSem::mkContext(SymStore &values, ExprVector &side) {
-  return OpSemContextPtr(new details::Bv2OpSemContext(*this, values, side));
+  return OpSemContextPtr(
+      new seahorn::details::Bv2OpSemContext(*this, values, side));
 }
 
 Bv2OpSem::Bv2OpSem(const Bv2OpSem &o)
@@ -2620,10 +1859,11 @@ Expr Bv2OpSem::errorFlag(const BasicBlock &BB) {
   return this->OperationalSemantics::errorFlag(BB);
 }
 
-void Bv2OpSem::exec(const BasicBlock &bb, details::Bv2OpSemContext &ctx) {
+void Bv2OpSem::exec(const BasicBlock &bb,
+                    seahorn::details::Bv2OpSemContext &ctx) {
   ctx.onBasicBlockEntry(bb);
 
-  details::OpSemVisitor v(ctx, *this);
+  seahorn::details::OpSemVisitor v(ctx, *this);
   v.visitBasicBlock(const_cast<BasicBlock &>(bb));
   // skip PHI instructions
   for (; isa<PHINode>(ctx.getCurrentInst()); ++ctx)
@@ -2635,14 +1875,14 @@ void Bv2OpSem::exec(const BasicBlock &bb, details::Bv2OpSemContext &ctx) {
 }
 
 void Bv2OpSem::execPhi(const BasicBlock &bb, const BasicBlock &from,
-                       details::Bv2OpSemContext &ctx) {
+                       seahorn::details::Bv2OpSemContext &ctx) {
   ctx.onBasicBlockEntry(bb);
   ctx.setPrevBb(from);
   intraPhi(ctx);
 }
 
 Expr Bv2OpSem::symbolicIndexedOffset(gep_type_iterator TI, gep_type_iterator TE,
-                                     details::Bv2OpSemContext &ctx) {
+                                     seahorn::details::Bv2OpSemContext &ctx) {
   unsigned ptrSz = pointerSizeInBits();
 
   // numeric offset
@@ -2707,7 +1947,8 @@ unsigned Bv2OpSem::fieldOff(const StructType *t, unsigned field) const {
       ->getElementOffset(field);
 }
 
-Expr Bv2OpSem::getOperandValue(const Value &v, details::Bv2OpSemContext &ctx) {
+Expr Bv2OpSem::getOperandValue(const Value &v,
+                               seahorn::details::Bv2OpSemContext &ctx) {
   Expr res;
   if (auto *bb = dyn_cast<BasicBlock>(&v)) {
     Expr reg = ctx.getRegister(*bb);
@@ -2725,7 +1966,7 @@ Expr Bv2OpSem::getOperandValue(const Value &v, details::Bv2OpSemContext &ctx) {
       res = ctx.getConstantValue(*gv);
   } else if (auto *cv = dyn_cast<Constant>(&v)) {
     res = ctx.getConstantValue(*cv);
-    assert(res);
+    LOG("opsem", if (!res) WARN << "Failed to evaluate a constant " << v;);
   } else {
     Expr reg = ctx.getRegister(v);
     if (reg)
@@ -2736,7 +1977,7 @@ Expr Bv2OpSem::getOperandValue(const Value &v, details::Bv2OpSemContext &ctx) {
   return res;
 }
 
-bool Bv2OpSem::isSymReg(Expr v, details::Bv2OpSemContext &C) {
+bool Bv2OpSem::isSymReg(Expr v, seahorn::details::Bv2OpSemContext &C) {
   if (this->OperationalSemantics::isSymReg(v))
     return true;
 
@@ -2758,7 +1999,6 @@ bool Bv2OpSem::isSymReg(Expr v, details::Bv2OpSemContext &C) {
     return true;
 
   errs() << "Unexpected symbolic value: " << *v << "\n";
-  llvm_unreachable(nullptr);
 }
 
 const Value &Bv2OpSem::conc(Expr v) const {
@@ -2772,6 +2012,7 @@ const Value &Bv2OpSem::conc(Expr v) const {
 }
 
 bool Bv2OpSem::isSkipped(const Value &v) const {
+  if (!OperationalSemantics::isTracked(v)) return true; 
   // skip shadow.mem instructions if memory is not a unique scalar
   // and we are now ignoring memory instructions
   const Value *scalar = nullptr;
@@ -2825,8 +2066,7 @@ bool Bv2OpSem::isSkipped(const Value &v) const {
   case Type::FunctionTyID:
     llvm_unreachable("Unexpected function type");
   case Type::StructTyID:
-    LOG("opsem", WARN << "Unsupported struct type\n";);
-    return true;
+    return false;
   case Type::ArrayTyID:
     LOG("opsem", WARN << "Unsupported array type\n";);
     return true;
@@ -2846,48 +2086,45 @@ bool Bv2OpSem::isSkipped(const Value &v) const {
 /// \brief Executes one intra-procedural instructions in the current
 /// context. Returns false if there are no more instructions to
 /// execute after the last one
-bool Bv2OpSem::intraStep(details::Bv2OpSemContext &C) {
+bool Bv2OpSem::intraStep(seahorn::details::Bv2OpSemContext &C) {
   if (C.isAtBbEnd())
     return false;
 
   const Instruction &inst = C.getCurrentInst();
 
-  // -- update instruction pointer in the context --
-  // branch instructions must be executed to read the condition
-  // on which the branch depends. This does not execute the branch
-  // itself and does not advance instruction pointer in the context
-  bool res = true;
-  if (!isa<TerminatorInst>(&inst)) {
-    ++C;
-  } else if (isa<BranchInst>(&inst)) {
-    res = false;
-  } else {
+  // -- non-branch terminators are executed elsewhere
+  if (isa<TerminatorInst>(&inst) && !isa<BranchInst>(&inst))
     return false;
-  }
 
-  // -- execute instruction --
-
-  // if instruction is skipped, execution it is a noop
+  // -- either skip or execute the instruction
   if (isSkipped(inst)) {
     skipInst(inst, C);
-    return true;
+  } else {
+    // -- execute instruction
+    seahorn::details::OpSemVisitor v(C, *this);
+    LOG("opsem.verbose", errs() << "Executing: " << inst << "\n";);
+    v.visit(const_cast<Instruction &>(inst));
   }
 
-  details::OpSemVisitor v(C, *this);
-  v.visit(const_cast<Instruction &>(inst));
-  return res;
+  // -- advance instruction pointer if needed
+  if (!isa<TerminatorInst>(&inst)) {
+    ++C;
+    return true;
+  }
+  return false;
 }
 
-void Bv2OpSem::intraPhi(details::Bv2OpSemContext &C) {
+void Bv2OpSem::intraPhi(seahorn::details::Bv2OpSemContext &C) {
   assert(C.getPrevBb());
 
   // act is ignored since phi node only introduces a definition
-  details::OpSemPhiVisitor v(C, *this);
+  seahorn::details::OpSemPhiVisitor v(C, *this);
   v.visitBasicBlock(const_cast<BasicBlock &>(*C.getCurrBb()));
 }
 /// \brief Executes one intra-procedural branch instruction in the
 /// current context. Assumes that current instruction is a branch
-void Bv2OpSem::intraBr(details::Bv2OpSemContext &C, const BasicBlock &dst) {
+void Bv2OpSem::intraBr(seahorn::details::Bv2OpSemContext &C,
+                       const BasicBlock &dst) {
   const BranchInst *br = dyn_cast<const BranchInst>(&C.getCurrentInst());
   if (!br)
     return;
@@ -2898,23 +2135,24 @@ void Bv2OpSem::intraBr(details::Bv2OpSemContext &C, const BasicBlock &dst) {
   if (br->isConditional()) {
     const Value &c = *br->getCondition();
     if (const Constant *cv = dyn_cast<const Constant>(&c)) {
-      auto gv = getConstantValue(cv);
+      ConstantExprEvaluator ce(getDataLayout());
+      auto gv = ce.evaluate(cv);
       assert(gv.hasValue());
       if (gv->IntVal.isOneValue() && br->getSuccessor(0) != &dst ||
           gv->IntVal.isNullValue() && br->getSuccessor(1) != &dst) {
         C.resetSide();
-        C.addSideSafe(C.read(errorFlag(*C.getCurrBb())));
+        C.addScopedSide(C.read(errorFlag(*C.getCurrBb())));
       }
     } else if (Expr target = getOperandValue(c, C)) {
       Expr cond = br->getSuccessor(0) == &dst ? target : mk<NEG>(target);
       cond = boolop::lor(C.read(errorFlag(*C.getCurrBb())), cond);
-      C.addSideSafe(cond);
+      C.addScopedSide(cond);
       C.onBasicBlockEntry(dst);
     }
   } else {
     if (br->getSuccessor(0) != &dst) {
       C.resetSide();
-      C.addSideSafe(C.read(errorFlag(*C.getCurrBb())));
+      C.addScopedSide(C.read(errorFlag(*C.getCurrBb())));
     } else {
       C.onBasicBlockEntry(dst);
     }
@@ -2922,11 +2160,14 @@ void Bv2OpSem::intraBr(details::Bv2OpSemContext &C, const BasicBlock &dst) {
 }
 
 void Bv2OpSem::skipInst(const Instruction &inst,
-                        details::Bv2OpSemContext &ctx) {
+                        seahorn::details::Bv2OpSemContext &ctx) {
   const Value *s;
   if (isShadowMem(inst, &s))
     return;
   if (ctx.isIgnored(inst))
+    return;
+  if (!OperationalSemantics::isTracked(inst))
+    // silently ignore instructions that are filtered out
     return;
   ctx.ignore(inst);
   LOG("opsem", WARN << "skipping instruction: " << inst << " @ "
@@ -2934,13 +2175,14 @@ void Bv2OpSem::skipInst(const Instruction &inst,
                     << inst.getParent()->getParent()->getName(););
 }
 
-void Bv2OpSem::unhandledValue(const Value &v, details::Bv2OpSemContext &ctx) {
+void Bv2OpSem::unhandledValue(const Value &v,
+                              seahorn::details::Bv2OpSemContext &ctx) {
   if (const Instruction *inst = dyn_cast<const Instruction>(&v))
     return unhandledInst(*inst, ctx);
   LOG("opsem", WARN << "unhandled value: " << v;);
 }
 void Bv2OpSem::unhandledInst(const Instruction &inst,
-                             details::Bv2OpSemContext &ctx) {
+                             seahorn::details::Bv2OpSemContext &ctx) {
   if (ctx.isIgnored(inst))
     return;
   ctx.ignore(inst);
@@ -2951,486 +2193,16 @@ void Bv2OpSem::unhandledInst(const Instruction &inst,
 
 /// \brief Returns a symbolic register corresponding to a value
 Expr Bv2OpSem::mkSymbReg(const Value &v, OpSemContext &_ctx) {
-  return details::ctx(_ctx).mkRegister(v);
+  return seahorn::details::ctx(_ctx).mkRegister(v);
 }
 
 Expr Bv2OpSem::getSymbReg(const Value &v, const OpSemContext &_ctx) const {
   return const_ctx(_ctx).getRegister(v);
 }
 
-/// \brief Returns a concrete value to which a constant evaluates
-/// Adapted from llvm::ExecutionEngine
-Optional<GenericValue> Bv2OpSem::getConstantValue(const Constant *C) {
-  // If its undefined, return the garbage.
-  if (isa<UndefValue>(C)) {
-    GenericValue Result;
-    switch (C->getType()->getTypeID()) {
-    default:
-      break;
-    case Type::IntegerTyID:
-    case Type::X86_FP80TyID:
-    case Type::FP128TyID:
-    case Type::PPC_FP128TyID:
-      // Although the value is undefined, we still have to construct an APInt
-      // with the correct bit width.
-      Result.IntVal = APInt(C->getType()->getPrimitiveSizeInBits(), 0);
-      break;
-    case Type::StructTyID: {
-      // if the whole struct is 'undef' just reserve memory for the value.
-      if (StructType *STy = dyn_cast<StructType>(C->getType())) {
-        unsigned int elemNum = STy->getNumElements();
-        Result.AggregateVal.resize(elemNum);
-        for (unsigned int i = 0; i < elemNum; ++i) {
-          Type *ElemTy = STy->getElementType(i);
-          if (ElemTy->isIntegerTy())
-            Result.AggregateVal[i].IntVal =
-                APInt(ElemTy->getPrimitiveSizeInBits(), 0);
-          else if (ElemTy->isAggregateType()) {
-            const Constant *ElemUndef = UndefValue::get(ElemTy);
-            Result.AggregateVal[i] = getConstantValue(ElemUndef).getValue();
-          }
-        }
-      }
-    } break;
-    case Type::VectorTyID:
-      // if the whole vector is 'undef' just reserve memory for the value.
-      auto *VTy = dyn_cast<VectorType>(C->getType());
-      Type *ElemTy = VTy->getElementType();
-      unsigned int elemNum = VTy->getNumElements();
-      Result.AggregateVal.resize(elemNum);
-      if (ElemTy->isIntegerTy())
-        for (unsigned int i = 0; i < elemNum; ++i)
-          Result.AggregateVal[i].IntVal =
-              APInt(ElemTy->getPrimitiveSizeInBits(), 0);
-      break;
-    }
-    return Result;
-  }
-
-  // Otherwise, if the value is a ConstantExpr...
-  if (const ConstantExpr *CE = dyn_cast<ConstantExpr>(C)) {
-    Constant *Op0 = CE->getOperand(0);
-    switch (CE->getOpcode()) {
-    case Instruction::GetElementPtr: {
-      // Compute the index
-      GenericValue Result = getConstantValue(Op0).getValue();
-      APInt Offset(m_td->getPointerSizeInBits(), 0);
-      cast<GEPOperator>(CE)->accumulateConstantOffset(*m_td, Offset);
-
-      char *tmp = (char *)Result.PointerVal;
-      Result = PTOGV(tmp + Offset.getSExtValue());
-      return Result;
-    }
-    case Instruction::Trunc: {
-      GenericValue GV = getConstantValue(Op0).getValue();
-      uint32_t BitWidth = cast<IntegerType>(CE->getType())->getBitWidth();
-      GV.IntVal = GV.IntVal.trunc(BitWidth);
-      return GV;
-    }
-    case Instruction::ZExt: {
-      GenericValue GV = getConstantValue(Op0).getValue();
-      uint32_t BitWidth = cast<IntegerType>(CE->getType())->getBitWidth();
-      GV.IntVal = GV.IntVal.zext(BitWidth);
-      return GV;
-    }
-    case Instruction::SExt: {
-      GenericValue GV = getConstantValue(Op0).getValue();
-      uint32_t BitWidth = cast<IntegerType>(CE->getType())->getBitWidth();
-      GV.IntVal = GV.IntVal.sext(BitWidth);
-      return GV;
-    }
-    case Instruction::FPTrunc: {
-      // FIXME long double
-      GenericValue GV = getConstantValue(Op0).getValue();
-      GV.FloatVal = float(GV.DoubleVal);
-      return GV;
-    }
-    case Instruction::FPExt: {
-      // FIXME long double
-      GenericValue GV = getConstantValue(Op0).getValue();
-      GV.DoubleVal = double(GV.FloatVal);
-      return GV;
-    }
-    case Instruction::UIToFP: {
-      GenericValue GV = getConstantValue(Op0).getValue();
-      if (CE->getType()->isFloatTy())
-        GV.FloatVal = float(GV.IntVal.roundToDouble());
-      else if (CE->getType()->isDoubleTy())
-        GV.DoubleVal = GV.IntVal.roundToDouble();
-      else if (CE->getType()->isX86_FP80Ty()) {
-        APFloat apf = APFloat::getZero(APFloat::x87DoubleExtended());
-        (void)apf.convertFromAPInt(GV.IntVal, false,
-                                   APFloat::rmNearestTiesToEven);
-        GV.IntVal = apf.bitcastToAPInt();
-      }
-      return GV;
-    }
-    case Instruction::SIToFP: {
-      GenericValue GV = getConstantValue(Op0).getValue();
-      if (CE->getType()->isFloatTy())
-        GV.FloatVal = float(GV.IntVal.signedRoundToDouble());
-      else if (CE->getType()->isDoubleTy())
-        GV.DoubleVal = GV.IntVal.signedRoundToDouble();
-      else if (CE->getType()->isX86_FP80Ty()) {
-        APFloat apf = APFloat::getZero(APFloat::x87DoubleExtended());
-        (void)apf.convertFromAPInt(GV.IntVal, true,
-                                   APFloat::rmNearestTiesToEven);
-        GV.IntVal = apf.bitcastToAPInt();
-      }
-      return GV;
-    }
-    case Instruction::FPToUI: // double->APInt conversion handles sign
-    case Instruction::FPToSI: {
-      GenericValue GV = getConstantValue(Op0).getValue();
-      uint32_t BitWidth = cast<IntegerType>(CE->getType())->getBitWidth();
-      if (Op0->getType()->isFloatTy())
-        GV.IntVal = APIntOps::RoundFloatToAPInt(GV.FloatVal, BitWidth);
-      else if (Op0->getType()->isDoubleTy())
-        GV.IntVal = APIntOps::RoundDoubleToAPInt(GV.DoubleVal, BitWidth);
-      else if (Op0->getType()->isX86_FP80Ty()) {
-        APFloat apf = APFloat(APFloat::x87DoubleExtended(), GV.IntVal);
-        uint64_t v;
-        bool ignored;
-        (void)apf.convertToInteger(makeMutableArrayRef(v), BitWidth,
-                                   CE->getOpcode() == Instruction::FPToSI,
-                                   APFloat::rmTowardZero, &ignored);
-        GV.IntVal = v; // endian?
-      }
-      return GV;
-    }
-    case Instruction::PtrToInt: {
-      auto OGV = getConstantValue(Op0);
-      if (!OGV.hasValue())
-        return llvm::None;
-      GenericValue GV = OGV.getValue();
-
-      uint32_t PtrWidth = m_td->getTypeSizeInBits(Op0->getType());
-      assert(PtrWidth <= 64 && "Bad pointer width");
-      GV.IntVal = APInt(PtrWidth, uintptr_t(GV.PointerVal));
-      uint32_t IntWidth = m_td->getTypeSizeInBits(CE->getType());
-      GV.IntVal = GV.IntVal.zextOrTrunc(IntWidth);
-      return GV;
-    }
-    case Instruction::IntToPtr: {
-      GenericValue GV = getConstantValue(Op0).getValue();
-      uint32_t PtrWidth = m_td->getTypeSizeInBits(CE->getType());
-      GV.IntVal = GV.IntVal.zextOrTrunc(PtrWidth);
-      assert(GV.IntVal.getBitWidth() <= 64 && "Bad pointer width");
-      GV.PointerVal = PointerTy(uintptr_t(GV.IntVal.getZExtValue()));
-      return GV;
-    }
-    case Instruction::BitCast: {
-      GenericValue GV = getConstantValue(Op0).getValue();
-      Type *DestTy = CE->getType();
-      switch (Op0->getType()->getTypeID()) {
-      default:
-        llvm_unreachable("Invalid bitcast operand");
-      case Type::IntegerTyID:
-        assert(DestTy->isFloatingPointTy() && "invalid bitcast");
-        if (DestTy->isFloatTy())
-          GV.FloatVal = GV.IntVal.bitsToFloat();
-        else if (DestTy->isDoubleTy())
-          GV.DoubleVal = GV.IntVal.bitsToDouble();
-        break;
-      case Type::FloatTyID:
-        assert(DestTy->isIntegerTy(32) && "Invalid bitcast");
-        GV.IntVal = APInt::floatToBits(GV.FloatVal);
-        break;
-      case Type::DoubleTyID:
-        assert(DestTy->isIntegerTy(64) && "Invalid bitcast");
-        GV.IntVal = APInt::doubleToBits(GV.DoubleVal);
-        break;
-      case Type::PointerTyID:
-        assert(DestTy->isPointerTy() && "Invalid bitcast");
-        break; // getConstantValue(Op0)  above already converted it
-      }
-      return GV;
-    }
-    case Instruction::Add:
-    case Instruction::FAdd:
-    case Instruction::Sub:
-    case Instruction::FSub:
-    case Instruction::Mul:
-    case Instruction::FMul:
-    case Instruction::UDiv:
-    case Instruction::SDiv:
-    case Instruction::URem:
-    case Instruction::SRem:
-    case Instruction::And:
-    case Instruction::Or:
-    case Instruction::Xor: {
-      GenericValue LHS = getConstantValue(Op0).getValue();
-      GenericValue RHS = getConstantValue(CE->getOperand(1)).getValue();
-      GenericValue GV;
-      switch (CE->getOperand(0)->getType()->getTypeID()) {
-      default:
-        llvm_unreachable("Bad add type!");
-      case Type::IntegerTyID:
-        switch (CE->getOpcode()) {
-        default:
-          llvm_unreachable("Invalid integer opcode");
-        case Instruction::Add:
-          GV.IntVal = LHS.IntVal + RHS.IntVal;
-          break;
-        case Instruction::Sub:
-          GV.IntVal = LHS.IntVal - RHS.IntVal;
-          break;
-        case Instruction::Mul:
-          GV.IntVal = LHS.IntVal * RHS.IntVal;
-          break;
-        case Instruction::UDiv:
-          GV.IntVal = LHS.IntVal.udiv(RHS.IntVal);
-          break;
-        case Instruction::SDiv:
-          GV.IntVal = LHS.IntVal.sdiv(RHS.IntVal);
-          break;
-        case Instruction::URem:
-          GV.IntVal = LHS.IntVal.urem(RHS.IntVal);
-          break;
-        case Instruction::SRem:
-          GV.IntVal = LHS.IntVal.srem(RHS.IntVal);
-          break;
-        case Instruction::And:
-          GV.IntVal = LHS.IntVal & RHS.IntVal;
-          break;
-        case Instruction::Or:
-          GV.IntVal = LHS.IntVal | RHS.IntVal;
-          break;
-        case Instruction::Xor:
-          GV.IntVal = LHS.IntVal ^ RHS.IntVal;
-          break;
-        }
-        break;
-      case Type::FloatTyID:
-        switch (CE->getOpcode()) {
-        default:
-          llvm_unreachable("Invalid float opcode");
-        case Instruction::FAdd:
-          GV.FloatVal = LHS.FloatVal + RHS.FloatVal;
-          break;
-        case Instruction::FSub:
-          GV.FloatVal = LHS.FloatVal - RHS.FloatVal;
-          break;
-        case Instruction::FMul:
-          GV.FloatVal = LHS.FloatVal * RHS.FloatVal;
-          break;
-        case Instruction::FDiv:
-          GV.FloatVal = LHS.FloatVal / RHS.FloatVal;
-          break;
-        case Instruction::FRem:
-          GV.FloatVal = std::fmod(LHS.FloatVal, RHS.FloatVal);
-          break;
-        }
-        break;
-      case Type::DoubleTyID:
-        switch (CE->getOpcode()) {
-        default:
-          llvm_unreachable("Invalid double opcode");
-        case Instruction::FAdd:
-          GV.DoubleVal = LHS.DoubleVal + RHS.DoubleVal;
-          break;
-        case Instruction::FSub:
-          GV.DoubleVal = LHS.DoubleVal - RHS.DoubleVal;
-          break;
-        case Instruction::FMul:
-          GV.DoubleVal = LHS.DoubleVal * RHS.DoubleVal;
-          break;
-        case Instruction::FDiv:
-          GV.DoubleVal = LHS.DoubleVal / RHS.DoubleVal;
-          break;
-        case Instruction::FRem:
-          GV.DoubleVal = std::fmod(LHS.DoubleVal, RHS.DoubleVal);
-          break;
-        }
-        break;
-      case Type::X86_FP80TyID:
-      case Type::PPC_FP128TyID:
-      case Type::FP128TyID: {
-        const fltSemantics &Sem =
-            CE->getOperand(0)->getType()->getFltSemantics();
-        APFloat apfLHS = APFloat(Sem, LHS.IntVal);
-        switch (CE->getOpcode()) {
-        default:
-          llvm_unreachable("Invalid long double opcode");
-        case Instruction::FAdd:
-          apfLHS.add(APFloat(Sem, RHS.IntVal), APFloat::rmNearestTiesToEven);
-          GV.IntVal = apfLHS.bitcastToAPInt();
-          break;
-        case Instruction::FSub:
-          apfLHS.subtract(APFloat(Sem, RHS.IntVal),
-                          APFloat::rmNearestTiesToEven);
-          GV.IntVal = apfLHS.bitcastToAPInt();
-          break;
-        case Instruction::FMul:
-          apfLHS.multiply(APFloat(Sem, RHS.IntVal),
-                          APFloat::rmNearestTiesToEven);
-          GV.IntVal = apfLHS.bitcastToAPInt();
-          break;
-        case Instruction::FDiv:
-          apfLHS.divide(APFloat(Sem, RHS.IntVal), APFloat::rmNearestTiesToEven);
-          GV.IntVal = apfLHS.bitcastToAPInt();
-          break;
-        case Instruction::FRem:
-          apfLHS.mod(APFloat(Sem, RHS.IntVal));
-          GV.IntVal = apfLHS.bitcastToAPInt();
-          break;
-        }
-      } break;
-      }
-      return GV;
-    }
-    default:
-      break;
-    }
-
-    SmallString<256> Msg;
-    raw_svector_ostream OS(Msg);
-    OS << "ConstantExpr not handled: " << *CE;
-    report_fatal_error(OS.str());
-  }
-
-  // Otherwise, we have a simple constant.
-  GenericValue Result;
-  switch (C->getType()->getTypeID()) {
-  case Type::FloatTyID:
-    Result.FloatVal = cast<ConstantFP>(C)->getValueAPF().convertToFloat();
-    break;
-  case Type::DoubleTyID:
-    Result.DoubleVal = cast<ConstantFP>(C)->getValueAPF().convertToDouble();
-    break;
-  case Type::X86_FP80TyID:
-  case Type::FP128TyID:
-  case Type::PPC_FP128TyID:
-    Result.IntVal = cast<ConstantFP>(C)->getValueAPF().bitcastToAPInt();
-    break;
-  case Type::IntegerTyID:
-    Result.IntVal = cast<ConstantInt>(C)->getValue();
-    break;
-  case Type::PointerTyID:
-    if (isa<ConstantPointerNull>(C))
-      Result.PointerVal = nullptr;
-    else if (const Function *F = dyn_cast<Function>(C))
-      // TODO:
-      // Result = PTOGV((void*)ctx.getPtrToFunction(*F));
-      return llvm::None;
-    else if (const GlobalVariable *GV = dyn_cast<GlobalVariable>(C))
-      // TODO:
-      // Result = PTOGV((void*)ctx.getPtrToGlobal(*GV));
-      return llvm::None;
-    else
-      llvm_unreachable("Unknown constant pointer type!");
-    break;
-  case Type::VectorTyID: {
-    unsigned elemNum;
-    Type *ElemTy;
-    const ConstantDataVector *CDV = dyn_cast<ConstantDataVector>(C);
-    const ConstantVector *CV = dyn_cast<ConstantVector>(C);
-    const ConstantAggregateZero *CAZ = dyn_cast<ConstantAggregateZero>(C);
-
-    if (CDV) {
-      elemNum = CDV->getNumElements();
-      ElemTy = CDV->getElementType();
-    } else if (CV || CAZ) {
-      VectorType *VTy = dyn_cast<VectorType>(C->getType());
-      elemNum = VTy->getNumElements();
-      ElemTy = VTy->getElementType();
-    } else {
-      llvm_unreachable("Unknown constant vector type!");
-    }
-
-    Result.AggregateVal.resize(elemNum);
-    // Check if vector holds floats.
-    if (ElemTy->isFloatTy()) {
-      if (CAZ) {
-        GenericValue floatZero;
-        floatZero.FloatVal = 0.f;
-        std::fill(Result.AggregateVal.begin(), Result.AggregateVal.end(),
-                  floatZero);
-        break;
-      }
-      if (CV) {
-        for (unsigned i = 0; i < elemNum; ++i)
-          if (!isa<UndefValue>(CV->getOperand(i)))
-            Result.AggregateVal[i].FloatVal =
-                cast<ConstantFP>(CV->getOperand(i))
-                    ->getValueAPF()
-                    .convertToFloat();
-        break;
-      }
-      if (CDV)
-        for (unsigned i = 0; i < elemNum; ++i)
-          Result.AggregateVal[i].FloatVal = CDV->getElementAsFloat(i);
-
-      break;
-    }
-    // Check if vector holds doubles.
-    if (ElemTy->isDoubleTy()) {
-      if (CAZ) {
-        GenericValue doubleZero;
-        doubleZero.DoubleVal = 0.0;
-        std::fill(Result.AggregateVal.begin(), Result.AggregateVal.end(),
-                  doubleZero);
-        break;
-      }
-      if (CV) {
-        for (unsigned i = 0; i < elemNum; ++i)
-          if (!isa<UndefValue>(CV->getOperand(i)))
-            Result.AggregateVal[i].DoubleVal =
-                cast<ConstantFP>(CV->getOperand(i))
-                    ->getValueAPF()
-                    .convertToDouble();
-        break;
-      }
-      if (CDV)
-        for (unsigned i = 0; i < elemNum; ++i)
-          Result.AggregateVal[i].DoubleVal = CDV->getElementAsDouble(i);
-
-      break;
-    }
-    // Check if vector holds integers.
-    if (ElemTy->isIntegerTy()) {
-      if (CAZ) {
-        GenericValue intZero;
-        intZero.IntVal = APInt(ElemTy->getScalarSizeInBits(), 0ull);
-        std::fill(Result.AggregateVal.begin(), Result.AggregateVal.end(),
-                  intZero);
-        break;
-      }
-      if (CV) {
-        for (unsigned i = 0; i < elemNum; ++i)
-          if (!isa<UndefValue>(CV->getOperand(i)))
-            Result.AggregateVal[i].IntVal =
-                cast<ConstantInt>(CV->getOperand(i))->getValue();
-          else {
-            Result.AggregateVal[i].IntVal = APInt(
-                CV->getOperand(i)->getType()->getPrimitiveSizeInBits(), 0);
-          }
-        break;
-      }
-      if (CDV)
-        for (unsigned i = 0; i < elemNum; ++i)
-          Result.AggregateVal[i].IntVal =
-              APInt(CDV->getElementType()->getPrimitiveSizeInBits(),
-                    CDV->getElementAsInteger(i));
-
-      break;
-    }
-    llvm_unreachable("Unknown constant pointer type!");
-  } break;
-
-  default:
-    SmallString<256> Msg;
-    raw_svector_ostream OS(Msg);
-    OS << "ERROR: Constant unimplemented for type: " << *C->getType();
-    report_fatal_error(OS.str());
-  }
-
-  return Result;
-}
-
 void Bv2OpSem::execEdg(const BasicBlock &src, const BasicBlock &dst,
-                       details::Bv2OpSemContext &ctx) {
-  exec(src, ctx.act(trueE));
+                       seahorn::details::Bv2OpSemContext &ctx) {
+  exec(src, ctx.pc(trueE));
   execBr(src, dst, ctx);
   execPhi(dst, src, ctx);
 
@@ -3441,10 +2213,65 @@ void Bv2OpSem::execEdg(const BasicBlock &src, const BasicBlock &dst,
 }
 
 void Bv2OpSem::execBr(const BasicBlock &src, const BasicBlock &dst,
-                      details::Bv2OpSemContext &ctx) {
+                      seahorn::details::Bv2OpSemContext &ctx) {
   ctx.onBasicBlockEntry(src);
   ctx.setInstruction(*src.getTerminator());
   intraBr(ctx, dst);
+}
+
+Optional<APInt> Bv2OpSem::agg(Type *aggTy, const std::vector<GenericValue> &elements,
+                   details::Bv2OpSemContext &ctx) {
+  APInt res;
+  APInt next;
+  int resWidth = 0; // treat initial res as empty
+  auto *STy = dyn_cast<StructType>(aggTy);
+  if (!STy)
+    llvm_unreachable("not supporting agg types other than struct");
+  const StructLayout *SL = getDataLayout().getStructLayout(STy);
+  for (int i = 0 ; i <  elements.size(); i++) {
+    const GenericValue element = elements[i];
+    Type *ElmTy = STy->getElementType(i);
+    if (element.AggregateVal.empty()) {
+      // Assuming only dealing with Int or Pointer as struct terminal elements
+      if (ElmTy->isIntegerTy())
+        next = element.IntVal;
+      else if (ElmTy->isPointerTy()){
+        auto ptrBv = reinterpret_cast<intptr_t>(GVTOP(element));
+        next = APInt(getDataLayout().getTypeSizeInBits(ElmTy), ptrBv);
+      } else {
+        // this should be handled in constant evaluation step
+        LOG("opsem",
+            WARN << "unsupported type " << *ElmTy << " to convert in aggregate.";);
+        llvm_unreachable("Only support converting Int or Pointer in aggregates");
+        return llvm::None;
+      }
+    } else {
+      auto AIO = agg(ElmTy, element.AggregateVal, ctx);
+      if (AIO.hasValue())
+        next = AIO.getValue();
+      else {
+        LOG("opsem", WARN << "nested struct conversion failed";);
+        return llvm::None;
+      }
+    }
+    // Add padding to element
+    int elOffset = SL->getElementOffset(i);
+    if (elOffset > resWidth) {
+      res = res.zext(elOffset);
+      resWidth = elOffset;
+    }
+    // lower index => LSB; higher index => MSB
+    int combinedWidth = resWidth + next.getBitWidth();
+    res = combinedWidth > res.getBitWidth() ? res.zext(combinedWidth) : res;
+    next = combinedWidth > next.getBitWidth() ? next.zext(combinedWidth) : next;
+    next <<= resWidth;
+    res |= next;
+    resWidth = res.getBitWidth();
+  }
+  unsigned aggSize = getDataLayout().getTypeSizeInBits(STy);
+  if (res.getBitWidth() < aggSize)
+    res = res.zext(aggSize); // padding for last element
+  return res;
 }
 
 } // namespace seahorn

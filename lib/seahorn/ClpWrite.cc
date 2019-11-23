@@ -2,7 +2,7 @@
 #include "llvm/Support/CommandLine.h"
 #include "llvm/IR/Value.h"
 #include "llvm/IR/Constants.h"
-#include "ufo/ExprLlvm.hpp"
+#include "seahorn/Expr/ExprLlvm.hh"
 #include "boost/algorithm/string/replace.hpp"
 #include "boost/algorithm/string/predicate.hpp"
 #include "seahorn/Support/SeaDebug.h"
@@ -156,7 +156,7 @@ namespace seahorn
     static Expr negate (Expr e, ExprFactory &efac)
     {
       if (bind::isBoolConst (e) || bind::isIntConst (e))
-        return mk<EQ>(e, mkTerm<mpz_class> (0, efac)); 
+        return mk<EQ>(e, mkTerm<expr::mpz_class> (0UL, efac)); 
       if (isOpX<GT> (e))
         return mk<LEQ> (e->left (), e->right ());
       if (isOpX<GEQ> (e))
@@ -211,11 +211,11 @@ namespace seahorn
       
       if (isOpX<MPZ>(e)) 
       { 
-        mpz_class op = getTerm<mpz_class>(e);
-        if (op < 0)
-          res = ExprStr ("(" + boost::lexical_cast<std::string>(op) + ")");
+        expr::mpz_class op = getTerm<expr::mpz_class>(e);
+        if (op < 0UL)
+          res = ExprStr ("(" + op.to_string() + ")");
         else
-          res = ExprStr (boost::lexical_cast<std::string>(op));
+          res = ExprStr (op.to_string());
       }
       else if (isOpX<MPQ>(e))
       { return M::print (e, parent, rels, efac, cache, seen); }      
@@ -240,8 +240,8 @@ namespace seahorn
       {
         Expr fname = bind::fname (bind::fname (e));
         string fapp = boost::lexical_cast<std::string> (fname) ;              
-        ENode::args_iterator it = ++ (e->args_begin ());
-        ENode::args_iterator end = e->args_end ();
+        auto it = ++ (e->args_begin ());
+        auto end = e->args_end ();
 
         if (std::distance (it, end) > 0)
         {
@@ -329,7 +329,7 @@ namespace seahorn
                isOpX<MULT> (e))
       {
         vector<ExprStr> args;
-        for (ENode::args_iterator it = e->args_begin(), end = e->args_end();
+        for (auto it = e->args_begin(), end = e->args_end();
              it != end; ++it)
         {
           ExprStr a = print (*it, e, rels, efac, cache, seen);

@@ -19,9 +19,9 @@ DM-0002198
 #ifndef SEAHORN_PASSES__HH_
 #define SEAHORN_PASSES__HH_
 
-#include "seahorn/Bmc.hh"
 #include "seahorn/config.h"
 #include "llvm/Pass.h"
+#include "llvm/ADT/StringRef.h"
 #include "llvm/Support/raw_ostream.h"
 
 namespace seahorn {
@@ -41,8 +41,6 @@ llvm::Pass *createAbstractMemoryPass();
 llvm::Pass *createPromoteMemoryToRegisterPass();
 llvm::Pass *createLoadCrabPass();
 llvm::Pass *createShadowMemDsaPass();    // llvm dsa
-llvm::Pass *createShadowMemSeaDsaPass(); // seahorn dsa
-llvm::Pass *createStripShadowMemPass();
 
 llvm::Pass *createCutLoopsPass();
 llvm::Pass *createMarkFnEntryPass();
@@ -66,8 +64,8 @@ llvm::Pass *createCanReadUndefPass();
 
 llvm::Pass *createApiAnalysisPass(std::string &config);
 
-llvm::Pass *createBmcPass(bmc_engine_t engine, llvm::raw_ostream *out,
-                          bool solve);
+llvm::Pass *createBmcPass(llvm::raw_ostream *out, bool solve);
+llvm::Pass *createPathBmcPass(llvm::raw_ostream *out, bool solve);
 
 llvm::Pass *createProfilerPass();
 llvm::Pass *createCFGPrinterPass();
@@ -108,6 +106,8 @@ llvm::Pass *createCHAPass();
 llvm::ModulePass *createDebugVerifierPass(int instanceID);
 llvm::Pass *createSpeculativeExe();
 llvm::Pass *createStaticTaintPass(bool bPrint);
+llvm::ModulePass *createDebugVerifierPass(int instanceID);
+llvm::Pass *createUnifyAssumesPass();
 } // namespace seahorn
 
 #ifdef HAVE_LLVM_SEAHORN
@@ -125,5 +125,22 @@ inline llvm::FunctionPass *createInstCombine() {
 }
 } // namespace seahorn
 #endif
+
+#ifdef USE_SHADOW_MEM_FROM_SEA_DSA
+#include "sea_dsa/ShadowMem.hh"
+namespace seahorn {
+llvm::Pass *createShadowMemSeaDsaPass() {
+  return sea_dsa::createShadowMemPass();
+}
+llvm::Pass *createStripShadowMemPass(){
+  return sea_dsa::createStripShadowMemPass();
+}
+}
+#else
+namespace seahorn {
+llvm::Pass *createShadowMemSeaDsaPass(); 
+llvm::Pass *createStripShadowMemPass();
+}
+#endif 
 
 #endif /* SEAHORN_PASSES__HH_ */

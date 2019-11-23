@@ -1,15 +1,15 @@
-set (USED_LIBS 
+set (USED_LIBS
   seahorn.LIB
   SeaInstrumentation
   SeaTransformsScalar
   SeaTransformsUtils
   SeaAnalysis
-  ${SEA_DSA_LIBS}    
+  SeaSmt
+  ${SEA_DSA_LIBS}
   SeaSupport
   ${LLVM_SEAHORN_LIBS}
   ${Z3_LIBRARY}
   ${Boost_SYSTEM_LIBRARY}
-  ${GMPXX_LIB}
   ${GMP_LIB}
   ${RT_LIB}
   )

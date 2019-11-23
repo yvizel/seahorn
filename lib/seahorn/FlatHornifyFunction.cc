@@ -2,7 +2,8 @@
 #include "seahorn/LiveSymbols.hh"
 #include "seahorn/Support/CFG.hh"
 #include "seahorn/Support/ExprSeahorn.hh"
-
+#include "seahorn/Expr/Expr.hh"
+#include "seahorn/Expr/ExprLlvm.hh"
 #include "seahorn/Support/SeaDebug.h"
 
 namespace seahorn
@@ -23,7 +24,7 @@ namespace seahorn
 
     const LiveSymbols &ls = m_parent.getLiveSybols (F);
 
-    DenseMap<const BasicBlock*, unsigned> bbOrder;
+    DenseMap<const BasicBlock*, unsigned long> bbOrder;
     // globally live
     ExprSet glive;
     unsigned idx = 0;
@@ -66,7 +67,7 @@ namespace seahorn
     SymStore s (m_efac);
 
     // create step(pc,x1,...,xn) for entry block
-    s.write (pc, mkTerm<mpz_class> (bbOrder [&entry], m_efac));
+    s.write (pc, mkTerm<expr::mpz_class> (bbOrder [&entry], m_efac));
     args.push_back (s.read (pc));
     for (const Expr& v : glive) args.push_back (s.read (v));
     allVars.insert (++args.begin (), args.end ());
@@ -85,7 +86,7 @@ namespace seahorn
         args.clear ();
 
     // create step(pc,x1,...,xn) for pre
-        s.write (pc, mkTerm<mpz_class> (bbOrder [bb], m_efac));
+        s.write (pc, mkTerm<expr::mpz_class> (bbOrder [bb], m_efac));
         args.push_back (s.read (pc));
         for (const Expr &v : glive) args.push_back (s.read (v));
         allVars.insert (++args.begin (), args.end ());
@@ -101,7 +102,7 @@ namespace seahorn
 
         // create step(pc,x1,...,xn) for post
         args.clear ();
-        s.write (pc, mkTerm<mpz_class> (bbOrder [dst], m_efac));
+        s.write (pc, mkTerm<expr::mpz_class> (bbOrder [dst], m_efac));
         args.push_back (s.read (pc));
         for (const Expr &v : glive) {
           Expr argV = s.read(v);
@@ -150,7 +151,7 @@ namespace seahorn
       allVars.clear ();
       args.clear ();
 
-      s.write (pc, mkTerm<mpz_class> (bbOrder [&BB], m_efac));
+      s.write (pc, mkTerm<expr::mpz_class> (bbOrder [&BB], m_efac));
       args.push_back (s.read (pc));
       for (const Expr &v : glive) args.push_back (s.read (v));
       allVars.insert (++args.begin (), args.end ());
@@ -159,7 +160,7 @@ namespace seahorn
       pre = boolop::land (pre, s.read (m_sem.errorFlag (BB)));
 
       args.clear ();
-      s.write (pc, mkTerm<mpz_class> (bbOrder [exit], m_efac));
+      s.write (pc, mkTerm<expr::mpz_class> (bbOrder [exit], m_efac));
       args.push_back (s.read (pc));
       for (const Expr &v : glive) args.push_back (s.read (v));
       allVars.insert (++args.begin (), args.end ());
@@ -173,7 +174,7 @@ namespace seahorn
       args.clear ();
       s.reset ();
 
-      s.write (pc, mkTerm<mpz_class> (bbOrder [exit], m_efac));
+      s.write (pc, mkTerm<expr::mpz_class> (bbOrder [exit], m_efac));
       args.push_back (s.read (pc));
       if (ls.live (exit).size () == 1)
         s.write (m_sem.errorFlag (*exit), mk<TRUE> (m_efac));
@@ -189,7 +190,7 @@ namespace seahorn
       args.clear ();
       allVars.clear ();
 
-      s.write (pc, mkTerm<mpz_class> (bbOrder [exit], m_efac));
+      s.write (pc, mkTerm<expr::mpz_class> (bbOrder [exit], m_efac));
       args.push_back (s.read (pc));
       for (const Expr &v : glive) args.push_back (s.read (v));
       allVars.insert (++args.begin (), args.end ());
@@ -276,7 +277,7 @@ namespace seahorn
     SymStore s (m_efac);
 
 
-    s.write (pc, mkTerm<mpz_class> (cpgOrder [&entry], m_efac));
+    s.write (pc, mkTerm<expr::mpz_class> ((unsigned long)cpgOrder [&entry], m_efac));
     args.push_back (s.read (pc));
     for (const Expr& v : glive) args.push_back (s.read (v));
     allVars.insert (++args.begin (), args.end ());
@@ -297,7 +298,7 @@ namespace seahorn
           args.clear ();
           s.reset ();
 
-          s.write (pc, mkTerm<mpz_class> (cpgOrder [&cp.bb ()], m_efac));
+          s.write (pc, mkTerm<expr::mpz_class> ((unsigned long)cpgOrder [&cp.bb ()], m_efac));
           args.push_back (s.read (pc));
           for (const Expr &v : glive) args.push_back (s.read (v));
           allVars.insert (++args.begin (), args.end ());
@@ -314,7 +315,7 @@ namespace seahorn
           const BasicBlock &dst = edge->target ().bb ();
           args.clear ();
 
-          s.write (pc, mkTerm<mpz_class> (cpgOrder [&dst], m_efac));
+          s.write (pc, mkTerm<expr::mpz_class> ((unsigned long)cpgOrder [&dst], m_efac));
           args.push_back (s.read (pc));
           for (const Expr &v : glive) args.push_back (s.read (v));
           allVars.insert (++args.begin (), args.end ());
@@ -342,7 +343,7 @@ namespace seahorn
       allVars.clear ();
       args.clear ();
 
-      s.write (pc, mkTerm<mpz_class> (cpgOrder [&cp.bb ()], m_efac));
+      s.write (pc, mkTerm<expr::mpz_class> ((unsigned long)cpgOrder [&cp.bb ()], m_efac));
       args.push_back (s.read (pc));
       for (const Expr &v : glive) args.push_back (s.read (v));
       allVars.insert (++args.begin (), args.end ());
@@ -352,7 +353,7 @@ namespace seahorn
 
       args.clear ();
 
-      s.write (pc, mkTerm<mpz_class> (cpgOrder [exit], m_efac));
+      s.write (pc, mkTerm<expr::mpz_class> ((unsigned long)cpgOrder [exit], m_efac));
       args.push_back (s.read (pc));
       for (const Expr &v : glive) args.push_back (s.read (v));
       allVars.insert (++args.begin (), args.end ());
@@ -366,7 +367,7 @@ namespace seahorn
       args.clear ();
       s.reset ();
 
-      s.write (pc, mkTerm<mpz_class> (cpgOrder [exit], m_efac));
+      s.write (pc, mkTerm<expr::mpz_class> ((unsigned long)cpgOrder [exit], m_efac));
       args.push_back (s.read (pc));
       if (ls.live (exit).size () == 1)
         s.write (m_sem.errorFlag (*exit), mk<TRUE> (m_efac));
@@ -383,7 +384,7 @@ namespace seahorn
       args.clear ();
       allVars.clear ();
 
-      s.write (pc, mkTerm<mpz_class> (cpgOrder [exit], m_efac));
+      s.write (pc, mkTerm<expr::mpz_class> ((unsigned long)cpgOrder [exit], m_efac));
       args.push_back (s.read (pc));
       for (const Expr &v : glive) args.push_back (s.read (v));
       allVars.insert (++args.begin (), args.end ());

@@ -36,8 +36,14 @@ def _bc_or_ll_file (name):
 def _plus_plus_file (name):
     ext = os.path.splitext (name)[1]
     return ext == '.cpp' or ext == '.cc'
-
+    
 class Clang(sea.LimitedCmd):
+    """
+    Produce bitcode for each C/C++ file and link together the generated
+    bitcode files. If the input files are already bitcode then we
+    still link them together.
+    """
+    
     def __init__ (self, quiet=False, plusplus=False):
         super (Clang, self).__init__('clang', 'Compile', allow_extra=True)
         self.clangCmd = None
@@ -65,13 +71,28 @@ class Clang(sea.LimitedCmd):
                 self.plusplus = True
         else:
             in_file = 'merged.c'
-            if all (_plus_plus_file(f) for f in in_files):
+            if all ((_plus_plus_file(f) or _bc_or_ll_file(f)) for f in in_files):
                 self.plusplus = True
         ext = '.bc'
         # if args.llvm_asm: ext = '.ll'
         return _remap_file_name (in_file, ext, work_dir)
 
     def run (self, args, extra):
+
+        def link_bc_files(bc_files, args):
+            if len(bc_files) <= 1:
+                return 0
+            cmd_name = which (['llvm-link-mp-5.0', 'llvm-link-5.0', 'llvm-link'])
+            if cmd_name is None: raise IOError ('llvm-link not found')
+            self.linkCmd = sea.ExtCmd (cmd_name,'',quiet)
+
+            argv = []
+            if args.llvm_asm: argv.append ('-S')
+            if args.out_file is not None:
+                argv.extend (['-o', args.out_file])
+            argv.extend (bc_files)
+            return self.linkCmd.run (args, argv)
+        
         out_files = []
         if len(args.in_files) == 1:
             out_files.append (args.out_file)
@@ -83,8 +104,10 @@ class Clang(sea.LimitedCmd):
                     out_files.append(f)
                 else:
                     out_files.append(_remap_file_name (f, '.bc', workdir))
-        # do nothing on .bc and .ll files
-        if _bc_or_ll_file (args.in_files[0]): return 0
+                    
+        # do nothing on .bc and .ll files except link them together
+        if _bc_or_ll_file (args.in_files[0]):
+            return link_bc_files(out_files, args)
 
         if self.plusplus:
             cmd_name = which (['clang++-mp-5.0', 'clang++-5.0', 'clang++'])
@@ -127,6 +150,17 @@ class Clang(sea.LimitedCmd):
 
             if args.debug_info: argv.append ('-g')
 
+            ## Hack for OSX Mojave that no longer exposes libc and libstd headers by default
+            osx_sdk_dirs = ['/Applications/Xcode.app/Contents/Developer/Platforms/' + \
+                            'MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk',
+                            '/Applications/Xcode.app/Contents/Developer/Platforms/' + \
+                            'MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk']
+
+            for osx_sdk_dir in osx_sdk_dirs:
+                if os.path.isdir(osx_sdk_dir):
+                    argv.append('--sysroot=' + osx_sdk_dir)
+                    break
+
             for in_file, out_file in zip(args.in_files, out_files):
                 if _bc_or_ll_file (in_file): continue
 
@@ -141,20 +175,7 @@ class Clang(sea.LimitedCmd):
                 ret = self.clangCmd.run (args, argv1)
                 if ret <> 0: return ret
 
-        if len(out_files) > 1:
-            # link
-            cmd_name = which (['llvm-link-mp-5.0', 'llvm-link-5.0', 'llvm-link'])
-            if cmd_name is None: raise IOError ('llvm-link not found')
-            self.linkCmd = sea.ExtCmd (cmd_name,'',quiet)
-
-            argv = []
-            if args.llvm_asm: argv.append ('-S')
-            if args.out_file is not None:
-                argv.extend (['-o', args.out_file])
-            argv.extend (out_files)
-            return self.linkCmd.run (args, argv)
-
-        return 0
+        return link_bc_files(out_files, args)
 
     @property
     def stdout (self):
@@ -290,9 +311,23 @@ class Seapp(sea.LimitedCmd):
                          help='Lower invoke instructions',
                          dest='lower_invoke', default=False,
                          action='store_true')
+        ap.add_argument('--no-lower-gv-init-structs',
+                        dest='no_lower_gv_init_structs',
+                        help='Do not lower global initializers for structs',
+                        default=False,
+                        action='store_true')
+        ap.add_argument('--no-lower-gv-init',
+                        dest='no_lower_gv_init',
+                        help='Do not lower global initializers',
+                        default=False,
+                        action='store_true')
         ap.add_argument ('--devirt-functions',
-                         help='Devirtualize indirect functions',
+                         help='Devirtualize indirect functions using only types',
                          dest='devirt_funcs', default=False,
+                         action='store_true')
+        ap.add_argument ('--devirt-functions-with-cha',
+                         help='Devirtualize indirect functions using CHA (for C++) followed by types',
+                         dest='devirt_funcs_cha', default=False,
                          action='store_true')
         ap.add_argument ('--lower-assert',
                          help='Replace assertions with assumptions',
@@ -376,8 +411,16 @@ class Seapp(sea.LimitedCmd):
             if args.lower_invoke:
                 argv.append ('--lower-invoke')
 
-            if args.devirt_funcs:
+            if args.no_lower_gv_init_structs:
+                argv.append('--lower-gv-init-struct=false')
+
+            if args.no_lower_gv_init:
+                argv.append('--lower-gv-init=false')
+
+            if args.devirt_funcs_cha or args.devirt_funcs:
                 argv.append ('--devirt-functions')
+            if args.devirt_funcs_cha:
+                argv.append ('--devirt-functions-with-cha')
 
             if args.enable_ext_funcs:
                 argv.append ('--externalize-addr-taken-funcs')
@@ -526,12 +569,12 @@ class AbcInst(sea.LimitedCmd):
                          default=False, action='store_true')
         ap.add_argument ('--abc-dsa',
                          help='Heap analysis used by abc instrumentation: '
-                         'context-insensitive Llvm Dsa, '
-                         'flat memory SeaHorn Dsa, '
-                         'context-insensitive SeaHorn Dsa, and '
-                         'context-sensitive SeaHorn Dsa',
+                         'llvm (context-insensitive Llvm Dsa), '
+                         'sea-flat (flat memory SeaHorn Dsa), '
+                         'sea-ci (context-insensitive SeaHorn Dsa), and '
+                         'sea-cs (context-sensitive SeaHorn Dsa)',
                          choices=['llvm','sea-flat','sea-ci','sea-cs'],
-                         dest='dsa', default='llvm')
+                         dest='dsa', default='sea-ci')
         ap.add_argument ('--abc-dsa-node', dest='abc_dsa',
                          help='Instrument only pointers that belong to this DSA node N',
                          type=int, default=0, metavar='N')
@@ -674,7 +717,7 @@ class SimpleMemoryChecks(sea.LimitedCmd):
         super(SimpleMemoryChecks, self).__init__('smc',
                                                  'Simple Memory Safety Checks',
                                        allow_extra=True)
-
+        
     @property
     def stdout (self):
         return self.seappCmd.stdout
@@ -714,7 +757,7 @@ class SimpleMemoryChecks(sea.LimitedCmd):
 
         argv.append('--smc')
         argv.append('--sea-dsa-type-aware={t}'.format(t=args.smc_type_aware))
-
+        
         if args.print_smc_stats:
             argv.append('--print-smc-stats')
 
@@ -1025,12 +1068,12 @@ class Seahorn(sea.LimitedCmd):
                          choices=['reg', 'ptr', 'mem'], default='mem')
         ap.add_argument ('--dsa',
                          help='Heap analysis used by \'mem\' encoding: '
-                         'context-insensitive Llvm Dsa, '
-                         'flat memory SeaHorn Dsa, '
-                         'context-insensitive SeaHorn Dsa, and '
-                         'context-sensitive SeaHorn Dsa',
+                         'llvm (context-insensitive Llvm Dsa), '
+                         'sea-flat (flat memory SeaHorn Dsa), '
+                         'sea-ci (context-insensitive SeaHorn Dsa), and '
+                         'sea-cs (context-sensitive SeaHorn Dsa)',
                          choices=['llvm','sea-flat','sea-ci','sea-cs'],
-                         dest='dsa', default='llvm')
+                         dest='dsa', default='sea-ci')
         ap.add_argument ('--mem-dot',
                          help='Print Dsa memory graphs of all functions to dot format',
                          dest='mem_dot', default=False, action='store_true'),
@@ -1046,6 +1089,11 @@ class Seahorn(sea.LimitedCmd):
         ap.add_argument ('--max-depth',
                          help='Maximum depth of exploration',
                          dest='max_depth', default=sys.maxint)
+        ap.add_argument('--no-lower-gv-init',
+                        dest='no_lower_gv_init',
+                        help='Do not lower global initializers',
+                        default=False,
+                        action='store_true')
         return ap
 
     def run (self, args, extra):
@@ -1068,7 +1116,7 @@ class Seahorn(sea.LimitedCmd):
         if self.enable_boogie:
             argv.append ('--boogie')
             # the translation uses crab to add invariants: disable crab warnings
-            argv.append ('--crab-disable-warnings')
+            # argv.append ('--crab-enable-warnings=false')
 
         if args.solve or args.out_file is not None:
             argv.append ('--keep-shadows=true')
@@ -1118,6 +1166,10 @@ class Seahorn(sea.LimitedCmd):
             for l in args.ztrace.split (':'): argv.extend (['-ztrace', l])
 
         if args.out_file is not None: argv.extend (['-o', args.out_file])
+
+        if args.no_lower_gv_init:
+            argv.append('--lower-gv-init=false')
+
         argv.extend (args.in_files)
 
         # pick out extra seahorn options
@@ -1414,25 +1466,42 @@ class InspectBitcode(sea.LimitedCmd):
         ap = super (InspectBitcode, self).mk_arg_parser (ap)
         add_in_out_args (ap)
         ap.add_argument ('--profiler', default=False, action='store_true',
-                         dest='profiling', help='Profile program for static analysis')
+                         dest='profiling',
+                         help='Print number of functions, blocks, instructions, etc')
         ap.add_argument ('--cfg-dot', default=False, action='store_true',
-                         dest='cfg_dot', help='Print CFG of all functions to dot format')
+                         dest='cfg_dot',
+                         help='Print CFG of all functions to dot format')
         ap.add_argument ('--cfg-only-dot', default=False, action='store_true',
-                         dest='cfg_only_dot', help='Print CFG of all functions (without instructions) to dot format')
+                         dest='cfg_only_dot',
+                         help='Print CFG of all functions (without instructions) to dot format')
+        ap.add_argument ('--sea-dsa',
+                         help="Choose the SeaDsa analysis: "
+                         "flat (flat memory), "
+                         "ci (context-insensitive), "
+                         "ci-types (context-insensitive, type-sensitive), "
+                         "cs (context-sensitive),"
+                         "cs-types (context-sensitive, type-sensitive), " 
+                         "cs-vcgen (context-sensitive for VC generation), "
+                         "cs-vcgen-types (context-sensitive for VC generation, type-sensitive)",
+                         choices=['flat','ci','ci+t','cs','cs+t','cs-vcgen','cs-vcgen+t'],
+                         dest='sea_dsa', default='cs+t')
         ap.add_argument ('--mem-dot', default=False, action='store_true',
-                         dest='mem_dot', help='Print memory graph of all functions to dot format')
-        ap.add_argument ('--dot-outdir', default="", type=str, metavar='DIR',
-                         dest='dot_outdir', help='Directory to store all dot files')
-        ap.add_argument ('--cfg-viewer', default=False, action='store_true',
-                         dest='cfg_viewer', help='View CFG of all functions to dot format')
-        ap.add_argument ('--cfg-only-viewer', default=False, action='store_true',
-                         dest='cfg_only_viewer', help='View CFG of all functions (without instructions) to dot format')
-        ap.add_argument ('--mem-viewer', default=False, action='store_true',
-                         dest='mem_viewer', help='View memory graph of all functions to dot format')
+                         dest='mem_dot',
+                         help='Print SeaDsa memory graphs of alls functions to dot format')
+        ap.add_argument ('--mem-callgraph-dot', default=False, action='store_true',
+                         dest='mem_cg_dot',
+                         help='Print SeaDsa call graph to dot format')
+        ap.add_argument ('--mem-callgraph-stats', default=False, action='store_true',
+                         dest='mem_cg_stats',
+                         help='Print stats about SeaDsa call graph resolution')
         ap.add_argument ('--mem-stats', default=False, action='store_true',
-                         dest='mem_stats', help='Print stats about all memory graphs')
+                         dest='mem_stats', help='Print stats about all SeaDsa memory graphs')
+        ap.add_argument ('--mem-smc-stats', default=False, action='store_true',
+                         dest='smc_stats', help='Print stats collected by our Simple Memory Checker')
+        ap.add_argument ('--mem-dot-outdir', default="", type=str, metavar='DIR',
+                         dest='dot_outdir', help='Directory to store all dot files generated by SeaDsa')        
         ap.add_argument ('--cha', default=False, action='store_true',
-                         dest='cha', help='Print results of the Class Hierarchy Analysis (for C++)')
+                         dest='cha', help='Print results of the Class Hierarchy Analysis (for C++) (very experimental)')
         return ap
 
     def run (self, args, extra):
@@ -1442,29 +1511,52 @@ class InspectBitcode(sea.LimitedCmd):
 
         argv = list()
 
-        if args.profiling: argv.extend (['-profiler'])
-        if args.cfg_dot: argv.extend (['-cfg-dot'])
-        if args.cfg_only_dot: argv.extend (['-cfg-only-dot'])
-        if args.cfg_viewer: argv.extend (['-cfg-viewer'])
-        if args.cfg_only_viewer: argv.extend (['-cfg-only-viewer'])
-        if args.mem_dot: argv.extend (['-mem-dot'])
-        if args.mem_viewer: argv.extend (['-mem-viewer'])
-        if args.mem_stats: argv.extend (['-mem-stats'])
-        if args.mem_dot or args.mem_viewer:
+        use_sea_dsa = args.mem_stats or args.smc_stats or args.mem_cg_stats or \
+                      args.mem_cg_dot or args.mem_dot
+        
+        if args.profiling: argv.extend(['-profiler'])
+        
+        if args.cfg_dot: argv.extend(['-cfg-dot'])
+        if args.cfg_only_dot: argv.extend(['-cfg-only-dot'])
+
+        if use_sea_dsa:
+            print("Selected sea-dsa analysis: " + str(args.sea_dsa))
+            if args.sea_dsa == 'flat':
+                argv.extend (['--sea-dsa=flat'])
+            elif args.sea_dsa == 'ci' or args.sea_dsa == 'ci+t':
+                argv.extend (['--sea-dsa=ci'])
+            elif args.sea_dsa == 'cs' or args.sea_dsa == 'cs+t':
+                argv.extend (['--sea-dsa=butd-cs'])
+            elif args.sea_dsa == 'cs-vcgen' or args.sea_dsa == 'cs-vcgen+t':
+                argv.extend (['--sea-dsa=cs'])
+            else:
+                assert(False)
+            if args.sea_dsa == 'ci+t' or \
+               args.sea_dsa == 'cs+t' or \
+               args.sea_dsa == 'cs-vcgen+t':
+                argv.extend(['-sea-dsa-type-aware'])
+        
+        if args.mem_stats:
+            argv.extend(['-mem-stats'])
+
+        if args.mem_cg_stats:
+            argv.extend(['--mem-callgraph-stats'])
+            
+        if args.smc_stats:
+            argv.extend(['--mem-smc-stats'])
+            argv.extend(['--smc-analyze-only'])
+            argv.extend(['--print-smc-stats'])
+
+        if args.mem_dot or args.mem_cg_dot:
+            if args.mem_dot:
+                argv.extend(['-mem-dot'])
+            if args.mem_cg_dot:
+                argv.extend(['-mem-callgraph-dot'])                
             if args.dot_outdir is not "":
                 argv.extend(['-sea-dsa-dot-outdir={0}'.format(args.dot_outdir)])
+                                
         if args.cha: argv.extend (['-cha'])
         
-        dsa = get_sea_horn_dsa (extra)
-        if dsa is not None:
-            ## we select the sea-dsa variant
-            if dsa == 'sea-flat':
-                argv.extend (['--sea-dsa=flat'])
-            elif dsa == 'sea-ci':
-                argv.extend (['--sea-dsa=ci'])
-            else:
-                argv.extend (['--sea-dsa=cs'])
-
         argv.extend (args.in_files)
         # pick out extra seahorn/crab options
         argv.extend (filter (_is_seahorn_opt, extra))

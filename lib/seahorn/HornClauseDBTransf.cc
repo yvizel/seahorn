@@ -1,5 +1,5 @@
 #include "seahorn/HornClauseDBTransf.hh"
-#include "ufo/Expr.hpp"
+#include "seahorn/Expr/Expr.hh"
 
 namespace seahorn {
 using namespace expr;
@@ -10,8 +10,8 @@ HornRule replaceNonVarsInHead(const HornRule &rule) {
   assert(bind::isFapp(h));
   ExprFactory &efac = h->efac();
 
-  ENode::args_iterator it = ++(h->args_begin());
-  ENode::args_iterator end = h->args_end();
+  auto it = ++(h->args_begin());
+  auto end = h->args_end();
   Expr new_body = mk<TRUE>(efac);
   ExprVector new_args, new_vars;
   unsigned int id = 0;
@@ -24,8 +24,8 @@ HornRule replaceNonVarsInHead(const HornRule &rule) {
       Expr v = bind::intConst(mkTerm<std::string>(vname, efac));
       new_body = boolop::land(
           new_body,
-          mk<OR>(mk<AND>(mk<EQ>(v, mkTerm(mpz_class(1), efac)), arg),
-                 mk<AND>(mk<EQ>(v, mkTerm(mpz_class(0), efac)), mk<NEG>(arg))));
+          mk<OR>(mk<AND>(mk<EQ>(v, mkTerm(expr::mpz_class(1UL), efac)), arg),
+                 mk<AND>(mk<EQ>(v, mkTerm(expr::mpz_class(0UL), efac)), mk<NEG>(arg))));
       new_args.push_back(v);
       new_vars.push_back(v);
     } else if (isOpX<PLUS>(arg) || isOpX<MINUS>(arg) || isOpX<MULT>(arg) ||

@@ -1,6 +1,6 @@
 #pragma once
+#include "seahorn/Expr/Expr.hh"
 #include "seahorn/SymStore.hh"
-#include "ufo/Expr.hpp"
 
 #include "llvm/IR/InstVisitor.h"
 #include <memory>
@@ -28,18 +28,41 @@ using OpSemContextPtr = std::unique_ptr<OpSemContext>;
 class OpSemContext {
 private:
   /// \brief A map from symbolic registers to symbolic values
-  /// XXX The context keeps a reference to the store. The store itself lives outside of the context
-  /// XXX This is a temporary measure to keep new and old implementations together
+  /// XXX The context keeps a reference to the store. The store itself lives
+  /// outside of the context
+  /// XXX This is a temporary measure to keep new and old implementations
+  /// together
   SymStore &m_values;
 
   /// \brief Side-condition to keep extra constraints (e.g., path condition)
   /// XXX The context keeps a reference to the side condition.
   /// XXX The side condition itself lives outside of the context.
-  /// XXX This is a temporary measure to keep new and old implementations together
+  /// XXX This is a temporary measure to keep new and old implementations
+  /// together
   ExprVector &m_side;
 
-  /// \brief Activation literal for protecting conditions
-  Expr m_act;
+  /// \brief Constraints that are assumed to be true of the program
+  ///
+  /// Rely constraints reduce the executions considered. A counterexample that
+  /// does not satisfy a rely condition might still be consistent with concrete
+  /// operational semantics.
+  ExprVector m_rely;
+
+  /// \brief Constraints that are guaranteed to be true by the program
+  ///
+  /// If any of the constraints in a guarantee is false on an execution \p p,
+  /// then \p p is illegal execution that violates some guarantees of the
+  /// concrete operational semantics.
+  ExprVector m_guarantee;
+
+  /// \brief Path condition for the current basic block
+  ///
+  /// A path condition for a basic block \p bb is a formula \p pc(bb) such that
+  /// \p pc(bb) is true iff \p bb is executed.
+  ///
+  /// Path condition is used to assert constraints that are true only when a
+  /// particular basic block is executed
+  Expr m_pathCond;
 
 protected:
   // -- cached values
@@ -58,16 +81,17 @@ public:
     m_trueE = mk<TRUE>(efac());
     m_falseE = mk<FALSE>(efac());
 
-    m_act = m_trueE;
+    m_pathCond = m_trueE;
   }
   /// \brief Copy constructor with optionally new \p values and \p side
   OpSemContext(SymStore &values, ExprVector &side, const OpSemContext &o)
-      : m_values(o.m_values), m_side(o.m_side), m_act(o.m_act),
+      : m_values(o.m_values), m_side(o.m_side), m_rely(o.m_rely),
+        m_guarantee(o.m_guarantee), m_pathCond(o.m_pathCond),
         m_trueE(o.m_trueE), m_falseE(o.m_falseE) {}
   OpSemContext(const OpSemContext &) = delete;
   virtual ~OpSemContext() = default;
 
-  /// Returns reference to the symbolic store
+  /// Returns a reference to the symbolic store
   SymStore &values() { return m_values; }
   /// Returns the current value of a given register/expression in the store
   Expr read(Expr v) { return m_values.read(v); }
@@ -76,18 +100,36 @@ public:
   /// Writes a given value at a given register
   void write(Expr v, Expr u) { m_values.write(v, u); }
 
-  /// Sets an expression to be used as an activation literal
-  OpSemContext &act(Expr v) {
-    setActLit(v);
+  /// \brief sets path condition for the current basic block
+  OpSemContext &pc(Expr v) {
+    setPathCond(v);
     return *this;
   }
-  void setActLit(Expr v) { m_act = v; }
-  Expr getActLit() const { return m_act; }
+  void setPathCond(Expr v) { m_pathCond = v; }
+  Expr getPathCond() const { return m_pathCond; }
   ExprVector &side() { return m_side; }
-  void addSideSafe(Expr v) { m_side.push_back(boolop::limp(m_act, v)); }
+  /// \brief Asserts that \p v must be true under current path condition
+  void addScopedSide(Expr v) { m_side.push_back(boolop::limp(m_pathCond, v)); }
+  /// \brief Asserts that \p v must be true unconditionally
   void addSide(Expr v) { m_side.push_back(v); }
+  /// \brief Asserts that \p v = \p u
   void addDef(Expr v, Expr u) { addSide(mk<EQ>(v, u)); }
-  void addDefSafe(Expr v, Expr u) { addSideSafe(mk<EQ>(v, u)); }
+  /// \brief Asserts that \p v = \p u under current path condition
+  void addScopedDef(Expr v, Expr u) { addScopedSide(mk<EQ>(v, u)); }
+  /// \brief Adds a rely constraint
+  void addRely(Expr v) {
+    m_rely.push_back(v);
+    // XXX: for now treat rely like a true assertion of the program
+    addSide(v);
+  }
+  /// \brief Adds a rely constraint under current path condition
+  void addScopedRely(Expr v) { addRely(boolop::limp(m_pathCond, v)); }
+  /// \brief Adds a guarantee
+  void addGuarantee(Expr v) { m_guarantee.push_back(v); }
+  /// \brief Adds a guarantee under current path condition
+  void addScopedGuarantee(Expr v) { addGuarantee(boolop::limp(m_pathCond, v)); }
+
+  /// \brief Removes all assertions from the current side-condition
   void resetSide() { m_side.clear(); }
 
   ExprFactory &getExprFactory() const { return m_values.getExprFactory(); }
@@ -131,6 +173,8 @@ class OperationalSemantics {
 protected:
   ExprFactory &m_efac;
 
+  llvm::DenseSet<const llvm::Value *> m_filter;
+
   /// maps llvm::Function to seahorn::FunctionInfo
   using FuncInfoMap = llvm::DenseMap<const llvm::Function *, FunctionInfo>;
   FuncInfoMap m_fmap;
@@ -152,6 +196,13 @@ public:
 
   ExprFactory &getExprFactory() const { return m_efac; }
   ExprFactory &efac() const { return m_efac; }
+
+  void resetFilter() {m_filter.clear();}
+  void addToFilter(const llvm::Value& v) {m_filter.insert(&v);}
+  template <typename Iterator>
+  void addToFilter(Iterator begin, Iterator end) {
+    m_filter.insert(begin, end);
+  }
 
   /// \brief Create context/state for OpSem using given symstore and side
   /// Sub-classes can override it to customize the context
@@ -186,8 +237,10 @@ public:
 
   /// \brief Returns a symbolic register corresponding to llvm::Value \p v
   ///
-  /// Returns null expression if the value has no corresponding symbolic register
-  virtual Expr getSymbReg(const llvm::Value &v, const OpSemContext &ctx) const = 0;
+  /// Returns null expression if the value has no corresponding symbolic
+  /// register
+  virtual Expr getSymbReg(const llvm::Value &v,
+                          const OpSemContext &ctx) const = 0;
 
   /// \brief Returns an llvm::Value corresponding to a symbolic
   /// register
@@ -196,7 +249,9 @@ public:
   /// is not tracked, it is assumed that it is not executed (if an
   /// instruction) and that it does not influence a value of any
   /// instruction that is tracked.
-  virtual bool isTracked(const llvm::Value &v) const = 0;
+  virtual bool isTracked(const llvm::Value &v) const {
+    return m_filter.empty() || m_filter.count(&v);
+  }
   /// \brief Returns a symbolic value of \p v in the given store \p s
   /// \p v is either a constant or has a corresponding symbolic
   /// register
@@ -223,7 +278,6 @@ public:
   /// \brief Returns true if \p v is a symbolic register known to this
   /// OpSem object
   virtual bool isSymReg(Expr v) { return v == m_errorFlag; }
-
 };
 
 } // namespace seahorn

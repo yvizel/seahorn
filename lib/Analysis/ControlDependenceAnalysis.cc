@@ -4,7 +4,6 @@
 
 #include "llvm/IR/CFG.h"
 #include "llvm/IR/Constants.h"
-#include "llvm/IR/Dominators.h"
 #include "llvm/IR/Function.h"
 #include "llvm/IR/IRBuilder.h"
 #include "llvm/IR/Instructions.h"
@@ -17,7 +16,6 @@
 #include "llvm/ADT/PostOrderIterator.h"
 #include "llvm/ADT/SparseBitVector.h"
 
-#include "llvm/Support/CommandLine.h"
 #include "llvm/Support/raw_ostream.h"
 
 #include "seahorn/Support/SeaDebug.h"
@@ -34,9 +32,14 @@ class ControlDependenceAnalysisImpl
     : public seahorn::ControlDependenceAnalysis {
   Function &m_function;
 
+  /// \brief maps basic blocks to ids in a linearization of some reverse-topo
+  /// order
   DenseMap<const BasicBlock *, unsigned> m_BBToIdx;
+  /// \brief list of basic blocks in reverse-topological order
   std::vector<const BasicBlock *> m_postOrderBlocks;
+  /// \brief a map from a basic blocks to all reachable blocks
   mutable DenseMap<const BasicBlock *, SparseBitVector<>> m_reach;
+  /// \brief maps a basic block to its control dependent blocks
   DenseMap<const BasicBlock *, SmallVector<BasicBlock *, 4>> m_cdInfo;
 
 public:
@@ -56,8 +59,9 @@ public:
   }
 
 private:
+  /// \brief Computes control dependence
   // Calculates control dependence information using IteratedDominanceFrontier.
-  // The resulting CD sets are sorted in reverse-topological order.
+  // The resulting CD sets are sorted in reverse-topo order.
   void calculate(PostDominatorTree &PDT);
 
   // Initializes reachability information and PO numbering.
@@ -65,6 +69,15 @@ private:
 };
 
 void ControlDependenceAnalysisImpl::calculate(PostDominatorTree &PDT) {
+  // XXX: Question: why is CD not computed incrementaly but upfront?
+  // XXX: Question: what is the connection between reachability and CD?
+  // XXX:           seems like these are two independent concepts that are
+  // XXX:           merged together for no apparent reason.
+  // XXX: Answer: this is implemented in a way friendly for the gate placement
+  // XXX:         transformation. It would be better to expose a tree-based
+  // XXX:         interface in the future. I don't see why somebody would prefer
+  // XXX:         an incremental construction here over an eager one.
+
   for (BasicBlock &BB : m_function) {
     CDA_LOG(errs() << BB.getName() << ":\n");
     ReverseIDFCalculator calculator(PDT);
@@ -119,6 +132,9 @@ void ControlDependenceAnalysisImpl::initReach() {
     ++num;
   }
 
+  // Cache predecessors to avoid linear walks over basic block terminators
+  // -- the default predecessors(BB) interface is inefficient for checking
+  // containment.
   std::vector<SmallDenseSet<BasicBlock *, 4>> inverseSuccessors(
       m_BBToIdx.size());
 
@@ -128,10 +144,10 @@ void ControlDependenceAnalysisImpl::initReach() {
       inverseSuccessors[m_BBToIdx[succ]].insert(&BB);
     }
 
+  // Calculate rechability by processing BBs in reverse.
   bool changed = true;
   while (changed) {
     changed = false;
-
     for (auto *BB : m_postOrderBlocks) {
       auto &currReach = m_reach[BB];
       for (BasicBlock *pred : inverseSuccessors[m_BBToIdx[BB]]) {
