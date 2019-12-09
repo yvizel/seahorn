@@ -23,6 +23,13 @@ static llvm::cl::opt<bool>
                llvm::cl::desc("Use weak solver for reducing constraints"),
                llvm::cl::init(true));
 
+//Part 2
+static llvm::cl::opt<bool>
+	ConditionRepairMode ("horn-condition-repair-mode",
+	llvm::cl::desc("TODO!"),
+	llvm::cl::init
+	(false));
+
 namespace seahorn {
 
 void HornifyFunction::extractFunctionInfo(const BasicBlock &BB) {
@@ -146,6 +153,23 @@ void HornifyFunction::extractFunctionInfo(const BasicBlock &BB) {
               mk<OR>(mk<NEG>(postArgs[0]), mk<NEG>(postArgs[1]), postArgs[2])));
 }
 
+//Part 2
+bool hasCallIns (const BasicBlock &BB) {
+  for (const Instruction &inst : BB)
+  {
+	if (const CallInst *ci = dyn_cast<const CallInst> (&inst))
+	{
+		CallSite CS (const_cast<CallInst*> (ci));
+		const Function *cf = CS.getCalledFunction ();
+		std::string str = "find_condition";
+		if (cf && (cf->getName ().equals (str))) {
+			return true;
+		}
+	}
+  }
+  return false;
+}
+  
 void SmallHornifyFunction::runOnFunction(Function &F) {
 
   if (m_sem.isAbstracted(F))
@@ -162,6 +186,58 @@ void SmallHornifyFunction::runOnFunction(Function &F) {
 
   const LiveSymbols &ls = m_parent.getLiveSybols(F);
 
+  //Part 2- In condition repair mode:
+  //check if we need to check all ifs in the program
+  //and if so- collect the information needed
+  bool checkAllConditions = true;
+  //tuple info (for each BB): 1- num of successors, 2- has "find_condition" call
+  std::map<std::string, std::tuple<int,bool> > BBMap;
+  bool firstTime = true;
+  if (ConditionRepairMode) {
+	  LOG("CRM", errs() << "Condition Repair Info:\n");
+	  for (auto &BB : F) {
+		  bool flag = hasCallIns(BB);
+		  if (flag) {
+			  checkAllConditions = false;
+		  }
+	  }
+	  
+	  for (auto &BB : F) {
+		  bool flag = hasCallIns(BB);
+		  const BasicBlock *bb = &BB;
+		  std::string bbName = bb->getName();
+		  
+		  TerminatorInst *BBTerm = BB.getTerminator();
+		  int numSuccs = BBTerm->getNumSuccessors();
+
+		  const BasicBlock *pred = BB.getSinglePredecessor();
+		  if (pred) {
+			  std::string predName = pred->getName();
+			  if ((std::get<0>( BBMap[predName] ) == 2) && (checkAllConditions || std::get<1>( BBMap[predName] ))) {
+				  if (firstTime) {
+					  BB.setName(bbName + "->TrueBranch");
+					  firstTime = false;
+				  }
+				  else {
+					  BB.setName(bbName + "->FalseBranch");
+					  firstTime = true;
+				  }
+			  }
+		  }
+		  BBMap.insert({bb->getName(), std::make_tuple(numSuccs,flag)});
+		  
+		  
+		  const ExprVector &live = ls.live(bb);
+		  int bbCountVar = live.size();
+		  LOG("CRM", errs() << *mkTerm(bb, m_efac) << ": " << bbCountVar << " ");
+		  for (const Expr &v : live) {
+			  LOG("CRM", errs() << *v << " ");
+		  }
+		  LOG("CRM", errs() << "\n");
+	  }
+  }
+
+
   for (auto &BB : F) {
     // create predicate for the basic block
     Expr decl = m_parent.bbPredicate(BB);
@@ -174,21 +250,62 @@ void SmallHornifyFunction::runOnFunction(Function &F) {
     if (m_interproc)
       extractFunctionInfo(BB);
   }
-
-  BasicBlock &entry = F.getEntryBlock();
+  
+  //Part 2- adding a new relation - FakeInit
+  Expr FakeInit;
+  if (ConditionRepairMode) {
+	  sorts.push_back (mk<BOOL_TY> (m_efac));
+	  std::string temp = "CRM_FakeInit";
+	  FakeInit = bind::fdecl (mkTerm(temp, m_efac), sorts);
+	  m_db.registerRelation (FakeInit);
+  }
+  
+  BasicBlock &entry = F.getEntryBlock ();
   ExprSet allVars;
   ExprVector args;
   SymStore s(m_efac);
-  for (const Expr &v : ls.live(&F.getEntryBlock()))
-    allVars.insert(s.read(v));
-  Expr rule = s.eval(bind::fapp(m_parent.bbPredicate(entry), ls.live(&entry)));
-  rule = boolop::limp(boolop::lneg(s.read(m_sem.errorFlag(entry))), rule);
-  m_db.addRule(allVars, rule);
-  allVars.clear();
 
+  //Part 2- setting the new fact to be the exit BB (instead of entry BB => going backwards)
+  if (ConditionRepairMode) {
+	  for (const Expr& v : ls.live (exit)) 
+		  allVars.insert (s.read (v));
+	  Expr newFact = s.eval (bind::fapp (m_parent.bbPredicate (*exit), ls.live (exit)));
+	  newFact = boolop::limp (boolop::lneg (s.read (m_sem.errorFlag (*exit))), newFact);
+	  m_db.addRule (allVars, newFact);
+	  allVars.clear ();
+  }
+  else {
+	  for (const Expr &v : ls.live(&F.getEntryBlock()))
+		  allVars.insert(s.read(v));
+	  Expr rule = s.eval(bind::fapp(m_parent.bbPredicate(entry), ls.live(&entry)));
+	  rule = boolop::limp(boolop::lneg(s.read(m_sem.errorFlag(entry))), rule);
+	  m_db.addRule(allVars, rule);
+	  allVars.clear();
+  }
+  
+  
   ExprVector side;
+  
+  //Part 2- Adding the new last rule entry (the previous fact) => FakeInit (the new rel)
+  if (ConditionRepairMode) {
+	  for (const Expr& v : ls.live (&F.getEntryBlock ())) allVars.insert (s.read (v));
+	  Expr pre = s.eval (bind::fapp (m_parent.bbPredicate (entry), ls.live (&entry)));
+	  pre = boolop::limp (boolop::lneg (s.read (m_sem.errorFlag (entry))), pre);
+	  side.clear();
+	  Expr tau = mknary<AND> (mk<TRUE> (m_efac), side);
+	  Expr post = s.eval (bind::fapp (FakeInit, ls.live(exit)));
+	  m_db.addRule (allVars, boolop::limp (boolop::land (pre, tau), post));
+  }
+  
+
   for (auto &BB : F) {
     const BasicBlock *bb = &BB;
+	
+	//Part 2
+	std::string bbName = bb->getName();
+	bool isFirstTime = true;
+	Expr needToBeMerged;
+	  
     for (const BasicBlock *dst : succs(*bb)) {
       allVars.clear();
       s.reset();
@@ -202,6 +319,26 @@ void SmallHornifyFunction::runOnFunction(Function &F) {
       Expr pre = s.eval(bind::fapp(m_parent.bbPredicate(BB), live));
       side.push_back(boolop::lneg((s.read(m_sem.errorFlag(BB)))));
       m_sem.execEdg(s, BB, *dst, side);
+	  
+	  //Part 2
+	  if (ConditionRepairMode) {
+		  if (std::get<0>( BBMap[bbName] ) == 2) {
+			  if (checkAllConditions) {
+				  if (!isFirstTime) {
+					  side.pop_back();
+					  side.pop_back();
+				  }
+			  }
+			  else {
+				  if (std::get<1>( BBMap[bbName] )) {
+					  if (!isFirstTime) {
+						  side.pop_back();
+					  }
+				  }
+			  }
+		  }
+	  }
+	  
 
       Expr tau = mknary<AND>(mk<TRUE>(m_efac), side);
 
@@ -215,11 +352,51 @@ void SmallHornifyFunction::runOnFunction(Function &F) {
 
       Expr post;
       post = s.eval(bind::fapp(m_parent.bbPredicate(*dst), ls.live(dst)));
+	  
+	  //Part 2
+	  if (ConditionRepairMode) {
+		  if (std::get<0>( BBMap[bbName] ) == 2) {
+			  if (checkAllConditions) {
+				  if (isFirstTime) {
+					  needToBeMerged = post;
+					  isFirstTime = false;
+					  continue;				
+				  }
+				  else {
+					  post = boolop::land(post, needToBeMerged);
+				  }
+			  }
+			  else {
+				  if (std::get<1>( BBMap[bbName] )) {
+					  if (isFirstTime) {
+						  needToBeMerged = post;
+						  isFirstTime = false;
+						  continue;				
+					  }
+					  else {
+						  post = boolop::land(post, needToBeMerged);
+					  }
+				  }
+			  }
+		  }
+	  }
+	  
+		
+	  if (ConditionRepairMode) {
+		  //Part 2- replacing between pre and post to go backwards
+		  LOG("seahorn",
+			  errs() << "Adding rule : " << *mk<IMPL>(boolop::land(post, tau), pre)
+			  << "\n";);
 
-      LOG("seahorn",
-          errs() << "Adding rule : " << *mk<IMPL>(boolop::land(pre, tau), post)
-                 << "\n";);
-      m_db.addRule(allVars, boolop::limp(boolop::land(pre, tau), post));
+		  m_db.addRule (allVars, boolop::limp (boolop::land (post, tau), pre));
+	  }
+	  else {
+		  LOG("seahorn",
+			  errs() << "Adding rule : " << *mk<IMPL>(boolop::land(pre, tau), post)
+			  << "\n";);
+
+		  m_db.addRule(allVars, boolop::limp(boolop::land(pre, tau), post));
+	  }
     }
   }
 
@@ -252,11 +429,21 @@ void SmallHornifyFunction::runOnFunction(Function &F) {
     m_db.addRule(allVars, boolop::limp(pre, post));
   }
 
-  if (F.getName().equals("main") && ls.live(exit).size() == 1)
-    m_db.addQuery(bind::fapp(m_parent.bbPredicate(*exit), mk<TRUE>(m_efac)));
-  else if (F.getName().equals("main") && ls.live(exit).size() == 0)
-    m_db.addQuery(bind::fapp(m_parent.bbPredicate(*exit)));
-  else if (m_interproc) {
+  if (F.getName().equals("main") && ls.live(exit).size() == 1) {
+	  //Part 2- changing the query
+	  if (ConditionRepairMode) {
+		  m_db.addQuery(bind::fapp (FakeInit, mk<TRUE> (m_efac)));
+	  } else {
+		  m_db.addQuery(bind::fapp(m_parent.bbPredicate(*exit), mk<TRUE>(m_efac)));
+	  }
+  } else if (F.getName().equals("main") && ls.live(exit).size() == 0) {
+	  //Part 2- changing the query
+	  if (ConditionRepairMode) {
+		  m_db.addQuery (bind::fapp (FakeInit));
+	  } else {
+		  m_db.addQuery(bind::fapp(m_parent.bbPredicate(*exit)));
+	  }
+  } else if (m_interproc) {
     // the summary rule
     // exit(live_at_exit) & !error.flag ->
     //                  summary(true, false, false, regions, arguments, globals,
