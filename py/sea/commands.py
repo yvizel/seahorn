@@ -356,6 +356,8 @@ class Seapp(sea.LimitedCmd):
                          action='store_true', dest='static_taint')
         ap.add_argument ('--log', dest='log', default=None,
                          metavar='STR', help='Log level')
+        ap.add_argument ('--sea-dsa-log', dest='dsa_log', default=None,
+                         metavar='STR', help='Log level for sea-dsa')        
         add_in_out_args (ap)
         _add_S_arg (ap)
         return ap
@@ -458,6 +460,8 @@ class Seapp(sea.LimitedCmd):
 
         if args.log is not None:
             for l in args.log.split (':'): argv.extend (['-log', l])
+        if args.dsa_log is not None:
+            for l in args.dsa_log.split (':'): argv.extend (['-sea-dsa-log', l])
 
         argv.extend (args.in_files)
         return self.seappCmd.run (args, argv)
@@ -540,7 +544,8 @@ class AbcInst(sea.LimitedCmd):
         ap = super (AbcInst, self).mk_arg_parser (ap)
         ap.add_argument ('--log', dest='log', default=None,
                          metavar='STR', help='Log level')
-
+        ap.add_argument ('--sea-dsa-log', dest='dsa_log', default=None,
+                         metavar='STR', help='Log level for sea-dsa')
         ap.add_argument ('--abc-encoding', dest='abc_encoding',
                          help='Encoding used to insert array bounds checks',
                          choices=['local','global','global-c'], default='global')
@@ -665,6 +670,8 @@ class AbcInst(sea.LimitedCmd):
 
         if args.log is not None:
             for l in args.log.split (':'): argv.extend (['-log', l])
+        if args.dsa_log is not None:
+            for l in args.dsa_log.split (':'): argv.extend (['-sea-dsa-log', l])
 
         argv.extend (args.in_files)
         return self.seappCmd.run(args, argv)
@@ -689,7 +696,8 @@ class NdcInst(sea.LimitedCmd):
         ap = super (NdcInst, self).mk_arg_parser (ap)
         ap.add_argument ('--log', dest='log', default=None,
                          metavar='STR', help='Log level')
-
+        ap.add_argument ('--sea-dsa-log', dest='dsa_log', default=None,
+                         metavar='STR', help='Log level for sea-dsa')
         ap.add_argument ('--ndc-opt', dest='ndc_opt',
                          help='Minimize the number of null dereference checks',
                          default=False, action='store_true')
@@ -712,6 +720,8 @@ class NdcInst(sea.LimitedCmd):
 
         if args.log is not None:
             for l in args.log.split (':'): argv.extend (['-log', l])
+        if args.dsa_log is not None:
+            for l in args.dsa_log.split (':'): argv.extend (['-sea-dsa-log', l])
 
         argv.extend (args.in_files)
         return self.seappCmd.run(args, argv)
@@ -735,6 +745,8 @@ class SimpleMemoryChecks(sea.LimitedCmd):
         ap = super (SimpleMemoryChecks, self).mk_arg_parser (ap)
         ap.add_argument ('--log', dest='log', default=None,
                          metavar='STR', help='Log level')
+        ap.add_argument ('--sea-dsa-log', dest='dsa_log', default=None,
+                         metavar='STR', help='Log level for sea-dsa')        
         ap.add_argument ('--print-smc-stats', default=False, action='store_true',
                          dest='print_smc_stats', help='Print Simple Memory Check stats')
         ap.add_argument ('--smc-check-threshold', type=int, dest='smc_check_threshold',
@@ -776,6 +788,8 @@ class SimpleMemoryChecks(sea.LimitedCmd):
 
         if args.log is not None:
             for l in args.log.split (':'): argv.extend (['-log', l])
+        if args.dsa_log is not None:
+            for l in args.dsa_log.split (':'): argv.extend (['-sea-dsa-log', l])
 
         argv.extend (args.in_files)
         return self.seappCmd.run(args, argv)
@@ -1102,6 +1116,10 @@ class Seahorn(sea.LimitedCmd):
                          help='Verbosity level', metavar='N')
         ap.add_argument ('--log', dest='log', default=None,
                          metavar='STR', help='Log level')
+        ap.add_argument ('--sea-dsa-log', dest='dsa_log', default=None,
+                         metavar='STR', help='Log level for sea-dsa')
+        ap.add_argument ('--crab-log', dest='crab_log', default=None,
+                         metavar='STR', help='Log level for crab')                        
         ap.add_argument ('--oll', dest='asm_out_file', default=None,
                          help='LLVM assembly output file')
         ap.add_argument ('--step',
@@ -1207,6 +1225,11 @@ class Seahorn(sea.LimitedCmd):
 
         if args.log is not None:
             for l in args.log.split (':'): argv.extend (['-log', l])
+        if args.dsa_log is not None:
+            for l in args.dsa_log.split (':'): argv.extend (['-sea-dsa-log', l])
+        if args.crab_log is not None:
+            for l in args.crab_log.split (':'): argv.extend (['-crab-log', l])
+            
         if args.ztrace is not None:
             for l in args.ztrace.split (':'): argv.extend (['-ztrace', l])
 
@@ -1253,6 +1276,8 @@ class SeahornClp(sea.LimitedCmd):
         add_in_out_args (ap)
         ap.add_argument ('--log', dest='log', default=None,
                          metavar='STR', help='Log level')
+        ap.add_argument ('--sea-dsa-log', dest='dsa_log', default=None,
+                         metavar='STR', help='Log level for sea-dsa')                
         ap.add_argument ('--oll', dest='asm_out_file', default=None,
                          help='LLVM assembly output file')
         ap.add_argument ('--step',
@@ -1288,6 +1313,8 @@ class SeahornClp(sea.LimitedCmd):
 
         if args.log is not None:
             for l in args.log.split (':'): argv.extend (['-log', l])
+        if args.dsa_log is not None:
+            for l in args.dsa_log.split (':'): argv.extend (['-sea-dsa-log', l])
 
         if args.out_file is not None: argv.extend (['-o', args.out_file])
         argv.extend (args.in_files)
@@ -1364,6 +1391,8 @@ class CrabInst (sea.LimitedCmd):
     def mk_arg_parser (self, ap):
         ap = super (CrabInst, self).mk_arg_parser (ap)
         add_in_out_args (ap)
+        ap.add_argument ('--crab-log', dest='crab_log', default=None,
+                         metavar='STR', help='Log level for crab')  
         return ap
 
     def run (self, args, extra):
@@ -1379,6 +1408,9 @@ class CrabInst (sea.LimitedCmd):
         if args.out_file is not None: argv.extend (['-oll', args.out_file])
         argv.extend (args.in_files)
 
+        if args.crab_log is not None:
+            for l in args.crab_log.split (':'): argv.extend (['-crab-log', l])
+        
         # pick out extra seahorn/crab options
         argv.extend (filter (_is_seahorn_opt, extra))
 

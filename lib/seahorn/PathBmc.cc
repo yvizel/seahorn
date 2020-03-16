@@ -39,8 +39,8 @@ seahorn::PathBmcTrace seahorn::PathBmcEngine::getTrace() {
 #include "clam/CfgBuilder.hh"
 #include "clam/Clam.hh"
 #include "clam/HeapAbstraction.hh"
+#include "clam/DummyHeapAbstraction.hh"
 #include "clam/SeaDsaHeapAbstraction.hh"
-
 #include "llvm/ADT/STLExtras.h"
 #include "llvm/Analysis/CallGraph.h"
 #include "llvm/Analysis/TargetLibraryInfo.h"
@@ -82,26 +82,42 @@ seahorn::PathBmcTrace seahorn::PathBmcEngine::getTrace() {
  *  about how the translation from LLVM bitcode to Crab is done.
  **/
 
-static llvm::cl::opt<seahorn::solver::SolverKind>
-    SmtSolver("horn-bmc-smt-solver",
+namespace seahorn {
+/// User Options to be shared with other path bmc engines
+solver::SolverKind SmtSolver;
+bool UseCrabGlobalInvariants;
+bool UseCrabForSolvingPaths;
+clam::CrabDomain CrabDom;
+bool LayeredCrabSolving;
+path_bmc::MucMethodKind MucMethod;
+unsigned PathTimeout;
+unsigned MucTimeout;
+std::string SmtOutDir;
+}
+
+static llvm::cl::opt<seahorn::solver::SolverKind, true>
+    XSmtSolver("horn-bmc-smt-solver",
               llvm::cl::values(clEnumValN(seahorn::solver::SolverKind::Z3, "z3",
                                           "z3 SMT solver"),
                                clEnumValN(seahorn::solver::SolverKind::YICES2,
                                           "yices2", "Yices2 SMT solver")),
               llvm::cl::desc("Choose SMT solver used for the Path Bmc engine"),
+	      llvm::cl::location(seahorn::SmtSolver),
               llvm::cl::init(seahorn::solver::SolverKind::Z3));
 
-static llvm::cl::opt<bool> UseCrabGlobalInvariants(
+static llvm::cl::opt<bool, true> XUseCrabGlobalInvariants(
     "horn-bmc-crab-invariants",
     llvm::cl::desc("Load crab invariants into the Path Bmc engine"),
+    llvm::cl::location(seahorn::UseCrabGlobalInvariants),
     llvm::cl::init(true));
 
-static llvm::cl::opt<bool> UseCrabForSolvingPaths(
+static llvm::cl::opt<bool, true> XUseCrabForSolvingPaths(
     "horn-bmc-crab",
     llvm::cl::desc("Use of Crab to solve paths in Path Bmc engine"),
+    llvm::cl::location(seahorn::UseCrabForSolvingPaths),    
     llvm::cl::init(false));
 
-static llvm::cl::opt<clam::CrabDomain> CrabDom(
+static llvm::cl::opt<clam::CrabDomain, true> XCrabDom(
     "horn-bmc-crab-dom",
     llvm::cl::desc("Crab Domain used by the Path Bmc engine"),
     llvm::cl::values(clEnumValN(clam::INTERVALS, "int",
@@ -114,16 +130,18 @@ static llvm::cl::opt<clam::CrabDomain> CrabDom(
                                 "Reduced product of term-dis-int and zones."),
                      clEnumValN(clam::WRAPPED_INTERVALS, "w-int",
                                 "Wrapped interval domain")),
+    llvm::cl::location(seahorn::CrabDom),
     llvm::cl::init(clam::ZONES_SPLIT_DBM));
 
 // It has only effect if UseCrabForSolvingPaths is enabled.
-static llvm::cl::opt<bool> LayeredCrabSolving(
+static llvm::cl::opt<bool, true> XLayeredCrabSolving(
     "horn-bmc-crab-layered-solving",
     llvm::cl::desc("Try only-boolean reasoning before using "
                    "--horn-bmc-crab-dom to prove path unsatisfiability"),
+    llvm::cl::location(seahorn::LayeredCrabSolving),
     llvm::cl::init(false));
 
-static llvm::cl::opt<enum seahorn::path_bmc::MucMethodKind> MucMethod(
+static llvm::cl::opt<enum seahorn::path_bmc::MucMethodKind, true> XMucMethod(
     "horn-bmc-muc",
     llvm::cl::desc("Method used to compute minimal unsatisfiable cores in Path "
                    "Bmc engine"),
@@ -135,22 +153,26 @@ static llvm::cl::opt<enum seahorn::path_bmc::MucMethodKind> MucMethod(
                    "Deletion-based method"),
         clEnumValN(seahorn::path_bmc::MucMethodKind::MUC_BINARY_SEARCH,
                    "quickXplain", "QuickXplain method")),
+    llvm::cl::location(seahorn::MucMethod),
     llvm::cl::init(seahorn::path_bmc::MucMethodKind::MUC_ASSUMPTIONS));
 
-static llvm::cl::opt<unsigned> PathTimeout(
+static llvm::cl::opt<unsigned, true> XPathTimeout(
     "horn-bmc-path-timeout",
     llvm::cl::desc(
         "Timeout (sec) for SMT solving a path formula in Path Bmc engine"),
+    llvm::cl::location(seahorn::PathTimeout),
     llvm::cl::init(1800u));
 
-static llvm::cl::opt<unsigned> MucTimeout(
+static llvm::cl::opt<unsigned, true> XMucTimeout(
     "horn-bmc-muc-timeout",
     llvm::cl::desc("Timeout (sec) for SMT query during MUC in Path Bmc engine"),
+    llvm::cl::location(seahorn::MucTimeout),
     llvm::cl::init(5u));
 
-static llvm::cl::opt<std::string> SmtOutDir(
+static llvm::cl::opt<std::string, true> XSmtOutDir(
     "horn-bmc-smt-outdir",
     llvm::cl::desc("Directory to dump path formulas in SMT-LIB format"),
+    llvm::cl::location(seahorn::SmtOutDir),
     llvm::cl::init(""), llvm::cl::value_desc("directory"));
 
 namespace seahorn {
@@ -167,6 +189,59 @@ static llvm::raw_ostream &get_os(bool show_time = false) {
     *result << buf;
   }
   return *result;
+}
+
+void PathBmcEngine::initialize_ai() {
+
+  // -- Compute live symbols so that invariant variables exclude
+  //    dead variables.
+  m_ls.reset(new LiveSymbols(*m_fn, sem().efac(), sem()));
+  m_ls->run();
+
+  // -- Build the CFG 
+  clam::CrabBuilderParams  cfg_builder_params;
+  cfg_builder_params.simplify = false;
+  cfg_builder_params.enable_memory_ssa();
+  cfg_builder_params.set_array_precision();
+  // TODO/FIXME: it should be sync with horn-bv-singleton-aliases
+  cfg_builder_params.lower_singleton_aliases = true;
+  m_cfg_builder_man.reset(new clam::CrabBuilderManager(cfg_builder_params, m_tli, m_sm));
+  
+  // -- Initialize crab for solving paths
+  if (UseCrabForSolvingPaths) {
+    m_crab_path_solver.reset(new clam::IntraClam(*m_fn, *m_cfg_builder_man));
+  }
+}
+
+// Run whole-program crab analysis and assert those invariants into
+// the solver that keeps the precise encoding.
+void PathBmcEngine::add_global_invariants(expr_invariants_map_t &invariants) {
+  if (UseCrabGlobalInvariants) {
+    LOG("bmc", get_os(true) << "Begin running crab analysis\n";);
+    Stats::resume("BMC path-based: whole-program crab analysis");
+    clam::IntraClam crab_analysis(*m_fn, *m_cfg_builder_man);
+
+    clam::AnalysisParams params;
+    params.dom = CrabDom;
+    typename clam::IntraClam::assumption_map_t empty_assumptions;
+    crab_analysis.analyze(params, empty_assumptions);
+    Stats::stop("BMC path-based: whole-program crab analysis");
+    LOG("bmc", get_os(true) << "End running crab analysis\n";);
+
+    LOG("bmc", get_os(true) << "Begin loading of crab global invariants\n";);
+    Stats::resume("BMC path-based: loading of crab global invariants");
+    load_invariants(crab_analysis, invariants);
+    // Assumption: the program has been fully unrolled so there is
+    // exactly two cutpoint nodes (entry and exit). We use the symbolic
+    // store of the exit node.
+    auto &states = getStates();
+    if (states.size() == 2) {
+      SymStore &s = states[1];
+      assert_invariants(invariants, s);
+    }
+    Stats::stop("BMC path-based: loading of crab global invariants");
+    LOG("bmc", get_os(true) << "End loading of crab invariants\n";);
+  }
 }
 
 /* Load clam invariants into the out map */
@@ -187,7 +262,7 @@ void PathBmcEngine::load_invariants(
 
     // -- Translate crab linear constraints to ExprVector
     const ExprVector &live = m_ls->live(&bb);
-    LinConsToExpr conv(*m_mem, *m_fn, live);
+    LinConsToExpr conv(m_cfg_builder_man->get_heap_abstraction(), *m_fn, live);
 
     ExprVector res;
     for (auto cst : inv_csts) {
@@ -407,14 +482,18 @@ bool PathBmcEngine::gen_path_cond_from_ai_cex(
 	  }
 	}
       } else if (s.m_s->is_arr_assign()) {
-	if (const PHINode *PHI = dyn_cast<PHINode>(cfg_builder.get_instruction(*s.m_s))) {
-	  // The crab array assignment is in the incoming block of PHI
-	  src_BB = s.m_parent.get_basic_block();
-	  if (!src_BB) {
-	    src_BB = s.m_parent.get_edge().first;
-	    assert(src_BB);
+	typedef typename clam::cfg_ref_t::basic_block_t::arr_assign_t arr_assign_t;
+	auto assign = static_cast<const arr_assign_t*>(s.m_s);
+	if (boost::optional<const llvm::Value *> lhs = assign->lhs().name().get()) {
+	  if (const PHINode *PHI = dyn_cast<PHINode>(*lhs)) {
+	    // The crab array assignment is in the incoming block of PHI
+	    src_BB = s.m_parent.get_basic_block();
+	    if (!src_BB) {
+	      src_BB = s.m_parent.get_edge().first;
+	      assert(src_BB);
+	    }
+	    dst_BB = PHI->getParent();
 	  }
-	  dst_BB = PHI->getParent();
 	}
       }
 
@@ -500,7 +579,6 @@ void PathBmcEngine::extract_post_conditions_from_ai_cex(
     expr_invariants_map_t &out) {
   
   const LiveSymbols &ls = *m_ls;
-  clam::HeapAbstraction &heap_abs = *m_mem;
   const Function &fn = *m_fn;
   ExprFactory &efac = sem().efac();
   
@@ -521,7 +599,7 @@ void PathBmcEngine::extract_post_conditions_from_ai_cex(
     // XXX: this will lose precision if the domain is not convex.
     clam::lin_cst_sys_t csts = get_crab_linear_constraints(b);
     ExprVector f;
-    LinConsToExpr conv(heap_abs, fn, live);
+    LinConsToExpr conv(m_cfg_builder_man->get_heap_abstraction(), fn, live);
     for (auto cst : csts) {
       // XXX: Convert to Expr using Crab semantics (linear integer
       // arithmetic).
@@ -551,7 +629,10 @@ void PathBmcEngine::extract_post_conditions_from_ai_cex(
    Modify m_path_cond.
  */
 bool PathBmcEngine::path_encoding_and_solve_with_ai(
-      PathBmcTrace &cex, expr_invariants_map_t &path_constraints) {
+      PathBmcTrace &cex,
+      bool keep_path_constraints,
+      crab_invariants_map_t &crab_path_constraints,
+      expr_invariants_map_t &path_constraints) {
   
   using namespace clam;
   std::vector<const llvm::BasicBlock *> cex_blocks;
@@ -572,12 +653,11 @@ bool PathBmcEngine::path_encoding_and_solve_with_ai(
   //    statements along the path that still implies bottom.
   std::vector<crab_statement_t> cex_relevant_stmts;
 
-  bool compute_path_constraints = false;
-  LOG("bmc-crab", compute_path_constraints = true;);
+  LOG("bmc-crab", keep_path_constraints = true;);
   bool res;
   // currently enabled only for debugging because path_constraints is
   // unused.
-  if (compute_path_constraints) { 
+  if (keep_path_constraints) { 
     // crab_invariants contains the forward invariants for the cex:
     // one abstract state per cex's block
     crab_invariants_map_t crab_invariants;
@@ -637,7 +717,7 @@ bool PathBmcEngine::path_encoding_and_solve_with_ai(
     }
     m_path_cond.clear();
     m_path_cond.assign(path_cond.begin(), path_cond.end());
-
+    
     #if 0
     //// DEBUGGING    
     Expr crab_bc = op::boolop::lneg(op::boolop::land(m_path_cond));
@@ -779,14 +859,13 @@ solver::SolverResult PathBmcEngine::path_encoding_and_solve_with_smt(
 }
 
 PathBmcEngine::PathBmcEngine(LegacyOperationalSemantics &sem,
-                             const llvm::DataLayout &dl,
-                             const llvm::TargetLibraryInfo &tli,
-                             llvm::CallGraph &cg, sea_dsa::AllocWrapInfo &awi)
+			     const llvm::TargetLibraryInfo &tli,
+			     sea_dsa::ShadowMem &sm)
     : m_sem(sem), m_cpg(nullptr), m_fn(nullptr), m_ls(nullptr),
       m_ctxState(sem.efac()), m_boolean_solver(nullptr),
-      m_smt_path_solver(nullptr), m_model(nullptr), m_num_paths(0), m_dl(dl),
-      m_tli(tli), m_cg(cg), m_awi(awi),
-      m_cfg_builder_man(nullptr), m_mem(nullptr), m_crab_path_solver(nullptr) {
+      m_smt_path_solver(nullptr), m_model(nullptr), m_num_paths(0),
+      m_tli(tli), m_sm(sm),
+      m_cfg_builder_man(nullptr), m_crab_path_solver(nullptr) {
 
   if (SmtSolver == solver::SolverKind::Z3) {
     m_boolean_solver = llvm::make_unique<solver::z3_solver_impl>(sem.efac());
@@ -923,11 +1002,10 @@ void PathBmcEngine::encode() {
   Stats::stop("BMC path-based: precise encoding");
 }
 
-static inline solver::SolverResult path_solver(solver::Solver &solver) {
+void PathBmcEngine::solve_bool_abstraction() {
   Stats::resume("BMC path-based: enumeration path solver");
-  auto res = solver.check();
+  m_result = m_boolean_solver->check();
   Stats::stop("BMC path-based: enumeration path solver");
-  return res;
 }
 
 solver::SolverResult PathBmcEngine::solve() {
@@ -938,65 +1016,12 @@ solver::SolverResult PathBmcEngine::solve() {
   encode();
   LOG("bmc", get_os(true) << "End precise encoding\n";);
 
-  // -- Compute live symbols so that invariant variables exclude
-  //    dead variables.
-  m_ls.reset(new LiveSymbols(*m_fn, sem().efac(), sem()));
-  m_ls->run();
-
-  // -- Heap analysis to improve precision of crab.
-  //    Note that this analysis requires the whole module.
-  LOG("bmc", get_os(true) << "Begin running memory analysis\n";);
-  Stats::resume("BMC path-based: memory analysis");
-  m_mem.reset(new clam::SeaDsaHeapAbstraction(*(m_fn->getParent()), m_cg, m_dl,
-                                              m_tli, m_awi, false));
-  Stats::stop("BMC path-based: memory analysis");
-  LOG("bmc", get_os(true) << "End memory analysis\n";);
-
-  clam::CrabBuilderParams  cfg_builder_params;
-  cfg_builder_params.simplify = false;
-  /// FIXME: the generation of blocking clause from Crab CEX's is not
-  /// working. The translation from LLVM to Crab must be changed so
-  /// that memory SSA form is not destroyed.
-  ///cfg_builder_params.set_array_precision();
-  cfg_builder_params.set_num_precision();
-  m_cfg_builder_man.reset(new clam::CrabBuilderManager(cfg_builder_params));
+  // -- Initialize AI and assert global invariants to refine the
+  // -- precise encoding
+  initialize_ai();
+  expr_invariants_map_t invariants /*currently unused*/;
+  add_global_invariants(invariants);
   
-  // -- Initialize crab for solving paths
-  if (UseCrabForSolvingPaths) {
-    m_crab_path_solver.reset(new clam::IntraClam(
-        *m_fn, m_tli, *m_mem, *m_cfg_builder_man));
-  }
-
-  // -- crab invariants
-  expr_invariants_map_t invariants;
-  // Run whole-program crab analysis and convert invariants to Expr
-  if (UseCrabGlobalInvariants) {
-    LOG("bmc", get_os(true) << "Begin running crab analysis\n";);
-    Stats::resume("BMC path-based: whole-program crab analysis");
-    clam::IntraClam crab_analysis(*m_fn, m_tli, *m_mem, *m_cfg_builder_man);
-
-    clam::AnalysisParams params;
-    params.dom = CrabDom;
-    typename clam::IntraClam::assumption_map_t empty_assumptions;
-    crab_analysis.analyze(params, empty_assumptions);
-    Stats::stop("BMC path-based: whole-program crab analysis");
-    LOG("bmc", get_os(true) << "End running crab analysis\n";);
-
-    LOG("bmc", get_os(true) << "Begin loading of crab global invariants\n";);
-    Stats::resume("BMC path-based: loading of crab global invariants");
-    load_invariants(crab_analysis, invariants);
-    // Assumption: the program has been fully unrolled so there is
-    // exactly two cutpoint nodes (entry and exit). We use the symbolic
-    // store of the exit node.
-    auto &states = getStates();
-    if (states.size() == 2) {
-      SymStore &s = states[1];
-      assert_invariants(invariants, s);
-    }
-    Stats::stop("BMC path-based: loading of crab global invariants");
-    LOG("bmc", get_os(true) << "End loading of crab invariants\n";);
-  }
-
   LOG("bmc-details", for (Expr v
                           : m_precise_side) { errs() << "\t" << *v << "\n"; });
 
@@ -1021,8 +1046,8 @@ solver::SolverResult PathBmcEngine::solve() {
    * path.
    **/
   while (true) {
-
-    m_result = path_solver(*m_boolean_solver);
+    solve_bool_abstraction();
+    
     // keep going while we can generate a path from the boolean
     // abstraction
     if (m_result != solver::SolverResult::SAT) {
@@ -1045,8 +1070,11 @@ solver::SolverResult PathBmcEngine::solve() {
 
     expr_invariants_map_t path_constraints;
     if (UseCrabForSolvingPaths) {
+      crab_invariants_map_t crab_path_constraints /*unused*/;
+      bool keep_path_constraints = false;
       Stats::resume("BMC path-based: solving path + learning clauses with AI");
-      bool res = path_encoding_and_solve_with_ai(cex, path_constraints);
+      bool res = path_encoding_and_solve_with_ai(cex, keep_path_constraints,
+						 crab_path_constraints, path_constraints);
       Stats::stop("BMC path-based: solving path + learning clauses with AI");
 
       LOG("bmc-ai", if (!path_constraints.empty()) {
