@@ -186,7 +186,7 @@ namespace
 
     BranchInst* getLoopExitBr (Loop* TheLoop) {
       if (BasicBlock* Exit = TheLoop->getExitingBlock ()) {
-        TerminatorInst* TI = Exit->getTerminator ();
+        auto* TI = Exit->getTerminator ();
         if (BranchInst* BI = dyn_cast<BranchInst> (TI)) {
           if (BI->isConditional ())
             return BI;
@@ -349,7 +349,7 @@ namespace
     {
       if (F.empty ()) return false;
 
-      m_tli = &getAnalysis<TargetLibraryInfoWrapperPass>().getTLI();
+      m_tli = &getAnalysis<TargetLibraryInfoWrapperPass>().getTLI(F);
       m_dl = &F.getParent()->getDataLayout ();
       m_se = &getAnalysis<ScalarEvolutionWrapperPass>().getSE();      
       LoopInfo* LI = &getAnalysis<LoopInfoWrapperPass>().getLoopInfo();      

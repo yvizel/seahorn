@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import sys
 import os
@@ -32,10 +32,6 @@ def main (argv):
             sea.commands.ClangPP,
             sea.commands.seaIncSmt,
             sea.commands.seaTerm,
-            sea.commands.AbcInst(),
-            sea.commands.Abc,
-            sea.commands.ParAbc(),
-            sea.commands.ClangParAbc,
             sea.commands.NdcInst(),
             sea.commands.Ndc,
             sea.commands.LinkRt(),
@@ -47,14 +43,13 @@ def main (argv):
             sea.commands.Smc,
             sea.commands.SeaExeCex(),
             sea.commands.RemoveTargetFeatures(),
+            sea.commands.Fpf,
     ]
 
     cmd = sea.AgregateCmd('sea', 'SeaHorn Verification Framework', cmds)
     return cmd.main (argv)
 
 if __name__ == '__main__':
-    # unbuffered output
-    sys.stdout = os.fdopen (sys.stdout.fileno (), 'w', 0)
     path = os.path.abspath (sys.argv[0])
     path = os.path.dirname(path)
 

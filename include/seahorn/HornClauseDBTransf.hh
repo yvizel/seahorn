@@ -1,15 +1,15 @@
-#ifndef _HORN_CLAUSE_DB_TRANSFORMATIONS__H_
-#define _HORN_CLAUSE_DB_TRANSFORMATIONS__H_
+// Horn Clause DB Transformations
+#pragma once
 
 #include "seahorn/HornClauseDB.hh"
 
-namespace seahorn
-{
+namespace seahorn {
 
-  // Ensure all horn clause heads have only variables
-  void normalizeHornClauseHeads (HornClauseDB &db);
+// Ensure all horn clause heads have only variables
+void normalizeHornClauseHeads(HornClauseDB &db);
 
-}
+// Rewrites the Horn Clauses to remove Finite Map terms (new relations are
+// created for the relations that contain Finite Maps as arguments)
+void removeFiniteMapsHornClausesTransf(HornClauseDB &db, HornClauseDB &tdb);
 
-
-#endif /* _HORN_CLAUSE_DB_TRANSFORMATIONS__H_ */
+} // namespace seahorn

@@ -1,10 +1,37 @@
 # find lit. Assume we are using external lit installed from pip
 find_program(LIT_COMMAND lit)
+#message(STATUS "lit command is ${LIT_COMMAND}")
+set (LLVM_EXTERNAL_LIT "${LIT_COMMAND}" CACHE STRING "Command used to spawn lit" FORCE)
 
 # add the test suite
 add_lit_testsuite(test-all "Run all the tests"
   -v
   ${CMAKE_CURRENT_SOURCE_DIR}
+  ARGS
+  --path=${CMAKE_INSTALL_PREFIX}/bin
+  DEPENDS seahorn
+  )
+
+add_lit_testsuite(test-fat-ptr "Run fat ptr tests"
+  -v
+  ${CMAKE_CURRENT_SOURCE_DIR}/fat_ptr
+  ARGS
+  --path=${CMAKE_INSTALL_PREFIX}/bin
+  DEPENDS seahorn
+  )
+
+add_lit_testsuite(test-fat-ptr-sym "Run fat ptr symbolic tests"
+  -v
+  ${CMAKE_CURRENT_SOURCE_DIR}/fat_ptr_symbolic
+  ARGS
+  --path=${CMAKE_INSTALL_PREFIX}/bin
+  DEPENDS seahorn
+  )
+
+add_lit_testsuite(test-opsem-extra-widemem "Run opsem tests using extra wide memory manager"
+   -D opsem_opts="--horn-bv2-extra-widemem"
+  -v
+  ${CMAKE_CURRENT_SOURCE_DIR}/opsem
   ARGS
   --path=${CMAKE_INSTALL_PREFIX}/bin
   DEPENDS seahorn
@@ -51,6 +78,15 @@ add_lit_testsuite(test-smc "Regression tests for Simple Memory Safety Checks"
   )
 
 add_lit_testsuite(test-opsem "Regression tests for Operational Semantics"
+  -v
+  ${CMAKE_CURRENT_SOURCE_DIR}/opsem
+  ARGS
+  --path=${CMAKE_INSTALL_PREFIX}/bin
+  DEPENDS seahorn 
+  )
+
+add_lit_testsuite(test-opsem-widemem "Regression tests for Operational Semantics using wide memory manager"
+  -D opsem_opts="--horn-bv2-widemem"
   -v
   ${CMAKE_CURRENT_SOURCE_DIR}/opsem
   ARGS
@@ -147,10 +183,21 @@ add_lit_testsuite(test-cex "Regression test for executable counterexamples"
   DEPENDS seahorn
   )
 
+add_lit_testsuite(test-inter-mem "Tests for inter-mem encoding"
+  -v
+  -j1
+  ${CMAKE_CURRENT_SOURCE_DIR}/inter-mem
+  ARGS
+  --path=${CMAKE_INSTALL_PREFIX}/bin
+  DEPENDS seahorn
+  )
+
+
 if (CMAKE_GENERATOR STREQUAL "Ninja")
   # Depending on install target does not work with make
   add_dependencies(test-all install)
   add_dependencies(test-opsem install)
+  add_dependencies(test-opsem-widemem install)
   add_dependencies(test-tutorial install)
   add_dependencies(test-dsa install)
   add_dependencies(test-formats install)
@@ -166,7 +213,11 @@ if (CMAKE_GENERATOR STREQUAL "Ninja")
   add_dependencies(test-mcfuzz install)
   add_dependencies(test-memssa install)
   add_dependencies(test-crab install)
-  add_dependencies(test-cex install)  
+  add_dependencies(test-cex install)
+  add_dependencies(test-inter-mem install)
+  add_dependencies(test-fat-ptr-sym install)
+  add_dependencies(test-opsem-extra-widemem install)
+
 endif()
 install (DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/simple DESTINATION share/seahorn/test)
 install (DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/solve DESTINATION share/seahorn/test)
@@ -179,8 +230,9 @@ install (DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/devirt DESTINATION share/seahorn/
 install (DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/mcfuzz DESTINATION share/seahorn/test)
 install (DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/memssa DESTINATION share/seahorn/test)
 install (DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/crab DESTINATION share/seahorn/test)
-install (DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/cex DESTINATION share/seahorn/test)
-install (DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/dsa DESTINATION share/seahorn/test
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/cex DESTINATION share/seahorn/test)
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/fat_ptr_symbolic DESTINATION share/seahorn/test)
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/dsa DESTINATION share/seahorn/test
   PATTERN "*/check_graphs.py" EXCLUDE
   )
 install (DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/tutorial DESTINATION share/seahorn/test
@@ -189,3 +241,4 @@ install (DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/tutorial DESTINATION share/seahor
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/lit.cfg DESTINATION share/seahorn/test)
 install (PROGRAMS ${CMAKE_CURRENT_SOURCE_DIR}/dsa/check_graphs.py DESTINATION share/seahorn/test/dsa)
 install (PROGRAMS ${CMAKE_CURRENT_SOURCE_DIR}/tutorial/seatest.py DESTINATION share/seahorn/test/tutorial)
+install (DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/inter-mem DESTINATION share/seahorn/test)

@@ -13,7 +13,7 @@ terms.
 #include "seahorn/Transforms/Utils/Local.hh"
 #include "llvm/IR/CallSite.h"
 #include "llvm/IR/IRBuilder.h"
-
+#include "llvm/Support/CommandLine.h"
 #include "llvm/Support/raw_ostream.h"
 #include "llvm/Analysis/TargetLibraryInfo.h"
 
@@ -61,7 +61,7 @@ namespace
 
         if (KeepLibFn) {
             if (!m_tli)
-                m_tli = &getAnalysis<TargetLibraryInfoWrapperPass> ().getTLI();
+                m_tli = &getAnalysis<TargetLibraryInfoWrapperPass> ().getTLI(F);
 
             // known library function
             LibFunc libfn;

@@ -1,6 +1,19 @@
 /// Core of the Expr library
 #pragma once
 
+#include <boost/functional/hash_fwd.hpp>
+#include <boost/intrusive_ptr.hpp>
+#include <boost/pool/pool.hpp>
+#define BOOST_DISABLE_ASSERTS 1
+// boost/ptr_vector.hpp has BOOST_ASSERT that rely on rtti
+#include <boost/ptr_container/ptr_vector.hpp>
+#undef BOOST_DISABLE_ASSERTS
+
+#include <iostream>
+#include <map>
+#include <set>
+#include <unordered_set>
+#include <vector>
 namespace expr {
 
 namespace op {}
@@ -9,6 +22,7 @@ using namespace expr::op;
 class ENode;
 class ExprFactory;
 class ExprFactoryAllocator;
+class TypeChecker;
 
 using Expr = boost::intrusive_ptr<ENode>;
 using ExprSet = std::set<Expr>;
@@ -32,8 +46,10 @@ enum class OpFamilyId {
   NumericOp,
   MiscOp,
   SimpleTypeOp,
+  TerminalTypeOp,
   ArrayOp,
   StructOp,
+  FiniteMapOp,
   VariantOp,
   BindOp,
   BinderOp,
@@ -72,6 +88,8 @@ public:
   /// \brief Returns heap-allocted copy of the operator
   virtual Operator *clone(ExprFactoryAllocator &allocator) const = 0;
   virtual std::string name() const = 0;
+  /// \brief Returns the type of the expression 
+  virtual Expr inferType(Expr exp, TypeChecker &tc) const = 0;
 };
 
 inline std::ostream &operator<<(std::ostream &OS, const Operator &V) {
@@ -165,6 +183,7 @@ public:
     Print(std::cerr, 0, false);
     std::cerr << std::endl;
   }
+
 
   friend class ExprFactory;
   friend struct std::less<expr::ENode *>;
@@ -510,7 +529,6 @@ inline void intrusive_ptr_add_ref(ENode *v) { v->Ref(); }
 inline void intrusive_ptr_release(ENode *v) { v->efac().Deref(v); }
 
 } // namespace expr
-
 
 // ========================== HASHING ======================================
 namespace expr {

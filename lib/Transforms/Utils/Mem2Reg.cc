@@ -21,17 +21,11 @@
 #include "llvm/IR/Function.h"
 #include "llvm/IR/Instructions.h"
 #include "llvm/Transforms/Scalar.h"
+#include "llvm/Transforms/Utils.h"
 #include "llvm/Transforms/Utils/PromoteMemToReg.h"
 #include "llvm/Transforms/Utils/UnifyFunctionExitNodes.h"
-
+#include "llvm/InitializePasses.h"
 #include "seahorn/config.h"
-
-#ifdef HAVE_DSA
-#include "dsa/AddressTakenAnalysis.h"
-#include "dsa/AllocatorIdentification.h"
-#include "dsa/DataStructure.h"
-#include "dsa/Steensgaard.hh"
-#endif
 
 using namespace llvm;
 
@@ -61,14 +55,6 @@ struct PromotePass : public FunctionPass {
     AU.addPreservedID(LowerSwitchID);
     AU.addPreservedID(LowerInvokePassID);
 
-#ifdef HAVE_DSA
-    // Preserve DSA passes
-    AU.addPreservedID(StdLibDataStructuresID);
-    AU.addPreservedID(AddressTakenAnalysisID);
-    AU.addPreservedID(AllocIdentifyID);
-    AU.addPreservedID(LocalDataStructuresID);
-    AU.addPreservedID(SteensgaardDataStructuresID);
-#endif
   }
 };
 
@@ -106,13 +92,9 @@ bool PromotePass::runOnFunction(Function &F) {
   return Changed;
 }
 
-#ifdef HAVE_DSA
-FunctionPass *createPromoteMemoryToRegisterPass() { return new PromotePass(); }
-#else
 FunctionPass *createPromoteMemoryToRegisterPass() {
   return llvm::createPromoteMemoryToRegisterPass();
 }
-#endif
 
 } // end of seahorn namespace
 

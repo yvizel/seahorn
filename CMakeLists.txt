@@ -1,10 +1,19 @@
-cmake_minimum_required(VERSION 3.3)
+cmake_minimum_required(VERSION 3.10.2)
 
 project (SeaHorn)
-set (SeaHorn_VERSION_MAJOR 0)
-set (SeaHorn_VERSION_MINOR 1)
+set (SeaHorn_VERSION_MAJOR 10)
+set (SeaHorn_VERSION_MINOR 0)
 set (SeaHorn_VERSION_PATCH 0)
-set (SeaHorn_VERSION_TWEAK "rc3")
+set (SeaHorn_VERSION_TWEAK "rc0")
+
+if(CMAKE_VERSION VERSION_GREATER "3.13.0")
+cmake_policy(SET CMP0074 NEW)
+cmake_policy(SET CMP0077 NEW)
+endif()
+
+set(CMAKE_CXX_STANDARD 14 CACHE STRING "C++ standard to conform to")
+set(CMAKE_CXX_STANDARD_REQUIRED YES)
+set(CMAKE_CXX_EXTENSIONS NO)
 
 if (NOT PACKAGE_VERSION)
   set(PACKAGE_VERSION
@@ -60,28 +69,23 @@ configure_file("${CMAKE_CURRENT_SOURCE_DIR}/lib/Support/GitSHA1.cc.in" "${CMAKE_
 find_package (Git)
 if (GIT_FOUND)
   set (SEAHORN_LLVM_REPO "https://github.com/seahorn/llvm-seahorn"
-    CACHE STRING "seahorn-llvm repo")
-  set (LLVM_DSA_REPO "https://github.com/seahorn/llvm-dsa"
-    CACHE STRING "llvm-dsa repo")
+    CACHE STRING "llvm-seahorn repo")
   set (SEA_DSA_REPO "https://github.com/seahorn/sea-dsa"
     CACHE STRING "sea-dsa repo")
   set (CLAM_REPO "https://github.com/seahorn/crab-llvm"
     CACHE STRING "clam repo")
   
-  add_custom_target (seahorn-llvm-git
-    ${GIT_EXECUTABLE} clone ${SEAHORN_LLVM_REPO} ${CMAKE_SOURCE_DIR}/llvm-seahorn)
-  add_custom_target (llvm-dsa-git
-    ${GIT_EXECUTABLE} clone ${LLVM_DSA_REPO} ${CMAKE_SOURCE_DIR}/llvm-dsa)
+  add_custom_target (llvm-seahorn-git
+    ${GIT_EXECUTABLE} clone ${SEAHORN_LLVM_REPO} ${CMAKE_SOURCE_DIR}/llvm-seahorn -b dev10)
   add_custom_target (sea-dsa-git
-    ${GIT_EXECUTABLE} clone ${SEA_DSA_REPO} ${CMAKE_SOURCE_DIR}/sea-dsa)
+    ${GIT_EXECUTABLE} clone ${SEA_DSA_REPO} ${CMAKE_SOURCE_DIR}/sea-dsa -b dev10)
   add_custom_target (clam-git
-    ${GIT_EXECUTABLE} clone ${CLAM_REPO} ${CMAKE_SOURCE_DIR}/clam)
+    ${GIT_EXECUTABLE} clone ${CLAM_REPO} ${CMAKE_SOURCE_DIR}/clam -b dev10)
   add_custom_target (extra
     ${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_LIST_FILE}
     DEPENDS
-    llvm-dsa-git
     sea-dsa-git    
-    seahorn-llvm-git
+    llvm-seahorn-git
     clam-git
   )
 
@@ -101,16 +105,6 @@ endif()
 # put static libraries first
 set(CMAKE_FIND_LIBRARY_SUFFIXES ".a" ${CMAKE_FIND_LIBRARY_SUFFIXES})
 
-set (Boost_USE_STATIC_LIBS ON)
-set (BOOST_COMPONENTS system)
-  find_package (Boost 1.55 REQUIRED COMPONENTS ${BOOST_COMPONENTS})
-if (Boost_FOUND)
-  include_directories (${Boost_INCLUDE_DIRS})
-endif ()
-
-include(ExternalProject)
-set_property(DIRECTORY PROPERTY EP_STEP_TARGETS configure build test)
-
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   set(CMAKE_MACOSX_RPATH TRUE)  
@@ -122,6 +116,8 @@ else()
 endif ()
 
 
+include(ExternalProject)
+set_property(DIRECTORY PROPERTY EP_STEP_TARGETS configure build test)
 set (Z3_TAG "origin/deep_space" CACHE STRING "Z3 git tag to use")
 set (Z3_REPO "https://github.com/agurfinkel/z3.git" CACHE STRING "Z3 repo")
 ExternalProject_Add(z3
@@ -141,7 +137,7 @@ ExternalProject_Add(z3
   LOG_INSTALL 1
   LOG_BUILD 1)
 
-find_package(Z3 4.3.2)
+find_package(Z3 4.8.7)
 if (NOT Z3_FOUND)
   ExternalProject_Get_Property (z3 INSTALL_DIR)
   set(Z3_ROOT ${INSTALL_DIR} CACHE PATH "Forced location of Z3" FORCE)
@@ -172,24 +168,20 @@ if (YICES2_FOUND)
   endif()
 endif()  
 
-option(SEAHORN_REQUIRES_RTTI "Enable RTTI support" ON)
-option(SEAHORN_REQUIRES_EH "Enable Exceptions" ON)
- 
+# if top-level, offer to build llvm
 ExternalProject_Add (llvm
-  SVN_REPOSITORY http://llvm.org/svn/llvm-project/llvm/tags/RELEASE_500/final/  
+  SVN_REPOSITORY http://llvm.org/svn/llvm-project/llvm/tags/RELEASE_800/final/
   SOURCE_DIR ${CMAKE_SOURCE_DIR}/ext/llvm
   INSTALL_DIR ${CMAKE_BINARY_DIR}/run
   CMAKE_ARGS
-  -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
-  -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+  -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER} -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
   -DCMAKE_BUILD_TYPE:STRING=${EXT_CMAKE_BUILD_TYPE}
   -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
   -DLLVM_TARGETS_TO_BUILD:STRING=X86 -DWITH_POLY:BOOL=OFF
   -DLLVM_ENABLE_PEDANTIC=OFF
   -DLLVM_ENABLE_LLD=${SEA_ENABLE_LLD}
-  -DLLVM_USE_SPLIT_DWARF=${SEA_USE_SPLIT_DWARF}
-  -DLLVM_ENABLE_ASSERTIONS=${SEA_ENABLE_ASSERTIONS}
-  -DLLVM_ENABLE_PIC=ON -DLLVM_REQUIRES_RTTI:BOOL=${SEAHORN_REQUIRES_RTTI}
+  -DLLVM_ENABLE_PIC=ON 
+  -DLLVM_BUILD_LLVM_DYLIB:BOOL=${BUILD_SEA_DSA_LIBS_SHARED}
   -DLLVM_INCLUDE_TESTS:BOOL=OFF
   -DLLVM_INCLUDE_GO_TESTS=OFF
   -DLLVM_INCLUDE_EXAMPLES=OFF
@@ -201,7 +193,7 @@ ExternalProject_Add (llvm
   LOG_BUILD 1
   LOG_INSTALL 1)
 
-find_package (LLVM 5.0.0 CONFIG NO_DEFAULT_PATH)
+find_package (LLVM 10 CONFIG)
 if (NOT LLVM_FOUND)
   ExternalProject_Get_Property (llvm INSTALL_DIR)
   set (LLVM_ROOT ${INSTALL_DIR})
@@ -224,12 +216,23 @@ else()
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${LLVM_CXXFLAGS}")
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${LLVM_LDFLAGS}")
 
-  set(LLVM_REQUIRES_RTTI ${SEAHORN_REQUIRES_RTTI})
-  set(LLVM_REQUIRES_EH ${SEAHORN_REQUIRES_EH})
-
   include_directories(${LLVM_INCLUDE_DIRS})
   link_directories(${LLVM_LIBRARY_DIRS})
   add_definitions(${LLVM_DEFINITIONS})
+
+  if (NOT LLVM_BUILD_TYPE STREQUAL CMAKE_BUILD_TYPE)
+    message(WARNING
+      "LLVM_BUILD_TYPE and CMAKE_BUILD_TYPE differ:\n"
+      "\tLLMV_BUILD_TYPE=${LLVM_BUILD_TYPE}\n"
+      "\tCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}\n"
+      "Runtime errors might occur.")
+    if (LLVM_BUILD_TYPE MATCHES "Release|RelWithDebInfo" AND 
+        CMAKE_BUILD_TYPE MATCHES "Release|RelWithDebInfo|Coverage")
+      message(STATUS "Assuming that mixing Release and RelWithDebInfo or Coverage is allowed.")
+    else()
+      message(FATAL_ERROR "Incompatible mix of LLVM_BUILD_TYPE and CMAKE_BUILD_TYPE")
+    endif()
+  endif()
 
 endif()
 
@@ -243,6 +246,17 @@ if(NOT LLVM_FOUND)
                    Follow instructions above.")
   return()
 endif()
+
+set (Boost_USE_STATIC_LIBS ${SEAHORN_STATIC_EXE})
+find_package (Boost 1.65 REQUIRED)
+if (Boost_FOUND)
+  include_directories (${Boost_INCLUDE_DIRS})
+  if(NOT LLVM_ENABLE_EH)
+    add_definitions(-DBOOST_NO_EXCEPTIONS)
+  endif()
+endif ()
+
+
 
 set (PACKAGE_NAME SeaHorn)
 set(PACKAGE_STRING "${PACKAGE_NAME} ${PACKAGE_VERSION}")
@@ -383,17 +397,8 @@ endif ()
 # add the include directory from the build tree
 include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR}/include)
 
-if (IS_DIRECTORY ${CMAKE_SOURCE_DIR}/llvm-dsa AND
-    EXISTS ${CMAKE_SOURCE_DIR}/llvm-dsa/lib/DSA/Steensgaard.cpp)
-  include_directories (BEFORE llvm-dsa/include)
-  add_subdirectory (llvm-dsa/lib/AssistDS)
-  add_subdirectory (llvm-dsa/lib/DSA)
-  set (DSA_LIBS DSA AssistDS)
-  set (HAVE_DSA TRUE)
-else()
-  message (WARNING "No LLVM DSA found in ${CMAKE_SOURCE_DIR}/llvm-dsa. Run\n\tcmake --build . --target extra && cmake ${CMAKE_SOURCE_DIR}")
-  set (DSA_LIBS "")
-endif()
+# HAVE_DSA
+set(DSA_LIBS "")
 
 if (IS_DIRECTORY ${CMAKE_SOURCE_DIR}/llvm-seahorn AND
     EXISTS ${CMAKE_SOURCE_DIR}/llvm-seahorn/lib/CMakeLists.txt)
@@ -407,12 +412,12 @@ else()
 endif()
 
 if (IS_DIRECTORY ${CMAKE_SOURCE_DIR}/sea-dsa AND
-    EXISTS ${CMAKE_SOURCE_DIR}/sea-dsa/src/DsaAnalysis.cc)
+    EXISTS ${CMAKE_SOURCE_DIR}/sea-dsa/lib/seadsa/DsaAnalysis.cc)
   include_directories (BEFORE sea-dsa/include)
   add_subdirectory (${CMAKE_SOURCE_DIR}/sea-dsa)
   set (SEA_DSA_LIBS SeaDsaAnalysis)
 else()
-  message (WARNING "No SEA DSA found in ${CMAKE_SOURCE_DIR}/sea-dsa. Run\n\tcmake --build . --target extra && cmake ${CMAKE_SOURCE_DIR}")
+  message (WARNING "SeaDsa is required but not found in ${CMAKE_SOURCE_DIR}/sea-dsa. Run\n\tcmake --build . --target extra && cmake ${CMAKE_SOURCE_DIR}")
   return()
 endif()
 
@@ -429,6 +434,15 @@ if (IS_DIRECTORY ${CMAKE_SOURCE_DIR}/clam AND
   include_directories (BEFORE ${CLAM_INCLUDE_DIRS})
 else()
   message (WARNING "No Clam found in ${CMAKE_SOURCE_DIR}/clam. Run\n\tcmake --build . --target extra && cmake ${CMAKE_SOURCE_DIR}")
+endif()
+
+# If enabled then devirtualization uses old code that replaces
+# indirect calls with special bounce functions.
+option(SEA_USE_BOUNCE_FUNCTIONS "Devirt uses old code that adds bounce functions" OFF)
+if (SEA_USE_BOUNCE_FUNCTIONS)
+  set(USE_BOUNCE_FUNCTIONS TRUE)
+else()
+  set(USE_BOUNCE_FUNCTIONS FALSE)
 endif()
 
 ### add our include directories to the front, overriding directories

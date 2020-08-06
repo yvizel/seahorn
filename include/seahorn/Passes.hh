@@ -1,10 +1,10 @@
 /**
 SeaHorn Verification Framework
-Copyright (c) 2016 Carnegie Mellon University.
+Copyright (c) 2020 Arie Gurfinkel 
 All Rights Reserved.
 
 THIS SOFTWARE IS PROVIDED "AS IS," WITH NO WARRANTIES
-WHATSOEVER. CARNEGIE MELLON UNIVERSITY EXPRESSLY DISCLAIMS TO THE
+WHATSOEVER. UNIVERSITY OF WATERLOO EXPRESSLY DISCLAIMS TO THE
 FULLEST EXTENT PERMITTEDBY LAW ALL EXPRESS, IMPLIED, AND STATUTORY
 WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE WARRANTIES OF
 MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND
@@ -12,18 +12,19 @@ NON-INFRINGEMENT OF PROPRIETARY RIGHTS.
 
 Released under a modified BSD license, please see license.txt for full
 terms.
-
-DM-0002198
 */
 
-#ifndef SEAHORN_PASSES__HH_
-#define SEAHORN_PASSES__HH_
+#pragma once
 
 #include "seahorn/config.h"
-#include "llvm/Pass.h"
 #include "llvm/ADT/StringRef.h"
+#include "llvm/Pass.h"
 #include "llvm/Support/raw_ostream.h"
+#include "llvm/Transforms/InstCombine/InstCombine.h"
 
+namespace llvm {
+class LoopPass;
+}
 namespace seahorn {
 llvm::Pass *createMarkInternalInlinePass();
 llvm::Pass *createMarkInternalAllocOrDeallocInlinePass();
@@ -40,11 +41,10 @@ llvm::Pass *createDevirtualizeFunctionsPass();
 llvm::Pass *createAbstractMemoryPass();
 llvm::Pass *createPromoteMemoryToRegisterPass();
 llvm::Pass *createLoadCrabPass();
-llvm::Pass *createLlvmDsaShadowMemPass();    
 
 llvm::Pass *createCutLoopsPass();
 llvm::Pass *createMarkFnEntryPass();
-llvm::Pass *createPromoteVerifierClassPass();
+llvm::Pass *createPromoteVerifierCallsPass();
 llvm::Pass *createPromoteMallocPass();
 llvm::Pass *createKillVarArgFnPass();
 llvm::Pass *createLowerArithWithOverflowIntrinsicsPass();
@@ -61,8 +61,6 @@ llvm::Pass *createPromoteBoolLoadsPass();
 llvm::Pass *createEnumVerifierCallsPass();
 
 llvm::Pass *createCanReadUndefPass();
-
-llvm::Pass *createApiAnalysisPass(std::string &config);
 
 llvm::Pass *createBmcPass(llvm::raw_ostream *out, bool solve);
 llvm::Pass *createPathBmcPass(llvm::raw_ostream *out, bool solve);
@@ -92,6 +90,8 @@ llvm::Pass *createGlobalBufferBoundsCheck();
 llvm::Pass *createLocalBufferBoundsCheck();
 llvm::Pass *createGlobalCBufferBoundsCheckPass();
 
+llvm::Pass *createFatBufferBoundsCheckPass();
+
 llvm::Pass *createSimpleMemoryCheckPass();
 
 llvm::Pass *createCanFailPass();
@@ -110,31 +110,34 @@ llvm::Pass *createStaticTaintPass(bool bPrint);
 } // namespace seahorn
 
 #ifdef HAVE_LLVM_SEAHORN
-#include "llvm_seahorn/Transforms/Scalar.h"
+llvm::FunctionPass *
+createSeaInstructionCombiningPass(bool ExpensiveCombines = true);
+
 namespace seahorn {
-inline llvm::FunctionPass *createInstCombine() {
-  return llvm_seahorn::createInstructionCombiningPass();
+inline llvm::FunctionPass *createInstCombine(bool ExpensiveCombines = true) {
+  return createSeaInstructionCombiningPass(ExpensiveCombines);
 }
 } // namespace seahorn
 #else
-#include "llvm/Transforms/Scalar.h"
 namespace seahorn {
-inline llvm::FunctionPass *createInstCombine() {
-  return llvm::createInstructionCombiningPass();
+inline llvm::FunctionPass *createInstCombine(bool ExpensiveCombines = true) {
+  return llvm::createInstructionCombiningPass(ExpensiveCombines);
 }
 } // namespace seahorn
 #endif
 
-#include "sea_dsa/ShadowMem.hh"
+#include "seadsa/ShadowMem.hh"
 namespace seahorn {
-llvm::Pass *createSeaDsaShadowMemPass() {
-  return sea_dsa::createShadowMemPass();
+inline llvm::Pass *createSeaDsaShadowMemPass() {
+  return seadsa::createShadowMemPass();
 }
 
-llvm::Pass *createStripShadowMemPass(){
-  return sea_dsa::createStripShadowMemPass();
+inline llvm::Pass *createStripShadowMemPass() {
+  return seadsa::createStripShadowMemPass();
 }
 
-}
-
-#endif /* SEAHORN_PASSES__HH_ */
+llvm::ImmutablePass *createSeaBuiltinsWrapperPass();
+llvm::Pass* createLoopPeelerPass(unsigned Num = 1);
+llvm::Pass* createBackEdgeCutterPass();
+llvm::Pass* createLowerIsDerefPass();
+} // namespace seahorn

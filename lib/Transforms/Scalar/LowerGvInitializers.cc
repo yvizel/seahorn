@@ -5,6 +5,7 @@
 #include "llvm/IR/IRBuilder.h"
 #include "llvm/Support/raw_ostream.h"
 #include "llvm/Transforms/Utils/GlobalStatus.h"
+#include "llvm/Support/CommandLine.h"
 
 #include "seahorn/Support/SeaDebug.h"
 #include "seahorn/Support/SeaLog.hh"
@@ -79,7 +80,7 @@ static Function &makeNewNondetFn(Module &m, Type &type, unsigned num,
   do
     name = boost::str(boost::format(prefix + "%d") % (c++));
   while (m.getNamedValue(name));
-  Function *res = dyn_cast<Function>(m.getOrInsertFunction(name, &type));
+  Function *res = dyn_cast<Function>(m.getOrInsertFunction(name, &type).getCallee());
   assert(res);
   return *res;
 }

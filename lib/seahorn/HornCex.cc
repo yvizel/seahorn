@@ -13,6 +13,7 @@
 #include "llvm/Support/FileSystem.h"
 #include "llvm/Support/ToolOutputFile.h"
 
+#include "seahorn/Analysis/SeaBuiltinsInfo.hh"
 #include "seahorn/CexHarness.hh"
 #include "seahorn/HornCex.hh"
 #include "seahorn/MemSimulator.hh"
@@ -39,8 +40,6 @@
 #include "boost/range/adaptor/reversed.hpp"
 #include "boost/range/algorithm/reverse.hpp"
 #include "boost/range/algorithm/sort.hpp"
-
-#include <gmpxx.h>
 
 namespace seahorn {
 std::string HornCexFile;
@@ -122,6 +121,7 @@ bool HornCex::runOnFunction(Module &M, Function &F) {
 
   HornifyModule &hm = getAnalysis<HornifyModule>();
   const CutPointGraph &cpg = getAnalysis<CutPointGraph>(F);
+  auto &SBI = getAnalysis<SeaBuiltinsInfoWrapperPass>().getSBI();
 
   Stats::resume("CexValidation");
 
@@ -258,7 +258,7 @@ bool HornCex::runOnFunction(Module &M, Function &F) {
       UseBv ? static_cast<LegacyOperationalSemantics *>(&semBv) : static_cast<LegacyOperationalSemantics *>(&semUfo);
 
   const TargetLibraryInfo &tli =
-      getAnalysis<TargetLibraryInfoWrapperPass>().getTLI();
+      getAnalysis<TargetLibraryInfoWrapperPass>().getTLI(F);
 
   BmcEngine bmc(*sem, hm.getZContext());
 
@@ -309,7 +309,7 @@ bool HornCex::runOnFunction(Module &M, Function &F) {
   if (UseBv) {
     const DataLayout &dl = M.getDataLayout();
     const TargetLibraryInfo &tli =
-        getAnalysis<TargetLibraryInfoWrapperPass>().getTLI();
+        getAnalysis<TargetLibraryInfoWrapperPass>().getTLI(F);
     if (MemSim) {
       memSim = std::unique_ptr<MemSimulator>(new MemSimulator(trace, dl, tli));
       bool simRes = memSim->simulate();
@@ -343,7 +343,7 @@ bool HornCex::runOnFunction(Module &M, Function &F) {
     llvm::DenseSet<const llvm::BasicBlock *> region;
     for (int i = 0; i < trace.size(); i++)
       region.insert(trace.bb(i));
-    reduceToRegion(F, region);
+    reduceToRegion(F, region, SBI);
     dumpLLVMBitcode(M, BmcSliceOutputFile.c_str());
     return true;
   }
@@ -364,7 +364,7 @@ bool HornCex::runOnFunction(Module &M, Function &F) {
         }
       }
     }
-    reduceToRegion(F, region);
+    reduceToRegion(F, region, SBI);
     dumpLLVMBitcode(M, CpSliceOutputFile.c_str());
     return true;
   }
@@ -375,6 +375,7 @@ bool HornCex::runOnFunction(Module &M, Function &F) {
 void HornCex::getAnalysisUsage(AnalysisUsage &AU) const {
   AU.setPreservesAll();
   AU.addRequired<TargetLibraryInfoWrapperPass>();
+  AU.addRequired<SeaBuiltinsInfoWrapperPass>();
   AU.addRequired<CutPointGraph>();
   AU.addRequired<HornifyModule>();
   AU.addRequired<HornSolver>();
@@ -484,7 +485,7 @@ static void debugLocToSvComp(const Instruction &inst, SvCompCex<O> &svcomp) {
 
 static void dumpSvCompCex(BmcTrace &trace, std::string CexFile) {
   std::error_code ec;
-  llvm::tool_output_file out(CexFile.c_str(), ec, llvm::sys::fs::F_Text);
+  llvm::ToolOutputFile out(CexFile.c_str(), ec, llvm::sys::fs::F_Text);
   if (ec) {
     errs() << "ERROR: Cannot open CEX file: " << ec.message() << "\n";
     return;
@@ -507,13 +508,13 @@ static void dumpSvCompCex(BmcTrace &trace, std::string CexFile) {
 
 static void dumpLLVMBitcode(const Module &M, StringRef BcFile) {
   std::error_code error_code;
-  tool_output_file sliceOutput(BcFile, error_code, sys::fs::F_None);
+  ToolOutputFile sliceOutput(BcFile, error_code, sys::fs::F_None);
   assert(!error_code);
   verifyModule(M, &errs());
   if (BcFile.endswith(".ll"))
     sliceOutput.os() << M;
   else
-    WriteBitcodeToFile(&M, sliceOutput.os());
+    WriteBitcodeToFile(M, sliceOutput.os());
   sliceOutput.os().close();
   sliceOutput.keep();
 }

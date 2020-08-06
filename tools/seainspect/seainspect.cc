@@ -8,6 +8,7 @@
 #include "llvm/IR/Module.h"
 #include "llvm/IR/Verifier.h"
 #include "llvm/IRReader/IRReader.h"
+#include "llvm/InitializePasses.h"
 #include "llvm/LinkAllPasses.h"
 #include "llvm/Support/CommandLine.h"
 #include "llvm/Support/Debug.h"
@@ -20,7 +21,9 @@
 #include "llvm/Support/raw_ostream.h"
 #include "llvm/Transforms/IPO.h"
 
-#include "sea_dsa/DsaAnalysis.hh"
+#include "seadsa/DsaAnalysis.hh"
+#include "seadsa/InitializePasses.hh"
+
 #include "seahorn/Passes.hh"
 
 static llvm::cl::opt<std::string>
@@ -31,11 +34,6 @@ static llvm::cl::opt<std::string>
 static llvm::cl::opt<std::string>
     AsmOutputFilename("oll", llvm::cl::desc("Output analyzed bitcode"),
                       llvm::cl::init(""), llvm::cl::value_desc("filename"));
-
-static llvm::cl::opt<std::string>
-    ApiConfig("api-config",
-              llvm::cl::desc("Comma separated API function calls"),
-              llvm::cl::init(""), llvm::cl::value_desc("api-string"));
 
 static llvm::cl::opt<std::string> DefaultDataLayout(
     "data-layout",
@@ -58,46 +56,44 @@ static llvm::cl::opt<bool> CfgOnlyDot(
     llvm::cl::init(false));
 
 static llvm::cl::opt<bool> CfgViewer("cfg-viewer",
-         llvm::cl::desc("View CFG of function"),
-	 llvm::cl::Hidden,
-         llvm::cl::init(false));
+                                     llvm::cl::desc("View CFG of function"),
+                                     llvm::cl::Hidden, llvm::cl::init(false));
 
 static llvm::cl::opt<bool>
     CfgOnlyViewer("cfg-only-viewer",
-         llvm::cl::desc("View CFG of function (without instructions)"),
-	 llvm::cl::Hidden,	  
-         llvm::cl::init(false));
+                  llvm::cl::desc("View CFG of function (without instructions)"),
+                  llvm::cl::Hidden, llvm::cl::init(false));
 
-static llvm::cl::opt<bool>
-    MemDot("mem-dot",
-         llvm::cl::desc("Print SeaDsa memory graph of a function to dot format"),
-         llvm::cl::init(false));
+static llvm::cl::opt<bool> MemDot(
+    "mem-dot",
+    llvm::cl::desc("Print SeaDsa memory graph of a function to dot format"),
+    llvm::cl::init(false));
 
-static llvm::cl::opt<bool>
-    MemViewer("mem-viewer",
-         llvm::cl::desc("View SeaDsa memory graph of a function to dot format"),
-	 llvm::cl::Hidden,      
-         llvm::cl::init(false));
+static llvm::cl::opt<bool> MemViewer(
+    "mem-viewer",
+    llvm::cl::desc("View SeaDsa memory graph of a function to dot format"),
+    llvm::cl::Hidden, llvm::cl::init(false));
 
-static llvm::cl::opt<bool>
-    PrintMemStats("mem-stats",
-         llvm::cl::desc("Print statistics about all SeaDsa memory graphs"),
-         llvm::cl::init(false));
+static llvm::cl::opt<bool> PrintMemStats(
+    "mem-stats",
+    llvm::cl::desc("Print statistics about all SeaDsa memory graphs"),
+    llvm::cl::init(false));
 
 static llvm::cl::opt<bool>
     SMC("mem-smc-stats",
-	 llvm::cl::desc("Print statistics collected by our SMC (Simple Memory Checker)"),
-	 llvm::cl::init(false));
+        llvm::cl::desc(
+            "Print statistics collected by our SMC (Simple Memory Checker)"),
+        llvm::cl::init(false));
 
-static llvm::cl::opt<bool>
-    CallGraphDot("mem-callgraph-dot",
-	 llvm::cl::desc("Print complete SeaDsa call graph to dot format"),
-	 llvm::cl::init(false));
+static llvm::cl::opt<bool> CallGraphDot(
+    "mem-callgraph-dot",
+    llvm::cl::desc("Print complete SeaDsa call graph to dot format"),
+    llvm::cl::init(false));
 
-static llvm::cl::opt<bool>
-    PrintCallGraphStats("mem-callgraph-stats",
-	 llvm::cl::desc("Print statistics about the complete SeaDsa call graph"),
-	 llvm::cl::init(false));
+static llvm::cl::opt<bool> PrintCallGraphStats(
+    "mem-callgraph-stats",
+    llvm::cl::desc("Print statistics about the complete SeaDsa call graph"),
+    llvm::cl::init(false));
 
 static llvm::cl::opt<bool>
     RunGSA("run-gsa", llvm::cl::desc("Run Gated SSA (GSA) construction"),
@@ -107,9 +103,10 @@ static llvm::cl::opt<bool>
     RunCDA("run-cda", llvm::cl::desc("Run Control Dependence Analysis (CDA)"),
            llvm::cl::init(false));
 
-static llvm::cl::opt<bool>
-    RunCHA("cha", llvm::cl::desc("Print Class Hierarchy Analysis (CHA) (very experimental)"),
-           llvm::cl::init(false));
+static llvm::cl::opt<bool> RunCHA(
+    "cha",
+    llvm::cl::desc("Print Class Hierarchy Analysis (CHA) (very experimental)"),
+    llvm::cl::init(false));
 
 int main(int argc, char **argv) {
 
@@ -125,7 +122,7 @@ int main(int argc, char **argv) {
   llvm::SMDiagnostic err;
   static llvm::LLVMContext context;
   std::unique_ptr<llvm::Module> module;
-  std::unique_ptr<llvm::tool_output_file> asmOutput;
+  std::unique_ptr<llvm::ToolOutputFile> asmOutput;
 
   module = llvm::parseIRFile(InputFilename, err, context);
   if (module.get() == 0) {
@@ -140,7 +137,7 @@ int main(int argc, char **argv) {
   }
 
   if (!AsmOutputFilename.empty())
-    asmOutput = llvm::make_unique<llvm::tool_output_file>(
+    asmOutput = std::make_unique<llvm::ToolOutputFile>(
         AsmOutputFilename.c_str(), error_code, llvm::sys::fs::F_Text);
   if (error_code) {
     if (llvm::errs().has_colors())
@@ -170,6 +167,10 @@ int main(int argc, char **argv) {
   // XXX: not sure if needed anymore
   llvm::initializeGlobalsAAWrapperPassPass(Registry);
 
+  // Needed for error message: Pass 'SeaHorn Dsa graph printer' is not
+  // initialized.
+  llvm::initializeDsaAnalysisPass(Registry);
+
   // add an appropriate DataLayout instance for the module
   const llvm::DataLayout *dl = &module->getDataLayout();
   if (!dl && !DefaultDataLayout.empty()) {
@@ -180,28 +181,26 @@ int main(int argc, char **argv) {
   assert(dl && "Could not find Data Layout for the module");
 
   // pass_manager.add (llvm::createVerifierPass());
-  if (!ApiConfig.empty())
-    pass_manager.add(seahorn::createApiAnalysisPass(ApiConfig));
 
   // XXX: run Dsa passes before CFG passes
   if (MemDot)
-    pass_manager.add(sea_dsa::createDsaPrinterPass());
+    pass_manager.add(seadsa::createDsaPrinterPass());
 
   if (CallGraphDot)
-    pass_manager.add(sea_dsa::createDsaCallGraphPrinterPass());
+    pass_manager.add(seadsa::createDsaCallGraphPrinterPass());
 
   if (PrintCallGraphStats)
-    pass_manager.add(sea_dsa::createDsaPrintCallGraphStatsPass());
-  
+    pass_manager.add(seadsa::createDsaPrintCallGraphStatsPass());
+
   if (MemViewer)
-    pass_manager.add(sea_dsa::createDsaViewerPass());
+    pass_manager.add(seadsa::createDsaViewerPass());
 
   if (PrintMemStats)
-    pass_manager.add(sea_dsa::createDsaPrintStatsPass());
+    pass_manager.add(seadsa::createDsaPrintStatsPass());
 
   if (SMC)
     pass_manager.add(seahorn::createSimpleMemoryCheckPass());
-    
+
   if (Profiler)
     pass_manager.add(seahorn::createProfilerPass());
 

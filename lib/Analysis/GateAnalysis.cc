@@ -20,6 +20,7 @@
 #include "seahorn/Analysis/ControlDependenceAnalysis.hh"
 
 #include "seahorn/Support/SeaDebug.h"
+#include "seahorn/Support/Stats.hh"
 
 #define GSA_LOG(...) LOG("gsa", __VA_ARGS__)
 
@@ -85,7 +86,7 @@ private:
   processIncomingValues(PHINode *PN, Instruction *insertionPt);
 };
 
-Value *GetCondition(TerminatorInst *TI) {
+Value *GetCondition(Instruction *TI) {
   if (auto *BI = dyn_cast<BranchInst>(TI)) {
     assert(BI->isConditional() && "Unconditional branches cannot be gates!");
     return BI->getCondition();
@@ -138,7 +139,7 @@ GateAnalysisImpl::processIncomingValues(PHINode *PN, Instruction *insertionPt) {
     Value *incomingValue = PN->getIncomingValue(i);
     incomingBlockToValue[incomingBlock] = incomingValue;
 
-    TerminatorInst *TI = incomingBlock->getTerminator();
+    auto *TI = incomingBlock->getTerminator();
     assert(isa<BranchInst>(TI) && "Other termiantors not supported yet");
     auto *BI = dyn_cast<BranchInst>(TI);
     if (BI->isUnconditional())
@@ -149,9 +150,7 @@ GateAnalysisImpl::processIncomingValues(PHINode *PN, Instruction *insertionPt) {
     BasicBlock *falseDest = BI->getSuccessor(1);
     assert(trueDest == currentBB || falseDest == currentBB);
 
-    if (ThinnedGsa) {
-      incomingBlockToValue[incomingBlock] = incomingValue;
-    } else {
+    if (!ThinnedGsa) {
       Value *SI = m_IRB.CreateSelect(
           cond, trueDest == currentBB ? incomingValue : Undef,
           falseDest == currentBB ? incomingValue : Undef,
@@ -171,23 +170,21 @@ void GateAnalysisImpl::processPhi(PHINode *PN, Instruction *insertionPt) {
   DenseMap<BasicBlock *, Value *> incomingBlockToValue =
       processIncomingValues(PN, insertionPt);
 
+  // Make sure CD blocks are sorted in reverse-topological order. We need this
+  // because we want to process them in order opposite to execution order.
+  auto GreaterThanTopo = [this](BasicBlock *first, BasicBlock *second) {
+    return m_CDA.getBBTopoIdx(first) > m_CDA.getBBTopoIdx(second);
+  };
+  // TODO: Look into the performance effects of using a set wrt a vector.
+  // For now we use a set since, the number of redundant blocks are huge. Using
+  // a set results in a smaller time complexity.
+  std::set<BasicBlock *, decltype(GreaterThanTopo)> cdInfo(GreaterThanTopo);
   // Collect all blocks the incoming blocks are control dependent on.
-  std::vector<BasicBlock *> cdInfo;
   for (unsigned i = 0, e = PN->getNumIncomingValues(); i != e; ++i) {
     auto *BB = PN->getIncomingBlock(i);
     for (BasicBlock *CDBlock : m_CDA.getCDBlocks(BB))
-      cdInfo.push_back(CDBlock);
+      cdInfo.insert(CDBlock);
   }
-
-  // Make sure CD blocks are sorted in reverse-topological order. We need this
-  // because we want to process them in order opposite to execution order.
-  std::sort(cdInfo.begin(), cdInfo.end(),
-            [this](BasicBlock *first, BasicBlock *second) {
-              return m_CDA.getBBTopoIdx(first) > m_CDA.getBBTopoIdx(second);
-            });
-  // We can have repeated blocks if multiple incoming blocks have non-empty
-  // intersections of blocks they are control dependent on.
-  cdInfo.erase(std::unique(cdInfo.begin(), cdInfo.end()), cdInfo.end());
 
   // Mapping from blocks in cdInfo to values potentially guarded by gammas.
   DenseMap<BasicBlock *, Value *> flowingValues(incomingBlockToValue.begin(),
@@ -199,12 +196,11 @@ void GateAnalysisImpl::processPhi(PHINode *PN, Instruction *insertionPt) {
 
   // For all blocks in cdInfo and inspect their successors to construct gamma
   // nodes where needed.
-  unsigned cdNum = 0;
   GSA_LOG(errs() << "CDInfo size: " << cdInfo.size() << "\n");
   for (BasicBlock *BB : cdInfo) {
     GSA_LOG(errs() << "CDBlock: " << BB->getName() << "\n");
 
-    TerminatorInst *TI = BB->getTerminator();
+    auto *TI = BB->getTerminator();
     assert(isa<BranchInst>(TI) && "Only BranchInst is supported right now");
 
     GSA_LOG(errs() << "Considering CDInfo " << BB->getName() << "\n");
@@ -220,9 +216,11 @@ void GateAnalysisImpl::processPhi(PHINode *PN, Instruction *insertionPt) {
       // Or this is a direct branch to the PHI's parent block.
       if (S == currentBB) {
         SuccToVal[S] = incomingBlockToValue[BB];
-        GSA_LOG(errs() << "1) SuccToVal[" << S->getName()
-                       << "] = direct branch to " << currentBB->getName()
-                       << ": " << SuccToVal[S]->getName() << "\n");
+        GSA_LOG({
+          errs() << "1) SuccToVal[" << S->getName() << "] = direct branch to "
+                 << currentBB->getName() << ": " << SuccToVal[S]->getName()
+                 << "\n";
+        });
       }
 
       if (SuccToVal[S] != Undef)
@@ -230,20 +228,28 @@ void GateAnalysisImpl::processPhi(PHINode *PN, Instruction *insertionPt) {
 
       // Or the successors unconditionally flows to an already processed block.
       // Note that there can be at most one such block.
-      for (auto &BlockValuePair : flowingValues) {
-        if (m_PDT.dominates(BlockValuePair.first, S)) {
-          SuccToVal[S] = BlockValuePair.second;
+
+      // Used to iterate over all the post-dominators of `S`.
+      BasicBlock *postDomBlock = S;
+      while (postDomBlock) {
+        auto it = flowingValues.find(postDomBlock);
+        if (it != flowingValues.end()) {
+          SuccToVal[S] = it->second;
           GSA_LOG(errs() << "2) SuccToVal[" << S->getName()
-                         << "] = postdom for cd "
-                         << BlockValuePair.first->getName() << ": "
-                         << SuccToVal[S]->getName() << "\n");
+                         << "] = postdom for cd " << postDomBlock->getName()
+                         << ": " << it->second->getName() << "\n");
           break;
         }
+        auto *treeNode = m_PDT.getNode(postDomBlock)->getIDom();
+        if (treeNode == nullptr) {
+          break;
+        }
+        postDomBlock = treeNode->getBlock();
       }
     }
 
     auto *BI = cast<BranchInst>(TI);
-    assert(SuccToVal.size() <= 2 && SuccToVal.size() >= 1);
+    assert(1 <= SuccToVal.size() && SuccToVal.size() <= 2);
     if (SuccToVal.size() == 1) {
       auto &SuccValPair = *SuccToVal.begin();
       assert(SuccValPair.second != Undef);
@@ -267,8 +273,6 @@ void GateAnalysisImpl::processPhi(PHINode *PN, Instruction *insertionPt) {
         flowingValues[BB] = Ite;
       }
     }
-
-    ++cdNum;
   }
 
   BasicBlock *IDomBlock = m_DT.getNode(currentBB)->getIDom()->getBlock();
@@ -278,7 +282,7 @@ void GateAnalysisImpl::processPhi(PHINode *PN, Instruction *insertionPt) {
   Value *gamma = flowingValues[IDomBlock];
   Twine newName = gamma->getName() + ".y." + PN->getName();
   gamma->setName(newName);
-  m_gammas[PN] = flowingValues[IDomBlock];
+  m_gammas[PN] = gamma;
 
   GSA_LOG(errs() << "Gamma for phi: " << PN->getName() << "\n\t");
   GSA_LOG(m_gammas[PN]->print(errs()));
@@ -301,12 +305,15 @@ void GateAnalysisPass::getAnalysisUsage(AnalysisUsage &AU) const {
 }
 
 bool GateAnalysisPass::runOnModule(llvm::Module &M) {
+  Stats::resume("Thinned Gate SSA transformation");
   auto &CDP = getAnalysis<ControlDependenceAnalysisPass>();
 
   bool changed = false;
   for (auto &F : M)
     if (!F.isDeclaration())
       changed |= runOnFunction(F, CDP.getControlDependenceAnalysis(F));
+
+  Stats::stop("Thinned Gate SSA transformation");
 
   LOG("gsa", if (GsaReplacePhis) for (
                  auto &F
@@ -325,7 +332,7 @@ bool GateAnalysisPass::runOnFunction(llvm::Function &F,
   auto &DT = getAnalysis<DominatorTreeWrapperPass>(F).getDomTree();
   auto &PDT = getAnalysis<PostDominatorTreeWrapperPass>(F).getPostDomTree();
 
-  m_analyses[&F] = llvm::make_unique<GateAnalysisImpl>(F, DT, PDT, CDA);
+  m_analyses[&F] = std::make_unique<GateAnalysisImpl>(F, DT, PDT, CDA);
   return false;
 }
 

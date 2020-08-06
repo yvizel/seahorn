@@ -31,10 +31,17 @@ class RawMemManager : public OpSemMemManager {
   Expr m_nullPtr;
 
 public:
+  RawMemManager(Bv2OpSem &sem, Bv2OpSemContext &ctx, unsigned int ptrSz,
+                unsigned int wordSz, bool useLambdas);
+
   RawMemManager(Bv2OpSem &sem, Bv2OpSemContext &ctx, unsigned ptrSz,
-                unsigned wordSz, bool useLambdas = false);
+                unsigned wordSz, bool useLambdas, bool ignoreAlignment);
 
   ~RawMemManager() override = default;
+
+  OpSemAllocator &getMAllocator() const;
+
+  bool ignoreAlignment() const;
 
   /// Right now everything is an expression. In the future, we might have
   /// other types for PtrTy, such as a tuple of expressions
@@ -89,7 +96,9 @@ public:
   Expr mkPtrRegisterSort(const Function &fn) const;
 
   /// \brief Returns sort of a pointer register for a global pointer
-  Expr mkPtrRegisterSort(const GlobalVariable &gv) const override { return ptrSort(); }
+  Expr mkPtrRegisterSort(const GlobalVariable &gv) const override {
+    return ptrSort();
+  }
 
   /// \brief Returns sort of memory-holding register for an instruction
   Expr mkMemRegisterSort(const Instruction &inst) const;
@@ -100,8 +109,8 @@ public:
   /// \brief Returns a null ptr
   PtrTy nullPtr() const;
 
-  /// \brief Pointers have word address (high) and byte offset (low) override; returns
-  /// number of bits for byte offset
+  /// \brief Pointers have word address (high) and byte offset (low) override;
+  /// returns number of bits for byte offset
   ///
   /// \return 0 if unsupported word size
   unsigned getByteAlignmentBits();
@@ -132,7 +141,8 @@ public:
   /// \param[in] byteSz size of the integer in bytes
   /// \param[in] align known alignment of \p ptr
   /// \return symbolic value of the read integer
-  Expr loadIntFromMem(PtrTy ptr, MemValTy mem, unsigned byteSz, uint64_t align) override;
+  Expr loadIntFromMem(PtrTy ptr, MemValTy mem, unsigned byteSz,
+                      uint64_t align) override;
 
   /// \brief Loads a pointer stored in memory
   /// \sa loadIntFromMem
@@ -195,7 +205,8 @@ public:
                        const llvm::Type &ty, uint32_t align) override;
 
   /// \brief Executes symbolic memset with a concrete length
-  Expr MemSet(PtrTy ptr, Expr _val, unsigned len, MemValTy mem, uint32_t align) override;
+  Expr MemSet(PtrTy ptr, Expr _val, unsigned len, MemValTy mem,
+              uint32_t align) override;
 
   /// \brief Executes symbolic memcpy with concrete length
   Expr MemCpy(PtrTy dPtr, PtrTy sPtr, unsigned len, Expr memTrsfrRead,
@@ -245,6 +256,14 @@ public:
   }
 
   Expr zeroedMemory() const override;
+
+  /// \brief Get the data for a given slot of a fat pointer
+  Expr getFatData(PtrTy p, unsigned SlotIdx) override;
+
+  /// \brief Set the data for a given slot of a fat pointer
+  Expr setFatData(PtrTy p, unsigned SlotIdx, Expr data) override;
+
+  Expr isDereferenceable(PtrTy p, Expr byteSz) override;
 };
 } // namespace details
 } // namespace seahorn

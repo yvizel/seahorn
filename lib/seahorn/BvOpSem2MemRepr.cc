@@ -42,7 +42,9 @@ Expr OpSemMemArrayRepr::MemCpy(Expr dPtr, Expr sPtr, unsigned len,
 
   Expr res;
 
-  if (wordSzInBytes == 1 || (wordSzInBytes == 4 && align == 4)) {
+  if (wordSzInBytes == 1 || (wordSzInBytes == 4 && align == 4) ||
+      (wordSzInBytes == 8 && (align == 4 || align == 8)) ||
+      m_memManager.isIgnoreAlignment()) {
     Expr srcMem = memTrsfrRead;
     res = srcMem;
     for (unsigned i = 0; i < len; i += wordSzInBytes) {
@@ -52,6 +54,11 @@ Expr OpSemMemArrayRepr::MemCpy(Expr dPtr, Expr sPtr, unsigned len,
       Expr val = op::array::select(srcMem, sIdx);
       res = op::array::store(res, dIdx, val);
     }
+  } else {
+    LOG("opsem.array", ERR << "Word size and pointer are not aligned and "
+                              "alignment is not ignored!"
+                           << "\n");
+    assert(false);
   }
   return res;
 }
@@ -126,7 +133,9 @@ Expr OpSemMemLambdaRepr::MemCpy(Expr dPtr, Expr sPtr, unsigned len,
                                 Expr ptrSort, uint32_t align) {
   Expr res;
 
-  if (wordSzInBytes == 1 || (wordSzInBytes == 4 && align == 4)) {
+  if (wordSzInBytes == 1 || (wordSzInBytes == 4 && align == 4) ||
+      (wordSzInBytes == 8 && (align == 4 || align == 8)) ||
+      m_memManager.isIgnoreAlignment()) {
     Expr srcMem = memTrsfrRead;
 
     if (len > 0) {
@@ -147,7 +156,15 @@ Expr OpSemMemLambdaRepr::MemCpy(Expr dPtr, Expr sPtr, unsigned len,
       Expr decl = bind::fname(addr);
       res = mk<LAMBDA>(decl, ite);
       LOG("opsem.lambda", errs() << "MemCpy " << *res << "\n");
+    } else {
+      // result is the same as source
+      res = memTrsfrRead;
     }
+  } else {
+    LOG("opsem.lambda", errs() << "Word size and pointer are not aligned and "
+                                  "alignment is not ignored!"
+                               << "\n");
+    assert(false);
   }
   return res;
 }
@@ -219,6 +236,12 @@ Expr OpSemMemLambdaRepr::MemFill(Expr dPtr, char *sPtr, unsigned len, Expr mem,
 
   return res;
 }
-
+Expr OpSemMemLambdaRepr::FilledMemory(Expr ptrSort, Expr v) {
+  Expr addr = bind::mkConst(mkTerm<std::string>("addr", m_efac), ptrSort);
+  Expr decl = bind::fname(addr);
+  // -- create constant lambda
+  // lambda addr :: v
+  return mk<LAMBDA>(decl, v);
+}
 } // namespace details
 } // namespace seahorn

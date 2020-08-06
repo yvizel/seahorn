@@ -19,6 +19,7 @@
 #include "llvm/Support/raw_ostream.h"
 
 #include "seahorn/Support/SeaDebug.h"
+#include "seahorn/Support/Stats.hh"
 
 #define CDA_LOG(...) LOG("cda", __VA_ARGS__)
 
@@ -187,10 +188,12 @@ void ControlDependenceAnalysisPass::getAnalysisUsage(AnalysisUsage &AU) const {
 }
 
 bool ControlDependenceAnalysisPass::runOnModule(llvm::Module &M) {
+  Stats::resume("Control dependence analysis");
   bool changed = false;
   for (auto &F : M)
     if (!F.isDeclaration())
       changed |= runOnFunction(F);
+  Stats::stop("Control dependence analysis");
   return changed;
 }
 
@@ -198,7 +201,7 @@ bool ControlDependenceAnalysisPass::runOnFunction(llvm::Function &F) {
   CDA_LOG(llvm::errs() << "CDA: Running on " << F.getName() << "\n");
 
   auto &PDT = getAnalysis<PostDominatorTreeWrapperPass>(F).getPostDomTree();
-  m_analyses[&F] = llvm::make_unique<ControlDependenceAnalysisImpl>(F, PDT);
+  m_analyses[&F] = std::make_unique<ControlDependenceAnalysisImpl>(F, PDT);
   return false;
 }
 

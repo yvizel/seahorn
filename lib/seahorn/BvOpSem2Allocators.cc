@@ -110,6 +110,16 @@ AddrInterval OpSemAllocator::falloc(const Function &fn, unsigned alignment) {
 }
 
 /// \brief Returns an address at which a given function resides
+AddrInterval OpSemAllocator::getFunctionAddrAndSize(const Function &F,
+                                                    unsigned align) {
+  for (auto &fi : m_funcs)
+    if (fi.m_fn == &F)
+      return {fi.m_start, fi.m_end};
+  falloc(F, align);
+  return {m_funcs.back().m_start, m_funcs.back().m_end};
+}
+
+/// \brief Returns an address at which a given function resides
 unsigned OpSemAllocator::getFunctionAddr(const Function &F, unsigned align) {
   for (auto &fi : m_funcs)
     if (fi.m_fn == &F)
@@ -322,10 +332,10 @@ public:
   }
 };
 std::unique_ptr<OpSemAllocator> mkNormalOpSemAllocator(OpSemMemManager &mem) {
-  return llvm::make_unique<NormalOpSemAllocator>(mem);
+  return std::make_unique<NormalOpSemAllocator>(mem);
 }
 std::unique_ptr<OpSemAllocator> mkStaticOpSemAllocator(OpSemMemManager &mem) {
-  return llvm::make_unique<StaticOpSemAllocator>(mem);
+  return std::make_unique<StaticOpSemAllocator>(mem);
 }
 
 } // namespace details

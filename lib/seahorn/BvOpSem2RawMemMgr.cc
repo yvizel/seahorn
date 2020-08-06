@@ -2,6 +2,7 @@
 #include "BvOpSem2Context.hh"
 
 #include "llvm/IR/GetElementPtrTypeIterator.h"
+#include "llvm/Support/CommandLine.h"
 #include "llvm/Support/Format.h"
 
 #include "seahorn/Expr/ExprLlvm.hh"
@@ -30,20 +31,40 @@ static llvm::cl::opt<bool> IgnoreAlignmentOpt(
                    "operations are word aligned"),
     llvm::cl::init(false));
 
+static llvm::cl::opt<bool> ExplicitSp0(
+    "horn-explicit-sp0",
+    llvm::cl::desc(
+        "Set initial stack pointer (sp0) to an explicit numeric constant"),
+    llvm::cl::init(false));
 namespace seahorn {
 namespace details {
 
 OpSemMemManager *mkRawMemManager(Bv2OpSem &sem, Bv2OpSemContext &ctx,
                                  unsigned ptrSz, unsigned wordSz,
                                  bool useLambdas) {
-  return new RawMemManager(sem, ctx, ptrSz, wordSz, useLambdas);
+  return new RawMemManager(
+      sem, ctx, ptrSz, wordSz, useLambdas,
+      IgnoreAlignmentOpt /* use flag if user did not provide this value */);
+};
+
+OpSemMemManager *mkRawMemManager(Bv2OpSem &sem, Bv2OpSemContext &ctx,
+                                 unsigned ptrSz, unsigned wordSz,
+                                 bool useLambdas, bool ignoreAlignment) {
+  return new RawMemManager(sem, ctx, ptrSz, wordSz, useLambdas,
+                           ignoreAlignment);
 };
 
 using PtrTy = RawMemManager::PtrTy;
 
 RawMemManager::RawMemManager(Bv2OpSem &sem, Bv2OpSemContext &ctx,
                              unsigned ptrSz, unsigned wordSz, bool useLambdas)
-    : OpSemMemManager(sem, ctx, ptrSz, wordSz),
+    : RawMemManager::RawMemManager(sem, ctx, ptrSz, wordSz, useLambdas,
+                                   IgnoreAlignmentOpt) {}
+
+RawMemManager::RawMemManager(Bv2OpSem &sem, Bv2OpSemContext &ctx,
+                             unsigned ptrSz, unsigned wordSz, bool useLambdas,
+                             bool ignoreAlignment)
+    : OpSemMemManager(sem, ctx, ptrSz, wordSz, ignoreAlignment),
       m_freshPtrName(mkTerm<std::string>("sea.ptr", m_efac)), m_id(0) {
   if (MemAllocatorOpt == MemAllocatorKind::NORMAL_ALLOCATOR)
     m_allocator = mkNormalOpSemAllocator(*this);
@@ -55,10 +76,13 @@ RawMemManager::RawMemManager(Bv2OpSem &sem, Bv2OpSemContext &ctx,
   m_sp0 = bind::mkConst(mkTerm<std::string>("sea.sp0", m_efac), ptrSort());
   m_ctx.declareRegister(m_sp0);
 
+  if (ExplicitSp0)
+    m_sp0 = m_ctx.alu().si(0xC0000000, this->ptrSzInBits());
+
   if (useLambdas)
-    m_memRepr = llvm::make_unique<OpSemMemLambdaRepr>(*this, ctx);
+    m_memRepr = std::make_unique<OpSemMemLambdaRepr>(*this, ctx);
   else
-    m_memRepr = llvm::make_unique<OpSemMemArrayRepr>(*this, ctx);
+    m_memRepr = std::make_unique<OpSemMemArrayRepr>(*this, ctx);
 }
 
 /// \brief Creates a non-deterministic pointer that is aligned
@@ -78,11 +102,13 @@ Expr RawMemManager::mkPtrRegisterSort(const Instruction &inst) const {
   assert(ty);
   unsigned sz = m_sem.sizeInBits(*ty);
   assert(ty->isPointerTy());
-  LOG("opsem", if (sz != ptrSzInBits()) {
-    WARN << "Unexpected size of type: " << *ty << " of instruction " << inst
-         << "\n"
-         << "sz is " << sz << " and ptrSzInBits is " << ptrSzInBits() << "\n";
-  });
+  LOG(
+      "opsem", if (sz != ptrSzInBits()) {
+        ERR << "Unexpected size of type: " << *ty << " of instruction " << inst
+            << "\n"
+            << "sz is " << sz << " and ptrSzInBits is " << ptrSzInBits()
+            << "\n";
+      });
   assert(m_sem.sizeInBits(*ty) == ptrSzInBits());
 
   // return m_ctx.alu().intTy(m_sem.sizeInBits(*ty));
@@ -120,7 +146,9 @@ PtrTy RawMemManager::salloc(unsigned bytes, uint32_t align) {
 
 /// \brief Returns a pointer value for a given stack allocation
 PtrTy RawMemManager::mkStackPtr(unsigned offset) {
-  PtrTy res = m_ctx.read(m_sp0);
+  PtrTy res = m_sp0;
+  if (m_ctx.isKnownRegister(res))
+    res = m_ctx.read(m_sp0);
   res = m_ctx.alu().doSub(
       res, m_ctx.alu().si((unsigned long)offset, ptrSzInBits()), ptrSzInBits());
   return res;
@@ -298,7 +326,7 @@ Expr RawMemManager::loadIntFromMem(PtrTy ptr, MemValTy mem, unsigned byteSz,
                                    uint64_t align) {
   SmallVector<Expr, 16> words;
   unsigned offsetBits = getByteAlignmentBits();
-  if (!IgnoreAlignmentOpt && offsetBits != 0 && align % wordSzInBytes() != 0) {
+  if (!m_ignoreAlignment && offsetBits != 0 && align % wordSzInBytes() != 0) {
     for (unsigned i = 0; i < byteSz; i++) {
       Expr byteOfWord = extractUnalignedByte(mem, ptrAdd(ptr, i), offsetBits);
       words.push_back(byteOfWord);
@@ -351,7 +379,11 @@ PtrTy RawMemManager::ptrAdd(PtrTy ptr, Expr offset) const {
 }
 
 /// \brief Stores an integer into memory
-///
+/// \param[in] ptr is the address at which _val will be stored
+/// \param[in] _val is the value being written
+/// \param[in] mem is the memory bank/register being written to
+/// \param[in] byteSz is the size of _val in bytes (should be =< word size)
+/// \param[in] align is the known alignment of the ptr
 /// Returns an expression describing the state of memory in \c memReadReg
 /// after the store
 /// \sa loadIntFromMem
@@ -361,7 +393,7 @@ Expr RawMemManager::storeIntToMem(Expr _val, PtrTy ptr, MemValTy mem,
 
   unsigned offsetBits = getByteAlignmentBits();
   bool wordAligned = offsetBits == 0 || align % wordSzInBytes() == 0;
-  if (!IgnoreAlignmentOpt && !wordAligned) {
+  if (!m_ignoreAlignment && !wordAligned) {
     return storeUnalignedIntToMem(val, ptr, mem, byteSz);
   }
 
@@ -549,8 +581,8 @@ Expr RawMemManager::MemCpy(PtrTy dPtr, PtrTy sPtr, unsigned len,
 }
 
 /// \brief Executes symbolic memcpy from physical memory with concrete length
-Expr RawMemManager::MemFill(PtrTy dPtr, char *sPtr, unsigned len,
-                            MemValTy mem, uint32_t align) {
+Expr RawMemManager::MemFill(PtrTy dPtr, char *sPtr, unsigned len, MemValTy mem,
+                            uint32_t align) {
   // same alignment behavior as galloc - default is word size of machine, can
   // only be increased
   return m_memRepr->MemFill(dPtr, sPtr, len, mem, wordSzInBytes(), ptrSort(),
@@ -605,6 +637,19 @@ Expr RawMemManager::ptrNe(PtrTy p1, PtrTy p2) const {
 Expr RawMemManager::ptrSub(PtrTy p1, PtrTy p2) const {
   return m_ctx.alu().doSub(p1, p2, ptrSzInBits());
 }
+Expr RawMemManager::getFatData(PtrTy p, unsigned SlotIdx) {
+  LOG("opsem", WARN << "getFatData() not implemented");
+  return Expr();
+}
+Expr RawMemManager::setFatData(PtrTy p, unsigned SlotIdx, Expr data) {
+  LOG("opsem", WARN << "setFatData() not implemented");
+  return Expr();
+}
+
+Expr RawMemManager::isDereferenceable(PtrTy p, Expr byteSz) {
+  LOG("opsem", ERR << "isDeferenceable() not implemented");
+  return Expr();
+}
 
 /// \brief Executes ptrtoint conversion
 Expr RawMemManager::ptrtoint(PtrTy ptr, const Type &ptrTy,
@@ -636,7 +681,9 @@ void RawMemManager::onModuleEntry(const Module &M) {
 void RawMemManager::onFunctionEntry(const Function &fn) {
   m_allocator->onFunctionEntry(fn);
 
-  Expr res = m_ctx.read(m_sp0);
+  Expr res = m_sp0;
+  if (m_ctx.isKnownRegister(res))
+    res = m_ctx.read(m_sp0);
 
   // align of semantic_word_size, or 4 if it's less than 4
   unsigned offsetBits = 2;
@@ -657,8 +704,9 @@ void RawMemManager::onFunctionEntry(const Function &fn) {
 }
 
 Expr RawMemManager::zeroedMemory() const {
-  // XXX should be wordSort and word 0
-  return op::array::constArray(ptrSort(), nullPtr());
+  return m_memRepr->FilledMemory(ptrSort(), m_ctx.alu().si(0, wordSzInBits()));
 }
+OpSemAllocator &RawMemManager::getMAllocator() const { return *m_allocator; }
+bool RawMemManager::ignoreAlignment() const { return m_ignoreAlignment; }
 } // namespace details
 } // namespace seahorn
