@@ -11,6 +11,7 @@
 #include "llvm/IR/CFG.h"
 
 #include "llvm/Support/Debug.h"
+#include "llvm/Support/CommandLine.h"
 
 #include "llvm/CodeGen/MachineDominators.h"
 
@@ -100,7 +101,7 @@ bool Speculative::insertSpeculation(IRBuilder<> &B, BranchInst &BI) {
 
   // Determine speculation
   AllocaInst *specVar = B.CreateAlloca(m_BoolTy, 0, name);
-  specVar->setAlignment(1);
+  specVar->setAlignment(MaybeAlign(1));
   Value *nd = B.CreateCall(m_ndBoolFn, None, name + "__nd");
   B.CreateAlignedStore(nd, specVar, 1);
   LoadInst *spec = B.CreateAlignedLoad(specVar, 1);
@@ -361,13 +362,13 @@ bool Speculative::runOnModule(llvm::Module &M) {
     AttributeList as = AttributeList::get(ctx, AttributeList::FunctionIndex, B);
 
     m_assumeFn = dyn_cast<Function>(M.getOrInsertFunction(
-   		"verifier.assume", as, Type::getVoidTy (ctx), m_BoolTy));
+   		"verifier.assume", as, Type::getVoidTy (ctx), m_BoolTy).getCallee());
 
     m_assertFn = dyn_cast<Function>(M.getOrInsertFunction(
-		"verifier.assert", as, Type::getVoidTy (ctx), m_BoolTy));
+		"verifier.assert", as, Type::getVoidTy (ctx), m_BoolTy).getCallee());
 
     m_ndBoolFn = dyn_cast<Function>(M.getOrInsertFunction(
-		"verifier.nondet.bool", as, m_BoolTy));
+		"verifier.nondet.bool", as, m_BoolTy).getCallee());
 
     B.addAttribute(Attribute::NoReturn);
     B.addAttribute(Attribute::ReadNone);
@@ -375,7 +376,7 @@ bool Speculative::runOnModule(llvm::Module &M) {
     as = AttributeList::get(ctx, AttributeList::FunctionIndex, B);
 
     m_errorFn = dyn_cast<Function>(M.getOrInsertFunction(
-        "verifier.error", as, Type::getVoidTy(ctx)));
+        "verifier.error", as, Type::getVoidTy(ctx)).getCallee());
 
   }
 
@@ -417,7 +418,7 @@ BasicBlock *Speculative::createErrorBlock(Function &F, IRBuilder<> & B,
   if (m_CG) {
     auto f1 = m_CG->getOrInsertFunction(&F);
     auto f2 = m_CG->getOrInsertFunction(m_errorFn);
-    f1->addCalledFunction(CallSite(CI), f2);
+    f1->addCalledFunction(CI, f2);
   }
   return errBB;
 }
