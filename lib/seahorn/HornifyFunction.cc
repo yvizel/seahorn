@@ -207,7 +207,7 @@ void SmallHornifyFunction::runOnFunction(Function &F) {
 		  const BasicBlock *bb = &BB;
 		  std::string bbName = bb->getName();
 		  
-		  TerminatorInst *BBTerm = BB.getTerminator();
+		  Instruction *BBTerm = BB.getTerminator();
 		  int numSuccs = BBTerm->getNumSuccessors();
 
 		  const BasicBlock *pred = BB.getSinglePredecessor();
