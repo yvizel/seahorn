@@ -1,7 +1,3 @@
-# Docker
-# Build a Docker image 
-# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
-
 trigger:
 - dev10
 pr:
@@ -12,20 +8,13 @@ resources:
 
 variables:
   tag: '$(Build.BuildId)'
-
-stages:
-- stage: Build
-  displayName: Build image
-  jobs:  
-  - job: Build
-    displayName: Build
+jobs:
+  - job: "LinuxDockerBuild"
+    displayName: "Docker build - release"
     pool:
       vmImage: 'ubuntu-latest'
     steps:
-    - task: Docker@2
-      displayName: Build an image
-      inputs:
-        command: build
-        dockerfile: '$(Build.SourcesDirectory)/docker/seahorn-builder.Dockerfile'
-        tags: |
-          $(tag)
+      - script: docker build -t seahorn/seahorn-builder:bionic-llvm10 -f docker/seahorn-builder.Dockerfile .
+      - script:  docker run -v $(pwd):/host -i seahorn/seahorn-builder:bionic-llvm10 /bin/sh -c "cp build/SeaHorn*.tar.gz /host/"
+      - script: docker build -t seahorn_container -f docker/seahorn.Dockerfile .
+      - script: docker run -v $(pwd):/host -i seahorn_container /bin/bash -c "cd seahorn/share/seahorn && lit test/opsem"

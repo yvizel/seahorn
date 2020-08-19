@@ -1,5 +1,8 @@
 #include "seahorn/Transforms/Instrumentation/SimpleMemoryCheck.hh"
 
+#include "seadsa/InitializePasses.hh"
+#include "seahorn/InitializePasses.hh"
+
 #include "llvm/ADT/DenseMap.h"
 #include "llvm/ADT/DenseSet.h"
 #include "llvm/ADT/SmallSet.h"
@@ -16,8 +19,8 @@
 #include "llvm/Transforms/Utils/Cloning.h"
 #include "llvm/Transforms/Utils/Local.h"
 
-#include "sea_dsa/AllocWrapInfo.hh"
-#include "sea_dsa/DsaAnalysis.hh"
+#include "seadsa/AllocWrapInfo.hh"
+#include "seadsa/DsaAnalysis.hh"
 #include "seahorn/Support/SeaDebug.h"
 #include "seahorn/Support/SeaLog.hh"
 
@@ -62,6 +65,8 @@ static llvm::cl::opt<unsigned> AllocToInstrumentID(
 
 namespace seahorn {
 
+/// Base + Offset representation for pointers
+/// XXX There must be an equivalent in LLVM already
 struct PtrOrigin {
   llvm::Value *Ptr;
   int64_t Offset;
@@ -76,16 +81,29 @@ struct PtrOrigin {
   }
 };
 
+/// Error Checking Context
+///
+/// Represents a single memory instruction that is interesting enough to apply
+/// deeper verification
 struct CheckContext {
+  /// A memory accessing instruction that might fail
   Instruction *MI = nullptr;
+  /// Some function
   Function *F = nullptr;
+  /// A register from which there is a direct flow to MI
   Value *Barrier = nullptr;
+  /// Whether something is collapsed
   bool Collapsed = false;
+  /// Number of bytes of \p Barrier accessed by \p MI
   size_t AccessedBytes = 0;
+  /// Allocation sites that cause a memory fault if flow to \p MI
   SmallVector<Value *, 8> InterestingAllocSites;
+  /// Allocation sites that do not cause a memory fault if flow to \p MI
   SmallVector<Value *, 8> OtherAllocSites;
-  sea_dsa::Graph *DsaGraph;
+  /// Points-to graph on which the analysis is based
+  seadsa::Graph *DsaGraph;
 
+  /// Debug dump
   void dump(llvm::raw_ostream &OS = llvm::errs()) {
     OS << "CheckContext : " << (F ? ValueToString(F) : "nullptr") << " {\n";
     OS << "  MI: ";
@@ -110,7 +128,7 @@ struct CheckContext {
         return;
       auto optAS = DsaGraph->getAllocSite(v);
       assert(optAS.hasValue());
-      sea_dsa::DsaAllocSite &AS = **optAS;
+      seadsa::DsaAllocSite &AS = **optAS;
       if (AS.hasCallPaths())
         AS.printCallPaths(OS);
     };
@@ -155,6 +173,7 @@ struct CheckContext {
   }
 
 private:
+  /// Caching toString method for llvm::Value
   static llvm::StringRef ValueToString(llvm::Value *V) {
     assert(V);
     static llvm::DenseMap<llvm::Value *, std::string> Cache;
@@ -188,15 +207,16 @@ public:
 // A wrapper for seahorn dsa
 class SeaDsa : public PTAWrapper {
   llvm::Pass *m_abc;
-  sea_dsa::DsaInfo *m_dsa;
+  seadsa::DsaInfo *m_dsa;
 
 public:
-  const sea_dsa::Cell *getCell(const llvm::Value *ptr,
-                               const llvm::Function &fn) {
+  /// Returns a cell for \p ptr in \p fn
+  const seadsa::Cell *getCell(const llvm::Value *ptr,
+                              const llvm::Function &fn) {
     assert(ptr);
     assert(m_dsa);
 
-    sea_dsa::Graph *g = m_dsa->getDsaGraph(fn);
+    seadsa::Graph *g = m_dsa->getDsaGraph(fn);
     if (!g) {
       WARN << "SMC: Sea Dsa graph not found for " << fn.getName();
       return nullptr;
@@ -207,21 +227,23 @@ public:
       return nullptr;
     }
 
-    const sea_dsa::Cell &c = g->getCell(*ptr);
+    const seadsa::Cell &c = g->getCell(*ptr);
     return &c;
   }
 
   SeaDsa(Pass *abc)
       : m_abc(abc),
-        m_dsa(&this->m_abc->getAnalysis<sea_dsa::DsaInfoPass>().getDsaInfo()) {}
+        m_dsa(&this->m_abc->getAnalysis<seadsa::DsaInfoPass>().getDsaInfo()) {}
 
-  sea_dsa::Graph &getGraph(const Function &F) {
+  /// Returns points-to graph of \p F
+  seadsa::Graph &getGraph(const Function &F) {
     auto *G = m_dsa->getDsaGraph(F);
     assert(G);
     return *G;
   }
 
-  sea_dsa::Node &getNode(const Value &V, const Function &F) {
+  /// Returns Dsa node to which \p V points-to
+  seadsa::Node &getNode(const Value &V, const Function &F) {
     auto *C = getCell(&V, F);
     assert(C);
     auto *N = C->getNode();
@@ -230,11 +252,15 @@ public:
     return *N;
   }
 
+  /// Returns all allocation sites from which \p V might have originated in \p F
   SmallVector<Value *, 8> getAllocSites(Value *V, const Function &F) override {
-    sea_dsa::Node &N = getNode(*V, F);
+    seadsa::Node &N = getNode(*V, F);
 
     SmallVector<Value *, 8> Sites;
     for (auto *S : N.getAllocSites()) {
+      // XXX stripping declarations seems too much since some might be legal
+      // allocation functions
+      // XXX At least use attributes and TLI
       if (auto *GV = dyn_cast<const GlobalValue>(S))
         if (GV->isDeclaration())
           continue;
@@ -252,14 +278,20 @@ public:
 
 struct TypeSimilarity;
 
+/// Identifies potential (simple) memory faults and generates program slices
+/// corresponding to them
 class SimpleMemoryCheck : public llvm::ModulePass {
 public:
   static char ID;
-  SimpleMemoryCheck() : llvm::ModulePass(ID) {}
+  SimpleMemoryCheck() : llvm::ModulePass(ID) {
+    llvm::initializeSimpleMemoryCheckPass(
+        *llvm::PassRegistry::getPassRegistry());
+  }
   virtual bool runOnModule(llvm::Module &M);
   virtual void getAnalysisUsage(llvm::AnalysisUsage &AU) const;
   virtual llvm::StringRef getPassName() const { return "SimpleMemoryCheck"; }
 
+  /// Returns size of a known allocation
   llvm::Optional<size_t> getAllocSize(Value *Ptr);
 
 private:
@@ -268,16 +300,23 @@ private:
   CallGraph *m_CG;
   const DataLayout *m_DL;
   const TargetLibraryInfo *m_TLI;
+  /// wrapper over SeaDsa analysis
   std::unique_ptr<SeaDsa> m_SDSA = nullptr;
+  /// wrapper over points-to analysis, possibly different from SeaDsa
   PTAWrapper *m_PTA = nullptr;
 
+  /// SeaHorn specific marker functions
   Function *m_assumeFn;
   Function *m_errorFn;
+
+  /// Instrumentation variables
   Value *m_trackedBegin;
   Value *m_trackedEnd;
   Value *m_trackingEnabled;
 
+  /// Returns true if \p Ptr is a known memory allocation
   bool isKnownAlloc(Value *Ptr);
+  /// same as stripAndAccumulateConstantOffsets
   PtrOrigin trackPtrOrigin(Value *Ptr);
 
   using TypeSimilarityCache =
@@ -290,12 +329,18 @@ private:
   void emitMemoryInstInstrumentation(CheckContext &Candidate);
   void emitAllocSiteInstrumentation(CheckContext &Candidate, size_t AllocId);
 
+  //==---------------------------------------------------------------------==/
+  //==-- Helper Functions for Instrumentation ==--/
+  //==---------------------------------------------------------------------==/
   Function *createNewNDFn(Type *Ty, Twine Prefix = "");
   CallInst *getNDVal(size_t IntBitWidth, Function *F, IRBuilder<> &IRB,
                      Twine Name = "");
   CallInst *getNDPtr(Function *F, IRBuilder<> &IRB, Twine Name = "");
   void createAssume(Value *Cond, Function *F, IRBuilder<> &IRB);
 
+  //==---------------------------------------------------------------------==/
+  //==-- Stats
+  //==---------------------------------------------------------------------==/
   void printStats(std::vector<CheckContext> &InterestingChecks,
                   std::vector<CheckContext> &AllChecks,
                   std::vector<Instruction *> &UninterestingMIs, bool Detailed);
@@ -303,6 +348,8 @@ private:
 
 llvm::Pass *createSimpleMemoryCheckPass() { return new SimpleMemoryCheck(); }
 
+/// Returns true if \p Ptr is direct output of a known memory allocating
+/// function For example, \p Ptr is \p alloca, \p malloc(), or a global variable
 bool SimpleMemoryCheck::isKnownAlloc(Value *Ptr) {
   if (isa<AllocaInst>(Ptr))
     return true;
@@ -316,6 +363,8 @@ bool SimpleMemoryCheck::isKnownAlloc(Value *Ptr) {
   return false;
 }
 
+/// For a known allocation, returns its size if known
+/// \sa isKnownAlloc
 llvm::Optional<size_t> SimpleMemoryCheck::getAllocSize(Value *Ptr) {
   assert(Ptr);
   if (!isKnownAlloc(Ptr))
@@ -334,6 +383,7 @@ llvm::Optional<size_t> SimpleMemoryCheck::getAllocSize(Value *Ptr) {
   return size_t(I);
 }
 
+/// XXX replace with stripAndAccumulateConstantOffsets() from ValueTracking
 PtrOrigin SimpleMemoryCheck::trackPtrOrigin(Value *Ptr) {
   assert(Ptr);
 
@@ -527,7 +577,7 @@ CheckContext SimpleMemoryCheck::getUnsafeCandidates(Instruction *Inst,
   const uint32_t Sz = Bits < 8 ? 1 : Bits / 8;
   const int64_t LastRead = Origin.Offset + Sz;
 
-  const sea_dsa::Cell *OriginCell =
+  const seadsa::Cell *OriginCell =
       m_SDSA ? m_SDSA->getCell(Origin.Ptr, F) : nullptr;
 
   CheckContext Check;
@@ -673,14 +723,14 @@ void UpdateCallGraph(CallGraph *CG, Function *Caller, CallInst *Callee) {
   if (!CG)
     return;
 
-  (*CG)[Caller]->addCalledFunction(CallSite(Callee),
-                                   (*CG)[Callee->getCalledFunction()]);
+  (*CG)[Caller]->addCalledFunction(Callee, (*CG)[Callee->getCalledFunction()]);
 }
 
 } // namespace
 
 Function *SimpleMemoryCheck::createNewNDFn(Type *Ty, Twine Name) {
-  auto *Res = dyn_cast<Function>(m_M->getOrInsertFunction(Name.str(), Ty));
+  auto *Res =
+      dyn_cast<Function>(m_M->getOrInsertFunction(Name.str(), Ty).getCallee());
   assert(Res);
 
   if (m_CG)
@@ -861,8 +911,8 @@ void SimpleMemoryCheck::emitAllocSiteInstrumentation(CheckContext &Candidate,
     auto *And = dyn_cast<Instruction>(IRB.CreateAnd(NotActive, NDBool));
     assert(And);
 
-    TerminatorInst *ThenTerm;
-    TerminatorInst *ElseTerm;
+    Instruction *ThenTerm;
+    Instruction *ElseTerm;
     SplitBlockAndInsertIfThenElse(And, GetNextInst(And), &ThenTerm, &ElseTerm);
 
     auto *ThenBB = ThenTerm->getParent();
@@ -936,13 +986,13 @@ bool SimpleMemoryCheck::runOnModule(llvm::Module &M) {
 
   m_Ctx = &M.getContext();
   m_M = &M;
-  m_TLI = &getAnalysis<TargetLibraryInfoWrapperPass>().getTLI();
+  m_TLI = nullptr;
   m_DL = &M.getDataLayout();
 
-  m_SDSA = llvm::make_unique<SeaDsa>(this);
+  m_SDSA = std::make_unique<SeaDsa>(this);
   m_PTA = m_SDSA.get();
 
-  SMC_LOG(errs() << " ========== SMC (" << (sea_dsa::IsTypeAware ? "" : "Not ")
+  SMC_LOG(errs() << " ========== SMC (" << (seadsa::IsTypeAware ? "" : "Not ")
                  << "Type-aware) ==========\n");
   LOG("smc-dsa", if (m_SDSA) m_SDSA->viewGraph(*main));
 
@@ -951,12 +1001,15 @@ bool SimpleMemoryCheck::runOnModule(llvm::Module &M) {
   AttributeList AS =
       AttributeList::get(*m_Ctx, AttributeList::FunctionIndex, AB);
   m_errorFn = dyn_cast<Function>(
-      M.getOrInsertFunction("verifier.error", AS, Type::getVoidTy(*m_Ctx)));
+      M.getOrInsertFunction("verifier.error", AS, Type::getVoidTy(*m_Ctx))
+          .getCallee());
 
   AB.clear();
   AS = AttributeList::get(*m_Ctx, AttributeList::FunctionIndex, AB);
-  m_assumeFn = dyn_cast<Function>(M.getOrInsertFunction(
-      "verifier.assume", AS, Type::getVoidTy(*m_Ctx), Type::getInt1Ty(*m_Ctx)));
+  m_assumeFn = dyn_cast<Function>(M.getOrInsertFunction("verifier.assume", AS,
+                                                        Type::getVoidTy(*m_Ctx),
+                                                        Type::getInt1Ty(*m_Ctx))
+                                      .getCallee());
 
   IRBuilder<> B(*m_Ctx);
   CallGraphWrapperPass *CGWP = getAnalysisIfAvailable<CallGraphWrapperPass>();
@@ -982,6 +1035,7 @@ bool SimpleMemoryCheck::runOnModule(llvm::Module &M) {
         F.getName().startswith("verifier."))
       continue;
 
+    m_TLI = &getAnalysis<TargetLibraryInfoWrapperPass>().getTLI(F);
     for (auto &BB : F) {
       for (auto &V : BB) {
         auto *I = dyn_cast<Instruction>(&V);
@@ -1065,16 +1119,16 @@ bool SimpleMemoryCheck::runOnModule(llvm::Module &M) {
   emitMemoryInstInstrumentation(Check);
   emitAllocSiteInstrumentation(Check, AllocSiteId);
 
-  SMC_LOG(errs() << " ========== SMC (" << (sea_dsa::IsTypeAware ? "" : "Not ")
+  SMC_LOG(errs() << " ========== SMC (" << (seadsa::IsTypeAware ? "" : "Not ")
                  << "Type-aware) ==========\n");
   return true;
 }
 
 void SimpleMemoryCheck::getAnalysisUsage(llvm::AnalysisUsage &AU) const {
   AU.setPreservesAll();
-  AU.addRequired<sea_dsa::AllocWrapInfo>();
+  AU.addRequired<seadsa::AllocWrapInfo>();
 
-  AU.addRequired<sea_dsa::DsaInfoPass>(); // run seahorn dsa
+  AU.addRequired<seadsa::DsaInfoPass>(); // run seahorn dsa
   AU.addRequired<llvm::TargetLibraryInfoWrapperPass>();
   AU.addRequired<llvm::CallGraphWrapperPass>();
 }
@@ -1201,11 +1255,11 @@ void SimpleMemoryCheck::printStats(std::vector<CheckContext> &InteresingChecks,
       OtherBarrierAllocSites.size() + InterestingBarrierAllocSites.size();
   OS << "Total <Barrier, AllocSite> pairs\t" << totalASBarrierPairs << "\n";
 
-  // SEA_DSA_BRUNCH_STAT("SMC_ALL_AS", AllAllocSites.size());
-  // SEA_DSA_BRUNCH_STAT("SMC_AS_BARRIER_INTERESTING",
+  // SEADSA_BRUNCH_STAT("SMC_ALL_AS", AllAllocSites.size());
+  // SEADSA_BRUNCH_STAT("SMC_AS_BARRIER_INTERESTING",
   //                     InterestingBarrierAllocSites.size());
-  // SEA_DSA_BRUNCH_STAT("SMC_AS_BARRIER_CHECKS", totalASBarrierPairs);
-  // SEA_DSA_BRUNCH_STAT("SMC_AS_BARRIER_TOTAL",
+  // SEADSA_BRUNCH_STAT("SMC_AS_BARRIER_CHECKS", totalASBarrierPairs);
+  // SEADSA_BRUNCH_STAT("SMC_AS_BARRIER_TOTAL",
   // AllAnyBarrierAllocSites.size());
 
   // Workaround issues with the preprocessor.
@@ -1285,7 +1339,21 @@ void SimpleMemoryCheck::printStats(std::vector<CheckContext> &InteresingChecks,
 
 char SimpleMemoryCheck::ID = 0;
 
-static llvm::RegisterPass<SimpleMemoryCheck>
-    Y("smc", "Insert array buffer checks using simple encoding");
-
 } // end namespace seahorn
+
+using namespace seahorn;
+
+INITIALIZE_PASS_BEGIN(SimpleMemoryCheck, "smc",
+                      "Insert array buffer checks using simple encoding", false,
+                      false)
+INITIALIZE_PASS_DEPENDENCY(AllocWrapInfo)
+INITIALIZE_PASS_DEPENDENCY(DsaAnalysis)
+INITIALIZE_PASS_DEPENDENCY(DsaInfoPass)
+INITIALIZE_PASS_DEPENDENCY(TargetLibraryInfoWrapperPass)
+INITIALIZE_PASS_DEPENDENCY(CallGraphWrapperPass)
+INITIALIZE_PASS_END(SimpleMemoryCheck, "smc",
+                    "Insert array buffer checks using simple encoding", false,
+                    false)
+
+// static llvm::RegisterPass<SimpleMemoryCheck>
+//     Y("smc", "Insert array buffer checks using simple encoding");

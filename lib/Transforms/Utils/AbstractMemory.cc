@@ -85,7 +85,7 @@ namespace seahorn
 	ImmutableCallSite CS (callee);
 	if (CS.getCalledFunction ()) {
 	  m_cg->getOrInsertFunction (CS.getCalledFunction ());
-	  (*m_cg)[caller]->addCalledFunction (CallSite (callee),
+	  (*m_cg)[caller]->addCalledFunction (callee,
 					      (*m_cg)[callee->getCalledFunction ()]);
 	}
       }
@@ -98,7 +98,7 @@ namespace seahorn
       do
         name = boost::str (boost::format (prefix + "%d") % (c++));
       while (m.getNamedValue (name));
-      Function *res = dyn_cast<Function>(m.getOrInsertFunction (name, &type));
+      Function *res = dyn_cast<Function>(m.getOrInsertFunction (name, &type).getCallee());
       assert (res);
       return *res;
     }
@@ -122,7 +122,7 @@ namespace seahorn
       while (m.getNamedValue (name));
       Function *res = dyn_cast<Function>(m.getOrInsertFunction
 					 (name, Type::getVoidTy (m.getContext()),
-					  &type));
+					  &type).getCallee());
       assert (res);
       return *res;
     }
@@ -140,7 +140,7 @@ namespace seahorn
     }
 
     Instruction* getLoopExitCond (BasicBlock* ExitingLoop) {
-      TerminatorInst* TI = ExitingLoop->getTerminator ();
+      auto* TI = ExitingLoop->getTerminator ();
       if (BranchInst* BI = dyn_cast<BranchInst> (TI)) {
         if (BI->isConditional ()) {
           return dyn_cast<Instruction> (BI->getCondition ());
@@ -534,12 +534,14 @@ namespace seahorn
     
     bool runOnModule (Module &M)
     {      
-      m_tli = &getAnalysis<TargetLibraryInfoWrapperPass>().getTLI();
       CallGraphWrapperPass *cgwp = getAnalysisIfAvailable<CallGraphWrapperPass> ();
       m_cg = cgwp ? &cgwp->getCallGraph () : nullptr;
                  
       bool Change = false;
-      for (auto &F: M) Change |= runOnFunction (F);
+      for (auto &F: M) {
+        m_tli = &getAnalysis<TargetLibraryInfoWrapperPass>().getTLI(F);
+        Change |= runOnFunction(F);
+      }
 
       // errs () << "After AbstractMemory pass \n" << M << "\n";
       

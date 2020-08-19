@@ -99,6 +99,8 @@ private:
   std::shared_ptr<EZ3> m_z3;
   std::shared_ptr<ZSimplifier<EZ3>> m_z3_simplifier;
 
+  bool m_shouldSimplify = false;
+
 public:
   /// \brief Create a new context with given semantics, values, and side
   Bv2OpSemContext(Bv2OpSem &sem, SymStore &values, ExprVector &side);
@@ -110,6 +112,9 @@ public:
   ~Bv2OpSemContext() override = default;
 
   EZ3 *getZ3() const { return m_z3.get(); }
+  Expr simplify(Expr u);
+
+  bool shouldSimplify() { return m_shouldSimplify; }
 
   /// \brief Writes value \p u into symbolic register \p v
   void write(Expr v, Expr u);
@@ -194,8 +199,11 @@ public:
   /// \brief Perform symbolic memset
   Expr MemSet(Expr ptr, Expr val, unsigned len, uint32_t align);
 
-  /// \brief Perform symbolic memcpy
+  /// \brief Perform symbolic memcpy with constant length
   Expr MemCpy(Expr dPtr, Expr sPtr, unsigned len, uint32_t align);
+
+  /// \brief Perform symbolic memcpy with symbolic length
+  Expr MemCpy(Expr dPtr, Expr sPtr, Expr len, uint32_t align);
 
   /// \brief Copy concrete memory into symbolic memory
   Expr MemFill(Expr dPtr, char *sPtr, unsigned len, uint32_t align = 0);
@@ -346,6 +354,10 @@ public:
   virtual Expr IsSmulNoOverflow(Expr op0, Expr op1, unsigned bitWidth) = 0;
   virtual Expr IsUmulNoOverflow(Expr op0, Expr op1, unsigned bitWidth) = 0;
   virtual Expr IsBmulNoUnderflow(Expr op0, Expr op1, unsigned bitWidth) = 0;
+
+  // get true and false expressions
+  virtual Expr getFalse() = 0;
+  virtual Expr getTrue() = 0;
 };
 
 std::unique_ptr<OpSemAlu> mkBvOpSemAlu(Bv2OpSemContext &ctx);
@@ -377,14 +389,17 @@ protected:
   /// \brief All known global allocations
   std::vector<GlobalAllocInfo> m_globals;
 
+  /// \brief Maximal assumed size of symbolic allocation
+  unsigned m_maxSymbAllocSz;
+
   // TODO: turn into user-controlled parameters
-  unsigned MAX_STACK_ADDR = 0xC0000000;
-  unsigned MIN_STACK_ADDR = (MAX_STACK_ADDR - 9437184);
-  unsigned TEXT_SEGMENT_START = 0x08048000;
+  const unsigned MAX_STACK_ADDR = 0xC0000000;
+  const unsigned MIN_STACK_ADDR = (MAX_STACK_ADDR - 9437184);
+  const unsigned TEXT_SEGMENT_START = 0x08048000;
 
 public:
   using AddrInterval = std::pair<unsigned, unsigned>;
-  OpSemAllocator(OpSemMemManager &mem);
+  OpSemAllocator(OpSemMemManager &mem, unsigned maxSymbAllocSz = 4096);
 
   virtual ~OpSemAllocator();
 
@@ -429,6 +444,9 @@ public:
   /// \brief Returns an address at which a given function resides
   virtual unsigned getFunctionAddr(const Function &F, unsigned align);
 
+  virtual AddrInterval getFunctionAddrAndSize(const Function &F,
+                                              unsigned int align);
+
   /// \brief Returns an address of a global variable
   virtual unsigned getGlobalVariableAddr(const GlobalVariable &gv,
                                          unsigned bytes, unsigned align);
@@ -446,19 +464,12 @@ public:
 };
 
 /// \brief Creates an instance of OpSemAllocator
-std::unique_ptr<OpSemAllocator> mkNormalOpSemAllocator(OpSemMemManager &mem);
-std::unique_ptr<OpSemAllocator> mkStaticOpSemAllocator(OpSemMemManager &mem);
+std::unique_ptr<OpSemAllocator> mkNormalOpSemAllocator(OpSemMemManager &mem,
+                                                       unsigned maxSymbAllocSz = 4096);
+std::unique_ptr<OpSemAllocator> mkStaticOpSemAllocator(OpSemMemManager &mem,
+                                                       unsigned maxSymbAllocSz = 4096);
 
-/// \brief Memory manager for OpSem machine
-class OpSemMemManager {
-public:
-  /// \brief type for pointers
-  /// Currently all expressions are of opaque type Expr. The extra type
-  /// annotations are to communicate intend only.
-  using PtrTy = Expr;
-  using MemRegTy = Expr;
-  using MemValTy = Expr;
-
+class OpSemMemManagerBase {
 protected:
   /// \brief Parent Operational Semantics
   Bv2OpSem &m_sem;
@@ -476,20 +487,45 @@ protected:
   /// Must be divisible by \t m_wordSz
   uint32_t m_alignment;
 
+  /// \brief ignore alignment for memory accesses
+  const bool m_ignoreAlignment;
+
+  OpSemMemManagerBase(Bv2OpSem &sem, Bv2OpSemContext &ctx, unsigned int ptrSz,
+                      unsigned int wordSz, bool ignoreAlignment);
+
+  virtual ~OpSemMemManagerBase() = default;
+
 public:
-  OpSemMemManager(Bv2OpSem &sem, Bv2OpSemContext &ctx, unsigned ptrSz,
-                  unsigned wordSz);
-
-  virtual ~OpSemMemManager() = default;
-
   Bv2OpSem &sem() const { return m_sem; }
   Bv2OpSemContext &ctx() const { return m_ctx; }
 
   unsigned ptrSzInBits() const { return m_ptrSz * 8; }
+  unsigned ptrSzInBytes() const { return m_ptrSz; }
   unsigned wordSzInBytes() const { return m_wordSz; }
   unsigned wordSzInBits() const { return m_wordSz * 8; }
+  uint32_t getAlignment(const llvm::Value &v) const { return m_alignment; }
+  bool isIgnoreAlignment() const { return m_ignoreAlignment; }
+};
+/// \brief Memory manager for OpSem machine
+class OpSemMemManager : public OpSemMemManagerBase {
+public:
+  /// \brief type for pointers
+  /// Currently all expressions are of opaque type Expr. The extra type
+  /// annotations are to communicate intent only.
+  using PtrTy = Expr;
+  using MemRegTy = Expr;
+  using MemValTy = Expr;
 
-  virtual PtrTy ptrSort() const = 0;
+  using PtrSortTy = Expr;
+  using MemSortTy = Expr;
+
+public:
+  OpSemMemManager(Bv2OpSem &sem, Bv2OpSemContext &ctx, unsigned ptrSz,
+                  unsigned wordSz, bool ignoreAlignment);
+
+  virtual ~OpSemMemManager() = default;
+
+  virtual PtrSortTy ptrSort() const = 0;
 
   /// \brief Allocates memory on the stack and returns a pointer to it
   /// \param align is requested alignment. If 0, default alignment is used
@@ -532,16 +568,16 @@ public:
   virtual PtrTy mkAlignedPtr(Expr name, uint32_t align) const = 0;
 
   /// \brief Returns sort of a pointer register for an instruction
-  virtual Expr mkPtrRegisterSort(const Instruction &inst) const = 0;
+  virtual PtrSortTy mkPtrRegisterSort(const Instruction &inst) const = 0;
 
   /// \brief Returns sort of a pointer register for a function pointer
-  virtual Expr mkPtrRegisterSort(const Function &fn) const = 0;
+  virtual PtrSortTy mkPtrRegisterSort(const Function &fn) const = 0;
 
   /// \brief Returns sort of a pointer register for a global pointer
-  virtual Expr mkPtrRegisterSort(const GlobalVariable &gv) const = 0;
+  virtual PtrSortTy mkPtrRegisterSort(const GlobalVariable &gv) const = 0;
 
   /// \brief Returns sort of memory-holding register for an instruction
-  virtual Expr mkMemRegisterSort(const Instruction &inst) const = 0;
+  virtual MemSortTy mkMemRegisterSort(const Instruction &inst) const = 0;
 
   /// \brief Returns a fresh aligned pointer value
   virtual PtrTy freshPtr() = 0;
@@ -583,13 +619,13 @@ public:
   /// Returns an expression describing the state of memory in \c memReadReg
   /// after the store
   /// \sa loadIntFromMem
-  virtual Expr storeIntToMem(Expr _val, PtrTy ptr, MemValTy mem,
-                             unsigned byteSz, uint64_t align) = 0;
+  virtual MemValTy storeIntToMem(Expr _val, PtrTy ptr, MemValTy mem,
+                                 unsigned byteSz, uint64_t align) = 0;
 
   /// \brief Stores a pointer into memory
   /// \sa storeIntToMem
-  virtual Expr storePtrToMem(PtrTy val, PtrTy ptr, MemValTy mem,
-                             unsigned byteSz, uint64_t align) = 0;
+  virtual MemValTy storePtrToMem(PtrTy val, PtrTy ptr, MemValTy mem,
+                                 unsigned byteSz, uint64_t align) = 0;
 
   /// \brief Returns an expression corresponding to a load from memory
   ///
@@ -600,20 +636,26 @@ public:
   virtual Expr loadValueFromMem(PtrTy ptr, MemValTy mem, const llvm::Type &ty,
                                 uint64_t align) = 0;
 
-  virtual Expr storeValueToMem(Expr _val, PtrTy ptr, MemValTy memIn,
-                               const llvm::Type &ty, uint32_t align) = 0;
+  virtual MemValTy storeValueToMem(Expr _val, PtrTy ptr, MemValTy memIn,
+                                   const llvm::Type &ty, uint32_t align) = 0;
 
   /// \brief Executes symbolic memset with a concrete length
-  virtual Expr MemSet(PtrTy ptr, Expr _val, unsigned len, MemValTy mem,
-                      uint32_t align) = 0;
+  virtual MemValTy MemSet(PtrTy ptr, Expr _val, unsigned len, MemValTy mem,
+                          uint32_t align) = 0;
 
   /// \brief Executes symbolic memcpy with concrete length
-  virtual Expr MemCpy(PtrTy dPtr, PtrTy sPtr, unsigned len, Expr memTrsfrRead,
-                      uint32_t align) = 0;
+  virtual MemValTy MemCpy(PtrTy dPtr, PtrTy sPtr, unsigned len,
+                          MemValTy memTrsfrRead, MemValTy memRead,
+                          uint32_t align) = 0;
+
+  /// \brief Executes symbolic memcpy with symbolic length
+  virtual MemValTy MemCpy(PtrTy dPtr, PtrTy sPtr, Expr len,
+                          MemValTy memTrsfrRead, MemValTy memRead,
+                          uint32_t align) = 0;
 
   /// \brief Executes symbolic memcpy from physical memory with concrete length
-  virtual Expr MemFill(PtrTy dPtr, char *sPtr, unsigned len, MemValTy mem,
-                       uint32_t align = 0) = 0;
+  virtual MemValTy MemFill(PtrTy dPtr, char *sPtr, unsigned len, MemValTy mem,
+                           uint32_t align = 0) = 0;
 
   /// \brief Executes inttoptr conversion
   virtual PtrTy inttoptr(Expr intVal, const Type &intTy,
@@ -654,7 +696,8 @@ public:
   virtual std::pair<char *, unsigned>
   getGlobalVariableInitValue(const llvm::GlobalVariable &gv) = 0;
 
-  virtual Expr zeroedMemory() const = 0;
+  /// \brief returns a constant that represents zero-initialized memory region
+  virtual MemValTy zeroedMemory() const = 0;
 
   /// \brief Checks if \p a <= b <= c.
   Expr ptrInRangeCheck(PtrTy a, PtrTy b, PtrTy c) {
@@ -663,9 +706,15 @@ public:
   /// \brief Calculates an offset of a pointer from its base.
   Expr ptrOffsetFromBase(PtrTy base, PtrTy ptr) { return ptrSub(ptr, base); }
 
-  uint32_t getAlignment(const llvm::Value &v) const { return m_alignment; }
+  /// \brief returns Expr after getting data.
+  virtual Expr getFatData(PtrTy p, unsigned SlotIdx) = 0;
 
-  /// \brief returns a constant that represents zero-initilized memory region
+  /// \brief returns Expr after setting data.
+  virtual PtrTy setFatData(PtrTy p, unsigned SlotIdx, Expr data) = 0;
+
+  /// \brief return True expr if number of bytes(byteSz) is within allocated
+  /// bounds, False expr otherwise.
+  virtual Expr isDereferenceable(PtrTy p, Expr byteSz) = 0;
 };
 
 OpSemMemManager *mkRawMemManager(Bv2OpSem &sem, Bv2OpSemContext &ctx,
@@ -675,6 +724,14 @@ OpSemMemManager *mkRawMemManager(Bv2OpSem &sem, Bv2OpSemContext &ctx,
 OpSemMemManager *mkFatMemManager(Bv2OpSem &sem, Bv2OpSemContext &ctx,
                                  unsigned ptrSz, unsigned wordSz,
                                  bool useLambdas = false);
+
+OpSemMemManager *mkWideMemManager(Bv2OpSem &sem, Bv2OpSemContext &ctx,
+                                  unsigned ptrSz, unsigned wordSz,
+                                  bool useLambdas = false);
+
+OpSemMemManager *mkExtraWideMemManager(Bv2OpSem &sem, Bv2OpSemContext &ctx,
+                                       unsigned ptrSz, unsigned wordSz,
+                                       bool useLambdas = false);
 
 /// \Brief Base class for memory representation
 class OpSemMemRepr {
@@ -697,17 +754,24 @@ public:
   virtual Expr MemSet(Expr ptr, Expr _val, unsigned len, Expr mem,
                       unsigned wordSzInBytes, Expr ptrSort, uint32_t align) = 0;
   virtual Expr MemCpy(Expr dPtr, Expr sPtr, unsigned len, Expr memTrsfrRead,
-                      unsigned wordSzInBytes, Expr ptrSort, uint32_t align) = 0;
+                      Expr memRead, unsigned wordSzInBytes, Expr ptrSort,
+                      uint32_t align) = 0;
+  virtual Expr MemCpy(Expr dPtr, Expr sPtr, Expr len, Expr memTrsfrRead,
+                      Expr memRead, unsigned wordSzInBytes, Expr ptrSort,
+                      uint32_t align) = 0;
+
   virtual Expr MemFill(Expr dPtr, char *sPtr, unsigned len, Expr mem,
                        unsigned wordSzInBytes, Expr ptrSort,
                        uint32_t align) = 0;
+  virtual Expr FilledMemory(Expr ptrSort, Expr val) = 0;
 };
 
 /// \brief Represent memory regions by logical arrays
 class OpSemMemArrayRepr : public OpSemMemRepr {
 public:
-  OpSemMemArrayRepr(OpSemMemManager &memManager, Bv2OpSemContext &ctx)
-      : OpSemMemRepr(memManager, ctx) {}
+  OpSemMemArrayRepr(OpSemMemManager &memManager, Bv2OpSemContext &ctx,
+                    unsigned memCpyUnrollCnt)
+      : OpSemMemRepr(memManager, ctx), m_memCpyUnrollCnt(memCpyUnrollCnt) {}
 
   Expr coerce(Expr _, Expr val) override { return val; }
 
@@ -724,9 +788,20 @@ public:
   Expr MemSet(Expr ptr, Expr _val, unsigned len, Expr mem,
               unsigned wordSzInBytes, Expr ptrSort, uint32_t align) override;
   Expr MemCpy(Expr dPtr, Expr sPtr, unsigned len, Expr memTrsfrRead,
+              Expr memRead, unsigned wordSzInBytes, Expr ptrSort,
+              uint32_t align) override;
+
+  Expr MemCpy(Expr dPtr, Expr sPtr, Expr len, Expr memTrsfrRead, Expr memRead,
               unsigned wordSzInBytes, Expr ptrSort, uint32_t align) override;
+
   Expr MemFill(Expr dPtr, char *sPtr, unsigned len, Expr mem,
                unsigned wordSzInBytes, Expr ptrSort, uint32_t align) override;
+  Expr FilledMemory(Expr ptrSort, Expr val) override {
+    return op::array::constArray(ptrSort, val);
+  }
+
+private:
+  unsigned m_memCpyUnrollCnt;
 };
 
 /// \brief Represent memory regions by lambda functions
@@ -748,14 +823,23 @@ public:
   Expr MemSet(Expr ptr, Expr _val, unsigned len, Expr mem,
               unsigned wordSzInBytes, Expr ptrSort, uint32_t align) override;
   Expr MemCpy(Expr dPtr, Expr sPtr, unsigned len, Expr memTrsfrRead,
+              Expr memRead, unsigned wordSzInBytes, Expr ptrSort,
+              uint32_t align) override;
+  Expr MemCpy(Expr dPtr, Expr sPtr, Expr len, Expr memTrsfrRead, Expr memRead,
               unsigned wordSzInBytes, Expr ptrSort, uint32_t align) override;
   Expr MemFill(Expr dPtr, char *sPtr, unsigned len, Expr mem,
                unsigned wordSzInBytes, Expr ptrSort, uint32_t align) override;
+  Expr FilledMemory(Expr ptrSort, Expr v) override;
 
 private:
   Expr coerceArrayToLambda(Expr arrVal);
   Expr makeLinearITE(Expr addr, const ExprVector &ptrKeys,
                      const ExprVector &vals, Expr fallback);
+  // address of the last word that is copied into dst
+  Expr createMemCpyExpr(const Expr &dPtr, const Expr &sPtr, const Expr &memRead,
+                        const Expr &ptrSort, const Expr &srcMem,
+                        const Expr &dstLast, unsigned wordSzInBytes,
+                        uint32_t align) const;
 };
 
 /// Evaluates constant expressions

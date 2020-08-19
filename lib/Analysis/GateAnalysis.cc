@@ -86,7 +86,7 @@ private:
   processIncomingValues(PHINode *PN, Instruction *insertionPt);
 };
 
-Value *GetCondition(TerminatorInst *TI) {
+Value *GetCondition(Instruction *TI) {
   if (auto *BI = dyn_cast<BranchInst>(TI)) {
     assert(BI->isConditional() && "Unconditional branches cannot be gates!");
     return BI->getCondition();
@@ -139,7 +139,7 @@ GateAnalysisImpl::processIncomingValues(PHINode *PN, Instruction *insertionPt) {
     Value *incomingValue = PN->getIncomingValue(i);
     incomingBlockToValue[incomingBlock] = incomingValue;
 
-    TerminatorInst *TI = incomingBlock->getTerminator();
+    auto *TI = incomingBlock->getTerminator();
     assert(isa<BranchInst>(TI) && "Other termiantors not supported yet");
     auto *BI = dyn_cast<BranchInst>(TI);
     if (BI->isUnconditional())
@@ -200,7 +200,7 @@ void GateAnalysisImpl::processPhi(PHINode *PN, Instruction *insertionPt) {
   for (BasicBlock *BB : cdInfo) {
     GSA_LOG(errs() << "CDBlock: " << BB->getName() << "\n");
 
-    TerminatorInst *TI = BB->getTerminator();
+    auto *TI = BB->getTerminator();
     assert(isa<BranchInst>(TI) && "Only BranchInst is supported right now");
 
     GSA_LOG(errs() << "Considering CDInfo " << BB->getName() << "\n");
@@ -216,9 +216,11 @@ void GateAnalysisImpl::processPhi(PHINode *PN, Instruction *insertionPt) {
       // Or this is a direct branch to the PHI's parent block.
       if (S == currentBB) {
         SuccToVal[S] = incomingBlockToValue[BB];
-        GSA_LOG(errs() << "1) SuccToVal[" << S->getName()
-                       << "] = direct branch to " << currentBB->getName()
-                       << ": " << SuccToVal[S]->getName() << "\n");
+        GSA_LOG({
+          errs() << "1) SuccToVal[" << S->getName() << "] = direct branch to "
+                 << currentBB->getName() << ": " << SuccToVal[S]->getName()
+                 << "\n";
+        });
       }
 
       if (SuccToVal[S] != Undef)
@@ -247,7 +249,7 @@ void GateAnalysisImpl::processPhi(PHINode *PN, Instruction *insertionPt) {
     }
 
     auto *BI = cast<BranchInst>(TI);
-    assert(SuccToVal.size() <= 2 && SuccToVal.size() >= 1);
+    assert(1 <= SuccToVal.size() && SuccToVal.size() <= 2);
     if (SuccToVal.size() == 1) {
       auto &SuccValPair = *SuccToVal.begin();
       assert(SuccValPair.second != Undef);
@@ -330,7 +332,7 @@ bool GateAnalysisPass::runOnFunction(llvm::Function &F,
   auto &DT = getAnalysis<DominatorTreeWrapperPass>(F).getDomTree();
   auto &PDT = getAnalysis<PostDominatorTreeWrapperPass>(F).getPostDomTree();
 
-  m_analyses[&F] = llvm::make_unique<GateAnalysisImpl>(F, DT, PDT, CDA);
+  m_analyses[&F] = std::make_unique<GateAnalysisImpl>(F, DT, PDT, CDA);
   return false;
 }
 

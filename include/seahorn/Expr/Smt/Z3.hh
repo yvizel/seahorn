@@ -22,6 +22,12 @@
 #include "seahorn/Expr/Expr.hh"
 #include "seahorn/Expr/ExprInterp.hh"
 #include "seahorn/Expr/ExprLlvm.hh"
+#include "seahorn/Expr/ExprOpBinder.hh"
+#include "seahorn/Expr/ExprOpBv.hh"
+#include "seahorn/Support/SeaDebug.h"
+#include "seahorn/Support/SeaLog.hh"
+
+#include <fstream>
 
 namespace z3 {
 struct ast_ptr_hash : public std::unary_function<ast, std::size_t> {
@@ -234,23 +240,29 @@ protected:
   typedef std::unordered_set<Z3_ast> Z3_ast_set;
 
   void allDecls(Z3_ast a, Z3_func_decl_set &seen, Z3_ast_set &visited) {
-    if (Z3_get_ast_kind(ctx, a) != Z3_APP_AST)
+    if (Z3_get_ast_kind(ctx, a) != Z3_APP_AST &&
+        Z3_get_ast_kind(ctx, a) != Z3_QUANTIFIER_AST)
       return;
 
     if (visited.count(a) > 0)
       return;
     visited.insert(a);
 
-    Z3_app app = Z3_to_app(ctx, a);
-    Z3_func_decl fdecl = Z3_get_app_decl(ctx, app);
-    if (seen.count(fdecl) > 0)
-      return;
+    if (Z3_get_ast_kind(ctx, a) == Z3_APP_AST) {
+      Z3_app app = Z3_to_app(ctx, a);
+      Z3_func_decl fdecl = Z3_get_app_decl(ctx, app);
+      if (seen.count(fdecl) > 0)
+        return;
 
-    if (Z3_get_decl_kind(ctx, fdecl) == Z3_OP_UNINTERPRETED)
-      seen.insert(fdecl);
+      if (Z3_get_decl_kind(ctx, fdecl) == Z3_OP_UNINTERPRETED)
+        seen.insert(fdecl);
 
-    for (unsigned i = 0; i < Z3_get_app_num_args(ctx, app); i++)
-      allDecls(Z3_get_app_arg(ctx, app, i), seen, visited);
+      for (unsigned i = 0; i < Z3_get_app_num_args(ctx, app); i++)
+        allDecls(Z3_get_app_arg(ctx, app, i), seen, visited);
+    } else if (Z3_get_ast_kind(ctx, a) == Z3_QUANTIFIER_AST) {
+      Z3_ast body = Z3_get_quantifier_body(ctx, a);
+      allDecls(body, seen, visited);
+    }
   }
 
 public:
@@ -374,6 +386,13 @@ public:
 
   Expr eval(Expr e, bool completion = false) {
     assert(model);
+    if (isOp<MK_STRUCT>(e)) {
+      ExprVector kids;
+      for (auto arg = e->args_begin(); arg != e->args_end(); ++arg) {
+        kids.push_back(eval(*arg));
+      }
+      return strct::mk(kids);
+    }
     z3::ast ast(z3.toAst(e));
 
     Z3_ast raw_val = NULL;
@@ -382,11 +401,12 @@ public:
       ctx.check_error();
       if (!isAsArray(val))
         return z3.toExpr(val);
-
-      Z3_func_decl fdecl = Z3_get_as_array_func_decl(ctx, val);
-      z3::func_interp zfunc(ctx, Z3_model_get_func_interp(ctx, model, fdecl));
-      ctx.check_error();
-      return finterpToExpr(zfunc);
+      else if (isAsArray(val)) {
+        Z3_func_decl fdecl = Z3_get_as_array_func_decl(ctx, val);
+        z3::func_interp zfunc(ctx, Z3_model_get_func_interp(ctx, model, fdecl));
+        ctx.check_error();
+        return finterpToExpr(zfunc);
+      }
     }
     ctx.check_error();
     return mk<NONDET>(efac);
@@ -442,26 +462,39 @@ private:
   z3::context &ctx;
   ExprFactory &efac;
 
+  ZParams<Z> m_params;
   expr_ast_map m_expr_to_ast;
   ast_expr_map m_ast_to_expr;
   std::unordered_map<Expr, Expr> m_cache;
 
 public:
   using this_type = ZSimplifier<Z>;
-  ZSimplifier(Z &z) : z3(z), ctx(z.get_ctx()), efac(z.get_efac()) {}
+  ZSimplifier(Z &z)
+      : z3(z), ctx(z.get_ctx()), efac(z.get_efac()), m_params(z) {}
 
   ZSimplifier(const ZSimplifier &) = delete;
 
   Z &getContext() { return z3; }
 
+  ZParams<Z> &params() { return m_params; }
+
   Expr simplify(Expr e) {
+    if (strct::isStructVal(e)) {
+      llvm::SmallVector<Expr, 8> kids;
+      for (unsigned i = 0, sz = e->arity(); i < sz; ++i) {
+        kids.push_back(simplify(e->arg(i)));
+      }
+      return strct::mk(kids);
+    }
     auto it = m_cache.find(e);
     if (it != m_cache.end())
       return it->second;
 
     z3::ast ast(z3.toAst(e, m_expr_to_ast));
-    Expr res = z3.toExpr(z3::ast(ctx, Z3_simplify(ctx, ast)), m_ast_to_expr);
+    Expr res = z3.toExpr(z3::ast(ctx, Z3_simplify_ex(ctx, ast, m_params)),
+                         m_ast_to_expr);
     m_cache.insert({e, res});
+
     return res;
   }
 
@@ -718,17 +751,27 @@ public:
           out << "(Array ";
           if (isOpX<INT_TY>(sort::arrayIndexTy(ty)))
             out << "Int ";
-          else
+          else if (isOpX<BVSORT>(sort::arrayIndexTy(ty))) {
+            out << "(_ BitVec " << bv::width(sort::arrayIndexTy(ty)) << ") ";
+          } else {
             out << "UfoUnknownSort ";
+            llvm::errs() << "u1: " << *sort::arrayIndexTy(ty) << "\n";
+          }
           if (isOpX<INT_TY>(sort::arrayValTy(ty)))
             out << "Int";
-          else
+          else if (isOpX<BVSORT>(sort::arrayValTy(ty))) {
+            out << "(_ BitVec " << bv::width(sort::arrayValTy(ty)) << ") ";
+          } else {
             out << "UfoUnknownSort";
+            llvm::errs() << "u2: " << *sort::arrayValTy(ty) << "\n";
+          }
           out << ") ";
-        }
-
-        else
+        } else if (isOpX<BVSORT>(ty)) {
+          out << "(_ BitVec " << bv::width(ty) << ") ";
+        } else {
           out << "UfoUnknownSort ";
+          llvm::errs() << "u3: " << *ty << "\n";
+        }
       }
       out << "))\n";
     }
@@ -750,13 +793,19 @@ public:
         out << "(Array ";
         if (isOpX<INT_TY>(sort::arrayIndexTy(ty)))
           out << "Int ";
-        else
+        else if (isOpX<BVSORT>(sort::arrayIndexTy(ty))) {
+          out << "(_ BitVec " << bv::width(sort::arrayIndexTy(ty)) << ") ";
+        } else
           out << "UfoUnknownSort ";
         if (isOpX<INT_TY>(sort::arrayValTy(ty)))
           out << "Int";
-        else
+        else if (isOpX<BVSORT>(sort::arrayValTy(ty))) {
+          out << "(_ BitVec " << bv::width(sort::arrayValTy(ty)) << ") ";
+        } else
           out << "UfoUnknownSort";
         out << ") ";
+      } else if (isOpX<BVSORT>(ty)) {
+        out << "(_ BitVec " << bv::width(ty) << ") ";
       } else
         out << "UfoUnknownSort ";
       out << ")\n";

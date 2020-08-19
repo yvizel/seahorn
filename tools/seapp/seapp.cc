@@ -8,6 +8,8 @@
 ///
 // SeaPP-- LLVM bitcode Pre-Processor for Verification
 ///
+#include "llvm/Bitcode/BitcodeWriter.h"
+#include "llvm/Bitcode/BitcodeWriterPass.h"
 #include "llvm/IR/LLVMContext.h"
 #include "llvm/IR/LegacyPassManager.h"
 #include "llvm/IR/Module.h"
@@ -23,29 +25,29 @@
 #include "llvm/Support/SourceMgr.h"
 #include "llvm/Support/ToolOutputFile.h"
 #include "llvm/Support/raw_ostream.h"
-
-#include "llvm/Bitcode/BitcodeWriter.h"
-#include "llvm/Bitcode/BitcodeWriterPass.h"
 #include "llvm/Transforms/IPO.h"
 
 #include "llvm/IR/Verifier.h"
 
+#include "seahorn/InitializePasses.hh"
 #include "seahorn/Passes.hh"
 
 #ifdef HAVE_LLVM_SEAHORN
 #include "llvm_seahorn/Transforms/Scalar.h"
 #endif
 
+#include "seadsa/InitializePasses.hh"
+
+#include "seahorn/Expr/Smt/EZ3.hh"
 #include "seahorn/Support/SeaLog.hh"
 #include "seahorn/Support/Stats.hh"
 #include "seahorn/Transforms/Utils/NameValues.hh"
-#include "seahorn/Expr/Smt/EZ3.hh"
 
 #include "seahorn/config.h"
 
-void print_seapp_version() {
-  llvm::outs() << "SeaHorn (http://seahorn.github.io/):\n"
-               << "  SeaPP version " << SEAHORN_VERSION_INFO << "\n";
+void print_seapp_version(llvm::raw_ostream &OS) {
+  OS << "SeaHorn (http://seahorn.github.io/):\n"
+     << "  SeaPP version " << SEAHORN_VERSION_INFO << "\n";
 }
 
 static llvm::cl::opt<std::string>
@@ -82,6 +84,9 @@ static llvm::cl::opt<bool>
 static llvm::cl::opt<bool> CutLoops("horn-cut-loops",
                                     llvm::cl::desc("Cut all natural loops"),
                                     llvm::cl::init(false));
+static llvm::cl::opt<unsigned>
+    PeelLoops("horn-peel-loops", llvm::cl::desc("Number of iterations to peel"),
+              llvm::cl::init(0));
 
 static llvm::cl::opt<bool> SymbolizeLoops(
     "horn-symbolize-loops",
@@ -102,23 +107,6 @@ static llvm::cl::opt<bool> UnfoldLoopsForDsa(
 static llvm::cl::opt<bool>
     NullChecks("null-check", llvm::cl::desc("Insert null-dereference checks"),
                llvm::cl::init(false));
-
-enum ArrayBoundsChecksEncoding {
-  NONE = 0,
-  LOCAL = 1,
-  GLOBAL = 2,
-  GLOBAL_C = 3
-};
-static llvm::cl::opt<enum ArrayBoundsChecksEncoding> ArrayBoundsChecks(
-    "abc", llvm::cl::desc("Insert array bounds checks"),
-    llvm::cl::values(
-        clEnumValN(NONE, "none", "No array bounds check"),
-        clEnumValN(LOCAL, "local",
-                   "Use local encoding (each pointer individually)"),
-        clEnumValN(GLOBAL, "global", "Use global encoding"),
-        clEnumValN(GLOBAL_C, "global-c",
-                   "Use global encoding by calling C-defined functions")),
-    llvm::cl::init(NONE));
 
 static llvm::cl::opt<bool>
     SimpleMemoryChecks("smc", llvm::cl::desc("Insert simple memory checks"),
@@ -157,12 +145,13 @@ static llvm::cl::opt<bool>
                             llvm::cl::desc("Lower some global initializers"),
                             llvm::cl::init(true));
 
-static llvm::cl::opt<bool>
-    DevirtualizeFuncs("devirt-functions",
-       llvm::cl::desc("Devirtualize indirect calls "
-		      "(disabled by default). "
-		      "If enabled then use --devirt-functions-method=types|sea-dsa to choose method."),
-       llvm::cl::init(false));
+static llvm::cl::opt<bool> DevirtualizeFuncs(
+    "devirt-functions",
+    llvm::cl::desc("Devirtualize indirect calls "
+                   "(disabled by default). "
+                   "If enabled then use "
+                   "--devirt-functions-method=types|sea-dsa to choose method."),
+    llvm::cl::init(false));
 
 static llvm::cl::opt<bool> ExternalizeAddrTakenFuncs(
     "externalize-addr-taken-funcs",
@@ -178,11 +167,6 @@ static llvm::cl::opt<bool>
     PromoteAssumptions("promote-assumptions",
                        llvm::cl::desc("Promote verifier.assume to llvm.assume"),
                        llvm::cl::init(false));
-
-static llvm::cl::opt<std::string>
-    ApiConfig("api-config",
-              llvm::cl::desc("Comma separated API function calls"),
-              llvm::cl::init(""), llvm::cl::value_desc("api-string"));
 
 // static llvm::cl::opt<int>
 //     SROA_Threshold("sroa-threshold",
@@ -210,10 +194,16 @@ static llvm::cl::opt<bool>
             llvm::cl::desc("Wrap memory accesses with special functions"),
             llvm::cl::init(false));
 
+static llvm::cl::opt<bool> FatBoundsCheck(
+    "fat-bnd-check",
+    llvm::cl::desc(
+        "Instrument buffer bounds check  using extended pointer bits"),
+    llvm::cl::init(false));
+
 static llvm::cl::opt<bool>
-    FatBoundsCheck("fat-bnd-check",
-            llvm::cl::desc("Instrument buffer bounds check  using extended pointer bits"),
-            llvm::cl::init(false));
+    LowerIsDeref("lower-is-deref",
+                 llvm::cl::desc("Lower sea_is_dereferenceable() calls"),
+                 llvm::cl::init(false));
 
 static llvm::cl::opt<bool>
     StripShadowMem("strip-shadow-mem",
@@ -308,7 +298,7 @@ int main(int argc, char **argv) {
   llvm::SMDiagnostic err;
   static llvm::LLVMContext context;
   std::unique_ptr<llvm::Module> module;
-  std::unique_ptr<llvm::tool_output_file> output;
+  std::unique_ptr<llvm::ToolOutputFile> output;
 
   module = llvm::parseIRFile(InputFilename, err, context);
   if (!module) {
@@ -328,7 +318,7 @@ int main(int argc, char **argv) {
   }
 
   if (!OutputFilename.empty())
-    output = llvm::make_unique<llvm::tool_output_file>(
+    output = std::make_unique<llvm::ToolOutputFile>(
         OutputFilename.c_str(), error_code, llvm::sys::fs::F_None);
 
   if (error_code) {
@@ -360,6 +350,10 @@ int main(int argc, char **argv) {
   llvm::initializeCallGraphViewerPass(Registry);
   // XXX: not sure if needed anymore
   llvm::initializeGlobalsAAWrapperPassPass(Registry);
+  llvm::initializeAllocWrapInfoPass(Registry);
+  llvm::initializeDsaLibFuncInfoPass(Registry);
+
+  llvm::initializeCompleteCallGraphPass(Registry);
 
   // add an appropriate DataLayout instance for the module
   const llvm::DataLayout *dl = &module->getDataLayout();
@@ -370,10 +364,9 @@ int main(int argc, char **argv) {
 
   assert(dl && "Could not find Data Layout for the module");
 
-  if (!ApiConfig.empty()) {
-    // -- api-config command. Deprecated.
-    pm_wrapper.add(seahorn::createApiAnalysisPass(ApiConfig));
-  } else if (RenameNondet)
+  pm_wrapper.add(seahorn::createSeaBuiltinsWrapperPass());
+
+  if (RenameNondet)
     // -- ren-nondet utility pass
     pm_wrapper.add(seahorn::createRenameNondetPass());
   else if (StripShadowMem)
@@ -395,41 +388,25 @@ int main(int argc, char **argv) {
     // -- apply mixed semantics
     assert(LowerSwitch && "Lower switch must be enabled");
     pm_wrapper.add(llvm::createLowerSwitchPass());
-    pm_wrapper.add(seahorn::createPromoteVerifierClassPass());
+    pm_wrapper.add(seahorn::createPromoteVerifierCallsPass());
     pm_wrapper.add(seahorn::createCanFailPass());
     pm_wrapper.add(seahorn::createMixedSemanticsPass());
     pm_wrapper.add(seahorn::createRemoveUnreachableBlocksPass());
     pm_wrapper.add(seahorn::createPromoteMallocPass());
-  } else if (CutLoops) {
+  } else if (CutLoops || PeelLoops > 0) {
     // -- cut loops to turn a program into loop-free program
     pm_wrapper.add(llvm::createLoopSimplifyPass());
+    pm_wrapper.add(llvm::createLoopSimplifyCFGPass());
+    pm_wrapper.add(llvm_seahorn::createLoopRotatePass(/*1023*/));
     pm_wrapper.add(llvm::createLCSSAPass());
-    pm_wrapper.add(seahorn::createCutLoopsPass());
-    // pm_wrapper.add (new seahorn::RemoveUnreachableBlocksPass ());
-  }
-  // array bound checking. WIP.
-  else if (ArrayBoundsChecks > 0) {
-    if (InstNamer)
-      pm_wrapper.add(llvm::createInstructionNamerPass());
-    else if (NameValues)
-      pm_wrapper.add(seahorn::createNameValuesPass());
-
-    switch (ArrayBoundsChecks) {
-    case LOCAL:
-      pm_wrapper.add(seahorn::createLowerCstExprPass());
-      pm_wrapper.add(seahorn::createLocalBufferBoundsCheck());
-      // -- Turn undef into nondet (undef might be created by Local)
-      pm_wrapper.add(seahorn::createNondetInitPass());
-      break;
-    case GLOBAL_C:
-      pm_wrapper.add(seahorn::createGlobalCBufferBoundsCheckPass());
-      // --- inline some special functions
-      pm_wrapper.add(llvm::createAlwaysInlinerLegacyPass());
-      break;
-    case GLOBAL:
-    default:
-      pm_wrapper.add(seahorn::createGlobalBufferBoundsCheck());
+    if (PeelLoops > 0)
+      pm_wrapper.add(seahorn::createLoopPeelerPass(PeelLoops));
+    if (CutLoops) {
+      pm_wrapper.add(seahorn::createBackEdgeCutterPass());
+      // -- disabled. back-edge-cutter should be more robust
+      // pm_wrapper.add(seahorn::createCutLoopsPass());
     }
+    // pm_wrapper.add (new seahorn::RemoveUnreachableBlocksPass ());
   }
   // checking for simple instances of memory safety. WIP
   else if (SimpleMemoryChecks) {
@@ -440,9 +417,11 @@ int main(int argc, char **argv) {
   else if (NullChecks) {
     pm_wrapper.add(seahorn::createLowerCstExprPass());
     pm_wrapper.add(seahorn::createNullCheckPass());
-  }
-  else if (FatBoundsCheck) {
+  } else if (FatBoundsCheck) {
+    initializeFatBufferBoundsCheckPass(Registry);
     pm_wrapper.add(seahorn::createFatBufferBoundsCheckPass());
+  } else if (LowerIsDeref) {
+    pm_wrapper.add(seahorn::createLowerIsDerefPass());
   }
   // default pre-processing pipeline
   else {
@@ -453,7 +432,7 @@ int main(int argc, char **argv) {
     pm_wrapper.add(seahorn::createDummyMainFunctionPass());
 
     // -- promote verifier specific functions to special names
-    pm_wrapper.add(seahorn::createPromoteVerifierClassPass());
+    pm_wrapper.add(seahorn::createPromoteVerifierCallsPass());
 
     // -- promote top-level mallocs to alloca
     pm_wrapper.add(seahorn::createPromoteMallocPass());
@@ -485,8 +464,10 @@ int main(int argc, char **argv) {
     }
 
     // -- resolve indirect calls
-    if (DevirtualizeFuncs)
+    if (DevirtualizeFuncs) {
+      pm_wrapper.add(llvm::createWholeProgramDevirtPass(nullptr, nullptr));
       pm_wrapper.add(seahorn::createDevirtualizeFunctionsPass());
+    }
 
     // -- externalize uses of address-taken functions
     if (ExternalizeAddrTakenFuncs)

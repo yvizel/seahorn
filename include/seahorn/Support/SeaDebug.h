@@ -6,10 +6,11 @@
 
 namespace seahorn {
 
+#define DOG(CODE) LOG(DEBUG_TYPE, CODE)
 #ifndef NSEALOG
 #define LOG(TAG, CODE)                                                         \
   do {                                                                         \
-    if (::seahorn::SeaLogFlag && ::seahorn::SeaLog.count(TAG) > 0) {                   \
+    if (::seahorn::SeaLogFlag && ::seahorn::SeaLog.count(TAG) > 0) {           \
       CODE;                                                                    \
     }                                                                          \
   } while (0)
@@ -24,6 +25,6 @@ void SeaEnableLog(std::string x);
   do {                                                                         \
   } while (0)
 #endif
-}
+} // namespace seahorn
 
 #endif

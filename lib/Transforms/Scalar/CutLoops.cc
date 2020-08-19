@@ -2,7 +2,7 @@
 
 /**
  * Loops can be marked to be unrolled in clang using unroll pragma
- * e.g., #pragma unroll 10 
+ * e.g., #pragma unroll 10
  *
  * Clang does not unroll the loops itself, but marks the requested
  * unrolling depth in meta-data. The actual unrolling is done by some
@@ -14,191 +14,225 @@
  * After the loops are cut, it is helpful to optimize once more with
  * seaopt -O3
  */
-#include "llvm/Transforms/Scalar.h"
+#include "seahorn/Transforms/Scalar/CutLoops.hh"
+#include "seahorn/Analysis/SeaBuiltinsInfo.hh"
+#include "seahorn/Passes.hh"
+#include "seahorn/Support/SeaDebug.h"
+#include "seahorn/Support/SeaLog.hh"
+
 #include "llvm/ADT/SmallVector.h"
 #include "llvm/ADT/Statistic.h"
+#include "llvm/Analysis/AssumptionCache.h"
 #include "llvm/Analysis/LoopPass.h"
 #include "llvm/Analysis/ScalarEvolution.h"
 #include "llvm/IR/Dominators.h"
 #include "llvm/IR/Module.h"
+#include "llvm/Transforms/Scalar.h"
+#include "llvm/Transforms/Utils.h"
+#include "llvm/Transforms/Utils/Local.h"
+#include "llvm/Transforms/Utils/LoopSimplify.h"
 
-#include "seahorn/Support/SeaDebug.h"
 using namespace llvm;
+using namespace seahorn;
 
-namespace 
-{
-  class CutLoops : public LoopPass
-  {
-  public:
-    static char ID;
-    CutLoops () : LoopPass (ID) {}
+#define DEBUG_TYPE "cut-loops"
+STATISTIC(NumLoopsCut, "Number of loops cut");
+STATISTIC(NumLoopsNotCut, "Number of loops failed to cut");
 
-    bool runOnLoop (Loop *L, LPPassManager &LPM) override;
-    void getAnalysisUsage(AnalysisUsage &AU) const override 
-    {
-      AU.addRequired<DominatorTreeWrapperPass>();
-      AU.addRequired<LoopInfoWrapperPass>();
-      AU.addRequiredID(LoopSimplifyID);
-      AU.addRequiredID(LCSSAID);
+namespace {
+class CutLoopsPass : public FunctionPass {
+public:
+  static char ID;
+  CutLoopsPass() : FunctionPass(ID) {}
 
-      AU.addPreserved<ScalarEvolutionWrapperPass>();
-      AU.addPreserved<DominatorTreeWrapperPass>();
-      AU.addPreserved<LoopInfoWrapperPass>();
-      AU.addPreservedID(LoopSimplifyID);
-      AU.addPreservedID(LCSSAID);
-    }      
-    
-  };
+  bool runOnFunction(Function &F) override;
+
+  bool runOnLoop(Loop *L, LoopInfo &LI) {
+    DOG(MSG << "Cutting loop: " << *L;);
+
+    if (!canCutLoop(L))
+      return false;
+
+    Function &F = *L->getHeader()->getParent();
+    auto &SBI = getAnalysis<seahorn::SeaBuiltinsInfoWrapperPass>().getSBI();
+    auto *SE = getAnalysisIfAvailable<ScalarEvolutionWrapperPass>();
+    auto *DTWP = getAnalysisIfAvailable<DominatorTreeWrapperPass>();
+    auto *DT = DTWP ? &DTWP->getDomTree() : nullptr;
+    auto *ACWP = getAnalysisIfAvailable<AssumptionCacheTracker>();
+    auto *AC = ACWP ? &ACWP->getAssumptionCache(F) : nullptr;
+
+    bool res = CutLoop(L, SBI, nullptr /* LPM */, &LI,
+                       SE ? &SE->getSE() : nullptr, DT, AC);
+    if (res)
+      ++NumLoopsCut;
+    else
+      ++NumLoopsNotCut;
+    return res;
+  }
+
+  void getAnalysisUsage(AnalysisUsage &AU) const override {
+    AU.addRequired<seahorn::SeaBuiltinsInfoWrapperPass>();
+    AU.addRequired<DominatorTreeWrapperPass>();
+    AU.addRequired<LoopInfoWrapperPass>();
+    AU.addRequiredID(LoopSimplifyID);
+    AU.addRequiredID(LCSSAID);
+
+    AU.addPreserved<ScalarEvolutionWrapperPass>();
+    AU.addPreserved<DominatorTreeWrapperPass>();
+    AU.addPreserved<LoopInfoWrapperPass>();
+    AU.addPreservedID(LoopSimplifyID);
+    AU.addPreservedID(LCSSAID);
+  }
+};
+} // namespace
+
+char CutLoopsPass::ID = 0;
+
+bool CutLoopsPass::runOnFunction(Function &F) {
+  auto &LI = getAnalysis<LoopInfoWrapperPass>().getLoopInfo();
+
+  bool Changed = false;
+  while (!LI.empty()) {
+    Loop *L = *std::prev(LI.end());
+    auto res = runOnLoop(L, LI);
+    Changed |= res;
+    // -- avoid infinite loops
+    if (!res) {
+      DOG(WARN << "Failed to cut a loop! Unexpected behaviour might occur.";);
+      break;
+    }
+  }
+  return Changed;
 }
 
-
-char CutLoops::ID = 0;
-
-bool CutLoops::runOnLoop (Loop *L, LPPassManager &LPM)
-{
-  LOG("cut-loops", errs () << "Cutting loop: " << *L << "\n";);
-  
-  BasicBlock *preheader = L->getLoopPreheader ();
-  if (!preheader)
-  {
-    LOG("cut-loops", errs () << "Warning: no-cut: no pre-header\n");
+bool seahorn::canCutLoop(Loop *L) {
+  DOG(MSG << "Checking loop to cut: " << *L;);
+  BasicBlock *preheader = L->getLoopPreheader();
+  if (!preheader) {
+    DOG(WARN << "no-cut: no pre-header");
     return false;
   }
-  
+  BasicBlock *header = L->getHeader();
 
-  BasicBlock *header = L->getHeader ();
-
-  if (!header)
-  {
-    LOG("cut-loops", errs () << "Warning: no-cut: no header\n");
+  if (!header) {
+    DOG(WARN << "no-cut: no header");
     return false;
   }
-  
-  Module *M = header->getParent ()->getParent ();
-  if (!M) return false;
-  
+
+  Module *M = header->getParent()->getParent();
+  if (!M)
+    return false;
+
   // single exit
-  if (!L->hasDedicatedExits ())
-  {
-    LOG("cut-loops", errs () << "Warning: no-cut: multiple exits\n");
+  if (!L->hasDedicatedExits()) {
+    DOG(WARN << "no-cut: multiple exits");
     return false;
   }
-  
 
   // -- no sub-loops
-  if (L->begin () != L->end ())
-  {
-    LOG("cut-loops", errs () << "Warning: no-cut: sub-loops\n");
-    return false;
-  }
-  
-  
-  SmallVector<BasicBlock *, 4> latches;
-  L->getLoopLatches (latches);
+  // if (L->begin() != L->end()) {
+  //   DOG(WARN << "no-cut: sub-loops");
+  //   return false;
+  // }
 
-  for (BasicBlock *latch : latches)
-  {
-    BranchInst *bi = dyn_cast<BranchInst> (latch->getTerminator ());
-    if (!bi)
-    {
-      LOG("cut-loops", errs () << "Warning: no-cut: unsupported latch\n"
-          << *latch << "\n";);
+  SmallVector<BasicBlock *, 4> latches;
+  L->getLoopLatches(latches);
+
+  for (BasicBlock *latch : latches) {
+    BranchInst *bi = dyn_cast<BranchInst>(latch->getTerminator());
+    if (!bi) {
+      DOG(WARN << "no-cut: unsupported latch" << *latch;);
       return false;
     }
-    
   }
 
-  
-  Function *assumeFn = M->getFunction ("verifier.assume");
-  if (!assumeFn)
-  {
-    LOG ("cut-loops", errs () << "Missing verifier.assume()\n";);
-    return false;
-  }
-  
-  Function *assumeNotFn = M->getFunction ("verifier.assume.not");
-  if (!assumeNotFn)
-  {
-    LOG ("cut-loops", errs () << "Missing verifier.assume.not()\n";);
-    return false;
-  }
-  
-  
-  for (BasicBlock *latch : latches)
-  {
-    BranchInst *bi = dyn_cast<BranchInst> (latch->getTerminator ());
-    if (bi->isUnconditional ())
-    {
-      CallInst::Create (assumeFn,
-                        ConstantInt::getFalse (assumeFn->getContext ()), "", bi);
-      new UnreachableInst (assumeFn->getContext (), bi);
-      bi->eraseFromParent ();
-    }
-    else
-    {
-      assert (bi->getSuccessor (0) == header || bi->getSuccessor (1) == header);
+  return true;
+}
+
+bool seahorn::CutLoop(Loop *L, seahorn::SeaBuiltinsInfo &SBI,
+                      LPPassManager *LPM, LoopInfo *LI, ScalarEvolution *SE,
+                      DominatorTree *DT, AssumptionCache *AC) {
+  assert(canCutLoop(L));
+
+  BasicBlock *header = L->getHeader();
+  assert(header);
+  Function *F = header->getParent();
+  assert(F);
+  Module *M = F->getParent();
+  assert(M);
+  SmallVector<BasicBlock *, 4> latches;
+  L->getLoopLatches(latches);
+
+  Function *assumeFn = SBI.mkSeaBuiltinFn(seahorn::SeaBuiltinsOp::ASSUME, *M);
+  Function *assumeNotFn =
+      SBI.mkSeaBuiltinFn(seahorn::SeaBuiltinsOp::ASSUME_NOT, *M);
+  for (BasicBlock *latch : latches) {
+    BranchInst *bi = dyn_cast<BranchInst>(latch->getTerminator());
+    if (bi->isUnconditional()) {
+      CallInst::Create(assumeFn, ConstantInt::getFalse(assumeFn->getContext()),
+                       "", bi);
+      new UnreachableInst(assumeFn->getContext(), bi);
+      bi->eraseFromParent();
+      // llvm::changeToUnreachable(bi, false /* UseLLVMTrap */, false /*
+      // PreserveLCSSA */, nullptr, nullptr);
+    } else {
+      assert(bi->getSuccessor(0) == header || bi->getSuccessor(1) == header);
       // insert call to condition or not condition
-    
+
       Function *fn = nullptr;
       BasicBlock *dst = nullptr;
-    
-      if (bi->getSuccessor (0) == header)
-      {
-        dst = bi->getSuccessor (1);
+
+      if (bi->getSuccessor(0) == header) {
+        dst = bi->getSuccessor(1);
         fn = assumeNotFn;
-      }
-      else 
-      {
-        dst = bi->getSuccessor (0);
+      } else {
+        dst = bi->getSuccessor(0);
         fn = assumeFn;
       }
 
       if (fn)
-        CallInst::Create (fn, bi->getCondition (),
-                          "", bi);
+        CallInst::Create(fn, bi->getCondition(), "", bi);
 
-      BranchInst::Create (dst, bi);
-      bi->eraseFromParent ();
+      BranchInst::Create(dst, bi);
+      bi->eraseFromParent();
     }
   }
-  
-  SmallVector<PHINode*, 8> phiNodes;
-  BasicBlock::iterator BI = header->begin ();
-  while (PHINode *P = dyn_cast<PHINode> (BI))
-  {
-    phiNodes.push_back (P);
+
+  SmallVector<PHINode *, 8> phiNodes;
+  BasicBlock::iterator BI = header->begin();
+  while (PHINode *P = dyn_cast<PHINode>(BI)) {
+    phiNodes.push_back(P);
     ++BI;
   }
 
-  for (PHINode *P : phiNodes)
+  for (PHINode *P : phiNodes) {
     for (BasicBlock *latch : latches)
-      P->removeIncomingValue (latch);
-
-  if (ScalarEvolutionWrapperPass *SEWP = getAnalysisIfAvailable<ScalarEvolutionWrapperPass> ()) {
-    ScalarEvolution &SE = SEWP->getSE();
-    SE.forgetLoop (L);
+      P->removeIncomingValue(latch);
   }
-  
-  LoopInfo &loopInfo = getAnalysis<LoopInfoWrapperPass>().getLoopInfo();
-  SmallPtrSet<BasicBlock*, 8> blocks;
-  blocks.insert(L->block_begin(), L->block_end());
-  for (BasicBlock *BB : blocks)
-    loopInfo.removeBlock(BB);
 
-  // llvm 3.8
-  loopInfo.markAsRemoved(L);
-  // llvm 3.6
-  //LPM.deleteLoopFromQueue (L);
+  // -- update ScalarEvolution
+  if (SE)
+    SE->forgetLoop(L);
+
+  // -- update LoopInfo
+  if (LI) {
+    auto *PL = L->getParentLoop();
+    LI->erase(L);
+
+    if (PL && LPM) {
+      DOG(errs() << "Simplifying loop: " << *PL << "\n";);
+      simplifyLoop(PL, DT, LI, SE, AC, nullptr /* MSSAU */,
+                   false /* PreserveLCSSA */);
+    }
+  }
+
+  // -- update LoopPassManager
+  if (LPM)
+    LPM->markLoopAsDeleted(*L);
   return true;
 }
 
+Pass *seahorn::createCutLoopsPass() { return new CutLoopsPass(); }
 
-namespace seahorn
-{
-  Pass *createCutLoopsPass ()
-  {return new CutLoops ();}
-}
-
-
-static llvm::RegisterPass<CutLoops> 
-X ("cut-loops", "Cut back-edges of all natural loops");
+static llvm::RegisterPass<CutLoopsPass>
+    X(DEBUG_TYPE, "Cut back-edges of all natural loops");

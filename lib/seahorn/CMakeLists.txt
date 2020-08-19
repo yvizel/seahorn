@@ -1,4 +1,4 @@
-add_llvm_library (seahorn.LIB
+add_llvm_library (seahorn.LIB DISABLE_LLVM_LINK_LLVM_DYLIB
   LoadCrab.cc
   LiveSymbols.cc
   SymStore.cc
@@ -43,13 +43,15 @@ add_llvm_library (seahorn.LIB
   BvOpSem2ConstEval.cc
   BvOpSem2RawMemMgr.cc
   BvOpSem2FatMemMgr.cc
+  BvOpSem2WideMemMgr.cc
+  BvOpSem2ExtraWideMemMgr.cc
   VCGen.cc
   DfCoiAnalysis.cc
   )
 
 add_subdirectory(Smt)
 if (HAVE_CLAM)
-  target_link_libraries (seahorn.LIB ${CLAM_LIBS})
+  target_link_libraries (seahorn.LIB PRIVATE ${CLAM_LIBS})
 endif()
 
 

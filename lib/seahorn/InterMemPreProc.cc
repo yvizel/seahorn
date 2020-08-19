@@ -3,13 +3,14 @@
 #include "seahorn/InterMemPreProc.hh"
 #include "seahorn/Support/SeaDebug.h"
 
-#include "sea_dsa/DsaAnalysis.hh"
-#include "sea_dsa/CallGraphUtils.hh"
-#include "sea_dsa/Global.hh"
+#include "seadsa/DsaAnalysis.hh"
+#include "seadsa/CallGraphUtils.hh"
+#include "seadsa/Global.hh"
 
 namespace {
 
-using namespace sea_dsa;
+using namespace seadsa;
+using namespace llvm;
 
 enum class EColor { BLACK, GRAY }; // colors for exploration
 using ExplorationMap = DenseMap<const Node *, EColor>;
@@ -118,20 +119,20 @@ bool InterMemPreProc::runOnModule(Module &M) {
         const Graph &callerG = ga.getGraph(*f_caller);
         const Graph &calleeG = ga.getSummaryGraph(*f_callee);
 
-        std::unique_ptr<SimulationMapper> simMap = llvm::make_unique<SimulationMapper>();
+        std::unique_ptr<SimulationMapper> simMap = std::make_unique<SimulationMapper>();
 
         Graph::computeCalleeCallerMapping(cs, *(const_cast<Graph *>(&calleeG)),
                                           *(const_cast<Graph *>(&callerG)),
                                           *simMap);
 
-        std::unique_ptr<NodeSet> unsafe_callee = llvm::make_unique<NodeSet>();
-        std::unique_ptr<NodeSet> unsafe_caller = llvm::make_unique<NodeSet>();
+        std::unique_ptr<NodeSet> unsafe_callee = std::make_unique<NodeSet>();
+        std::unique_ptr<NodeSet> unsafe_caller = std::make_unique<NodeSet>();
 
         mark_nodes_graph(*(const_cast<Graph *>(&calleeG)), *f_callee,
                          *unsafe_callee, *unsafe_caller, *simMap);
 
         if(m_unsafen_f_callee.find(f_callee) == m_unsafen_f_callee.end()){
-          std::unique_ptr<NodeSet> ci_unsafe = llvm::make_unique<NodeSet>();
+          std::unique_ptr<NodeSet> ci_unsafe = std::make_unique<NodeSet>();
           m_unsafen_f_callee[f_callee] = std::move(ci_unsafe);
         }
         NodeSet &ci_unsafe_callee = *m_unsafen_f_callee[f_callee];

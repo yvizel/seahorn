@@ -9,6 +9,7 @@
 #include "llvm/IR/LegacyPassManager.h"
 #include "llvm/IR/Module.h"
 #include "llvm/IRReader/IRReader.h"
+#include "llvm/InitializePasses.h"
 #include "llvm/LinkAllPasses.h"
 #include "llvm/Support/CommandLine.h"
 #include "llvm/Support/Debug.h"
@@ -28,6 +29,7 @@
 #include "seahorn/Houdini.hh"
 #include "seahorn/Passes.hh"
 #include "seahorn/PredicateAbstraction.hh"
+#include "seahorn/Support/SeaLog.hh"
 #include "seahorn/Transforms/Scalar/LowerCstExpr.hh"
 #include "seahorn/Transforms/Scalar/LowerGvInitializers.hh"
 #include "seahorn/Transforms/Scalar/PromoteVerifierCalls.hh"
@@ -38,17 +40,19 @@
 #include "clam/Clam.hh"
 #endif
 
-#include "sea_dsa/DsaAnalysis.hh"
+#include "seadsa/DsaAnalysis.hh"
+#include "seadsa/InitializePasses.hh"
+#include "seadsa/support/RemovePtrToInt.hh"
 
 #include "seahorn/Expr/Smt/EZ3.hh"
 #include "seahorn/Support/Stats.hh"
 #include "seahorn/Transforms/Utils/NameValues.hh"
 
 #include "seahorn/Support/GitSHA1.h"
-void print_seahorn_version() {
-  llvm::outs() << "SeaHorn (http://seahorn.github.io/):\n"
-               << "  SeaHorn version " << SEAHORN_VERSION_INFO << "-"
-               << g_GIT_SHA1 << "\n";
+void print_seahorn_version(llvm::raw_ostream &OS) {
+  OS << "SeaHorn (http://seahorn.github.io/):\n"
+     << "  SeaHorn version " << SEAHORN_VERSION_INFO << "-" << g_GIT_SHA1
+     << "\n";
 }
 
 /// XXX HACK to force compiler to link this in
@@ -63,13 +67,15 @@ struct ZVerboseOpt {
 };
 ZVerboseOpt zverbose;
 
-#ifdef HAVE_CLAM
 struct CVerboseOpt {
+#ifdef HAVE_CLAM
   void operator=(unsigned level) const { crab::CrabEnableVerbosity(level); }
+#else
+  void operator=(unsigned level) const {}
+#endif
 };
 
 CVerboseOpt cverbose;
-#endif
 } // namespace seahorn
 
 static llvm::cl::opt<seahorn::ZTraceLogOpt, true, llvm::cl::parser<std::string>>
@@ -84,12 +90,10 @@ static llvm::cl::opt<seahorn::ZVerboseOpt, true, llvm::cl::parser<int>>
                   llvm::cl::value_desc("int"), llvm::cl::ValueRequired,
                   llvm::cl::Hidden);
 
-#ifdef HAVE_CLAM
 static llvm::cl::opt<seahorn::CVerboseOpt, true, llvm::cl::parser<unsigned>>
     CrabVerbose("cverbose", llvm::cl::desc("Enable crab verbose messages"),
                 llvm::cl::location(seahorn::cverbose),
                 llvm::cl::value_desc("uint"));
-#endif
 
 static llvm::cl::opt<std::string>
     InputFilename(llvm::cl::Positional,
@@ -140,6 +144,11 @@ static llvm::cl::opt<bool>
             "Use BMC. Currently restricted to intra-procedural analysis"),
         llvm::cl::init(false));
 
+static llvm::cl::opt<bool>
+    NondetInit("horn-nondet-undef",
+               llvm::cl::desc("Replace all undef with non-determinism"),
+               llvm::cl::init(false));
+
 // Available BMC engines
 enum class BmcEngineKind { mono_bmc, path_bmc };
 
@@ -165,11 +174,6 @@ static llvm::cl::opt<bool>
     UnifyAssumes("horn-unify-assumes",
                  llvm::cl::desc("One assume to rule them all"),
                  llvm::cl::init(false));
-
-// To switch between llvm-dsa and sea-dsa
-static llvm::cl::opt<bool>
-    SeaHornDsa("horn-sea-dsa", llvm::cl::desc("Use Seahorn Dsa analysis"),
-               llvm::cl::init(false));
 
 static llvm::cl::opt<bool> HoudiniInv(
     "horn-houdini",
@@ -218,8 +222,8 @@ int main(int argc, char **argv) {
   llvm::SMDiagnostic err;
   llvm::LLVMContext context;
   std::unique_ptr<llvm::Module> module;
-  std::unique_ptr<llvm::tool_output_file> output;
-  std::unique_ptr<llvm::tool_output_file> asmOutput;
+  std::unique_ptr<llvm::ToolOutputFile> output;
+  std::unique_ptr<llvm::ToolOutputFile> asmOutput;
 
   module = llvm::parseIRFile(InputFilename, err, context);
   if (module.get() == 0) {
@@ -233,7 +237,7 @@ int main(int argc, char **argv) {
     return 3;
   }
   if (!AsmOutputFilename.empty())
-    asmOutput = llvm::make_unique<llvm::tool_output_file>(
+    asmOutput = std::make_unique<llvm::ToolOutputFile>(
         AsmOutputFilename.c_str(), error_code, llvm::sys::fs::F_Text);
   if (error_code) {
     if (llvm::errs().has_colors())
@@ -246,7 +250,7 @@ int main(int argc, char **argv) {
   }
 
   if (!OutputFilename.empty())
-    output = llvm::make_unique<llvm::tool_output_file>(
+    output = std::make_unique<llvm::ToolOutputFile>(
         OutputFilename.c_str(), error_code, llvm::sys::fs::F_None);
 
   if (error_code) {
@@ -276,6 +280,11 @@ int main(int argc, char **argv) {
   // XXX: not sure if needed anymore
   llvm::initializeGlobalsAAWrapperPassPass(Registry);
 
+  llvm::initializeDsaAnalysisPass(Registry);
+  llvm::initializeRemovePtrToIntPass(Registry);
+  llvm::initializeDsaInfoPassPass(Registry);
+  llvm::initializeAllocSiteInfoPass(Registry);
+  llvm::initializeCompleteCallGraphPass(Registry);
   // add an appropriate DataLayout instance for the module
   const llvm::DataLayout *dl = &module->getDataLayout();
   if (!dl && !DefaultDataLayout.empty()) {
@@ -285,6 +294,7 @@ int main(int argc, char **argv) {
 
   assert(dl && "Could not find Data Layout for the module");
 
+  pass_manager.add(seahorn::createSeaBuiltinsWrapperPass());
   // turn all functions internal so that we can inline them if requested
   auto PreserveMain = [=](const llvm::GlobalValue &GV) {
     return GV.getName() == "main";
@@ -301,9 +311,13 @@ int main(int argc, char **argv) {
   pass_manager.add(new seahorn::RemoveUnreachableBlocksPass());
 
   pass_manager.add(seahorn::createPromoteMallocPass());
+  pass_manager.add(seahorn::createPromoteVerifierCallsPass());
+
+  // -- attempt to lower any left sea.is_dereferenceable()
+  // -- they might be preventing some register promotion
+  pass_manager.add(seahorn::createLowerIsDerefPass());
 
   pass_manager.add(llvm::createPromoteMemoryToRegisterPass());
-  pass_manager.add(new seahorn::PromoteVerifierCalls());
   pass_manager.add(llvm::createDeadInstEliminationPass());
   pass_manager.add(llvm::createLowerSwitchPass());
   // lowers constant expressions to instructions
@@ -320,12 +334,21 @@ int main(int argc, char **argv) {
   if (LowerGlobalInitializers) {
     pass_manager.add(new seahorn::LowerGvInitializers());
   }
-  if (SeaHornDsa) {
-    pass_manager.add(seahorn::createSeaDsaShadowMemPass());
-  } else {
-    pass_manager.add(seahorn::createLlvmDsaShadowMemPass());
-    pass_manager.add(seahorn::createPromoteMemoryToRegisterPass());
-  }
+
+  pass_manager.add(seadsa::createRemovePtrToIntPass());
+
+  // XXX If not BMC and not BoogieOutput then we are in Horn mode
+  // XXX This needs to be cleaned up ...
+  if (!Bmc && !BoogieOutput)
+    // in CHC mode, rewrite all loops with constant trip count to make trip
+    // count symbolic This does not change the semantics (i.e., is exact), but
+    // hides the constants from CHC solver
+    // XXX enabled by default. Currently, no flag to disable
+    pass_manager.add(seahorn::createSymbolizeConstantLoopBoundsPass());
+
+  if (NondetInit)
+    pass_manager.add(seahorn::createNondetInitPass());
+  pass_manager.add(seahorn::createSeaDsaShadowMemPass());
 
   pass_manager.add(new seahorn::RemoveUnreachableBlocksPass());
   pass_manager.add(seahorn::createStripLifetimePass());
@@ -370,19 +393,26 @@ int main(int argc, char **argv) {
   // before StripShadowMemPass. A better solution is to make sure that
   // createStripShadowMemPass updates the callgraph.
   if (MemDot) {
-    pass_manager.add(sea_dsa::createDsaPrinterPass());
+    pass_manager.add(seadsa::createDsaPrinterPass());
   }
 
   if (!AsmOutputFilename.empty()) {
     if (!KeepShadows) {
       pass_manager.add(new seahorn::NameValues());
       // -- XXX might destroy names using by HornSolver later on.
-      // -- XXX it is probably dangerous to strip shadows and solve at the same
+      // -- XXX it is probably dangerous to strip shadows and solve at the
+      // same
       //    time.
-      // 
+      //
       // -- We use the same pass to remove shadow memory instructions
       //    when generated by llvm dsa.
       pass_manager.add(seahorn::createStripShadowMemPass());
+      if (Bmc || BoogieOutput || HoudiniInv || PredAbs || Solve) {
+        ERR << "Option --keep-shadows=false is not compatible with any of "
+               "the "
+               "solving options";
+        std::exit(1);
+      }
     }
     pass_manager.add(createPrintModulePass(asmOutput->os()));
   }

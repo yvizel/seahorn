@@ -9,47 +9,41 @@
 #include "seahorn/Transforms/Utils/DevirtFunctions.hh"
 
 #include "llvm/ADT/StringRef.h"
-#include "llvm/Analysis/TargetLibraryInfo.h"
 #include "llvm/Analysis/CallGraph.h"
+#include "llvm/Analysis/LoopInfo.h"
+#include "llvm/Analysis/TargetLibraryInfo.h"
 #include "llvm/Pass.h"
+#include "llvm/Support/CommandLine.h"
 #include "llvm/Support/raw_ostream.h"
 
-#include "sea_dsa/AllocWrapInfo.hh"
-#include "sea_dsa/CompleteCallGraph.hh"
+#include "seadsa/AllocWrapInfo.hh"
+#include "seadsa/CompleteCallGraph.hh"
+#include "seadsa/DsaLibFuncInfo.hh"
 
-static llvm::cl::opt<seahorn::CallSiteResolverKind>
-Devirt("devirt-functions-method",
-      llvm::cl::desc ("Method used to devirtualize (resolve) indirect calls"),
-      llvm::cl::values 
-       (clEnumValN(seahorn::CallSiteResolverKind::RESOLVER_TYPES, "types",
-		  "Choose all possible functions with same type signature"),
-       clEnumValN(seahorn::CallSiteResolverKind::RESOLVER_SEA_DSA  , "sea-dsa",
-		  "Sea-Dsa selects the potential callees "
-		  "after discarding those with inconsistent types")),
-      llvm::cl::init(seahorn::CallSiteResolverKind::RESOLVER_TYPES));
-
-static llvm::cl::opt<bool>
-UseCHA("devirt-functions-with-cha",
-       llvm::cl::desc("Resolve indirect calls by using CHA. "
-		      "This is prior to run --devirt "
-		      "(useful for C++ programs)"),
-       llvm::cl::init(false));
+static llvm::cl::opt<seahorn::CallSiteResolverKind> Devirt(
+    "devirt-functions-method",
+    llvm::cl::desc("Method used to devirtualize (resolve) indirect calls"),
+    llvm::cl::values(
+        clEnumValN(seahorn::CallSiteResolverKind::RESOLVER_TYPES, "types",
+                   "Choose all possible functions with same type signature"),
+        clEnumValN(seahorn::CallSiteResolverKind::RESOLVER_SEADSA, "sea-dsa",
+                   "Sea-Dsa selects the potential callees "
+                   "after discarding those with inconsistent types")),
+    llvm::cl::init(seahorn::CallSiteResolverKind::RESOLVER_TYPES));
 
 static llvm::cl::opt<bool>
-AllowIndirectCalls("devirt-functions-allow-indirect-calls",
-      llvm::cl::desc("Allow creation of indirect calls "
-		     "during devirtualization "
-		     "(required for soundness)"),
-      llvm::cl::Hidden,
-      llvm::cl::init(false));
+    UseCHA("devirt-functions-with-cha",
+           llvm::cl::desc("Resolve indirect calls by using CHA. "
+                          "This is prior to run --devirt "
+                          "(useful for C++ programs)"),
+           llvm::cl::init(false));
 
 static llvm::cl::opt<bool>
-AllowIncompleteDsaNodes("devirt-functions-allow-incomplete",
-      llvm::cl::desc("Allow the use of incomplete dsa nodes to resolve calls. "
-		     "This is potentially unsound."),
-      llvm::cl::Hidden,
-      llvm::cl::init(false));
-
+    AllowIndirectCalls("devirt-functions-allow-indirect-calls",
+                       llvm::cl::desc("Allow creation of indirect calls "
+                                      "during devirtualization "
+                                      "(required for soundness)"),
+                       llvm::cl::Hidden, llvm::cl::init(false));
 
 namespace seahorn {
 
@@ -70,33 +64,42 @@ public:
     if (UseCHA) {
       // We first run CHA to resolve as many C++ calls as possible by
       // looking at the virtual tables.
-      LOG("devirt", errs() << "Devirtualizing first indirect calls using CHA ...\n";);
+      LOG("devirt",
+          errs() << "Devirtualizing first indirect calls using CHA ...\n";);
       CallSiteResolverByCHA csr_cha(M);
       res |= DF.resolveCallSites(M, &csr_cha);
     }
-    
+
     std::unique_ptr<CallSiteResolver> CSR;
-    switch(Devirt) {
+    switch (Devirt) {
     case CallSiteResolverKind::RESOLVER_TYPES: {
-      LOG("devirt", errs() << "Devirtualizing indirect calls using types ...\n";);
+      LOG("devirt",
+          errs() << "Devirtualizing indirect calls using types ...\n";);
       CSR.reset(new CallSiteResolverByTypes(M));
       res |= DF.resolveCallSites(M, &*CSR);
       break;
     }
-    case CallSiteResolverKind::RESOLVER_SEA_DSA: {
-      LOG("devirt", errs() << "Devirtualizing indirect calls using sea-dsa+types ...\n";);
+    case CallSiteResolverKind::RESOLVER_SEADSA: {
+      LOG("devirt",
+          errs() << "Devirtualizing indirect calls using sea-dsa+types ...\n";);
       auto &dl = M.getDataLayout();
-      auto &tli = getAnalysis<TargetLibraryInfoWrapperPass>().getTLI();
-      auto &allocInfo = getAnalysis<sea_dsa::AllocWrapInfo>();
-      sea_dsa::CompleteCallGraphAnalysis ccga(dl, tli, allocInfo, cg, true);
+      auto &tli = getAnalysis<TargetLibraryInfoWrapperPass>();
+      auto &allocInfo = getAnalysis<seadsa::AllocWrapInfo>();
+      auto &dsaLibFuncInfo = getAnalysis<seadsa::DsaLibFuncInfo>();
+      allocInfo.initialize(M, this);
+      dsaLibFuncInfo.initialize(M);
+
+      seadsa::CompleteCallGraphAnalysis ccga(dl, tli, allocInfo, dsaLibFuncInfo,
+                                             cg, true);
       ccga.runOnModule(M);
       LOG("devirt-dsa-cg", ccga.printStats(M, errs()));
-      CSR.reset(new CallSiteResolverByDsa(M, ccga, AllowIncompleteDsaNodes));
+      CSR.reset(new CallSiteResolverByDsa(M, ccga));
       res |= DF.resolveCallSites(M, &*CSR);
       break;
     }
-    default:;;
-    }  
+    default:;
+      ;
+    }
     return res;
   }
 
@@ -104,10 +107,11 @@ public:
     AU.addRequired<CallGraphWrapperPass>();
     AU.setPreservesAll();
     AU.addPreserved<CallGraphWrapperPass>();
-      
-    if (Devirt == CallSiteResolverKind::RESOLVER_SEA_DSA) {
+
+    if (Devirt == CallSiteResolverKind::RESOLVER_SEADSA) {
       AU.addRequired<TargetLibraryInfoWrapperPass>();
-      AU.addRequired<sea_dsa::AllocWrapInfo>();      
+      AU.addRequired<LoopInfoWrapperPass>(); // used by AllocWrapInfo
+      AU.addRequired<seadsa::AllocWrapInfo>();
     }
   }
 

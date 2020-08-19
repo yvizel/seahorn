@@ -1,11 +1,14 @@
 #include "seahorn/BvOpSem2.hh"
+#include "BvOpSem2RawMemMgr.hh"
 
 #include "llvm/CodeGen/IntrinsicLowering.h"
 #include "llvm/IR/GetElementPtrTypeIterator.h"
 #include "llvm/Support/CommandLine.h"
 #include "llvm/Support/Format.h"
 #include "llvm/Support/MathExtras.h"
+#include "llvm/Support/Regex.h"
 
+#include "seahorn/CallUtils.hh"
 #include "seahorn/Support/CFG.hh"
 #include "seahorn/Support/SeaDebug.h"
 #include "seahorn/Support/SeaLog.hh"
@@ -25,6 +28,9 @@ using namespace seahorn;
 using namespace seahorn::details;
 using gep_type_iterator = generic_gep_type_iterator<>;
 
+static const llvm::Regex
+    fatptr_intrnsc_re("^__sea_([A-Za-z]|_)*(extptr|recover).*");
+
 static llvm::cl::opt<bool>
     UseLambdas("horn-bv2-lambdas",
                llvm::cl::desc("Use lambdas for array operations"),
@@ -34,6 +40,17 @@ static llvm::cl::opt<bool> UseFatMemory(
     "horn-bv2-fatmem",
     llvm::cl::desc(
         "Use fat-memory model with fat pointers and fat memory locations"),
+    cl::init(false));
+
+static llvm::cl::opt<bool> UseWideMemory(
+    "horn-bv2-widemem",
+    llvm::cl::desc("Use wide-memory model with pointer and object size"),
+    cl::init(false));
+
+static llvm::cl::opt<bool> UseExtraWideMemory(
+    "horn-bv2-extra-widemem",
+    llvm::cl::desc(
+        "Use extra wide memory model with base, offset and object size"),
     cl::init(false));
 
 static llvm::cl::opt<unsigned>
@@ -72,7 +89,7 @@ static llvm::cl::list<std::string> IgnoreExternalFunctions2(
         "These functions are not modeled as uninterpreted functions"),
     llvm::cl::ZeroOrMore, llvm::cl::CommaSeparated);
 
-static llvm::cl::opt<bool> SimplifyOnWrite(
+static llvm::cl::opt<bool> SimplifyExpr(
     "horn-bv2-simplify",
     llvm::cl::desc("Simplify expressions as they are written to memory"),
     llvm::cl::init(false));
@@ -101,22 +118,6 @@ bool isShadowMem(const Value &V, const Value **out) {
 }
 
 const seahorn::details::Bv2OpSemContext &const_ctx(const OpSemContext &_ctx);
-
-/// \brief Work-arround for a bug in llvm::CallSite::getCalledFunction
-/// properly handle bitcast
-Function *getCalledFunction(CallSite &CS) {
-  Function *fn = CS.getCalledFunction();
-  if (fn)
-    return fn;
-
-  Value *v = CS.getCalledValue();
-  if (v)
-    v = v->stripPointerCasts();
-  fn = dyn_cast<Function>(v);
-
-  return fn;
-}
-
 } // namespace
 namespace seahorn {
 
@@ -462,7 +463,7 @@ public:
                        "are not supported and must be lowered");
     }
 
-    const Function *f = getCalledFunction(CS);
+    auto *f = getCalledFunction(CS);
     if (!f) {
       visitIndirectCall(CS);
       return;
@@ -497,10 +498,17 @@ public:
     if (f->isDeclaration()) {
       if (f->arg_empty() && (f->getName().startswith("nd") ||
                              f->getName().startswith("nondet.") ||
+                             f->getName().endswith("nondet") ||
                              f->getName().startswith("verifier.nondet") ||
                              f->getName().startswith("__VERIFIER_nondet")))
         visitNondetCall(CS);
-      else
+      else if (f->getName().startswith("sea.is_dereferenceable")) {
+        visitIsDereferenceable(CS);
+      } else if (f->getName().startswith("smt.")) {
+        visitSmtCall(CS);
+      } else if (fatptr_intrnsc_re.match(f->getName())) {
+        visitFatPointerInstr(CS);
+      } else
         visitExternalCall(CS);
       return;
     }
@@ -511,6 +519,77 @@ public:
 
     ERR << "unhandled call instruction: " << *CS.getInstruction();
     llvm_unreachable(nullptr);
+  }
+
+  void visitSmtCall(CallSite CS) {
+
+    auto *f = getCalledFunction(CS);
+    Expr res;
+    if (f->getName().startswith("smt.extract.")) {
+      auto *arg0 = dyn_cast<ConstantInt>(CS.getArgument(0));
+      auto *arg1 = dyn_cast<ConstantInt>(CS.getArgument(1));
+      auto *val = CS.getArgument(2);
+      Expr symVal = lookup(*val);
+      if (symVal && arg0 && arg1) {
+        res =
+            m_ctx.alu().Extract({symVal, val->getType()->getScalarSizeInBits()},
+                                arg0->getZExtValue(), arg1->getZExtValue());
+      }
+    } else if (f->getName().startswith("smt.concat.")) {
+      LOG("opsem", WARN << "Not implemented yet";);
+      assert(false);
+    } else {
+      LOG("opsem", ERR << "Unsupported smt. function: " << f->getName(););
+      assert(false);
+    }
+
+    setValue(*CS.getInstruction(), res);
+  }
+
+  void visitIsDereferenceable(CallSite CS) {
+    Expr ptr = lookup(*CS.getArgument(0));
+    Expr byteSz = lookup(*CS.getArgument(1));
+    Expr res = m_ctx.mem().isDereferenceable(ptr, byteSz);
+    setValue(*CS.getInstruction(), res);
+  }
+
+  void visitFatPointerInstr(CallSite CS) {
+    auto *f = getCalledFunction(CS);
+    assert(f);
+    const Instruction &I = *CS.getInstruction();
+
+    if (f->getName().equals("__sea_set_extptr_slot0_hm")) {
+      Expr ptr = lookup(*CS.getArgument(0));
+      Expr data = lookup(*CS.getArgument(1));
+      Expr res = m_ctx.mem().setFatData(ptr, 0 /*slot */, data);
+      setValue(I, res);
+    } else if (f->getName().equals("__sea_set_extptr_slot1_hm")) {
+      Expr ptr = lookup(*CS.getArgument(0));
+      Expr data = lookup(*CS.getArgument(1));
+      Expr res = m_ctx.mem().setFatData(ptr, 1 /*slot */, data);
+      setValue(I, res);
+    } else if (f->getName().equals("__sea_get_extptr_slot0_hm")) {
+      Expr ptr = lookup(*CS.getArgument(0));
+      Expr res = m_ctx.mem().getFatData(ptr, 0 /*slot */);
+      setValue(I, res);
+    } else if (f->getName().equals("__sea_get_extptr_slot1_hm")) {
+      Expr ptr = lookup(*CS.getArgument(0));
+      Expr res = m_ctx.mem().getFatData(ptr, 1 /*slot */);
+      setValue(I, res);
+    } else if (f->getName().equals("__sea_copy_extptr_slots_hm")) {
+      // convention is copy(dst, src)
+      Expr dst = lookup(*CS.getArgument(0));
+      Expr src = lookup(*CS.getArgument(1));
+
+      Expr slot0_data = m_ctx.mem().getFatData(src, 0 /*slot */);
+      Expr slot1_data = m_ctx.mem().getFatData(src, 1 /*slot */);
+      Expr res = m_ctx.mem().setFatData(dst, 0 /*slot */, slot0_data);
+      res = m_ctx.mem().setFatData(res, 1 /*slot */, slot1_data);
+      setValue(I, res);
+    } else if (f->getName().equals("__sea_recover_pointer_hm")) {
+      Expr fat_ptr = lookup(*CS.getArgument(0));
+      setValue(I, fat_ptr);
+    }
   }
 
   void visitIndirectCall(CallSite CS) {
@@ -524,7 +603,7 @@ public:
   }
 
   void visitVerifierAssumeCall(CallSite CS) {
-    Function &f = *getCalledFunction(CS);
+    auto &f = *getCalledFunction(CS);
 
     Expr op = lookup(*CS.getArgument(0));
     assert(op);
@@ -566,7 +645,7 @@ public:
   void visitShadowMemCall(CallSite CS) {
     const Instruction &inst = *CS.getInstruction();
 
-    const Function &F = *getCalledFunction(CS);
+    const auto &F = *getCalledFunction(CS);
     if (F.getName().equals("shadow.mem.init")) {
       unsigned id = shadow_dsa::getShadowId(CS);
       assert(id >= 0);
@@ -693,7 +772,7 @@ public:
     }
   }
   void visitExternalCall(CallSite CS) {
-    Function &F = *getCalledFunction(CS);
+    auto &F = *getCalledFunction(CS);
     if (F.getFunctionType()->getReturnType()->isVoidTy())
       return;
 
@@ -778,7 +857,8 @@ public:
       m_ctx.pushParameter(v);
     }
 
-    LOG("arg_error",
+    LOG(
+        "arg_error",
 
         if (m_ctx.getParameters().size() != bind::domainSz(fi.sumPred)) {
           const Instruction &I = *CS.getInstruction();
@@ -1011,13 +1091,13 @@ public:
 
   void visitMemSetInst(MemSetInst &I) {
     Expr v = executeMemSetInst(*I.getDest(), *I.getValue(), *I.getLength(),
-                               I.getAlignment(), m_ctx);
+                               I.getDestAlignment(), m_ctx);
     if (!v)
       WARN << "skipped memset: " << I << "\n";
   }
   void visitMemCpyInst(MemCpyInst &I) {
     executeMemCpyInst(*I.getDest(), *I.getSource(), *I.getLength(),
-                      I.getAlignment(), m_ctx);
+                      I.getDestAlignment(), m_ctx);
   }
 
   void visitMemMoveInst(MemMoveInst &I) {
@@ -1688,12 +1768,22 @@ Bv2OpSemContext::Bv2OpSemContext(Bv2OpSem &sem, SymStore &values,
   zeroE = mkTerm<expr::mpz_class>(0UL, efac());
   oneE = mkTerm<expr::mpz_class>(1UL, efac());
 
+  m_z3.reset(new EZ3(efac()));
+  m_z3_simplifier.reset(new ZSimplifier<EZ3>(*m_z3));
+  auto &params = m_z3_simplifier->params();
+  params.set("ctrl_c", true);
+  m_shouldSimplify = SimplifyExpr;
   m_alu = mkBvOpSemAlu(*this);
   OpSemMemManager *mem = nullptr;
   if (UseFatMemory)
     mem = mkFatMemManager(m_sem, *this, PtrSize, WordSize, UseLambdas);
-  else
+  else if (UseWideMemory) {
+    mem = mkWideMemManager(m_sem, *this, PtrSize, WordSize, UseLambdas);
+  } else if (UseExtraWideMemory) {
+    mem = mkExtraWideMemManager(m_sem, *this, PtrSize, WordSize, UseLambdas);
+  } else {
     mem = mkRawMemManager(m_sem, *this, PtrSize, WordSize, UseLambdas);
+  }
   assert(mem);
   setMemManager(mem);
 }
@@ -1711,47 +1801,31 @@ Bv2OpSemContext::Bv2OpSemContext(SymStore &values, ExprVector &side,
   setPathCond(o.getPathCond());
 }
 
+Expr Bv2OpSemContext::simplify(Expr u) {
+  ScopedStats _st_("opsem.simplify");
+
+  Expr _u;
+  _u = m_z3_simplifier->simplify(u);
+  LOG(
+      "opsem.simplify",
+      if (!isOpX<LAMBDA>(_u) && !isOpX<ITE>(_u) && dagSize(_u) > 100) {
+        errs() << "Term after simplification:\n" << m_z3->toSmtLib(_u) << "\n";
+      });
+
+  LOG(
+      "opsem.dump.subformulae",
+      if ((isOpX<EQ>(_u) || isOpX<NEG>(_u)) && dagSize(_u) > 100) {
+        static unsigned cnt = 0;
+        std::ofstream file("assert." + std::to_string(++cnt) + ".smt2");
+        file << m_z3->toSmtLibDecls(_u) << "\n";
+        file << "(assert " << m_z3->toSmtLib(_u) << ")\n";
+      });
+  return _u;
+}
+
 void Bv2OpSemContext::write(Expr v, Expr u) {
-  if (SimplifyOnWrite) {
-    ScopedStats _st_("opsem.simplify");
-    if (!m_z3) {
-      m_z3.reset(new EZ3(efac()));
-      m_z3_simplifier.reset(new ZSimplifier<EZ3>(*m_z3));
-    }
-
-    ZParams<EZ3> params(*m_z3);
-    params.set("ctrl_c", true);
-    // params.set("timeout", 10000U /*ms*/);
-    // params.set("flat", false);
-    // params.set("ite_extra_rules", false /*default=false*/);
-    // Expr _u = z3_simplify(*m_z3, u, params);
-
-    Expr _u;
-
-    if (strct::isStructVal(u)) {
-      llvm::SmallVector<Expr, 8> kids;
-      for (unsigned i = 0, sz = u->arity(); i < sz; ++i)
-        kids.push_back(m_z3_simplifier->simplify(u->arg(i)));
-      _u = strct::mk(kids);
-    } else {
-      _u = m_z3_simplifier->simplify(u);
-    }
-
-    LOG("opsem.simplify",
-        //
-        if (!isOpX<LAMBDA>(_u) && !isOpX<ITE>(_u) && dagSize(_u) > 100) {
-          errs() << "Term after simplification:\n"
-                 << m_z3->toSmtLib(_u) << "\n";
-        });
-
-    LOG("opsem.dump.subformulae",
-        if ((isOpX<EQ>(_u) || isOpX<NEG>(_u)) && dagSize(_u) > 100) {
-          static unsigned cnt = 0;
-          std::ofstream file("assert." + std::to_string(++cnt) + ".smt2");
-          file << m_z3->toSmtLibDecls(_u) << "\n";
-          file << "(assert " << m_z3->toSmtLib(_u) << ")\n";
-        });
-    u = _u;
+  if (shouldSimplify()) {
+    u = simplify(u);
   }
   OpSemContext::write(v, u);
 }
@@ -2030,6 +2104,7 @@ Expr Bv2OpSemContext::getConstantValue(const llvm::Constant &c) {
     }
   } else if (c.getType()->isStructTy()) {
     ConstantExprEvaluator ce(m_sem.getDataLayout());
+    ce.setContext(*this);
     auto GVO = ce.evaluate(&c);
     if (GVO.hasValue()) {
       GenericValue gv = GVO.getValue();
@@ -2064,7 +2139,7 @@ Bv2OpSem::Bv2OpSem(ExprFactory &efac, Pass &pass, const DataLayout &dl,
   m_canFail = pass.getAnalysisIfAvailable<CanFail>();
   auto *p = pass.getAnalysisIfAvailable<TargetLibraryInfoWrapperPass>();
   if (p)
-    m_tli = &p->getTLI();
+    m_tliWrapper = p;
 
   // -- hack to get ENode::dump() to compile by forcing a use
   LOG("dump.debug", trueE->dump(););
@@ -2321,7 +2396,7 @@ bool Bv2OpSem::intraStep(seahorn::details::Bv2OpSemContext &C) {
   const Instruction &inst = C.getCurrentInst();
 
   // -- non-branch terminators are executed elsewhere
-  if (isa<TerminatorInst>(&inst) && !isa<BranchInst>(&inst))
+  if (inst.isTerminator() && !isa<BranchInst>(&inst))
     return false;
 
   // -- either skip or execute the instruction
@@ -2335,7 +2410,7 @@ bool Bv2OpSem::intraStep(seahorn::details::Bv2OpSemContext &C) {
   }
 
   // -- advance instruction pointer if needed
-  if (!isa<TerminatorInst>(&inst)) {
+  if (!inst.isTerminator()) {
     ++C;
     return true;
   }
@@ -2435,7 +2510,7 @@ void Bv2OpSem::execEdg(const BasicBlock &src, const BasicBlock &dst,
   execPhi(dst, src, ctx);
 
   // an edge into a basic block that does not return includes the block itself
-  const TerminatorInst *term = dst.getTerminator();
+  const auto *term = dst.getTerminator();
   if (term && isa<const UnreachableInst>(term))
     exec(dst, ctx);
 }

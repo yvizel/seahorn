@@ -19,6 +19,7 @@
 //#include "boost/range.hpp"
 #include "boost/scoped_ptr.hpp"
 
+#include "seahorn/CallUtils.hh"
 #include "seahorn/Support/SortTopo.hh"
 
 #include "seahorn/LiveSymbols.hh"
@@ -26,8 +27,8 @@
 
 #include "seahorn/Analysis/CanFail.hh"
 #include "seahorn/Analysis/CutPointGraph.hh"
-#include "seahorn/Support/Stats.hh"
 #include "seahorn/Expr/Smt/EZ3.hh"
+#include "seahorn/Support/Stats.hh"
 
 #include "seahorn/FlatHornifyFunction.hh"
 #include "seahorn/HornifyFunction.hh"
@@ -36,11 +37,13 @@
 #include "seahorn/Support/SeaDebug.h"
 #include "seahorn/Support/SeaLog.hh"
 
+#include "seahorn/BvOpSem.hh"
 #include "seahorn/ClpOpSem.hh"
 #include "seahorn/UfoOpSem.hh"
 
 using namespace llvm;
 using namespace seahorn;
+using namespace seadsa;
 
 static llvm::cl::opt<enum TrackLevel>
     TL("horn-sem-lvl", llvm::cl::desc("Track level for symbolic execution"),
@@ -84,6 +87,10 @@ static llvm::cl::opt<bool>
                      llvm::cl::desc("Abort if program has a recursive call"),
                      cl::init(false));
 
+static llvm::cl::opt<bool> BitPrecise("horn-chc-bv",
+                                      llvm::cl::desc("Bit precise CHC"),
+                                      llvm::cl::init(false));
+
 static llvm::cl::opt<bool> NoVerification(
     "horn-no-verif",
     llvm::cl::desc(
@@ -104,7 +111,7 @@ namespace seahorn {
 // counters for copying the new inter-proc vcgen
 // only updated if the log "inter_mem_counters" is active
 extern InterMemStats g_im_stats;
-}
+} // namespace seahorn
 
 namespace seahorn {
 char HornifyModule::ID = 0;
@@ -157,10 +164,11 @@ bool HornifyModule::runOnModule(Module &M) {
       Step == hm_detail::CLP_FLAT_SMALL_STEP)
     m_sem.reset(new ClpOpSem(m_efac, *this, M.getDataLayout(), TL));
   else if (InterProcMem) {
-    ShadowMemPass * smp = getAnalysisIfAvailable<sea_dsa::ShadowMemPass>();
+    ShadowMemPass *smp = getAnalysisIfAvailable<seadsa::ShadowMemPass>();
     assert(smp);
     ShadowMem &shadowmem_analysis = smp->getShadowMem();
-    CompleteCallGraph *ccg = getAnalysisIfAvailable<sea_dsa::CompleteCallGraph>();
+    CompleteCallGraph *ccg =
+        getAnalysisIfAvailable<seadsa::CompleteCallGraph>();
     assert(ccg);
     std::shared_ptr<InterMemPreProc> preproc =
         std::make_shared<InterMemPreProc>(*ccg, shadowmem_analysis);
@@ -169,9 +177,11 @@ bool HornifyModule::runOnModule(Module &M) {
 
     m_sem.reset(new MemUfoOpSem(m_efac, *this, M.getDataLayout(), preproc, TL,
                                 abs_fns, &shadowmem_analysis));
-  }
-  else
+  } else if (BitPrecise) {
+    m_sem.reset(new BvOpSem(m_efac, *this, M.getDataLayout(), TL));
+  } else {
     m_sem.reset(new UfoOpSem(m_efac, *this, M.getDataLayout(), TL, abs_fns));
+  }
 
   Function *main = M.getFunction("main");
   if (!main) { // if not main found then program trivially safe
@@ -188,14 +198,12 @@ bool HornifyModule::runOnModule(Module &M) {
   //     seahorn.fail.
   Function *failureFn = M.getFunction("seahorn.fail");
   if (!canFail) {
-    for (auto &I :
-         boost::make_iterator_range(inst_begin(*main), inst_end(*main))) {
+    for (auto &I : instructions(*main)) {
       if (!isa<CallInst>(&I))
         continue;
+      auto &cb = llvm::cast<CallBase>(I);
       // -- look through pointer casts
-      Value *v = I.stripPointerCasts();
-      CallSite CS(const_cast<Value *>(v));
-      const Function *fn = CS.getCalledFunction();
+      const Function *fn = seahorn::getCalledFunction(cb);
       canFail |= (fn == failureFn);
     }
   }
@@ -226,8 +234,8 @@ bool HornifyModule::runOnModule(Module &M) {
       for (auto &I : llvm::make_range(inst_begin(fn), inst_end(fn))) {
         if (!isa<CallInst>(&I))
           continue;
-        CallSite CS(&I);
-        const Function *callee = CS.getCalledFunction();
+        auto &cb = llvm::cast<CallBase>(I);
+        const Function *callee = seahorn::getCalledFunction(cb);
         if (callee == errorFn) {
           // this happens when a function calls to verifier.error()
           // but it is not reachable from main and for some reason
@@ -314,10 +322,10 @@ bool HornifyModule::runOnModule(Module &M) {
   }
 
   // DEBUG: printing clauses
-  LOG("print_clauses", errs() << "------- PRINTING CLAUSE DB ------\n";
-      for (auto &cl : m_db.getRules()) {
-        cl.get()->dump();
-      });
+  LOG(
+      "print_clauses", errs() << "------- PRINTING CLAUSE DB ------\n";
+      for (auto &cl
+           : m_db.getRules()) { cl.get()->dump(); });
 
   LOG("inter_mem_counters", if (InterProcMem) g_im_stats.print(););
 
@@ -379,8 +387,8 @@ bool HornifyModule::runOnFunction(Function &F) {
   // -- skip functions without a body
   if (F.isDeclaration() || F.empty())
     return false;
-  LOG("horn-step", errs() << "HornifyModule: runOnFunction: " << F.getName()
-                          << "\n");
+  LOG("horn-step",
+      errs() << "HornifyModule: runOnFunction: " << F.getName() << "\n");
 
   // XXX: between we run LiveSymbols and hornify function (see
   // below) the CFG can change because the construction of the
@@ -439,8 +447,8 @@ void HornifyModule::getAnalysisUsage(llvm::AnalysisUsage &AU) const {
   AU.addRequired<seahorn::CutPointGraph>();
 
   if (InterProcMem) {
-    AU.addRequired<sea_dsa::CompleteCallGraph>();
-    AU.addRequired<sea_dsa::ShadowMemPass>();
+    AU.addRequired<seadsa::CompleteCallGraph>();
+    AU.addRequired<seadsa::ShadowMemPass>();
   }
 }
 

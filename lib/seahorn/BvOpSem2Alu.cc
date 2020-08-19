@@ -208,10 +208,14 @@ public:
       return m_falseE;
     return mk<EQ>(bv, m_trueBv1);
   }
+
+  Expr getFalse() { return m_falseE; }
+
+  Expr getTrue() { return m_trueE; }
 };
 
 std::unique_ptr<OpSemAlu> mkBvOpSemAlu(Bv2OpSemContext &ctx) {
-  return llvm::make_unique<BvOpSemAlu>(ctx);
+  return std::make_unique<BvOpSemAlu>(ctx);
 }
 } // namespace details
 } // namespace seahorn
