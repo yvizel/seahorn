@@ -161,6 +161,9 @@ bool hasCallIns (const BasicBlock &BB) {
 	{
 		CallSite CS (const_cast<CallInst*> (ci));
 		const Function *cf = CS.getCalledFunction ();
+                if (cf == nullptr) {
+                  cf = dyn_cast<Function>(CS.getCalledValue()->stripPointerCasts());
+                }
 		std::string str = "find_condition";
 		if (cf && (cf->getName ().equals (str))) {
 			return true;
