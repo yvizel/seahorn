@@ -7,6 +7,7 @@
 #include "llvm/ADT/Statistic.h"
 #include "llvm/Analysis/CFG.h"
 #include "llvm/IR/Module.h"
+#include "llvm/Support/CommandLine.h"
 #include "llvm/Transforms/Utils/Local.h"
 
 // void FindFunctionBackedges(
@@ -17,6 +18,12 @@
 #define DEBUG_TYPE "back-edge-cutter"
 STATISTIC(NumBackEdges, "Number of back-edges");
 STATISTIC(NumBackEdgesUncut, "Number of back-edges not cut");
+
+static llvm::cl::opt<bool> AddAssertOnBackEdgeOpt(
+    "back-edge-cutter-with-asserts",
+    llvm::cl::desc("Add calls to verifier.assert on back-edge to confirm loop "
+                   "unrolling is adequate"),
+    llvm::cl::init(false));
 
 using namespace llvm;
 using namespace seahorn;
@@ -47,6 +54,7 @@ char BackedgeCutter::ID = 0;
 /// taken.
 static bool cutBackEdge(BasicBlock *src, BasicBlock *dst, Function &F,
                         SeaBuiltinsInfo &SBI) {
+  DOG(INFO << "Cutting back-edge in " << F.getName() << "\n";);
   DOG(llvm::errs() << "Cutting back-edge:\n"
                    << *src << "\n\n to \n\n"
                    << *dst << "\n";);
@@ -66,9 +74,29 @@ static bool cutBackEdge(BasicBlock *src, BasicBlock *dst, Function &F,
     // -- change branch to unreachable because assume(false) above
     llvm::changeToUnreachable(const_cast<llvm::BranchInst *>(TI), false, false,
                               nullptr, nullptr);
+    if (AddAssertOnBackEdgeOpt)
+      WARN << "skipping a call to verifier.assert() on an unconditional branch";
     return true;
   } else {
     assert(TI->getSuccessor(0) == dst || TI->getSuccessor(1) == dst);
+    if (AddAssertOnBackEdgeOpt) {
+      // insert verifier.assert{.not} function
+      auto *assertFn = SBI.mkSeaBuiltinFn(TI->getSuccessor(0) == dst
+                                              ? SeaBuiltinsOp::ASSERT_NOT
+                                              : SeaBuiltinsOp::ASSERT,
+                                          *F.getParent());
+      auto ci = CallInst::Create(assertFn, TI->getCondition(), "", TI);
+      MDNode *meta = MDNode::get(F.getContext(), None);
+      ci->setMetadata("backedge_assert", meta);
+      // -- a hack to locate a near-by debug location
+      if (TI->getDebugLoc())
+        ci->setDebugLoc(TI->getDebugLoc());
+      else if (auto condInst = dyn_cast<Instruction>(TI->getCondition())) {
+        ci->setDebugLoc(condInst->getDebugLoc());
+      }
+      DOG(INFO << "add unwinding assert for a conditional back edge");
+    }
+
     auto *assumeFn = SBI.mkSeaBuiltinFn(TI->getSuccessor(0) == dst
                                             ? SeaBuiltinsOp::ASSUME_NOT
                                             : SeaBuiltinsOp::ASSUME,

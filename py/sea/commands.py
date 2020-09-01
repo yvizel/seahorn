@@ -6,7 +6,7 @@ import shutil
 
 import subprocess
 
-from sea import add_in_args, add_in_out_args, add_tmp_dir_args, which, createWorkDir
+from sea import add_in_args, add_in_out_args, add_tmp_dir_args, add_bool_argument, which, createWorkDir
 
 # To disable printing of commands and some warnings
 quiet=False
@@ -374,6 +374,9 @@ class Seapp(sea.LimitedCmd):
                          metavar='STR', help='Log level')
         ap.add_argument ('--sea-dsa-log', dest='dsa_log', default=None,
                          metavar='STR', help='Log level for sea-dsa')
+
+        add_bool_argument(ap, 'with-arith-overflow', dest='with_arith_overflow',
+                          help='Allow arithmetic overflow intrinsics')
         add_in_out_args (ap)
         _add_S_arg (ap)
         return ap
@@ -471,6 +474,12 @@ class Seapp(sea.LimitedCmd):
                 argv.append('--kill-vaarg=true')
             else:
                 argv.append('--kill-vaarg=false')
+
+            if args.with_arith_overflow:
+                argv.append('--horn-keep-arith-overflow=true')
+            else:
+                argv.append('--horn-keep-arith-overflow=false')
+
 
         if args.log is not None:
             for l in args.log.split (':'): argv.extend (['-log', l])
@@ -674,7 +683,7 @@ class RemoveTargetFeatures(sea.LimitedCmd):
 
     def mk_arg_parser (self, ap):
         ap = super(RemoveTargetFeatures, self).mk_arg_parser (ap)
-        self.add_llvm_bool_arg(ap, 'rmtf', dest='rm_tar_feat', help='Remove target-features from attributes')
+        add_bool_argument(ap, 'rmtf', dest='rm_tar_feat', help='Remove target-features from attributes')
         add_in_out_args(ap)
         return ap
 
@@ -717,7 +726,7 @@ class WrapMem(sea.LimitedCmd):
         ap = super (WrapMem, self).mk_arg_parser (ap)
         ap.add_argument ('--no-wmem', dest='wmem_skip', help='Skipped wrap-mem pass',
                          default=False, action='store_true')
-        # self.add_llvm_bool_arg(ap, 'skip-wmem', dest='wmem_skip', help='Skipped wrap-mem pass')
+        # add_bool_argument(ap, 'skip-wmem', dest='wmem_skip', help='Skipped wrap-mem pass')
         add_in_out_args (ap)
         _add_S_arg (ap)
         return ap
@@ -789,6 +798,10 @@ class CutLoops(sea.LimitedCmd):
                          metavar='STR', help='Log level')
         ap.add_argument('--peel', dest='peel', default=0, metavar='NUM',
                         type=int, help='Number of iterations to peel loops')
+        add_bool_argument(ap, 'assert-on-backedge', dest='assert_backedge',
+                          default=False,
+                          help='Add verifier.assert to check completeness of loop unrolling')
+
         add_in_out_args (ap)
         _add_S_arg (ap)
         return ap
@@ -806,11 +819,17 @@ class CutLoops(sea.LimitedCmd):
 
         argv.append ('--horn-cut-loops')
         if args.llvm_asm: argv.append ('-S')
-        argv.extend (args.in_files)
+
+        if args.assert_backedge:
+            argv.append('--back-edge-cutter-with-asserts=true')
+        else:
+            argv.append('--back-edge-cutter-with-asserts=false')
+
 
         if args.log is not None:
             for l in args.log.split (':'): argv.extend (['-log', l])
 
+        argv.extend (args.in_files)
         return self.seappCmd.run (args, argv)
 
 
@@ -912,6 +931,8 @@ class FatBoundsCheck(sea.LimitedCmd):
         ap = super (FatBoundsCheck, self).mk_arg_parser (ap)
         ap.add_argument('--log', dest='log', default=None,
                         metavar='STR', help='Log level')
+        ap.add_argument('--no-fat-fns', dest='no_fat_fns', default=None,
+                        type=str, metavar='STR,STR,...', help='List of functions to NOT instrument')
         add_in_out_args (ap)
         _add_S_arg (ap)
         return ap
@@ -925,6 +946,10 @@ class FatBoundsCheck(sea.LimitedCmd):
         if args.out_file is not None: argv.extend (['-o', args.out_file])
 
         argv.append ('-fat-bnd-check')
+
+        if args.no_fat_fns is not None:
+            argv.append('--no-bound-check-fns={fns}'.format(fns=args.no_fat_fns));
+
         # slots=false ==> use is_dereferenceable(...) instrumentation
         argv.append('--horn-bnd-chk-slots=false')
         if args.llvm_asm: argv.append ('-S')
@@ -1526,7 +1551,7 @@ class InspectBitcode(sea.LimitedCmd):
                 argv.extend(['-mem-dot'])
             if args.mem_cg_dot:
                 argv.extend(['-mem-callgraph-dot'])
-            if args.dot_outdir is not "":
+            if args.dot_outdir != "":
                 argv.extend(['-sea-dsa-dot-outdir={0}'.format(args.dot_outdir)])
 
         if args.cha: argv.extend (['-cha'])

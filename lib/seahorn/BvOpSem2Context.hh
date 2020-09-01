@@ -1,11 +1,13 @@
 #pragma once
 
 #include "seahorn/BvOpSem2.hh"
+#include "seahorn/Expr/Smt/Z3.hh"
 #include "seahorn/Support/SeaDebug.h"
 #include "seahorn/Support/SeaLog.hh"
 
 #include "seahorn/Expr/ExprLlvm.hh"
 #include "seahorn/Expr/Smt/EZ3.hh"
+#include <unordered_set>
 
 namespace seahorn {
 namespace details {
@@ -95,11 +97,13 @@ private:
   /// \brief Numeric one
   Expr oneE;
 
-  /// \brief local simplifier
+  /// \brief local z3 objects
   std::shared_ptr<EZ3> m_z3;
   std::shared_ptr<ZSimplifier<EZ3>> m_z3_simplifier;
+  std::shared_ptr<ZSolver<EZ3>> m_z3_solver;
 
   bool m_shouldSimplify = false;
+  std::unordered_set<Expr> m_addedToSolver;
 
 public:
   /// \brief Create a new context with given semantics, values, and side
@@ -126,13 +130,15 @@ public:
   unsigned ptrSzInBits() const;
 
   /// \brief Returns the memory manager
-  OpSemMemManager *getMemManager() const { return m_memManager.get(); }
   OpSemMemManager &mem() const {
+    // exactly one of m_memManager or m_parent are set
+    assert(m_memManager || m_parent);
     assert(!m_parent || !m_memManager);
     if (m_memManager)
       return *m_memManager;
     if (m_parent)
       return m_parent->mem();
+    llvm_unreachable("must have a memory manager");
   }
 
   OpSemAlu &alu() const {
@@ -280,6 +286,10 @@ public:
   OpSemContextPtr fork(SymStore &values, ExprVector &side) {
     return OpSemContextPtr(new Bv2OpSemContext(values, side, *this));
   }
+
+  void resetSolver();
+  void addToSolver(const Expr e);
+  boost::tribool solve();
 
 private:
   static Bv2OpSemContext &ctx(OpSemContext &ctx) {

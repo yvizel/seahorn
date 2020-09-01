@@ -304,7 +304,8 @@ Expr OpSemMemLambdaRepr::createMemCpyExpr(
     LOG("opsem.lambda", errs() << "MemCpy " << *res << "\n");
   } else {
     DOG(ERR << "unsupported memcpy due to size and/or alignment.";);
-    assert(false);
+    DOG(WARN << "Interpreting memcpy as noop");
+    res = memRead;
   }
   return res;
 }
@@ -338,14 +339,15 @@ Expr OpSemMemLambdaRepr::MemCpy(Expr dPtr, Expr sPtr, unsigned len,
       res = mk<LAMBDA>(decl, ite);
       LOG("opsem.lambda", errs() << "MemCpy " << *res << "\n");
     } else {
-      // result is the same as source
-      res = memTrsfrRead;
+      // no-op
+      res = memRead;
     }
   } else {
     LOG("opsem.lambda", errs() << "Word size and pointer are not aligned and "
                                   "alignment is not ignored!"
                                << "\n");
-    assert(false);
+    DOG(WARN << "Interpreting memcpy as noop");
+    res = memRead;
   }
   return res;
 }

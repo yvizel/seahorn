@@ -2,6 +2,8 @@
 #include "BvOpSem2RawMemMgr.hh"
 
 #include "llvm/CodeGen/IntrinsicLowering.h"
+#include "llvm/IR/DebugInfo.h"
+#include "llvm/IR/DebugLoc.h"
 #include "llvm/IR/GetElementPtrTypeIterator.h"
 #include "llvm/Support/CommandLine.h"
 #include "llvm/Support/Format.h"
@@ -27,6 +29,12 @@ using namespace llvm;
 using namespace seahorn;
 using namespace seahorn::details;
 using gep_type_iterator = generic_gep_type_iterator<>;
+
+namespace seahorn {
+namespace details {
+static enum class VacCheckOptions { NONE, ANTE, ALL };
+}
+} // namespace seahorn
 
 static const llvm::Regex
     fatptr_intrnsc_re("^__sea_([A-Za-z]|_)*(extptr|recover).*");
@@ -96,7 +104,26 @@ static llvm::cl::opt<bool> SimplifyExpr(
     llvm::cl::desc("Simplify expressions as they are written to memory"),
     llvm::cl::init(false));
 
+static llvm::cl::opt<enum seahorn::details::VacCheckOptions> VacuityCheckOpt(
+    "horn-bv2-vacuity-check",
+    llvm::cl::desc("A choice for levels of vacuity check"),
+    llvm::cl::values(clEnumValN(seahorn::details::VacCheckOptions::NONE, "none",
+                                "Don't perform any check"),
+                     clEnumValN(seahorn::details::VacCheckOptions::ANTE,
+                                "antecedent",
+                                "Only perform check for antecedent"),
+                     clEnumValN(seahorn::details::VacCheckOptions::ALL, "all",
+                                "Perform check for antecedent and consequent")),
+    llvm::cl::init(seahorn::details::VacCheckOptions::NONE));
+
+static llvm::cl::opt<bool> UseIncVacSat(
+    "horn-bv2-vacuity-check-inc",
+    llvm::cl::desc(
+        "Use incremental solver to check for vacuity and assertions"),
+    llvm::cl::init(false));
+
 namespace {
+
 const Value *extractUniqueScalar(CallSite &cs) {
   if (!EnableUniqueScalars2)
     return nullptr;
@@ -188,8 +215,7 @@ struct OpSemVisitorBase {
     if (m_sem.isSkipped(v))
       return Expr();
 
-    assert(m_ctx.getMemManager());
-    OpSemMemManager &memManager = *m_ctx.getMemManager();
+    OpSemMemManager &memManager = m_ctx.mem();
 
     Expr reg;
     if (reg = m_ctx.getRegister(v)) {
@@ -506,6 +532,11 @@ public:
         visitNondetCall(CS);
       else if (f->getName().startswith("sea.is_dereferenceable")) {
         visitIsDereferenceable(CS);
+      } else if (f->getName().startswith(("sea.assert.if"))) {
+        visitSeaAssertIfCall(CS);
+      } else if (f->getName().startswith(("verifier.assert"))) {
+        // this deals with both assert and assert.not stmts
+        visitVerifierAssertCall(CS);
       } else if (f->getName().startswith("smt.")) {
         visitSmtCall(CS);
       } else if (fatptr_intrnsc_re.match(f->getName())) {
@@ -553,6 +584,119 @@ public:
     Expr byteSz = lookup(*CS.getArgument(1));
     Expr res = m_ctx.mem().isDereferenceable(ptr, byteSz);
     setValue(*CS.getInstruction(), res);
+  }
+
+  /// Report outcome of vacuity and incremental assertion checking
+  void reportDoAssert(char *tag, const Instruction &I, boost::tribool res,
+                      bool expected) {
+
+    llvm::SmallString<256> msg;
+    llvm::raw_svector_ostream out(msg);
+
+    bool isGood = false;
+
+    if (res) {
+      isGood = expected == true;
+    } else if (!res) {
+      isGood = expected == false;
+    } else {
+      isGood = false;
+    }
+
+    out << tag;
+    out << (isGood ? " passed " : " failed ");
+
+    out << "(" << (res ? "sat" : (!res ? "unsat" : "unknown")) << ") ";
+
+    auto dloc = I.getDebugLoc();
+    if (dloc) {
+      out << dloc->getFilename() << ":" << dloc->getLine() << "]";
+    } else {
+      out << I;
+    }
+
+    if (I.hasMetadata("backedge_assert")) {
+      out << " backedge!!";
+    }
+
+    (isGood ? INFO : ERR) << out.str();
+  }
+
+  void doAssert(Expr ante, Expr conseq, const Instruction &I) {
+    ScopedStats __stats__("opsem.assert");
+    if (VacuityCheckOpt == VacCheckOptions::NONE) {
+      return;
+    }
+    const llvm::DebugLoc &dloc = I.getDebugLoc();
+    bool isBackEdge = I.hasMetadata("backedge_assert");
+    Stats::resume("opsem.vacuity");
+    // The solving is done incrementally. We only
+    // reset the solver once per assert instruction.
+    // We then add expressions incrementally.
+    // This works because this check never needs to
+    // remove an expression from the solver.
+    boost::tribool anteRes = true;
+    if (!isBackEdge)
+      // -- skip vacuity check for instrumented assertions
+      anteRes = solveWithConstraints(ante);
+
+    Stats::stop("opsem.vacuity");
+    // if ante is unsat then report false and bail out
+    if (anteRes) {
+      if (!isBackEdge) {
+        reportDoAssert("vacuity", I, anteRes, true);
+      }
+    } else {
+      reportDoAssert("vacuity", I, anteRes, true);
+      return; // return early since conseq is unreachable
+    }
+
+    if (VacuityCheckOpt == VacCheckOptions::ANTE) {
+      return; // don't need to process conseq
+    }
+
+    Expr nconseq = boolop::lneg(conseq);
+    if (!UseIncVacSat) {
+      nconseq = boolop::land(ante, nconseq);
+    }
+
+    Stats::resume("opsem.incbmc");
+    auto conseqRes =
+        solveWithConstraints(nconseq, !isBackEdge && UseIncVacSat /* incremental */);
+    Stats::stop("opsem.incbmc");
+    reportDoAssert("assertion", I, conseqRes, false);
+  }
+
+  void visitSeaAssertIfCall(CallSite CS) {
+    // NOTE: sea.assert.if.not is not supported
+    Expr ante = lookup(*CS.getArgument(0));
+    Expr conseq = lookup(*CS.getArgument(1));
+    doAssert(ante, conseq, *CS.getInstruction());
+  }
+
+  boost::tribool solveWithConstraints(const Expr &solveFor,
+                                      bool incremental = false) const {
+    // if incremental is true then use existing constraints in solver
+    // else reset solver
+    if (!incremental) {
+      m_ctx.resetSolver();
+    }
+    for (auto e : m_ctx.side()) {
+      m_ctx.addToSolver(e);
+    }
+    m_ctx.addToSolver(m_ctx.getPathCond());
+    m_ctx.addToSolver(solveFor);
+
+    return m_ctx.solve();
+  }
+
+  void visitVerifierAssertCall(CallSite CS) {
+    auto &f = *getCalledFunction(CS);
+
+    Expr op = lookup(*CS.getArgument(0));
+    if (f.getName().equals("verifier.assert.not"))
+      op = boolop::lneg(op);
+    doAssert(m_ctx.alu().getTrue(), op, *CS.getInstruction());
   }
 
   void visitFatPointerInstr(CallSite CS) {
@@ -961,6 +1105,18 @@ public:
                         getCarryBitPadWidth(I)));
       }
     } break;
+    case Intrinsic::uadd_sat: {
+      Type *ty = I.getOperand(0)->getType();
+      Expr op0, op1;
+      GetOpExprs(I, op0, op1);
+      assert(op0 && op1);
+      Expr addRes = m_ctx.alu().doAdd(op0, op1, ty->getScalarSizeInBits());
+      Expr isNoOverflow = m_ctx.alu().IsUaddNoOverflow(op0, op1, ty->getScalarSizeInBits());
+      assert(addRes && isNoOverflow);
+      Expr maxVal = m_ctx.alu().si(~0UL, ty->getScalarSizeInBits());
+      Expr res = boolop::lite(isNoOverflow, addRes, maxVal);
+      setValue(I, res);
+    } break;
     case Intrinsic::ssub_with_overflow: {
       Type *ty = I.getOperand(0)->getType();
       Expr op0;
@@ -1103,21 +1259,23 @@ public:
   }
 
   void visitMemMoveInst(MemMoveInst &I) {
-    LOG("opsem", errs() << "Skipping memmove: " << I << "\n";);
+    // -- our implementation of memcpy is actually memmove
+    executeMemCpyInst(*I.getDest(), *I.getSource(), *I.getLength(),
+                      I.getDestAlignment(), m_ctx);
   }
   void visitMemTransferInst(MemTransferInst &I) {
     LOG("opsem", errs() << "Unknown memtransfer: " << I << "\n";);
-    llvm_unreachable(nullptr);
+    assert(0);
   }
 
   void visitMemIntrinsic(MemIntrinsic &I) {
     LOG("opsem", errs() << "Unknown memory intrinsic: " << I << "\n";);
-    llvm_unreachable(nullptr);
+    assert(0);
   }
 
-  void visitVAStartInst(VAStartInst &I) { llvm_unreachable(nullptr); }
-  void visitVAEndInst(VAEndInst &I) { llvm_unreachable(nullptr); }
-  void visitVACopyInst(VACopyInst &I) { llvm_unreachable(nullptr); }
+  void visitVAStartInst(VAStartInst &I) { assert(0); }
+  void visitVAEndInst(VAEndInst &I) { assert(0); }
+  void visitVACopyInst(VACopyInst &I) { assert(0); }
 
   void visitUnreachableInst(UnreachableInst &I) { /* do nothing */
   }
@@ -1683,7 +1841,7 @@ public:
           continue;
         Expr symReg = m_ctx.mkRegister(fn);
         assert(symReg);
-        setValue(fn, m_ctx.getMemManager()->falloc(fn));
+        setValue(fn, m_ctx.mem().falloc(fn));
       }
     }
 
@@ -1699,7 +1857,7 @@ public:
       }
       Expr symReg = m_ctx.mkRegister(gv);
       assert(symReg);
-      setValue(gv, m_ctx.getMemManager()->galloc(gv));
+      setValue(gv, m_ctx.mem().galloc(gv));
     }
 
     // initialize globals
@@ -1712,7 +1870,7 @@ public:
       m_ctx.mem().initGlobalVariable(gv);
     }
 
-    LOG("opsem", m_ctx.getMemManager()->dumpGlobalsMap());
+    LOG("opsem", m_ctx.mem().dumpGlobalsMap());
   }
 
   void visitBasicBlock(BasicBlock &BB) {
@@ -1771,9 +1929,9 @@ Bv2OpSemContext::Bv2OpSemContext(Bv2OpSem &sem, SymStore &values,
       m_inst(nullptr), m_prev(nullptr), m_scalar(false) {
   zeroE = mkTerm<expr::mpz_class>(0UL, efac());
   oneE = mkTerm<expr::mpz_class>(1UL, efac());
-
   m_z3.reset(new EZ3(efac()));
   m_z3_simplifier.reset(new ZSimplifier<EZ3>(*m_z3));
+  m_z3_solver.reset(new ZSolver<EZ3>(*m_z3, "QF_ABV"));
   auto &params = m_z3_simplifier->params();
   params.set("ctrl_c", true);
   m_shouldSimplify = SimplifyExpr;
@@ -1809,7 +1967,7 @@ Bv2OpSemContext::Bv2OpSemContext(SymStore &values, ExprVector &side,
       m_fparams(o.m_fparams), m_ignored(o.m_ignored),
       m_registers(o.m_registers), m_alu(nullptr), m_memManager(nullptr),
       m_parent(&o), zeroE(o.zeroE), oneE(o.oneE), m_z3(o.m_z3),
-      m_z3_simplifier(o.m_z3_simplifier) {
+      m_z3_simplifier(o.m_z3_simplifier), m_z3_solver(o.m_z3_solver) {
   setPathCond(o.getPathCond());
 }
 
@@ -2173,6 +2331,22 @@ std::pair<char *, unsigned>
 Bv2OpSemContext::getGlobalVariableInitValue(const llvm::GlobalVariable &gv) {
   return m_memManager->getGlobalVariableInitValue(gv);
 }
+
+void Bv2OpSemContext::resetSolver() {
+  m_z3_solver->reset();
+  m_addedToSolver.clear();
+}
+
+void Bv2OpSemContext::addToSolver(const Expr e) {
+  if (!m_addedToSolver.count(e)) {
+    // if not found, add to solver and keep track
+    m_z3_solver->assertExpr(e);
+    m_addedToSolver.insert(e);
+  }
+}
+
+boost::tribool Bv2OpSemContext::solve() { return m_z3_solver->solve(); }
+
 } // namespace details
 
 Bv2OpSem::Bv2OpSem(ExprFactory &efac, Pass &pass, const DataLayout &dl,
