@@ -85,6 +85,7 @@ public:
 
 class HornClauseDB {
   friend class HornRule;
+  friend class HornifyConditionSynthesis;
 
 public:
   typedef std::vector<HornRule> RuleVector;

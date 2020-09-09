@@ -15,48 +15,55 @@ namespace seahorn {
 using namespace expr;
 using namespace llvm;
 
-class CollectRepairPredicatesWtoVisitor : public WtoElementVisitor<Expr> {
+class CollectSynthesisTargets : public WtoElementVisitor<Expr> {
 private:
   const HornifyModule & m_parent;
   ExprVector m_if;
   ExprVector m_loop;
+  std::vector<const SelectInst*> m_selects;
 
 public:
-  CollectRepairPredicatesWtoVisitor(const HornifyModule & parent)
+  CollectSynthesisTargets(const HornifyModule & parent)
       : m_parent(parent) {}
 
   virtual void visit (const wto_singleton_t &s) {
     Expr rel = s.get();
     const BasicBlock & bb = m_parent.predicateBb(rel);
-    if (isRepairBranch(bb))
+    collectSelects(bb);
+    if (isSynthesisBranch(bb))
       m_if.push_back(rel);
   }
 
   virtual void visit (const wto_component_t &c) {
     Expr rel = c.head();
     const BasicBlock & bb = m_parent.predicateBb(rel);
-    if (isRepairBranch(bb))
+    collectSelects(bb);
+    if (isSynthesisBranch(bb))
       m_loop.push_back(rel);
     for (auto &e : c) { e.accept(this); }
   }
 
   const ExprVector & getIfs() { return m_if; }
   const ExprVector & getLoops() { return m_loop; }
+  std::vector<const SelectInst*> & getSelects() { return m_selects; }
 
 private:
-  bool isRepairBranch(const BasicBlock& bb);
+  bool isSynthesisBranch(const BasicBlock& bb);
+  void collectSelects(const BasicBlock &bb);
+  bool hasSynthesisFunction(const Instruction* I);
 };
 
 class HornifyConditionSynthesis : public SmallHornifyFunction {
 protected:
 
+  typedef boost::container::flat_set<Expr> expr_set;
   class BranchToRepair {
   public:
     Expr _src;
     HornRule _ruleThen;
     HornRule _ruleElse;
     Expr _tr;
-    BranchToRepair(Expr src, HornRule r1, HornRule r2, Expr tr)
+    BranchToRepair(Expr src, HornRule &r1, HornRule &r2, Expr tr)
         : _src(src),
           _ruleThen(r1),
           _ruleElse(r2),
@@ -69,6 +76,16 @@ protected:
   void reverseRule(const HornRule & rule);
   void reverseDB();
   Expr createJoinPredicate(const Expr name, const Expr pred1, const Expr pred2);
+  void handleSelect(
+      const SelectInst *SI,
+      std::vector<BranchToRepair> & branches);
+  void extractIteAndArgs(
+      const SelectInst *SI,
+      Expr tr,
+      Expr &thenTr,
+      Expr &elseTr,
+      Expr &prefixTr,
+      ExprVector& args);
 
 public:
   HornifyConditionSynthesis(HornifyModule &parent)
@@ -76,7 +93,7 @@ public:
 
 
   virtual ~HornifyConditionSynthesis() {}
-  HornClauseDB &getSynthHornClauseDB() { return m_synthDb; }
+  HornClauseDB &getHornClauseDB() { return m_synthDb; }
   virtual void runOnFunction(Function &F);
 
 };
