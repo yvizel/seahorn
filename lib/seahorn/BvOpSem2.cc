@@ -537,6 +537,8 @@ public:
       } else if (f->getName().startswith(("verifier.assert"))) {
         // this deals with both assert and assert.not stmts
         visitVerifierAssertCall(CS);
+      } else if (f->getName().startswith("sea.branch_sentinel")) {
+        visitBranchSentinel(CS);
       } else if (f->getName().startswith("smt.")) {
         visitSmtCall(CS);
       } else if (fatptr_intrnsc_re.match(f->getName())) {
@@ -578,6 +580,8 @@ public:
 
     setValue(*CS.getInstruction(), res);
   }
+
+  void visitBranchSentinel(CallSite CS) {}
 
   void visitIsDereferenceable(CallSite CS) {
     Expr ptr = lookup(*CS.getArgument(0));

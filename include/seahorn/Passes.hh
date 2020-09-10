@@ -92,6 +92,10 @@ llvm::Pass *createGlobalCBufferBoundsCheckPass();
 
 llvm::Pass *createFatBufferBoundsCheckPass();
 
+llvm::Pass *createAddBranchSentinelPassPass();
+
+llvm::Pass *createEvalBranchSentinelPassPass();
+
 llvm::Pass *createSimpleMemoryCheckPass();
 
 llvm::Pass *createCanFailPass();
