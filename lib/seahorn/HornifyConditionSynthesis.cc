@@ -6,8 +6,10 @@ namespace seahorn {
 
 bool CollectSynthesisTargets::hasSynthesisFunction(const Instruction *I) {
   for (const Value *op : I->operand_values()) {
-    if (const CallInst *ci = dyn_cast<const CallInst>(op)) {
-      const Function *F = ci->getCalledFunction();
+    const CallInst *ci = dyn_cast<const CallInst>(op);
+    const Function *F = dyn_cast<const Function>(op);
+    if (ci || F) {
+      if (F == nullptr) F = ci->getCalledFunction();
       if (F == nullptr) {
         F = dyn_cast<Function>(ci->getCalledValue()->stripPointerCasts());
       }
