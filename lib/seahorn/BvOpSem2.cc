@@ -547,7 +547,7 @@ public:
       } else if (f->getName().startswith("sea.is_modified")) {
         visitIsModified(CS);
       } else if (f->getName().startswith("sea.reset_modified")) {
-        // TODO: process reset modified instruction
+        visitResetModified(CS);
       } else if (f->getName().startswith(("sea.assert.if"))) {
         visitSeaAssertIfCall(CS);
       } else if (f->getName().startswith(("verifier.assert"))) {
@@ -641,23 +641,36 @@ public:
 
   void visitIsModified(CallSite CS) {
     if (!m_ctx.getMemReadRegister()) {
-      LOG("opsem", ERR << "No read register found - check if corresponding "
+      LOG("opsem", ERR << "No read register found - check if corresponding"
                           "shadow instruction is present.");
+      m_ctx.setMemReadRegister(Expr());
       return;
     }
-    // TODO: move logic to MemManager
     Expr ptr = lookup(*CS.getArgument(0));
     auto memIn = m_ctx.read(m_ctx.getMemReadRegister());
     OpSemMemManager &memManager = m_ctx.mem();
-    // TODO: remove alignment formal arg since it is set by Metadatamemory
-    // internally
-    auto val =
-        memManager.getMetaData(ptr, memIn, 1, 0 /* alignment don't care */);
-    auto sentinel = m_ctx.alu().si(1, memManager.getMetaDataMemWordSzInBits());
-    auto res = m_ctx.alu().doEq(val, sentinel,
-                                memManager.getMetaDataMemWordSzInBits());
+    auto res = memManager.isModified(ptr, memIn);
     setValue(*CS.getInstruction(), res);
     m_ctx.setMemReadRegister(Expr());
+  }
+
+  void visitResetModified(CallSite CS) {
+    if (!m_ctx.getMemReadRegister() || !m_ctx.getMemWriteRegister()) {
+      LOG("opsem",
+          ERR << "No read/write register found - check if corresponding"
+                 "shadow instruction is present.");
+      m_ctx.setMemReadRegister(Expr());
+      m_ctx.setMemWriteRegister(Expr());
+      return;
+    }
+    Expr ptr = lookup(*CS.getArgument(0));
+    auto memIn = m_ctx.read(m_ctx.getMemReadRegister());
+    OpSemMemManager &memManager = m_ctx.mem();
+    auto res = memManager.resetModified(ptr, memIn);
+    m_ctx.write(m_ctx.getMemWriteRegister(), res);
+
+    m_ctx.setMemReadRegister(Expr());
+    m_ctx.setMemWriteRegister(Expr());
   }
 
   /// Report outcome of vacuity and incremental assertion checking
@@ -1155,12 +1168,16 @@ public:
 
       auto *parent = I.getParent();
       bool atBegin(parent->begin() == me);
+      // -- save instruction before the one being lowered
       if (!atBegin)
         --me;
       IntrinsicLowering IL(m_sem.getDataLayout());
       IL.LowerIntrinsicCall(&I);
-      auto top = atBegin ? &*parent->begin() : &*me;
+
+      // -- restore instruction pointer to the new lowered instructions
+      auto top = atBegin ? &*parent->begin() : &*(++me);
       m_ctx.setInstruction(*top);
+      m_ctx.setInstruction(*top, true);
 
       // -- add newly inserted instructions to COI, if I was in COI
       if (isInFilter) {
@@ -2044,6 +2061,7 @@ Bv2OpSemContext::Bv2OpSemContext(Bv2OpSem &sem, SymStore &values,
   m_z3_solver.reset(new ZSolver<EZ3>(*m_z3, "QF_ABV"));
   auto &params = m_z3_simplifier->params();
   params.set("ctrl_c", true);
+  params.set(":rewriter.flat", false);
   m_shouldSimplify = SimplifyExpr;
   m_alu = mkBvOpSemAlu(*this);
   OpSemMemManager *mem = nullptr;
@@ -2112,6 +2130,8 @@ void Bv2OpSemContext::write(Expr v, Expr u) {
   if (shouldSimplify()) {
     u = simplify(u);
   }
+
+  LOG("opsem.verbose", llvm::errs() << "W: " << *u << "\n";);
   OpSemContext::write(v, u);
 }
 unsigned Bv2OpSemContext::ptrSzInBits() const {
@@ -2725,6 +2745,8 @@ bool Bv2OpSem::intraStep(seahorn::details::Bv2OpSemContext &C) {
   if (C.isAtBbEnd())
     return false;
 
+  // -- repeat flag can be set during intraStep and must be reset at the end
+  assert(!C.isRepeatInstruction());
   const Instruction &inst = C.getCurrentInst();
 
   // -- non-branch terminators are executed elsewhere
@@ -2742,6 +2764,11 @@ bool Bv2OpSem::intraStep(seahorn::details::Bv2OpSemContext &C) {
   }
 
   // -- advance instruction pointer if needed
+  if (C.isRepeatInstruction()) {
+    C.resetRepeatInstruction();
+    return true;
+  }
+
   if (!inst.isTerminator()) {
     ++C;
     return true;
