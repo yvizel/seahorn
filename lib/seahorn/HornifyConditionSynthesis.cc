@@ -13,12 +13,11 @@ bool CollectSynthesisTargets::hasSynthesisFunction(const Instruction *I) {
       if (F == nullptr) {
         F = dyn_cast<Function>(ci->getCalledValue()->stripPointerCasts());
       }
-      if (F == nullptr) return false;
-      if (F->getName().equals(std::string("find_condition")))
+      if (F && F->getName().equals(std::string("find_condition")))
         return true;
     }
     else if (const Instruction *i = dyn_cast<const Instruction>(op))
-      return hasSynthesisFunction(i);
+      if (hasSynthesisFunction(i)) return true;
   }
   return false;
 }
@@ -313,9 +312,30 @@ void HornifyConditionSynthesis::runOnFunction(Function &F) {
   reverseDB();
 
   for (auto & br : branches) {
+    Expr tr1 = extractTransitionRelation(br._ruleThen, m_db)->last();
+    Expr tr2 = extractTransitionRelation(br._ruleElse, m_db)->last();
+
+    // Sanity check
+    // Check that both TRs are the same, up to the condition
+    for (unsigned i=0; i < tr1->arity() && i < tr2->arity(); i++) {
+      Expr op1 = tr1->arg(i);
+      Expr op2 = tr2->arg(i);
+      if (bind::isBoolConst(op1) || isOpX<NEG>(op1) ||
+          bind::isBoolConst(op2) || isOpX<NEG>(op2)) {
+        continue;
+      }
+      assert(op1 == op2);
+    }
+
+
+    Expr tr = tr1;
+    if (tr1->arity() != tr2->arity()) {
+      if (tr1->arity() < tr2->arity())
+        tr = tr2;
+    }
     Expr cond = mk<TRUE>(m_efac);
-    for (auto arg = br._tr->args_begin()+1;
-         arg != br._tr->args_end();
+    for (auto arg = tr->args_begin()+1;
+         arg != tr->args_end();
          arg++) {
       if (bind::isBoolConst(*arg) || isOpX<NEG>(*arg)) {
         if (!isOpX<TRUE>(*arg)) {
@@ -328,7 +348,7 @@ void HornifyConditionSynthesis::runOnFunction(Function &F) {
     assert(isOpX<TRUE>(cond) || bind::isBoolConst(cond) || isOpX<NEG>(cond));
     ExprMap condMap;
     condMap.insert(std::make_pair(cond, mk<TRUE>(m_efac)));
-    Expr newTr = replace(br._tr, condMap);
+    Expr newTr = replace(tr, condMap);
 
     Expr join = createJoinPredicate(
         bind::fname(br._src),
