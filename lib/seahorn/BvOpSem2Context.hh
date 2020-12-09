@@ -138,6 +138,8 @@ private:
   bool m_shouldSimplify = false;
   std::unordered_set<Expr> m_addedToSolver;
 
+  bool m_trackingOn = false;
+
 public:
   /// \brief Create a new context with given semantics, values, and side
   Bv2OpSemContext(Bv2OpSem &sem, SymStore &values, ExprVector &side);
@@ -152,6 +154,10 @@ public:
   Expr simplify(Expr u);
 
   bool shouldSimplify() { return m_shouldSimplify; }
+
+  bool isTrackingOn() { return m_trackingOn; }
+
+  void setTracking(bool shouldTrack) { m_trackingOn = shouldTrack; }
 
   /// \brief Writes value \p u into symbolic register \p v
   void write(Expr v, Expr u);
@@ -324,6 +330,8 @@ public:
   OpSemContextPtr fork(SymStore &values, ExprVector &side) {
     return OpSemContextPtr(new Bv2OpSemContext(values, side, *this));
   }
+
+  Expr ptrToAddr(Expr p) override;
 
   void resetSolver();
   void addToSolver(const Expr e);
@@ -713,6 +721,14 @@ public:
 
   /// \brief reset memory modified state; used in conjuction with isModified
   virtual MemValTy resetModified(PtrTy p, MemValTy mem) = 0;
+
+  /// \brief given an Expression \p e , return true if \p e has expected
+  /// encoding of a PtrTyImpl
+  virtual bool isPtrTyVal(Expr e) = 0;
+
+  /// \brief given a properly encoded pointer Expr \p p , return the raw
+  /// expression representing memory address only
+  virtual Expr ptrToAddr(Expr p) = 0;
 };
 
 OpSemMemManager *mkRawMemManager(Bv2OpSem &sem, Bv2OpSemContext &ctx,
@@ -730,8 +746,6 @@ OpSemMemManager *mkWideMemManager(Bv2OpSem &sem, Bv2OpSemContext &ctx,
 OpSemMemManager *mkExtraWideMemManager(Bv2OpSem &sem, Bv2OpSemContext &ctx,
                                        unsigned ptrSz, unsigned wordSz,
                                        bool useLambdas = false);
-
-
 
 /// Evaluates constant expressions
 class ConstantExprEvaluator {

@@ -31,16 +31,23 @@ ExtraWideMemManager<T>::ExtraWideMemManager(Bv2OpSem &sem, Bv2OpSemContext &ctx,
   // Currently, we only support RawMemManagerCore or subclasses of it.
   static_assert(std::is_base_of<OpSemMemManagerBase, T>::value,
                 "T not derived from OpSemMemManagerBase");
-  LOG("opsem", INFO << hana::eval_if(
-                   MemoryFeatures::has_tracking(hana::type<T>{}),
-                   [&] { return "Memory tracking on"; },
-                   [&] { return "Memory tracking off"; }));
+  LOG("opsem",
+      INFO << "Trackable memory is "
+           << hana::eval_if(
+                  MemoryFeatures::has_tracking(hana::type<T>{}),
+                  [&] { return "present"; }, [&] { return "not present"; }));
 }
 
 template <class T>
 typename ExtraWideMemManager<T>::RawMemValTy
 ExtraWideMemManager<T>::setModified(ExtraWideMemManager::PtrTy ptr,
                                     ExtraWideMemManager::MemValTy mem) {
+  if (!m_ctx.isTrackingOn()) {
+    LOG("opsem.memtrack.verbose",
+        errs() << "Ignoring setModified(); Memory tracking is off"
+               << "\n";);
+    return mem.getRaw();
+  }
   return memsetMetaData(ptr, 1 /* len */, mem, 1U /* val */).getRaw();
 }
 
@@ -97,6 +104,11 @@ ExtraWideMemManager<T>::getAddressable(ExtraWideMemManager::PtrTy p) const {
   }
   return m_ctx.alu().doAdd(p.getBase(), p.getOffset(), ptrSizeInBits());
 }
+
+template <class T> bool ExtraWideMemManager<T>::isPtrTyVal(Expr e) const {
+  return strct::isStructVal(e) && e->arity() == g_num_slots;
+}
+
 template <class T>
 Expr ExtraWideMemManager<T>::isDereferenceable(ExtraWideMemManager::PtrTy p,
                                                Expr byteSz) {
@@ -623,6 +635,12 @@ template <class T>
 typename ExtraWideMemManager<T>::MemValTy
 ExtraWideMemManager<T>::resetModified(ExtraWideMemManager::PtrTy ptr,
                                       ExtraWideMemManager::MemValTy mem) {
+  if (!m_ctx.isTrackingOn()) {
+    LOG("opsem.memtrack.verbose",
+        errs() << "Ignoring resetModified();Memory tracking is off"
+               << "\n";);
+    return mem;
+  }
   return memsetMetaData(ptr, 1 /* len */, mem, 0U /* val */);
 }
 template <class T>

@@ -548,6 +548,12 @@ public:
         visitIsModified(CS);
       } else if (f->getName().startswith("sea.reset_modified")) {
         visitResetModified(CS);
+      } else if (f->getName().startswith("sea.reset_modified")) {
+        visitResetModified(CS);
+      } else if (f->getName().startswith("sea.tracking_on")) {
+        visitSetTrackingOn(CS);
+      } else if (f->getName().startswith(("sea.tracking_off"))) {
+        visitSetTrackingOff(CS);
       } else if (f->getName().startswith(("sea.assert.if"))) {
         visitSeaAssertIfCall(CS);
       } else if (f->getName().startswith(("verifier.assert"))) {
@@ -672,6 +678,10 @@ public:
     m_ctx.setMemReadRegister(Expr());
     m_ctx.setMemWriteRegister(Expr());
   }
+
+  void visitSetTrackingOn(CallSite CS) { m_ctx.setTracking(true); }
+
+  void visitSetTrackingOff(CallSite CS) { m_ctx.setTracking(false); }
 
   /// Report outcome of vacuity and incremental assertion checking
   void reportDoAssert(char *tag, const Instruction &I, boost::tribool res,
@@ -1132,6 +1142,62 @@ public:
     m_ctx.pushParameter(falseE);
   }
 
+  bool expandCallInst(CallInst &I,
+                      std::function<bool(CallInst &)> InstExpandFn) {
+    // -- The code is tricky because we must update
+    // -- (a) instruction iterator inside m_ctx to point to newly expanded
+    // --     instruction
+    // -- (b) COI filter to include new instructions if they came from marked
+    // instruction
+
+    // -- remember if the current instruction is in the COI (cone of
+    // -- influence). filter. If it is, we need to mark expanded instructions
+    // -- to be in the cone as well
+    bool isInFilter = m_sem.isInFilter(I);
+    // -- get an iterator to the current instruction so that we can access
+    // -- prev and next instructions
+    BasicBlock::iterator me(&I);
+
+    // -- remember the following instruction
+    auto nextInst = me;
+    // -- advance iterator to point to the next instruction from I
+    ++nextInst;
+
+    // -- check whether the current instruction is the first instruction of
+    // -- the basic block and has no predecessor
+    BasicBlock *bb = I.getParent();
+    bool atBegin(bb->begin() == me);
+
+    // -- if I is not the first instruction, make `me` point to the
+    // predecessor of I
+    if (!atBegin)
+      --me;
+
+    // -- expand I by lowering it into 0 or more other instructions
+    if (!InstExpandFn(I))
+      // -- return if expansion has failed
+      return false;
+
+    // -- restore instruction pointer to the new lowered instructions
+    // -- the instruction pointer is either the first instruction of the basic
+    // -- block or the instruction currently following `me`
+    auto top = atBegin ? &*bb->begin() : &*(++me);
+    // -- tell context that next instruction to execute is top, and that
+    // -- execution of current instruction must be repeated (because the
+    // -- current instruction has changed)
+    m_ctx.setInstruction(*top, true);
+
+    // -- update COI filter. New instructions introduced by lowering, if any,
+    // -- are the instructions between current top, and whatever instruction
+    // -- was following I
+    if (isInFilter) {
+      for (auto it = BasicBlock::iterator(top); it != nextInst; ++it) {
+        m_sem.addToFilter(*it);
+      }
+    }
+    return true;
+  }
+
   void visitIntrinsicInst(IntrinsicInst &I) {
     switch (I.getIntrinsicID()) {
     case Intrinsic::bswap:
@@ -1158,34 +1224,12 @@ public:
     case Intrinsic::lifetime_start:
     case Intrinsic::lifetime_end: {
       // -- use existing LLVM codegen to lower intrinsics into simpler
-      // instructions that we support
-
-      bool isInFilter = m_sem.isInFilter(I);
-      BasicBlock::iterator me(&I);
-      // -- remember the following instruction
-      auto nextInst = me;
-      ++nextInst;
-
-      auto *parent = I.getParent();
-      bool atBegin(parent->begin() == me);
-      // -- save instruction before the one being lowered
-      if (!atBegin)
-        --me;
-      IntrinsicLowering IL(m_sem.getDataLayout());
-      IL.LowerIntrinsicCall(&I);
-
-      // -- restore instruction pointer to the new lowered instructions
-      auto top = atBegin ? &*parent->begin() : &*(++me);
-      m_ctx.setInstruction(*top);
-      m_ctx.setInstruction(*top, true);
-
-      // -- add newly inserted instructions to COI, if I was in COI
-      if (isInFilter) {
-        for (auto it = BasicBlock::iterator(top); it != nextInst; ++it) {
-          m_sem.addToFilter(*it);
-        }
-      }
-
+      // -- instructions that we support
+      expandCallInst(I, [&m_sem = m_sem](CallInst &II) {
+        IntrinsicLowering IL(m_sem.getDataLayout());
+        IL.LowerIntrinsicCall(&II);
+        return true;
+      });
     } break;
     case Intrinsic::sadd_with_overflow: {
       Type *ty = I.getOperand(0)->getType();
@@ -2485,6 +2529,8 @@ void Bv2OpSemContext::addToSolver(const Expr e) {
 }
 
 boost::tribool Bv2OpSemContext::solve() { return m_z3_solver->solve(); }
+
+Expr Bv2OpSemContext::ptrToAddr(Expr p) { return mem().ptrToAddr(p); }
 
 } // namespace details
 
