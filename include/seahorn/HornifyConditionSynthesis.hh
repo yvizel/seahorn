@@ -22,6 +22,8 @@ private:
   ExprVector m_loop;
   std::vector<const SelectInst*> m_selects;
 
+  std::unordered_set<const Value*> m_markings;
+
 public:
   CollectSynthesisTargets(const HornifyModule & parent)
       : m_parent(parent) {}
@@ -50,7 +52,7 @@ public:
 private:
   bool isSynthesisBranch(const BasicBlock& bb);
   void collectSelects(const BasicBlock &bb);
-  bool hasSynthesisFunction(const Instruction* I);
+  bool hasSynthesisFunction(const Instruction* I, bool reset=false);
 };
 
 class HornifyConditionSynthesis : public SmallHornifyFunction {

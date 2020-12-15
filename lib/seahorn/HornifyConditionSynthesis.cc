@@ -4,8 +4,13 @@
 
 namespace seahorn {
 
-bool CollectSynthesisTargets::hasSynthesisFunction(const Instruction *I) {
+bool CollectSynthesisTargets::hasSynthesisFunction(const Instruction *I,
+                                                   bool reset) {
+  if (reset) m_markings.clear();
+  if (m_markings.find(I) != m_markings.end()) return false;
+  m_markings.insert(I);
   for (const Value *op : I->operand_values()) {
+
     const CallInst *ci = dyn_cast<const CallInst>(op);
     const Function *F = dyn_cast<const Function>(op);
     if (ci || F) {
