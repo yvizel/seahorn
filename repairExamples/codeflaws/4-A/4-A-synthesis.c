@@ -1,6 +1,7 @@
 #include "seahorn/seahorn.h"
 extern int nd();
 extern bool find_condition();
+extern void g();
 
 int AllRepair_buggy_main(int n);
 int AllRepair_correct_main(int n);
@@ -17,6 +18,7 @@ int AllRepair_correct_main(int n)
 {
     if(n<=2)
     {
+	g();
         return 0;
     }
     else
@@ -43,6 +45,7 @@ int AllRepair_buggy_main(int n)
 {
     if(find_condition())
     {
+	g();
         return 0;
     }
     else
