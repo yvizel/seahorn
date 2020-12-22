@@ -264,6 +264,44 @@ void HornifyConditionSynthesis::handleSelect(
 
   m_db.buildIndexes();
 }
+
+Expr HornifyConditionSynthesis::createJoinTr(const Expr tr1, const Expr tr2) {
+  ExprVector conds;
+  for (auto arg = tr1->args_begin()+1;
+       arg != tr1->args_end();
+       arg++) {
+    if (bind::isBoolConst(*arg) || isOpX<NEG>(*arg)) {
+      if (!isOpX<TRUE>(*arg)) {
+        conds.push_back(*arg);
+      }
+    }
+  }
+
+  assert(isOpX<TRUE>(conds.back()) || bind::isBoolConst(conds.back()) || isOpX<NEG>(conds.back()));
+  ExprMap condMap;
+  condMap.insert(std::make_pair(conds.back(), mk<TRUE>(m_efac)));
+  Expr newTr1 = replace(tr1, condMap);
+
+  conds.clear();
+  for (auto arg = tr2->args_begin()+1;
+       arg != tr2->args_end();
+       arg++) {
+    if (bind::isBoolConst(*arg) || isOpX<NEG>(*arg)) {
+      if (!isOpX<TRUE>(*arg)) {
+        conds.push_back(*arg);
+      }
+    }
+  }
+
+  assert(isOpX<TRUE>(conds.back()) || bind::isBoolConst(conds.back()) || isOpX<NEG>(conds.back()));
+  condMap.clear();
+  condMap.insert(std::make_pair(conds.back(), mk<TRUE>(m_efac)));
+  Expr newTr2 = replace(tr2, condMap);
+
+  Expr newTr = boolop::simplify(boolop::land(newTr1, newTr2));
+
+  return newTr;
+}
   
 void HornifyConditionSynthesis::runOnFunction(Function &F) {
 
@@ -305,6 +343,20 @@ void HornifyConditionSynthesis::runOnFunction(Function &F) {
     branches.push_back(br);
   }
 
+  for (Expr rel : v.getLoops()) {
+    assert(m_db.use(rel).size() == 2);
+    auto rule1 = *(m_db.use(rel).begin());
+    auto rule2 = *(m_db.use(rel).begin() + 1);
+
+    BranchToRepair br(
+        rel,
+        *rule1,
+        *rule2,
+        extractTransitionRelation(*rule1, m_db)->last());
+
+    branches.push_back(br);
+  }
+
   for (auto & br : branches) {
     m_db.removeRule(br._ruleThen);
     m_db.removeRule(br._ruleElse);
@@ -320,40 +372,15 @@ void HornifyConditionSynthesis::runOnFunction(Function &F) {
     Expr tr1 = extractTransitionRelation(br._ruleThen, m_db)->last();
     Expr tr2 = extractTransitionRelation(br._ruleElse, m_db)->last();
 
-    // Sanity check
-    // Check that both TRs are the same, up to the condition
-    for (unsigned i=0; i < tr1->arity() && i < tr2->arity(); i++) {
-      Expr op1 = tr1->arg(i);
-      Expr op2 = tr2->arg(i);
-      if (bind::isBoolConst(op1) || isOpX<NEG>(op1) ||
-          bind::isBoolConst(op2) || isOpX<NEG>(op2)) {
-        continue;
-      }
-      assert(op1 == op2);
-    }
-
-
-    Expr tr = tr1;
-    if (tr1->arity() != tr2->arity()) {
-      if (tr1->arity() < tr2->arity())
-        tr = tr2;
-    }
-    Expr cond = mk<TRUE>(m_efac);
-    for (auto arg = tr->args_begin()+1;
-         arg != tr->args_end();
-         arg++) {
-      if (bind::isBoolConst(*arg) || isOpX<NEG>(*arg)) {
-        if (!isOpX<TRUE>(*arg)) {
-          cond = *arg;
-          break;
-        }
+    const BasicBlock &BB = m_parent.predicateBb(br._src);
+    BB.dump();
+    for (const auto & I : BB) {
+      if (m_sem.isTracked(I)) {
+        I.dump();
       }
     }
 
-    assert(isOpX<TRUE>(cond) || bind::isBoolConst(cond) || isOpX<NEG>(cond));
-    ExprMap condMap;
-    condMap.insert(std::make_pair(cond, mk<TRUE>(m_efac)));
-    Expr newTr = replace(tr, condMap);
+    Expr newTr = createJoinTr(tr1, tr2);
 
     Expr join = createJoinPredicate(
         bind::fname(br._src),

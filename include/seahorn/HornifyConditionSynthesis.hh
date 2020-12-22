@@ -88,6 +88,7 @@ protected:
       Expr &elseTr,
       Expr &prefixTr,
       ExprVector& args);
+  Expr createJoinTr(const Expr tr1, const Expr tr2);
 
 public:
   HornifyConditionSynthesis(HornifyModule &parent)
