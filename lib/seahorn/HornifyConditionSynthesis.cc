@@ -372,14 +372,6 @@ void HornifyConditionSynthesis::runOnFunction(Function &F) {
     Expr tr1 = extractTransitionRelation(br._ruleThen, m_db)->last();
     Expr tr2 = extractTransitionRelation(br._ruleElse, m_db)->last();
 
-    const BasicBlock &BB = m_parent.predicateBb(br._src);
-    BB.dump();
-    for (const auto & I : BB) {
-      if (m_sem.isTracked(I)) {
-        I.dump();
-      }
-    }
-
     Expr newTr = createJoinTr(tr1, tr2);
 
     Expr join = createJoinPredicate(
