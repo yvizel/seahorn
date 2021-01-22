@@ -1,5 +1,7 @@
 #include "seahorn/seahorn.h"
 extern int nd();
+extern int find_condition();
+extern void g();
 
 /*  -*- Last-Edit:  Fri Jan 29 11:13:27 1993 by Tarak S. Goradia; -*- */
 /* $Log: tcas.c,v $
@@ -8,7 +10,6 @@ extern int nd();
  * */
 
 #include <stdio.h>
-#include <assert.h>
 
 #define OLEV       600		/* in feets/minute */
 #define MAXALTDIFF 600		/* max altitude difference in feet */
@@ -98,14 +99,22 @@ bool Non_Crossing_Biased_Climb()
     int upward_crossing_situation;
     bool result;
 
-    //upward_preferred = Inhibit_Biased_Climb() > Down_Separation;
-    if (Inhibit_Biased_Climb() > Down_Separation)
+    upward_preferred = Inhibit_Biased_Climb() > Down_Separation;
+    if (upward_preferred)
     {
-	result = !(Own_Below_Threat()) || ((Own_Below_Threat()) && (!(Down_Separation >= ALIM()))); /* opertor mutation: '>=' --> '>' */
+	result = !(Own_Below_Threat()) || ((Own_Below_Threat()) && (!(Down_Separation >= ALIM())));
+	if (find_condition()){ //result && (Own_Tracked_Alt <= Other_Tracked_Alt) //new code
+		g();
+		result = 1;
+	} else {
+		result = 0;
+	}
     }
     else
     {	
 	result = Own_Above_Threat() && (Cur_Vertical_Sep >= MINSEP) && (Up_Separation >= ALIM());
+
+	result = result && (Own_Tracked_Alt < Other_Tracked_Alt); //new code
     }
     return result;
 }
@@ -116,8 +125,8 @@ bool Non_Crossing_Biased_Descend()
     int upward_crossing_situation;
     bool result;
 
-    //upward_preferred = Inhibit_Biased_Climb() > Down_Separation;
-    if (Inhibit_Biased_Climb() > Down_Separation)
+    upward_preferred = Inhibit_Biased_Climb() > Down_Separation;
+    if (upward_preferred)
     {
 	result = Own_Below_Threat() && (Cur_Vertical_Sep >= MINSEP) && (Down_Separation >= ALIM());
     }
@@ -130,12 +139,12 @@ bool Non_Crossing_Biased_Descend()
 
 bool Own_Below_Threat()
 {
-    return (Own_Tracked_Alt < Other_Tracked_Alt) && 1;
+    return (Own_Tracked_Alt < Other_Tracked_Alt);
 }
 
 bool Own_Above_Threat()
 {
-    return (Other_Tracked_Alt < Own_Tracked_Alt) && 1;
+    return (Other_Tracked_Alt < Own_Tracked_Alt);
 }
 
 int alt_sep_test()
@@ -145,14 +154,14 @@ int alt_sep_test()
     int alt_sep;
 
     enabled = High_Confidence && (Own_Tracked_Alt_Rate <= OLEV) && (Cur_Vertical_Sep > MAXALTDIFF);
-    tcas_equipped = Other_Capability == TCAS_TA && 1;
+    tcas_equipped = Other_Capability == TCAS_TA;
     intent_not_known = Two_of_Three_Reports_Valid && Other_RAC == NO_INTENT;
     
     alt_sep = UNRESOLVED;
     
     if (enabled && ((tcas_equipped && intent_not_known) || !tcas_equipped))
     {
-	need_upward_RA = Non_Crossing_Biased_Climb() && Own_Below_Threat();
+	need_upward_RA = Non_Crossing_Biased_Climb(); // && Own_Below_Threat();
 	need_downward_RA = Non_Crossing_Biased_Descend() && Own_Above_Threat();
 	if (need_upward_RA && need_downward_RA)
         /* unreachable: requires Own_Below_Threat and Own_Above_Threat
