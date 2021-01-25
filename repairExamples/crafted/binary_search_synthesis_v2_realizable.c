@@ -10,7 +10,7 @@ bool naive_search(int a[], int n, int x);
 
 int main() {
 	int a[5];
-	for (int i=0; i<4; i++){
+	for (int i=0; i<5; i++){
 		a[i] = nd();
 	}
 	int x = nd();
@@ -32,6 +32,7 @@ bool binary_search(int a[], int n, int x){
 			return true;
 		} else {
 			if (find_condition()){
+  				g();
 				right = mid - 1;
 			}
 		 	else {
