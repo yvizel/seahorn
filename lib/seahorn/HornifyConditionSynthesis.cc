@@ -277,10 +277,14 @@ Expr HornifyConditionSynthesis::createJoinTr(const Expr tr1, const Expr tr2) {
     }
   }
 
-  assert(isOpX<TRUE>(conds.back()) || bind::isBoolConst(conds.back()) || isOpX<NEG>(conds.back()));
+  Expr newTr1 = tr1;
   ExprMap condMap;
-  condMap.insert(std::make_pair(conds.back(), mk<TRUE>(m_efac)));
-  Expr newTr1 = replace(tr1, condMap);
+  if (conds.size() > 0) {
+    assert(isOpX<TRUE>(conds.back()) || bind::isBoolConst(conds.back()) ||
+           isOpX<NEG>(conds.back()));
+    condMap.insert(std::make_pair(conds.back(), mk<TRUE>(m_efac)));
+    newTr1 = replace(tr1, condMap);
+  }
 
   conds.clear();
   for (auto arg = tr2->args_begin()+1;
@@ -293,10 +297,14 @@ Expr HornifyConditionSynthesis::createJoinTr(const Expr tr1, const Expr tr2) {
     }
   }
 
-  assert(isOpX<TRUE>(conds.back()) || bind::isBoolConst(conds.back()) || isOpX<NEG>(conds.back()));
-  condMap.clear();
-  condMap.insert(std::make_pair(conds.back(), mk<TRUE>(m_efac)));
-  Expr newTr2 = replace(tr2, condMap);
+  Expr newTr2 = tr2;
+  if (conds.size() > 0) {
+    assert(isOpX<TRUE>(conds.back()) || bind::isBoolConst(conds.back()) ||
+           isOpX<NEG>(conds.back()));
+    condMap.clear();
+    condMap.insert(std::make_pair(conds.back(), mk<TRUE>(m_efac)));
+    newTr2 = replace(tr2, condMap);
+  }
 
   Expr newTr = boolop::simplify(boolop::land(newTr1, newTr2));
 
