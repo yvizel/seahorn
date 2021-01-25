@@ -29,6 +29,7 @@ public:
   // setting TrackingTag to int disqualifies this class as having tracking
   using TrackingTag = int;
   using FatMemTag = int;
+  using WideMemTag = MemoryFeatures::WideMem_tag;
 
   using RawPtrTy = OpSemMemManager::PtrTy;
   using RawMemValTy = OpSemMemManager::MemValTy;
@@ -251,6 +252,8 @@ public:
   RawPtrTy getAddressable(PtrTy p) const;
 
   bool isPtrTyVal(Expr e) const;
+
+  bool isMemVal(Expr e) const;
 
   Expr getSize(PtrTy p);
 

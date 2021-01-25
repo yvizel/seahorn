@@ -276,6 +276,23 @@ struct OpSemVisitorBase {
   }
 };
 
+static bool
+clobbersFlagRegisters(const llvm::SmallVector<llvm::StringRef, 4> &AsmPieces) {
+
+  if (AsmPieces.size() == 3 || AsmPieces.size() == 4) {
+    if (std::count(AsmPieces.begin(), AsmPieces.end(), "~{cc}") &&
+        std::count(AsmPieces.begin(), AsmPieces.end(), "~{flags}") &&
+        std::count(AsmPieces.begin(), AsmPieces.end(), "~{fpsr}")) {
+
+      if (AsmPieces.size() == 3)
+        return true;
+      else if (std::count(AsmPieces.begin(), AsmPieces.end(), "~{dirflag}"))
+        return true;
+    }
+  }
+  return false;
+}
+
 class OpSemVisitor : public InstVisitor<OpSemVisitor>, OpSemVisitorBase {
 public:
   OpSemVisitor(Bv2OpSemContext &ctx, Bv2OpSem &sem)
@@ -436,6 +453,24 @@ public:
     }
 
     setValue(I, addr);
+
+    if (!m_ctx.getMemReadRegister() || !m_ctx.getMemWriteRegister()) {
+      LOG("opsem",
+          ERR << "No read/write register found - check if corresponding"
+                 " shadow instruction is present.");
+      m_ctx.setMemReadRegister(Expr());
+      m_ctx.setMemWriteRegister(Expr());
+      return;
+    }
+
+    // TODO: check that addr is valid
+    auto memIn = m_ctx.read(m_ctx.getMemReadRegister());
+    OpSemMemManager &memManager = m_ctx.mem();
+    auto res = memManager.setMetadata(MetadataKind::ALLOC, addr, memIn, 1);
+    m_ctx.write(m_ctx.getMemWriteRegister(), res);
+
+    m_ctx.setMemReadRegister(Expr());
+    m_ctx.setMemWriteRegister(Expr());
   }
 
   void visitLoadInst(LoadInst &I) {
@@ -552,12 +587,20 @@ public:
         visitIsModified(CS);
       } else if (f->getName().startswith("sea.reset_modified")) {
         visitResetModified(CS);
+      } else if (f->getName().startswith("sea.is_read")) {
+        visitIsRead(CS);
+      } else if (f->getName().startswith("sea.reset_read")) {
+        visitResetRead(CS);
+      } else if (f->getName().startswith("sea.is_alloc")) {
+        visitIsAlloc(CS);
       } else if (f->getName().startswith("sea.reset_modified")) {
         visitResetModified(CS);
       } else if (f->getName().startswith("sea.tracking_on")) {
         visitSetTrackingOn(CS);
       } else if (f->getName().startswith(("sea.tracking_off"))) {
         visitSetTrackingOff(CS);
+      } else if (f->getName().startswith("sea.free")) {
+        visitFree(CS);
       } else if (f->getName().startswith(("sea.assert.if"))) {
         visitSeaAssertIfCall(CS);
       } else if (f->getName().startswith(("verifier.assert"))) {
@@ -610,33 +653,86 @@ public:
   void visitInlineAsmCall(CallSite CS) {
     // We only care about handling simple cases e.g. which are used to
     // thwart optimization by obfuscating code.
-    // Specifically, we ONLY handle the following kinds of inline assembly:
-    // 1) %_57 = call i64 asm sideeffect "",
+    // Inline assembly format:
+    // a string contains instructions, a list of operand constraints, (flags,
+    // e.g. sideeffect) Specifically, we ONLY handle the following kinds of
+    // inline assembly: 1) %_57 = call i64 asm sideeffect "",
     // "=r,0,~{dirflag},~{fpsr},~{flags}"(i64 %_14) #7, !dbg !504, !srcloc !505
     // @ _55 in main
     // 2) call void asm sideeffect "",
     // "r,~{memory},~{dirflag},~{fpsr},~{flags}"(i8* %7) #5, !dbg !102, !srcloc
     // !103
+    // 3) Single instruction of bswap asm
 
-    InlineAsm *IA = cast<InlineAsm>(CS.getCalledValue());
-    const std::string &AsmStr = IA->getAsmString();
-    // only handle "" instruction template and one argument
-    if (!AsmStr.empty() || CS.getNumArgOperands() > 1) {
+    IntegerType *Ty =
+        dyn_cast<IntegerType>(cast<CallInst>(CS.getInstruction())->getType());
+    if ((Ty && Ty->getBitWidth() % 16 != 0) || CS.getNumArgOperands() > 1) {
       LOG("opsem",
           ERR << "Cannot handle inline assembly: " << *CS.getInstruction());
       return;
     }
-
-    if (IA->getConstraintString().compare(0, 5, "=r,0,") == 0) {
-      // copy input to output
-      Expr readVal = lookup(*CS.getArgument(0));
-      setValue(*CS.getInstruction(), readVal);
-    } else if (IA->getConstraintString().compare(0, 2, "r,") == 0) {
-      // This code is only used to stop optimization
-      // Since there is no computation, do nothing
-    } else {
+    InlineAsm *IA = cast<InlineAsm>(CS.getCalledValue());
+    const std::string &AsmStr = IA->getAsmString();
+    llvm::SmallVector<llvm::StringRef, 4> AsmPieces;
+    llvm::SplitString(AsmStr, AsmPieces, ";\n");
+    switch (AsmPieces.size()) {
+    default:
       LOG("opsem",
           ERR << "Cannot handle inline assembly: " << *CS.getInstruction());
+      break;
+    case 0:
+      // This part handles the following type of inline assembly
+      // The other switch cases are handling integer bswap only
+      // 1. read memory value (data), the type of value is not restricted
+      if (IA->getConstraintString().compare(0, 5, "=r,0,") == 0) {
+        // Copy input to output
+        Expr readVal = lookup(*CS.getArgument(0));
+        setValue(*CS.getInstruction(), readVal);
+      } else if (IA->getConstraintString().compare(0, 2, "r,") == 0) {
+        // This code is only used to stop optimization
+        // Since there is no computation, do nothing
+      } else {
+        LOG("opsem",
+            ERR << "Cannot handle inline assembly with empty asm string: "
+                << *CS.getInstruction());
+      }
+      break;
+    case 1:
+      bool isAsmHandled = false;
+      // bswap
+      if (AsmStr.compare(0, 8, "bswap $0") == 0 ||
+          AsmStr.compare(0, 9, "bswapl $0") == 0 ||
+          AsmStr.compare(0, 9, "bswapq $0") == 0 ||
+          AsmStr.compare(0, 12, "bswap ${0:q}") == 0 ||
+          AsmStr.compare(0, 13, "bswapl ${0:q}") == 0 ||
+          AsmStr.compare(0, 13, "bswapq ${0:q}") == 0) {
+        // No need to check constraints
+        isAsmHandled = expandCallInst(
+            *cast<CallInst>(CS.getInstruction()), [](CallInst &CI) {
+              return IntrinsicLowering::LowerToByteSwap(&CI);
+            });
+      }
+      // llvm.bswap.i16
+      if (cast<CallInst>(CS.getInstruction())->getType()->isIntegerTy(16) &&
+          IA->getConstraintString().compare(0, 5, "=r,0,") == 0 &&
+          (AsmStr.compare(0, 16, "rorw $$8, ${0:w}") == 0 ||
+           AsmStr.compare(0, 16, "rolw $$8, ${0:w}") == 0)) {
+        // Check Flag resgisters
+        AsmPieces.clear();
+        llvm::SplitString(StringRef(IA->getConstraintString()).substr(5),
+                          AsmPieces, ",");
+        // Try to replace a call instruction with a call to a bswap intrinsic
+        isAsmHandled =
+            clobbersFlagRegisters(AsmPieces) &&
+            expandCallInst(*cast<CallInst>(CS.getInstruction()),
+                           [](CallInst &CI) {
+                             return IntrinsicLowering::LowerToByteSwap(&CI);
+                           });
+      }
+      if (!isAsmHandled)
+        LOG("opsem", ERR << "Cannot handle inline assembly of integer swap: "
+                         << *CS.getInstruction());
+      break;
     }
   }
 
@@ -659,7 +755,7 @@ public:
     Expr ptr = lookup(*CS.getArgument(0));
     auto memIn = m_ctx.read(m_ctx.getMemReadRegister());
     OpSemMemManager &memManager = m_ctx.mem();
-    auto res = memManager.isModified(ptr, memIn);
+    auto res = memManager.isMetadataSet(MetadataKind::WRITE, ptr, memIn);
     setValue(*CS.getInstruction(), res);
     m_ctx.setMemReadRegister(Expr());
   }
@@ -676,16 +772,54 @@ public:
     Expr ptr = lookup(*CS.getArgument(0));
     auto memIn = m_ctx.read(m_ctx.getMemReadRegister());
     OpSemMemManager &memManager = m_ctx.mem();
-    auto res = memManager.resetModified(ptr, memIn);
+    auto res = memManager.setMetadata(MetadataKind::WRITE, ptr, memIn, 0);
     m_ctx.write(m_ctx.getMemWriteRegister(), res);
 
     m_ctx.setMemReadRegister(Expr());
     m_ctx.setMemWriteRegister(Expr());
   }
 
+  void visitIsRead(CallSite CS) {}
+
+  void visitResetRead(CallSite CS) {}
+
+  void visitIsAlloc(CallSite CS) {
+    if (!m_ctx.getMemReadRegister()) {
+      LOG("opsem", ERR << "No read register found - check if corresponding"
+                          "shadow instruction is present.");
+      m_ctx.setMemReadRegister(Expr());
+      return;
+    }
+    Expr ptr = lookup(*CS.getArgument(0));
+    auto memIn = m_ctx.read(m_ctx.getMemReadRegister());
+    OpSemMemManager &memManager = m_ctx.mem();
+    auto res = memManager.isMetadataSet(MetadataKind::ALLOC, ptr, memIn);
+    setValue(*CS.getInstruction(), res);
+    m_ctx.setMemReadRegister(Expr());
+  }
+
   void visitSetTrackingOn(CallSite CS) { m_ctx.setTracking(true); }
 
   void visitSetTrackingOff(CallSite CS) { m_ctx.setTracking(false); }
+
+  void visitFree(CallSite &CS) {
+    if (!m_ctx.getMemReadRegister() || !m_ctx.getMemWriteRegister()) {
+      LOG("opsem",
+          ERR << "No read/write register found - check if corresponding"
+                 "shadow instruction is present.");
+      m_ctx.setMemReadRegister(Expr());
+      m_ctx.setMemWriteRegister(Expr());
+      return;
+    }
+    Expr ptr = lookup(*CS.getArgument(0));
+    auto memIn = m_ctx.read(m_ctx.getMemReadRegister());
+    OpSemMemManager &memManager = m_ctx.mem();
+    auto res = memManager.setMetadata(MetadataKind::ALLOC, ptr, memIn, 0);
+    m_ctx.write(m_ctx.getMemWriteRegister(), res);
+
+    m_ctx.setMemReadRegister(Expr());
+    m_ctx.setMemWriteRegister(Expr());
+  }
 
   /// Report outcome of vacuity and incremental assertion checking
   void reportDoAssert(char *tag, const Instruction &I, boost::tribool res,
@@ -1863,6 +1997,21 @@ public:
   Expr executeStoreInst(const Value &val, const Value &addr, unsigned alignment,
                         Bv2OpSemContext &ctx) {
 
+    if (val.getType()->isDoubleTy() || val.getType()->isFloatTy()) {
+      if (ctx.getMemReadRegister() && ctx.getMemWriteRegister()) {
+        LOG("opsem", WARN << "treating double/float store as noop: *" << addr
+                          << " := " << val << "\n";);
+
+        Expr res = ctx.read(ctx.getMemReadRegister());
+        ctx.write(ctx.getMemWriteRegister(), res);
+        ctx.setMemReadRegister(Expr());
+        ctx.setMemWriteRegister(Expr());
+        return res;
+      }
+      // if anything above fails, continue as usual. Exceptional cases are
+      // treated as memhavoc below.
+    }
+
     if (!ctx.getMemReadRegister() || !ctx.getMemWriteRegister() ||
         m_sem.isSkipped(val)) {
       LOG("opsem",
@@ -2536,6 +2685,8 @@ void Bv2OpSemContext::addToSolver(const Expr e) {
 boost::tribool Bv2OpSemContext::solve() { return m_z3_solver->solve(); }
 
 Expr Bv2OpSemContext::ptrToAddr(Expr p) { return mem().ptrToAddr(p); }
+
+Expr Bv2OpSemContext::getRawMem(Expr p) { return mem().getRawMem(p); }
 
 } // namespace details
 

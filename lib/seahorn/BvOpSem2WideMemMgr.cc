@@ -73,6 +73,7 @@ Expr WideMemManager::isDereferenceable(WideMemManager::PtrTy p, Expr byteSz) {
 WideMemManager::MemValTy WideMemManager::zeroedMemory() const {
   return MemValTy(m_main.zeroedMemory(), m_size.zeroedMemory());
 }
+
 std::pair<char *, unsigned int>
 WideMemManager::getGlobalVariableInitValue(const GlobalVariable &gv) {
   return m_main.getGlobalVariableInitValue(gv);
@@ -480,7 +481,12 @@ Expr WideMemManager::ptrSub(WideMemManager::PtrTy p1,
 }
 
 bool WideMemManager::isPtrTyVal(Expr e) const {
-  return strct::isStructVal(e) && e->arity() == g_num_slots;
+  return e && strct::isStructVal(e) && e->arity() == g_num_slots;
+}
+
+bool WideMemManager::isMemVal(Expr e) const {
+  // struct of raw and size
+  return e && strct::isStructVal(e) && e->arity() == g_num_slots;
 }
 
 OpSemMemManager *mkWideMemManager(Bv2OpSem &sem, Bv2OpSemContext &ctx,
