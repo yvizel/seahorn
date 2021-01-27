@@ -179,6 +179,8 @@ void HornifyConditionSynthesis::extractIteAndArgs(
     expr::filter(arg, bind::IsConst(), std::inserter(args, args.begin()));
   }
 
+  assert(!isOpX<TRUE>(ite) && isOpX<ITE>(ite->arg(1)));
+
   Expr thenExpr = mk<EQ>(ite->arg(0), ite->arg(1)->arg(1));
   Expr elseExpr = mk<EQ>(ite->arg(0), ite->arg(1)->arg(2));
 
@@ -313,10 +315,8 @@ Expr HornifyConditionSynthesis::createJoinTr(const Expr tr1, const Expr tr2) {
   
 void HornifyConditionSynthesis::runOnFunction(Function &F) {
 
-  if (m_sem.isAbstracted(F))
+  if (m_parent.symExec().isAbstracted(F))
     return;
-
-  SmallHornifyFunction::runOnFunction(F);
 
   if (m_db.getRules().size() == 0)
     return;

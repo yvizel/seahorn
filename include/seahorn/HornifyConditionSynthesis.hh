@@ -55,7 +55,7 @@ private:
   bool hasSynthesisFunction(const Instruction* I, bool reset=false);
 };
 
-class HornifyConditionSynthesis : public SmallHornifyFunction {
+class HornifyConditionSynthesis {
 protected:
 
   typedef boost::container::flat_set<Expr> expr_set;
@@ -73,6 +73,11 @@ protected:
     {}
   };
 
+  HornifyModule &m_parent;
+  HornifyFunction &m_hf;
+
+  HornClauseDB &m_db;
+  ExprFactory &m_efac;
   HornClauseDB m_synthDb;
 
   void reverseRule(const HornRule & rule);
@@ -91,8 +96,10 @@ protected:
   Expr createJoinTr(const Expr tr1, const Expr tr2);
 
 public:
-  HornifyConditionSynthesis(HornifyModule &parent)
-      : SmallHornifyFunction(parent, false), m_synthDb(m_efac) {}
+  HornifyConditionSynthesis(HornifyModule &parent, HornifyFunction &hf)
+      : m_parent(parent), m_hf(hf), m_db(m_parent.getHornClauseDB()),
+        m_efac(parent.getZContext().getExprFactory()),
+        m_synthDb(m_efac) {}
 
 
   virtual ~HornifyConditionSynthesis() {}

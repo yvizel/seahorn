@@ -410,9 +410,7 @@ bool HornifyModule::runOnFunction(Function &F) {
 
   boost::scoped_ptr<HornifyFunction> hf(
       new SmallHornifyFunction(*this, InterProc));
-  if (Step == hm_detail::SMALL_STEP && ConditionSynthesis)
-    hf.reset(new HornifyConditionSynthesis(*this));
-  else if (Step == hm_detail::LARGE_STEP)
+  if (Step == hm_detail::LARGE_STEP)
     hf.reset(new LargeHornifyFunction(*this, InterProc));
   else if (Step == hm_detail::FLAT_SMALL_STEP ||
            Step == hm_detail::CLP_FLAT_SMALL_STEP)
@@ -439,6 +437,12 @@ bool HornifyModule::runOnFunction(Function &F) {
 
   /// -- hornify function
   hf->runOnFunction(F);
+
+  if (ConditionSynthesis) {
+    assert(Step == hm_detail::LARGE_STEP || Step == hm_detail::SMALL_STEP);
+    HornifyConditionSynthesis hcs(*this, *hf);
+    hcs.runOnFunction(F);
+  }
 
   return false;
 }
