@@ -38,9 +38,9 @@ extern void sea_assert_if(bool, bool);
  */
 extern bool sea_is_modified(char *);
 /* tracking is set to on for subsequent program till exit or sea_tracking_off */
-extern void sea_tracking_on();
+extern void sea_tracking_on(void);
 /* tracking is set to off for subsequent program till exit or sea_tracking_on */
-extern void sea_tracking_off();
+extern void sea_tracking_off(void);
 /* reset modified metadata for memory pointed to by arg */
 extern void sea_reset_modified(char *);
 #ifdef __cplusplus
@@ -49,6 +49,9 @@ extern void sea_reset_modified(char *);
 
 /* Convenience macros */
 #define assume __VERIFIER_assume
+
+#define PARTIAL_FN                                                             \
+  __attribute__((annotate("partial"))) __attribute__((noinline))
 
 /* See https://github.com/seahorn/seahorn/projects/5 for details */
 #ifdef VACCHECK
