@@ -1,12 +1,9 @@
-import sea
-
 import os.path
-import sys
+import sea
 import shutil
-
 import subprocess
-
-from sea import add_in_args, add_in_out_args, add_tmp_dir_args, which, createWorkDir
+import sys
+from sea import add_in_args, add_in_out_args, add_tmp_dir_args, add_bool_argument, which, createWorkDir
 
 # To disable printing of commands and some warnings
 quiet=False
@@ -116,7 +113,7 @@ class Clang(sea.LimitedCmd):
         self.clangCmd = sea.ExtCmd (cmd_name,'',quiet)
 
         if not all (_bc_or_ll_file (f) for f  in args.in_files):
-            argv = ['-c', '-emit-llvm', '-D__SEAHORN__']
+            argv = ['-c', '-emit-llvm', '-D__SEAHORN__', '-fdeclspec']
 
             # in clang-5.0 to ensure that compilation is done without
             # optimizations and also does not mark produced bitcode
@@ -206,7 +203,7 @@ class LinkRt(sea.LimitedCmd):
 
     def name_out_file (self, in_files, args=None, work_dir=None):
         assert (len (in_files) == 1)
-        return _remap_file (in_files[0], '', work_dir)
+        return _remap_file_name (in_files[0], '', work_dir)
 
     def run (self, args, extra):
 
@@ -380,6 +377,9 @@ class Seapp(sea.LimitedCmd):
                          metavar='STR', help='Log level')
         ap.add_argument ('--sea-dsa-log', dest='dsa_log', default=None,
                          metavar='STR', help='Log level for sea-dsa')
+
+        add_bool_argument(ap, 'with-arith-overflow', dest='with_arith_overflow',
+                          help='Allow arithmetic overflow intrinsics')
         add_in_out_args (ap)
         _add_S_arg (ap)
         return ap
@@ -483,6 +483,12 @@ class Seapp(sea.LimitedCmd):
                 argv.append('--kill-vaarg=true')
             else:
                 argv.append('--kill-vaarg=false')
+
+            if args.with_arith_overflow:
+                argv.append('--horn-keep-arith-overflow=true')
+            else:
+                argv.append('--horn-keep-arith-overflow=false')
+
 
         if args.log is not None:
             for l in args.log.split (':'): argv.extend (['-log', l])
@@ -686,7 +692,7 @@ class RemoveTargetFeatures(sea.LimitedCmd):
 
     def mk_arg_parser (self, ap):
         ap = super(RemoveTargetFeatures, self).mk_arg_parser (ap)
-        self.add_llvm_bool_arg(ap, 'rmtf', dest='rm_tar_feat', help='Remove target-features from attributes')
+        add_bool_argument(ap, 'rmtf', dest='rm_tar_feat', help='Remove target-features from attributes')
         add_in_out_args(ap)
         return ap
 
@@ -729,7 +735,7 @@ class WrapMem(sea.LimitedCmd):
         ap = super (WrapMem, self).mk_arg_parser (ap)
         ap.add_argument ('--no-wmem', dest='wmem_skip', help='Skipped wrap-mem pass',
                          default=False, action='store_true')
-        # self.add_llvm_bool_arg(ap, 'skip-wmem', dest='wmem_skip', help='Skipped wrap-mem pass')
+        # add_bool_argument(ap, 'skip-wmem', dest='wmem_skip', help='Skipped wrap-mem pass')
         add_in_out_args (ap)
         _add_S_arg (ap)
         return ap
@@ -751,37 +757,6 @@ class WrapMem(sea.LimitedCmd):
             argv.extend (args.in_files)
             return self.seappCmd.run (args, argv)
 
-class ExecHarness(sea.LimitedCmd):
-    def __init__(self, quiet=False):
-        super(ExecHarness, self).__init__('exec-harness', 'Execute an executable harness to see if it calls __VERIFIER_error',
-                                             allow_extra=True)
-        self.harnessCmd = None
-
-    @property
-    def stdout (self):
-        return self.harnessCmd.stdout
-
-    def mk_arg_parser (self, ap):
-        ap = super (ExecHarness, self).mk_arg_parser (ap)
-        add_in_args (ap)
-        return ap
-
-    def run (self, args, extra):
-        if len(args.in_files) != 1: raise IOError('ExecHarness expects the harness executable as an input')
-        eharness = os.path.abspath(args.in_files[0])
-
-        self.harnessCmd = sea.ExtCmd (eharness)
-        if args.cpu is None: args.cpu = 10
-
-        retval = self.harnessCmd.run (args, [eharness], stdout=subprocess.PIPE)
-
-        if "[sea] __VERIFIER_error was executed" in self.harnessCmd.stdout:
-            print ("__VERIFIER_error was executed")
-        else:
-            print ("__VERIFIER_error was not executed")
-
-        return retval
-
 class CutLoops(sea.LimitedCmd):
     def __init__(self, quiet=False):
         super(CutLoops, self).__init__('cut-loops', 'Loop cutting transformation',
@@ -801,6 +776,10 @@ class CutLoops(sea.LimitedCmd):
                          metavar='STR', help='Log level')
         ap.add_argument('--peel', dest='peel', default=0, metavar='NUM',
                         type=int, help='Number of iterations to peel loops')
+        add_bool_argument(ap, 'assert-on-backedge', dest='assert_backedge',
+                          default=False,
+                          help='Add verifier.assert to check completeness of loop unrolling')
+
         add_in_out_args (ap)
         _add_S_arg (ap)
         return ap
@@ -818,11 +797,17 @@ class CutLoops(sea.LimitedCmd):
 
         argv.append ('--horn-cut-loops')
         if args.llvm_asm: argv.append ('-S')
-        argv.extend (args.in_files)
+
+        if args.assert_backedge:
+            argv.append('--back-edge-cutter-with-asserts=true')
+        else:
+            argv.append('--back-edge-cutter-with-asserts=false')
+
 
         if args.log is not None:
             for l in args.log.split (':'): argv.extend (['-log', l])
 
+        argv.extend (args.in_files)
         return self.seappCmd.run (args, argv)
 
 
@@ -924,6 +909,8 @@ class FatBoundsCheck(sea.LimitedCmd):
         ap = super (FatBoundsCheck, self).mk_arg_parser (ap)
         ap.add_argument('--log', dest='log', default=None,
                         metavar='STR', help='Log level')
+        ap.add_argument('--no-fat-fns', dest='no_fat_fns', default=None,
+                        type=str, metavar='STR,STR,...', help='List of functions to NOT instrument')
         add_in_out_args (ap)
         _add_S_arg (ap)
         return ap
@@ -937,6 +924,10 @@ class FatBoundsCheck(sea.LimitedCmd):
         if args.out_file is not None: argv.extend (['-o', args.out_file])
 
         argv.append ('-fat-bnd-check')
+
+        if args.no_fat_fns is not None:
+            argv.append('--no-bound-check-fns={fns}'.format(fns=args.no_fat_fns));
+
         # slots=false ==> use is_dereferenceable(...) instrumentation
         argv.append('--horn-bnd-chk-slots=false')
         if args.llvm_asm: argv.append ('-S')
@@ -945,7 +936,46 @@ class FatBoundsCheck(sea.LimitedCmd):
         if args.log is not None:
             for l in args.log.split (':'): argv.extend (['-log', l])
 
-        return self.seappCmd.run (args, argv)    
+        return self.seappCmd.run (args, argv)
+
+class AddBranchSentinel(sea.LimitedCmd):
+    def __init__(self, quiet=False):
+        super(AddBranchSentinel, self).__init__('add-branch-sentinel', 'Add branch sentinel instrumentation',
+                                       allow_extra=True)
+
+    @property
+    def stdout (self):
+        return self.seappCmd.stdout
+
+    def name_out_file (self, in_files, args=None, work_dir=None):
+        ext = '.se.bc'
+        return _remap_file_name (in_files[0], ext, work_dir)
+
+    def mk_arg_parser (self, ap):
+        ap = super (AddBranchSentinel, self).mk_arg_parser (ap)
+        ap.add_argument('--log', dest='log', default=None,
+                        metavar='STR', help='Log level')
+        add_in_out_args (ap)
+        _add_S_arg (ap)
+        return ap
+
+    def run (self, args, extra):
+        cmd_name = which ('seapp')
+        if cmd_name is None: raise IOError ('seapp not found')
+        self.seappCmd = sea.ExtCmd (cmd_name,'',quiet)
+
+        argv = list()
+        if args.out_file is not None: argv.extend (['-o', args.out_file])
+
+        argv.append ('--add-branch-sentinel')
+
+        if args.llvm_asm: argv.append ('-S')
+        argv.extend (args.in_files)
+
+        if args.log is not None:
+            for l in args.log.split (':'): argv.extend (['-log', l])
+
+        return self.seappCmd.run (args, argv)
 
 
 class Unroll(sea.LimitedCmd):
@@ -962,19 +992,19 @@ class Unroll(sea.LimitedCmd):
 
     def mk_arg_parser (self, ap):
         ap = super (Unroll, self).mk_arg_parser (ap)
-        ap.add_argument ('--threshold', type=int, help='Unrolling threshold. ' +
+        ap.add_argument('--threshold', type=int, help='Unrolling threshold. ' +
                          'Loops of larger size than this value will not ' +
                          'be unrolled (-unroll-threshold)',
                          default=131072, metavar='T')
-        ap.add_argument ('--bound', default=0, type=int,
+        ap.add_argument('--bound', default=0, type=int,
                          help='Unroll bound (-unroll-count)', metavar='B')
-        ap.add_argument ('--enable-runtime', dest='enable_runtime',
-                         default=False, action='store_true',
+        add_bool_argument(ap, '--enable-runtime', dest='enable_runtime',
                          help='Allow unrolling loops with runtime trip count ' +
                          '(-unroll-runtime)')
-        ap.add_argument ('--enable-partial', dest='enable_partial',
-                         default=False, action='store_true',
+        add_bool_argument(ap, '--enable-partial', dest='enable_partial',
                          help='Enable partial unrolling (-unroll-allow-partial)')
+        add_bool_argument(ap, 'use-llvm-unroll', default=False, dest='use_llvm_unroll',
+                          help='If true  use LLVM to unroll loops instead of SeaHorn')
         add_in_out_args (ap)
         _add_S_arg (ap)
         return ap
@@ -993,21 +1023,26 @@ class Unroll(sea.LimitedCmd):
         # fake loops to be in the form suitable for loop-unroll
         argv.append ('-fake-latch-exit')
 
-        argv.append ('-loop-unroll')
-        if args.enable_runtime:
-            argv.append ('-unroll-runtime')
-        if args.enable_partial:
-            argv.append ('-unroll-allow-partial')
+        if args.use_llvm_unroll:
+            argv.append ('-loop-unroll')
+            # the options below are support by LLVM unroller only
+            if args.enable_runtime:
+                argv.append ('-unroll-runtime')
+            if args.enable_partial:
+                argv.append ('-unroll-allow-partial')
+            argv.append ('-unroll-threshold={t}'.format(t=args.threshold))
+        else:
+            argv.append('-sea-loop-unroll')
+
         if args.bound > 0:
             argv.append ('-unroll-count={b}'.format(b=args.bound))
-        argv.append ('-unroll-threshold={t}'.format(t=args.threshold))
 
         argv.extend (args.in_files)
         if args.llvm_asm: argv.append ('-S')
         return self.seaoptCmd.run (args, argv)
 
 def _is_seahorn_opt (x):
-    prefixes = ['horn-', 'crab', 'sea-', 'log']
+    prefixes = ['horn-', 'crab', 'sea-opsem']
     if x.startswith ('-'):
         y = x.strip ('-')
         return any((y.startswith(p) for p in prefixes))
@@ -1063,7 +1098,7 @@ class Seahorn(sea.LimitedCmd):
                          'sea-flat (flat memory SeaHorn Dsa), '
                          'sea-ci (context-insensitive SeaHorn Dsa), and '
                          'sea-cs (context-sensitive SeaHorn Dsa)',
-                         choices=['sea-flat','sea-ci','sea-cs'],
+                         choices=['sea-flat','sea-ci','sea-cs', 'sea-ci-t', 'sea-cs-t'],
                          dest='dsa', default='sea-ci')
         ap.add_argument ('--mem-dot',
                          help='Print Dsa memory graphs of all functions to dot format',
@@ -1076,7 +1111,8 @@ class Seahorn(sea.LimitedCmd):
                          dest='crab', default=False, action='store_true')
         ap.add_argument ('--bmc',
                          help='Use BMC engine',
-                         choices=['none', 'mono', 'path'], dest='bmc', default='none')
+                         choices=['none', 'mono', 'path', 'opsem'],
+                         dest='bmc', default='none')
         ap.add_argument ('--max-depth',
                          help='Maximum depth of exploration',
                          dest='max_depth', default=sys.maxsize)
@@ -1085,6 +1121,12 @@ class Seahorn(sea.LimitedCmd):
                         help='Do not lower global initializers',
                         default=False,
                         action='store_true')
+        ap.add_argument('--eval-branch-sentinel',
+                        dest='eval_branch_sentinel',
+                        help='Eval branch sentinel instrinsic',
+                        default=False,
+                        action='store_true')
+
         return ap
 
     def run (self, args, extra):
@@ -1100,7 +1142,11 @@ class Seahorn(sea.LimitedCmd):
             argv.append ('--horn-bmc')
             if args.bmc == 'path':
                 argv.append ('--horn-bmc-engine=path')
-
+            elif args.bmc.startswith('opsem'):
+                argv.append('--horn-bv2')
+                argv.append('--log=opsem')
+                argv.append('--lower-gv-init-struct=false')
+                argv.append('--horn-shadow-mem-alloc-is-def')
         if args.crab:
             argv.append ('--horn-crab')
 
@@ -1115,13 +1161,17 @@ class Seahorn(sea.LimitedCmd):
         if "--dsa-stats" in extra:
             argv.append ('--sea-dsa-stats')
 
-        ## we select the sea-dsa variant
+        ## sea-dsa: select variant
         if args.dsa == 'sea-flat':
             argv.append ('--sea-dsa=flat')
-        elif args.dsa == 'sea-ci':
+        elif args.dsa == 'sea-ci' or args.dsa == 'sea-ci-t':
             argv.append ('--sea-dsa=ci')
         else:
             argv.append ('--sea-dsa=cs')
+
+        ## sea-dsa: enable type-awareness
+        if args.dsa == 'sea-cs-t' or args.dsa == 'sea-ci-t':
+           argv.append('--sea-dsa-type-aware')
 
         if args.mem_dot:
             argv.append ('--mem-dot')
@@ -1165,6 +1215,8 @@ class Seahorn(sea.LimitedCmd):
 
         if args.no_lower_gv_init:
             argv.append('--lower-gv-init=false')
+        if args.eval_branch_sentinel:
+            argv.append('--eval-branch-sentinel')
 
         argv.extend (args.in_files)
 
@@ -1292,7 +1344,6 @@ class LegacyFrontEnd (sea.LimitedCmd):
             print ('Only supported on Linux')
             return 1
 
-        import subprocess
         self.lfeCmd = sea.ExtCmd (cmd_name,'',quiet)
 
         argv = ['--no-seahorn', '-o', args.out_file]
@@ -1529,7 +1580,7 @@ class InspectBitcode(sea.LimitedCmd):
                 argv.extend(['-mem-dot'])
             if args.mem_cg_dot:
                 argv.extend(['-mem-callgraph-dot'])
-            if args.dot_outdir is not "":
+            if args.dot_outdir != "":
                 argv.extend(['-sea-dsa-dot-outdir={0}'.format(args.dot_outdir)])
 
         if args.cha: argv.extend (['-cha'])
@@ -1540,118 +1591,6 @@ class InspectBitcode(sea.LimitedCmd):
 
         return self.seainspectCmd.run (args, argv)
 
-class SeaExeCex(sea.LimitedCmd):
-    def __init__(self, quiet=False):
-        super (SeaExeCex, self).__init__('exe-cex',
-                                         'Executable Counterexamples',
-                                         allow_extra=True)
-    @property
-    def stdout (self):
-        return
-
-    def name_out_file (self, in_files, args=None, work_dir=None):
-        return _remap_file_name (in_files[0], '.exe', work_dir)
-
-    def mk_arg_parser (self, ap):
-        ap = super (SeaExeCex, self).mk_arg_parser (ap)
-        add_tmp_dir_args (ap)
-        add_in_out_args (ap)
-        _add_S_arg (ap)
-        ap.add_argument ('--harness', '-harness',
-                         dest='harness',
-                         help='Destination file for the harness',
-                         default=None, metavar='FILE')
-        ap.add_argument ('--bit-precise','-bit-precise',
-                         dest='bv_cex',
-                         help='Generate bit-precise counterexamples',
-                         default=False, action='store_true')
-        ap.add_argument ('--bit-mem-precise','-bit-mem-precise',
-                         dest='bv_part_mem',
-                         help='Generate bit- and memory-precise counterexamples',
-                         default=False, action='store_true')
-        ap.add_argument ('--alloc-mem', '-alloc-mem',
-                         default=False, action='store_true',
-                         dest='alloc_mem',
-                         help='Allocate space for uninitialized memory')
-        ap.add_argument ('--verify', '-verify',
-                         default=False, action='store_true',
-                         dest='verify',
-                         help='Verify the harness executes __VERIFIER_error')
-        return ap
-
-    def run(self, args, extra):
-        # FIXME: the -o is used both `sea pf` and `sea exe`. Thus,
-        # the output of `sea pf` is overwritten by the output of `sea exe`.
-        try:
-            harness_file = args.harness
-            if harness_file is None:
-                harness_file = 'harness.ll'
-
-            if args.out_file is None:
-                args.out_file = 'harness'
-
-            try:
-                os.remove(harness_file)
-            except OSError:
-                pass
-
-            ## `sea pf`: find counterexample and generate harness
-            c = sea.SeqCmd('','',
-                           [Clang(), Seapp(), MixedSem(), Seaopt(), \
-                            Seahorn(solve=True)])
-            argv = list ()
-            argv.extend(['-m64', '-g'])
-            argv.extend(extra)
-            # TODO: we should remove from `extra` the following options:
-            argv.extend(['--cex={0}'.format(harness_file)])
-            if args.bv_cex or args.bv_part_mem:
-                argv.extend(['--bv-cex'])
-            if args.bv_part_mem:
-                argv.extend(['--horn-bv-part-mem'])
-            res = c.run(args,  argv)
-            if res != 0:
-                print('\n\nThe harness was not generated. Aborting ...\n');
-                return res
-
-            if not os.path.isfile(harness_file): # if program was safe
-                print('\n\nThe harness was not generated. Aborting ...\n');
-                # remove the .smt2 file
-                try:
-                    os.remove(args.out_file)
-                except OSError:
-                    pass
-                # some error code different from 0
-                return 1
-
-
-            ## `sea exe`: generate executable
-            c = sea.SeqCmd('','',
-                           [Clang(), Seapp(strip_extern=True,keep_lib_fn=True), \
-                            Seapp(internalize=True), WrapMem(), LinkRt()])
-            argv = list()
-            argv.extend(['-m64', '-g'])
-            argv.extend(extra)
-            # TODO: we should remove from `extra` the following options:
-            if args.alloc_mem:
-                argv.extend(['--alloc-mem'])
-            infiles = args.in_files
-            infiles.extend([harness_file])
-            res = c.run(args, argv)
-            if res != 0:
-                print('\n\nThe executable counterexample was not generated. Aborting ...\n');
-            else:
-                print ('\n\nGenerated executable counterexample {0}'.format(args.out_file))
-
-            # Optionally verify the harness reaches __VERIFIER_error
-            if res == 0 and args.verify:
-                args.in_files = [args.out_file]
-                c = ExecHarness()
-                c.run(args, [])
-
-            return res
-
-        except Exception as e:
-            raise IOError(str(e))
 
 ## SeaHorn aliases
 FrontEnd = sea.SeqCmd ('fe', 'Front end: alias for clang|pp|ms|opt',
@@ -1686,5 +1625,8 @@ Inspect = sea.SeqCmd ('inspect', 'alias for fe + inspect-bitcode', FrontEnd.cmds
 Smc = sea.SeqCmd ('smc', 'alias for fe|opt|smc',
                    [Clang(), Seapp(), SimpleMemoryChecks(), MixedSem(),
                     Seaopt(), Seahorn(solve=True)])
-Fpf = sea.SeqCmd('fpf', 'fat-bnd-check|fe|unroll|cut-loops|opt|horn --solve', 
-                 [FatBoundsCheck()] + FrontEnd.cmds + [Unroll(), CutLoops(), Seaopt(), Seahorn(solve=True)])
+# run clang before anything else so that we accept both high level source and bitcode.
+Fpf = sea.SeqCmd('fpf', 'clang|fat-bnd-check|fe|unroll|cut-loops|opt|horn --solve',
+                 [Clang(), FatBoundsCheck()] + FrontEnd.cmds + [Unroll(), CutLoops(), Seaopt(), Seahorn(solve=True)])
+Spf = sea.SeqCmd('spf', 'clang|add-branch-sentinel|fat-bnd-check|fe|unroll|cut-loops|opt|horn --solve',
+                 [Clang(), AddBranchSentinel(), FatBoundsCheck()] + FrontEnd.cmds + [Unroll(), CutLoops(), Seaopt(), Seahorn(solve=True)])

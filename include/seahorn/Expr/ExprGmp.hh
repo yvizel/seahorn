@@ -26,6 +26,8 @@ class mpz_class {
   mpz_t m_num;
 
 public:
+  friend class mpz_rand;
+
   mpz_class() { mpz_init(m_num); }
   ~mpz_class() { mpz_clear(m_num); }
 
@@ -35,11 +37,10 @@ public:
     mpz_init(v.m_num);
   }
 
-  mpz_class(mpz_srcptr v) { mpz_init_set(m_num, v); }
-  mpz_class(int v) { mpz_init_set_si(m_num, v); }
-  mpz_class(unsigned v) { mpz_init_set_ui(m_num, v); }
-  mpz_class(unsigned long v) { mpz_init_set_ui(m_num, v); }
-  mpz_class(signed long v) { mpz_init_set_si(m_num, v); }
+  explicit mpz_class(mpz_srcptr v) { mpz_init_set(m_num, v); }
+  explicit mpz_class(unsigned int v) { mpz_init_set_ui(m_num, v); }
+  explicit mpz_class(unsigned long int v) { mpz_init_set_ui(m_num, v); }
+  mpz_class(signed long int v) { mpz_init_set_si(m_num, v); }
 
   mpz_class(const std::string &v, int base = 10) {
     if (mpz_init_set_str(m_num, v.c_str(), base) != 0) {
@@ -49,6 +50,15 @@ public:
   }
 
   int sgn() const { return mpz_sgn(m_num); }
+
+  mpz_class &setbit(mp_bitcnt_t bit) {
+    mpz_setbit(m_num, bit);
+    return *this;
+  }
+  mpz_class &clrbit(mp_bitcnt_t bit) {
+    mpz_clrbit(m_num, bit);
+    return *this;
+  }
 
   mpz_class &operator=(const mpz_class &v) {
     mpz_set(m_num, v.m_num);
@@ -76,13 +86,12 @@ public:
     return std::string(res.m_str);
   }
 
-  void mpzExport (void * rop , size_t *count, int order, size_t size, int endian, size_t nails) {
-    mpz_export (rop, count, order, size, endian, nails, m_num );
+  void mpzExport(void *rop, size_t *count, int order, size_t size, int endian,
+                 size_t nails) {
+    mpz_export(rop, count, order, size, endian, nails, m_num);
   }
 
-  size_t sizeInBase (int base) {
-    return mpz_sizeinbase(m_num, base);
-  }
+  size_t sizeInBase(int base) const { return mpz_sizeinbase(m_num, base); }
 
   bool operator<(unsigned long v) const { return mpz_cmp_ui(m_num, v) < 0; }
   bool operator<(signed long v) const { return mpz_cmp_si(m_num, v) < 0; }
@@ -108,6 +117,25 @@ public:
   bool operator==(const mpz_class &v) const {
     return mpz_cmp(m_num, v.m_num) == 0;
   }
+  bool operator!=(const mpz_class &v) const {
+    return mpz_cmp(m_num, v.m_num) != 0;
+  }
+
+  explicit operator bool() const { return mpz_cmp_ui(m_num, 0) != 0; }
+
+  mpz_class operator%(const mpz_class &v) {
+    mpz_class mod;
+    mpz_mod(mod.m_num, m_num, v.m_num);
+
+    return mod;
+  }
+
+  mpz_class operator%(unsigned v) {
+    mpz_class mod;
+    mpz_mod_ui(mod.m_num, m_num, v);
+
+    return mod;
+  }
 
   mpz_class operator+(const mpz_class &v) {
     mpz_class sum;
@@ -116,13 +144,77 @@ public:
     return sum;
   }
 
-  mpz_class operator+ (unsigned v) {
-    mpz_class sum;
-    mpz_add_ui(sum.m_num, m_num, v);
+  mpz_class operator-(const mpz_class &v) const {
+    mpz_class diff;
+    mpz_sub(diff.m_num, m_num, v.m_num);
 
-    return sum;
+    return diff;
   }
 
+  mpz_class operator*(const mpz_class &v) const {
+    mpz_class prod;
+    mpz_mul(prod.m_num, m_num, v.m_num);
+
+    return prod;
+  }
+
+  mpz_class operator&(const mpz_class &v) const {
+    mpz_class result;
+    mpz_and(result.m_num, m_num, v.m_num);
+
+    return result;
+  }
+
+  mpz_class operator|(const mpz_class &v) const {
+    mpz_class result;
+    mpz_ior(result.m_num, m_num, v.m_num);
+
+    return result;
+  }
+
+  mpz_class operator^(const mpz_class &v) const {
+    mpz_class result;
+    mpz_xor(result.m_num, m_num, v.m_num);
+
+    return result;
+  }
+
+  mpz_class operator~() const {
+    mpz_class result;
+    mpz_com(result.m_num, m_num);
+
+    return result;
+  }
+
+  mpz_class operator<<(mp_bitcnt_t v) const {
+    mpz_class result;
+    mpz_mul_2exp(result.m_num, m_num, v);
+
+    return result;
+  }
+
+  mpz_class operator>>(mp_bitcnt_t v) const {
+    mpz_class result;
+    mpz_tdiv_q_2exp(result.m_num, m_num, v);
+
+    return result;
+  }
+};
+
+class mpz_rand {
+  gmp_randstate_t m_state;
+
+public:
+  mpz_rand(mpz_class seed) {
+    gmp_randinit_default(m_state);
+    gmp_randseed(m_state, seed.m_num);
+  }
+
+  mpz_class urandomb(mp_bitcnt_t n) {
+    mpz_class mpz;
+    mpz_urandomb(mpz.m_num, m_state, n);
+    return mpz;
+  }
 };
 class mpq_class {
   mpq_t m_num;

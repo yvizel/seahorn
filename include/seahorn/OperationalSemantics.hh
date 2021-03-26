@@ -149,6 +149,13 @@ public:
   virtual OpSemContextPtr fork(SymStore &values, ExprVector &side) {
     return OpSemContextPtr(new OpSemContext(values, side, *this));
   }
+
+  /// \brief Given Expr encoding of a ptr \p p, extract and return addressable
+  /// part only
+  virtual Expr ptrToAddr(Expr p) { return p; }
+
+  /// \brief Given Expr encoding of a mem map \p p, extract raw mem part only
+  virtual Expr getRawMem(Expr p) { return p; }
 };
 
 /// \brief Tracks information about a function
@@ -198,6 +205,7 @@ public:
   ExprFactory &efac() const { return m_efac; }
 
   void resetFilter() {m_filter.clear();}
+  bool isInFilter(const llvm::Value &v) const {return m_filter.count(&v);}
   void addToFilter(const llvm::Value& v) {m_filter.insert(&v);}
   template <typename Iterator>
   void addToFilter(Iterator begin, Iterator end) {
@@ -252,6 +260,8 @@ public:
   virtual bool isTracked(const llvm::Value &v) const {
     return m_filter.empty() || m_filter.count(&v);
   }
+
+
   /// \brief Returns a symbolic value of \p v in the given store \p s
   /// \p v is either a constant or has a corresponding symbolic
   /// register

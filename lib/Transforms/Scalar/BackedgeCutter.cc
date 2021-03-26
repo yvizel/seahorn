@@ -2,11 +2,13 @@
 #include "seahorn/Passes.hh"
 #include "seahorn/Support/SeaDebug.h"
 #include "seahorn/Support/SeaLog.hh"
+#include "seahorn/Transforms/Utils/Local.hh"
 
 #include "llvm/ADT/SmallVector.h"
 #include "llvm/ADT/Statistic.h"
 #include "llvm/Analysis/CFG.h"
 #include "llvm/IR/Module.h"
+#include "llvm/Support/CommandLine.h"
 #include "llvm/Transforms/Utils/Local.h"
 
 // void FindFunctionBackedges(
@@ -17,6 +19,12 @@
 #define DEBUG_TYPE "back-edge-cutter"
 STATISTIC(NumBackEdges, "Number of back-edges");
 STATISTIC(NumBackEdgesUncut, "Number of back-edges not cut");
+
+static llvm::cl::opt<bool> AddAssertOnBackEdgeOpt(
+    "back-edge-cutter-with-asserts",
+    llvm::cl::desc("Add calls to verifier.assert on back-edge to confirm loop "
+                   "unrolling is adequate"),
+    llvm::cl::init(false));
 
 using namespace llvm;
 using namespace seahorn;
@@ -40,6 +48,37 @@ char BackedgeCutter::ID = 0;
 
 } // namespace
 
+static void createConditionalAssert(BranchInst &TI, Function &F,
+                                    BasicBlock &dst, SeaBuiltinsInfo &SBI) {
+  // insert verifier.assert{.not} function
+  auto *assertFn =
+      SBI.mkSeaBuiltinFn(TI.getSuccessor(0) == &dst ? SeaBuiltinsOp::ASSERT_NOT
+                                                    : SeaBuiltinsOp::ASSERT,
+                         *F.getParent());
+  auto ci = CallInst::Create(assertFn, TI.getCondition(), "", &TI);
+  MDNode *meta = MDNode::get(F.getContext(), None);
+  ci->setMetadata("backedge_assert", meta);
+  // -- a hack to locate a near-by debug location
+  if (TI.getDebugLoc())
+    ci->setDebugLoc(TI.getDebugLoc());
+  else if (auto condInst = dyn_cast<Instruction>(TI.getCondition())) {
+    ci->setDebugLoc(condInst->getDebugLoc());
+  }
+}
+
+static void createUnconditionalAssert(BranchInst &TI, Function &F,
+                                      BasicBlock &dst, SeaBuiltinsInfo &SBI) {
+  // insert verifier.assert function
+  auto *assertFn = SBI.mkSeaBuiltinFn(SeaBuiltinsOp::ASSERT, *F.getParent());
+  auto ci = CallInst::Create(assertFn, ConstantInt::getFalse(F.getContext()),
+                             "", &TI);
+  MDNode *meta = MDNode::get(F.getContext(), None);
+  ci->setMetadata("backedge_assert", meta);
+  // -- a hack to locate a near-by debug location
+  if (TI.getDebugLoc())
+    ci->setDebugLoc(TI.getDebugLoc());
+}
+
 /// Remove a back-edge
 ///
 /// If the backe-edge is unconditional, replace with assume(false). If the
@@ -47,6 +86,7 @@ char BackedgeCutter::ID = 0;
 /// taken.
 static bool cutBackEdge(BasicBlock *src, BasicBlock *dst, Function &F,
                         SeaBuiltinsInfo &SBI) {
+  DOG(INFO << "Cutting back-edge in " << F.getName() << "\n";);
   DOG(llvm::errs() << "Cutting back-edge:\n"
                    << *src << "\n\n to \n\n"
                    << *dst << "\n";);
@@ -59,6 +99,10 @@ static bool cutBackEdge(BasicBlock *src, BasicBlock *dst, Function &F,
   }
 
   if (TI->isUnconditional()) {
+    if (AddAssertOnBackEdgeOpt) {
+      createUnconditionalAssert(*TI, F, *dst, SBI);
+      DOG(INFO << "add unwinding assert for a (un)conditional back edge");
+    }
     // -- call assume(false) which will get stuck
     auto *assumeFn = SBI.mkSeaBuiltinFn(SeaBuiltinsOp::ASSUME, *F.getParent());
     CallInst::Create(assumeFn, ConstantInt::getFalse(F.getContext()), "",
@@ -69,6 +113,11 @@ static bool cutBackEdge(BasicBlock *src, BasicBlock *dst, Function &F,
     return true;
   } else {
     assert(TI->getSuccessor(0) == dst || TI->getSuccessor(1) == dst);
+    if (AddAssertOnBackEdgeOpt) {
+      createConditionalAssert(*TI, F, *dst, SBI);
+      DOG(INFO << "add unwinding assert for a conditional back edge");
+    }
+
     auto *assumeFn = SBI.mkSeaBuiltinFn(TI->getSuccessor(0) == dst
                                             ? SeaBuiltinsOp::ASSUME_NOT
                                             : SeaBuiltinsOp::ASSUME,
@@ -99,6 +148,16 @@ bool BackedgeCutter::runOnFunction(Function &F) {
     Changed |= cutBackEdge(const_cast<BasicBlock *>(edge.first),
                            const_cast<BasicBlock *>(edge.second), F, SBI);
   }
+
+  if (Changed) {
+    // -- Clean up after cutting an unconditional back-edge. Such a cut creates
+    // -- an unreachable basic block that has to be removed.
+
+    // XXX This only needs to run when an unconditional back-edge was removed,
+    // XXX but currently scheduling it if any change has been done at all.
+    reduceToReturnPaths(F, SBI);
+  }
+
   return Changed;
 }
 

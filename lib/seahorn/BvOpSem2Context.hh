@@ -1,18 +1,72 @@
 #pragma once
 
 #include "seahorn/BvOpSem2.hh"
+#include "seahorn/Expr/Smt/Z3.hh"
 #include "seahorn/Support/SeaDebug.h"
 #include "seahorn/Support/SeaLog.hh"
 
 #include "seahorn/Expr/ExprLlvm.hh"
 #include "seahorn/Expr/Smt/EZ3.hh"
 
+#include <boost/hana.hpp>
+#include <type_traits>
+#include <unordered_set>
+
 namespace seahorn {
 namespace details {
 
+// This enumerates the different kinds of metadata memory used in Tracking
+// memory.
+enum class MetadataKind {
+  READ = 0,
+  WRITE = 1,
+  ALLOC = 2,
+};
+
+namespace MemoryFeatures {
+auto tracking_tag_of =
+    [](auto t) -> hana::type<typename decltype(t)::type::TrackingTag> {
+  return {};
+};
+
+auto fatmem_tag_of =
+    [](auto t) -> hana::type<typename decltype(t)::type::FatMemTag> {
+  return {};
+};
+
+auto widemem_tag_of =
+    [](auto t) -> hana::type<typename decltype(t)::type::WideMemTag> {
+  return {};
+};
+
+// This empty class is used as a 'tag' to mark containing classes as enabling
+// features
+// feature: tracking.
+struct Tracking_tag {};
+// feature: Fat Memory.
+struct FatMem_tag {};
+// feature: Wide Memory.
+struct WideMem_tag {};
+
+auto has_tracking = [](auto t) {
+  return hana::sfinae(tracking_tag_of)(t) ==
+         hana::just(hana::type<Tracking_tag>{});
+};
+
+auto has_fatmem = [](auto t) {
+  return hana::sfinae(fatmem_tag_of)(t) == hana::just(hana::type<FatMem_tag>{});
+};
+
+auto has_widemem = [](auto t) {
+  return hana::sfinae(widemem_tag_of)(t) ==
+         hana::just(hana::type<WideMem_tag>{});
+};
+
+} // namespace MemoryFeatures
+
 class OpSemAlu;
+class OpSemMemManagerBase;
 class OpSemMemManager;
-class OpSemMemRepr;
 class OpSemVisitorBase;
 
 /// \brief Operational Semantics Context, a.k.a. Semantic Machine
@@ -36,6 +90,9 @@ private:
 
   /// \brief Current instruction to be executed
   BasicBlock::const_iterator m_inst;
+
+  /// \brief True if the current instructions has to be repeated
+  bool m_repeat{false};
 
   /// \brief Previous basic block (or null if not known)
   const BasicBlock *m_prev;
@@ -95,11 +152,15 @@ private:
   /// \brief Numeric one
   Expr oneE;
 
-  /// \brief local simplifier
+  /// \brief local z3 objects
   std::shared_ptr<EZ3> m_z3;
   std::shared_ptr<ZSimplifier<EZ3>> m_z3_simplifier;
+  std::shared_ptr<ZSolver<EZ3>> m_z3_solver;
 
   bool m_shouldSimplify = false;
+  std::unordered_set<Expr> m_addedToSolver;
+
+  bool m_trackingOn = false;
 
 public:
   /// \brief Create a new context with given semantics, values, and side
@@ -116,23 +177,26 @@ public:
 
   bool shouldSimplify() { return m_shouldSimplify; }
 
+  bool isTrackingOn() { return m_trackingOn; }
+
+  void setTracking(bool shouldTrack) { m_trackingOn = shouldTrack; }
+
   /// \brief Writes value \p u into symbolic register \p v
   void write(Expr v, Expr u);
-  /// \brief Returns size of a memory word
-  unsigned wordSzInBytes() const;
-  /// \brief Returns size in bits of a memory word
-  unsigned wordSzInBits() const { return wordSzInBytes() * 8; }
+
   /// \brief Returns size of a pointer in bits
   unsigned ptrSzInBits() const;
 
   /// \brief Returns the memory manager
-  OpSemMemManager *getMemManager() const { return m_memManager.get(); }
   OpSemMemManager &mem() const {
+    // exactly one of m_memManager or m_parent are set
+    assert(m_memManager || m_parent);
     assert(!m_parent || !m_memManager);
     if (m_memManager)
       return *m_memManager;
     if (m_parent)
       return m_parent->mem();
+    llvm_unreachable("must have a memory manager");
   }
 
   OpSemAlu &alu() const {
@@ -163,9 +227,17 @@ public:
   /// \brief Currently executed instruction
   const Instruction &getCurrentInst() const { return *m_inst; }
   /// \brief Set instruction to be executed next
-  void setInstruction(const Instruction &inst) {
+  void setInstruction(const Instruction &inst, bool repeat = false) {
     m_inst = BasicBlock::const_iterator(&inst);
+    m_repeat = repeat;
   }
+
+  /// \brief True if the current instruction has to be executed again
+  bool isRepeatInstruction() const { return m_repeat; }
+
+  /// \brief Reset repeat instruction flag
+  void resetRepeatInstruction() { m_repeat = false; }
+
   /// \brief True if executing the last instruction in the current basic block
   bool isAtBbEnd() const { return m_inst == m_bb->end(); }
   /// \brief Move to next instructions in the basic block to execute
@@ -196,11 +268,17 @@ public:
   Expr storeValueToMem(Expr val, Expr ptr, const llvm::Type &ty,
                        uint32_t align);
 
-  /// \brief Perform symbolic memset
+  /// \brief Symbolic memset with concrete length
   Expr MemSet(Expr ptr, Expr val, unsigned len, uint32_t align);
 
-  /// \brief Perform symbolic memcpy
+  /// \brief Symbolic memset with symbolic length
+  Expr MemSet(Expr ptr, Expr val, Expr len, uint32_t align);
+
+  /// \brief Perform symbolic memcpy with constant length
   Expr MemCpy(Expr dPtr, Expr sPtr, unsigned len, uint32_t align);
+
+  /// \brief Perform symbolic memcpy with symbolic length
+  Expr MemCpy(Expr dPtr, Expr sPtr, Expr len, uint32_t align);
 
   /// \brief Copy concrete memory into symbolic memory
   Expr MemFill(Expr dPtr, char *sPtr, unsigned len, uint32_t align = 0);
@@ -275,6 +353,14 @@ public:
     return OpSemContextPtr(new Bv2OpSemContext(values, side, *this));
   }
 
+  Expr ptrToAddr(Expr p) override;
+
+  Expr getRawMem(Expr p) override;
+
+  void resetSolver();
+  void addToSolver(const Expr e);
+  boost::tribool solve();
+
 private:
   static Bv2OpSemContext &ctx(OpSemContext &ctx) {
     return static_cast<Bv2OpSemContext &>(ctx);
@@ -305,8 +391,11 @@ public:
   virtual Expr boolTy() = 0;
 
   virtual bool isNum(Expr v) = 0;
+  virtual bool isNum(Expr v, unsigned &bitWidth) = 0;
   virtual expr::mpz_class toNum(Expr v) = 0;
-  virtual Expr si(expr::mpz_class k, unsigned bitWidth) = 0;
+  virtual Expr ui(unsigned k, unsigned bitWidth) = 0;
+  virtual Expr num(expr::mpz_class k, unsigned bitWidth) = 0;
+  virtual Expr si(int k, unsigned bitWidth) = 0;
   virtual Expr doAdd(Expr op0, Expr op1, unsigned bitWidth) = 0;
   virtual Expr doSub(Expr op0, Expr op1, unsigned bitWidth) = 0;
   virtual Expr doMul(Expr op0, Expr op1, unsigned bitWidth) = 0;
@@ -359,108 +448,7 @@ public:
 
 std::unique_ptr<OpSemAlu> mkBvOpSemAlu(Bv2OpSemContext &ctx);
 
-/// \brief  Lays out / allocates pointers in a virtual memory space
-///
-/// The class is responsible for laying out allocated object in memory.
-/// The exact semantics are yet to be determined. Currently, it is assumed
-/// that the layout respects stack / heap / text area separation.
-///
-/// Note that in addition to the parameters passed directly, the allocator has
-/// access to the \p OpSemContext so it can depend on the current instruction
-/// being executed.
-class OpSemAllocator {
-protected:
-  struct AllocInfo;
-  struct FuncAllocInfo;
-  struct GlobalAllocInfo;
-
-  OpSemMemManager &m_mem;
-  Bv2OpSemContext &m_ctx;
-  Bv2OpSem &m_sem;
-  ExprFactory &m_efac;
-
-  /// \brief All known stack allocations
-  std::vector<AllocInfo> m_allocas;
-  /// \brief All known code allocations
-  std::vector<FuncAllocInfo> m_funcs;
-  /// \brief All known global allocations
-  std::vector<GlobalAllocInfo> m_globals;
-
-  // TODO: turn into user-controlled parameters
-  unsigned MAX_STACK_ADDR = 0xC0000000;
-  unsigned MIN_STACK_ADDR = (MAX_STACK_ADDR - 9437184);
-  unsigned TEXT_SEGMENT_START = 0x08048000;
-
-public:
-  using AddrInterval = std::pair<unsigned, unsigned>;
-  OpSemAllocator(OpSemMemManager &mem);
-
-  virtual ~OpSemAllocator();
-
-  /// \brief Allocates memory on the stack and returns a pointer to it
-  /// \param align is requested alignment. If 0, default alignment is used
-  virtual AddrInterval salloc(unsigned bytes, uint32_t align) = 0;
-
-  /// \brief Allocates memory on the stack
-  ///
-  /// \param bytes is a symbolic representation for number of bytes to allocate
-  virtual AddrInterval salloc(Expr bytes, uint32_t align) = 0;
-
-  /// \brief Address at which heap starts (initial value of \c brk)
-  unsigned brk0Addr();
-
-  bool isBadAddrInterval(AddrInterval range) {
-    return range == AddrInterval(0, 0);
-  }
-
-  /// \brief Return the maximal legal range of the stack pointer
-  AddrInterval getStackRange() { return {MIN_STACK_ADDR, MAX_STACK_ADDR}; }
-
-  /// \brief Called whenever a new module is to be executed
-  virtual void onModuleEntry(const Module &M) {}
-
-  /// \brief Called whenever a new function is to be executed
-  virtual void onFunctionEntry(const Function &fn) {}
-
-  /// \brief Allocates memory on the heap and returns a pointer to it
-  virtual AddrInterval halloc(unsigned _bytes, unsigned align) {
-    llvm_unreachable("not implemented");
-  }
-
-  /// \brief Allocates memory in global (data/bss) segment for given global
-  /// \param bytes is the expected size of allocation
-  virtual AddrInterval galloc(const GlobalVariable &gv, uint64_t bytes,
-                              unsigned align);
-
-  /// \brief Allocates memory in code segment for the code of a given function
-  virtual AddrInterval falloc(const Function &fn, unsigned align);
-
-  /// \brief Returns an address at which a given function resides
-  virtual unsigned getFunctionAddr(const Function &F, unsigned align);
-
-  virtual AddrInterval getFunctionAddrAndSize(const Function &F,
-                                              unsigned int align);
-
-  /// \brief Returns an address of a global variable
-  virtual unsigned getGlobalVariableAddr(const GlobalVariable &gv,
-                                         unsigned bytes, unsigned align);
-
-  /// \brief Returns an address of memory segment to store value of the variable
-  virtual char *getGlobalVariableMem(const GlobalVariable &gv) const;
-
-  /// \brief Returns initial value of a global variable
-  ///
-  /// Returns (nullptr, 0) if the global variable has no known initial value
-  virtual std::pair<char *, unsigned>
-  getGlobalVariableInitValue(const GlobalVariable &gv);
-
-  virtual void dumpGlobalsMap();
-};
-
-/// \brief Creates an instance of OpSemAllocator
-std::unique_ptr<OpSemAllocator> mkNormalOpSemAllocator(OpSemMemManager &mem);
-std::unique_ptr<OpSemAllocator> mkStaticOpSemAllocator(OpSemMemManager &mem);
-
+// TODO: merge this class with OpSemMemManager
 class OpSemMemManagerBase {
 protected:
   /// \brief Parent Operational Semantics
@@ -498,6 +486,45 @@ public:
   uint32_t getAlignment(const llvm::Value &v) const { return m_alignment; }
   bool isIgnoreAlignment() const { return m_ignoreAlignment; }
 };
+
+class MemManagerCore {
+protected:
+  /// \brief Parent Operational Semantics
+  Bv2OpSem &m_sem;
+  /// \brief Parent Semantics Context
+  Bv2OpSemContext &m_ctx;
+  /// \brief Parent expression factory
+  ExprFactory &m_efac;
+
+  /// \brief Ptr size in bytes
+  uint32_t m_ptrSz;
+  /// \brief Word size in bytes
+  uint32_t m_wordSz;
+  /// \brief Preferred alignment in bytes
+  ///
+  /// Must be divisible by \t m_wordSz
+  uint32_t m_alignment;
+
+  /// \brief ignore alignment for memory accesses
+  const bool m_ignoreAlignment;
+
+  MemManagerCore(Bv2OpSem &sem, Bv2OpSemContext &ctx, unsigned int ptrSz,
+                 unsigned int wordSz, bool ignoreAlignment);
+
+  virtual ~MemManagerCore() = default;
+
+public:
+  Bv2OpSem &sem() const { return m_sem; }
+  Bv2OpSemContext &ctx() const { return m_ctx; }
+
+  unsigned ptrSizeInBits() const { return m_ptrSz * 8; }
+  unsigned ptrSizeInBytes() const { return m_ptrSz; }
+  unsigned wordSizeInBytes() const { return m_wordSz; }
+  unsigned wordSizeInBits() const { return m_wordSz * 8; }
+  uint32_t getAlignment(const llvm::Value &v) const { return m_alignment; }
+  bool isIgnoreAlignment() const { return m_ignoreAlignment; }
+};
+
 /// \brief Memory manager for OpSem machine
 class OpSemMemManager : public OpSemMemManagerBase {
 public:
@@ -635,9 +662,19 @@ public:
   virtual MemValTy MemSet(PtrTy ptr, Expr _val, unsigned len, MemValTy mem,
                           uint32_t align) = 0;
 
+  /// \brief Executes symbolic memset with symbolic length
+  virtual MemValTy MemSet(PtrTy ptr, Expr _val, Expr len, MemValTy mem,
+                          uint32_t align) = 0;
+
   /// \brief Executes symbolic memcpy with concrete length
   virtual MemValTy MemCpy(PtrTy dPtr, PtrTy sPtr, unsigned len,
-                          MemValTy memTrsfrRead, uint32_t align) = 0;
+                          MemValTy memTrsfrRead, MemValTy memRead,
+                          uint32_t align) = 0;
+
+  /// \brief Executes symbolic memcpy with symbolic length
+  virtual MemValTy MemCpy(PtrTy dPtr, PtrTy sPtr, Expr len,
+                          MemValTy memTrsfrRead, MemValTy memRead,
+                          uint32_t align) = 0;
 
   /// \brief Executes symbolic memcpy from physical memory with concrete length
   virtual MemValTy MemFill(PtrTy dPtr, char *sPtr, unsigned len, MemValTy mem,
@@ -701,6 +738,22 @@ public:
   /// \brief return True expr if number of bytes(byteSz) is within allocated
   /// bounds, False expr otherwise.
   virtual Expr isDereferenceable(PtrTy p, Expr byteSz) = 0;
+
+  /// \brief return True expr if memory has been modified since setMetadata
+  // or allocation, whichever is later.
+  virtual Expr isMetadataSet(MetadataKind kind, PtrTy p, MemValTy mem) = 0;
+
+  /// \brief reset memory modified state; used in conjuction with isMetadataSet
+  virtual MemValTy setMetadata(MetadataKind kind, PtrTy p, MemValTy mem,
+                               unsigned val) = 0;
+
+  /// \brief given a properly encoded pointer Expr \p p , return the raw
+  /// expression representing memory address only
+  virtual Expr ptrToAddr(Expr p) = 0;
+
+  /// \brief given a properly encoded memory map Expr \p p , return the base
+  /// expression representing raw memory only
+  virtual Expr getRawMem(Expr p) = 0;
 };
 
 OpSemMemManager *mkRawMemManager(Bv2OpSem &sem, Bv2OpSemContext &ctx,
@@ -718,93 +771,6 @@ OpSemMemManager *mkWideMemManager(Bv2OpSem &sem, Bv2OpSemContext &ctx,
 OpSemMemManager *mkExtraWideMemManager(Bv2OpSem &sem, Bv2OpSemContext &ctx,
                                        unsigned ptrSz, unsigned wordSz,
                                        bool useLambdas = false);
-
-/// \Brief Base class for memory representation
-class OpSemMemRepr {
-protected:
-  OpSemMemManager &m_memManager;
-  Bv2OpSemContext &m_ctx;
-  ExprFactory &m_efac;
-  static constexpr unsigned m_BitsPerByte = 8;
-
-public:
-  OpSemMemRepr(OpSemMemManager &memManager, Bv2OpSemContext &ctx)
-      : m_memManager(memManager), m_ctx(ctx), m_efac(ctx.getExprFactory()) {}
-  virtual ~OpSemMemRepr() = default;
-
-  virtual Expr coerce(Expr sort, Expr val) = 0;
-  virtual Expr loadAlignedWordFromMem(Expr ptr, Expr mem) = 0;
-  virtual Expr storeAlignedWordToMem(Expr val, Expr ptr, Expr ptrSort,
-                                     Expr mem) = 0;
-
-  virtual Expr MemSet(Expr ptr, Expr _val, unsigned len, Expr mem,
-                      unsigned wordSzInBytes, Expr ptrSort, uint32_t align) = 0;
-  virtual Expr MemCpy(Expr dPtr, Expr sPtr, unsigned len, Expr memTrsfrRead,
-                      unsigned wordSzInBytes, Expr ptrSort, uint32_t align) = 0;
-  virtual Expr MemFill(Expr dPtr, char *sPtr, unsigned len, Expr mem,
-                       unsigned wordSzInBytes, Expr ptrSort,
-                       uint32_t align) = 0;
-  virtual Expr FilledMemory(Expr ptrSort, Expr val) = 0;
-};
-
-/// \brief Represent memory regions by logical arrays
-class OpSemMemArrayRepr : public OpSemMemRepr {
-public:
-  OpSemMemArrayRepr(OpSemMemManager &memManager, Bv2OpSemContext &ctx)
-      : OpSemMemRepr(memManager, ctx) {}
-
-  Expr coerce(Expr _, Expr val) override { return val; }
-
-  Expr loadAlignedWordFromMem(Expr ptr, Expr mem) override {
-    return op::array::select(mem, ptr);
-  }
-
-  Expr storeAlignedWordToMem(Expr val, Expr ptr, Expr ptrSort,
-                             Expr mem) override {
-    (void)ptrSort;
-    return op::array::store(mem, ptr, val);
-  }
-
-  Expr MemSet(Expr ptr, Expr _val, unsigned len, Expr mem,
-              unsigned wordSzInBytes, Expr ptrSort, uint32_t align) override;
-  Expr MemCpy(Expr dPtr, Expr sPtr, unsigned len, Expr memTrsfrRead,
-              unsigned wordSzInBytes, Expr ptrSort, uint32_t align) override;
-  Expr MemFill(Expr dPtr, char *sPtr, unsigned len, Expr mem,
-               unsigned wordSzInBytes, Expr ptrSort, uint32_t align) override;
-  Expr FilledMemory(Expr ptrSort, Expr val) override {
-    return op::array::constArray(ptrSort, val);
-  }
-};
-
-/// \brief Represent memory regions by lambda functions
-class OpSemMemLambdaRepr : public OpSemMemRepr {
-public:
-  OpSemMemLambdaRepr(OpSemMemManager &memManager, Bv2OpSemContext &ctx)
-      : OpSemMemRepr(memManager, ctx) {}
-
-  Expr coerce(Expr sort, Expr val) override {
-    return isOp<ARRAY_TY>(sort) ? coerceArrayToLambda(val) : val;
-  }
-
-  Expr loadAlignedWordFromMem(Expr ptr, Expr mem) override {
-    return bind::fapp(mem, ptr);
-  }
-
-  Expr storeAlignedWordToMem(Expr val, Expr ptr, Expr ptrSort,
-                             Expr mem) override;
-  Expr MemSet(Expr ptr, Expr _val, unsigned len, Expr mem,
-              unsigned wordSzInBytes, Expr ptrSort, uint32_t align) override;
-  Expr MemCpy(Expr dPtr, Expr sPtr, unsigned len, Expr memTrsfrRead,
-              unsigned wordSzInBytes, Expr ptrSort, uint32_t align) override;
-  Expr MemFill(Expr dPtr, char *sPtr, unsigned len, Expr mem,
-               unsigned wordSzInBytes, Expr ptrSort, uint32_t align) override;
-  Expr FilledMemory(Expr ptrSort, Expr v) override;
-
-private:
-  Expr coerceArrayToLambda(Expr arrVal);
-  Expr makeLinearITE(Expr addr, const ExprVector &ptrKeys,
-                     const ExprVector &vals, Expr fallback);
-};
 
 /// Evaluates constant expressions
 class ConstantExprEvaluator {

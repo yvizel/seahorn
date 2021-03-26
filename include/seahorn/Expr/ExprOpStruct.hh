@@ -16,8 +16,8 @@ enum class StructOpKind { MK_STRUCT, EXTRACT_VALUE, INSERT_VALUE };
 
 namespace typeCheck {
 namespace structType {
-struct Struct {
-  static inline Expr inferType(Expr exp, TypeChecker &tc) {
+struct Struct  : public TypeCheckBase{
+  inline Expr inferType(Expr exp, TypeChecker &tc) {
     ExprVector childrenTypes;
     bool wellFormed = true;
 
@@ -47,8 +47,8 @@ static inline bool structCheck(Expr exp, unsigned numChildren) {
          getIndex(exp) < getStruct(exp)->arity();
 }
 
-struct Insert {
-  static inline Expr inferType(Expr exp, TypeChecker &tc) {
+struct Insert  : public TypeCheckBase{
+  inline Expr inferType(Expr exp, TypeChecker &tc) {
     if (!structCheck(exp, 3))
       return sort::errorTy(exp->efac());
 
@@ -67,8 +67,8 @@ struct Insert {
   }
 };
 
-struct Extract {
-  static inline Expr inferType(Expr exp, TypeChecker &tc) {
+struct Extract  : public TypeCheckBase{
+  inline Expr inferType(Expr exp, TypeChecker &tc) {
     if (!structCheck(exp, 2))
       return sort::errorTy(exp->efac());
 
@@ -132,13 +132,15 @@ inline Expr extractVal(Expr st, unsigned idx) {
 inline bool isStructVal(Expr st) { return isOp<MK_STRUCT>(st); }
 
 inline Expr push_ite_struct(Expr c, Expr lhs, Expr rhs) {
+  if (!isStructVal(lhs) && !isStructVal(rhs)) {
+    return bind::lite(c, lhs, rhs);
+  }
   assert(isStructVal(lhs));
   assert(isStructVal(rhs));
   assert(lhs->arity() == rhs->arity());
-
   llvm::SmallVector<Expr, 8> vals;
   for (unsigned i = 0, sz = lhs->arity(); i < sz; ++i) {
-    vals.push_back(bind::lite(c, lhs->arg(i), rhs->arg(i)));
+    vals.push_back(push_ite_struct(c, lhs->arg(i), rhs->arg(i)));
   }
   return strct::mk(vals);
 }

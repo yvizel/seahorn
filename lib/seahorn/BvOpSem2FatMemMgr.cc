@@ -19,7 +19,7 @@ static const unsigned int g_slotByteWidth = g_slotBitWidth / 8;
 
 static const unsigned int g_maxFatSlots = 2;
 /// \brief provides Fat pointers and Fat memory to store them
-class FatMemManager : public OpSemMemManagerBase {
+class FatMemManager : public MemManagerCore {
 public:
   /// PtrTy representation for this manager
   ///
@@ -45,7 +45,12 @@ public:
     Expr v() const { return m_v; }
     Expr toExpr() const { return v(); }
     explicit operator Expr() const { return toExpr(); }
+    Expr getRaw() { return strct::extractVal(m_v, 0); }
   };
+
+  using FatMemTag = MemoryFeatures::FatMem_tag;
+  using TrackingTag = int;
+  using WideMemTag = int;
 
   /// Right now everything is an expression. In the future, we might have
   /// other types for PtrTy, such as a tuple of expressions
@@ -77,8 +82,8 @@ private:
 
   /// \brief Converts a raw ptr to fat ptr with default value for fat
   FatPtrTy mkFatPtr(RawPtrTy rawPtr) const {
-    return strct::mk(rawPtr, m_ctx.alu().si(0, g_slotBitWidth),
-                     m_ctx.alu().si(1, g_slotBitWidth));
+    return strct::mk(rawPtr, m_ctx.alu().ui(0, g_slotBitWidth),
+                     m_ctx.alu().ui(1, g_slotBitWidth));
   }
 
   /// \brief Converts a raw ptr to fat ptr with default value for fat
@@ -427,15 +432,37 @@ public:
         mkSlot0Mem(mem), mkSlot1Mem(mem));
   }
 
+  FatMemValTy MemSet(FatPtrTy ptr, Expr _val, Expr len, FatMemValTy mem,
+                     uint32_t align) {
+    return mkFatMem(
+        m_main.MemSet(mkRawPtr(ptr), _val, len, mkRawMem(mem), align),
+        mkSlot0Mem(mem), mkSlot1Mem(mem));
+  }
+
   /// \brief Executes symbolic memcpy with concrete length
   FatMemValTy MemCpy(FatPtrTy dPtr, FatPtrTy sPtr, unsigned len,
-                     FatMemValTy memTrsfrRead, uint32_t align) {
-    return mkFatMem(m_main.MemCpy(mkRawPtr(dPtr), mkRawPtr(sPtr), len,
-                                  mkRawMem(memTrsfrRead), align),
-                    m_slot0.MemCpy(mkRawPtr(dPtr), mkRawPtr(sPtr), len,
-                                   mkSlot0Mem(memTrsfrRead), align),
-                    m_slot1.MemCpy(mkRawPtr(dPtr), mkRawPtr(sPtr), len,
-                                   mkSlot1Mem(memTrsfrRead), align));
+                     FatMemValTy memTrsfrRead, FatMemValTy memRead,
+                     uint32_t align) {
+    return mkFatMem(
+        m_main.MemCpy(mkRawPtr(dPtr), mkRawPtr(sPtr), len,
+                      mkRawMem(memTrsfrRead), mkRawMem(memRead), align),
+        m_slot0.MemCpy(mkRawPtr(dPtr), mkRawPtr(sPtr), len,
+                       mkSlot0Mem(memTrsfrRead), mkSlot0Mem(memRead), align),
+        m_slot1.MemCpy(mkRawPtr(dPtr), mkRawPtr(sPtr), len,
+                       mkSlot1Mem(memTrsfrRead), mkSlot1Mem(memRead), align));
+  }
+
+  /// \brief Executes symbolic memcpy with concrete length
+  FatMemValTy MemCpy(FatPtrTy dPtr, FatPtrTy sPtr, Expr len,
+                     FatMemValTy memTrsfrRead, FatMemValTy memRead,
+                     uint32_t align) {
+    return mkFatMem(
+        m_main.MemCpy(mkRawPtr(dPtr), mkRawPtr(sPtr), len,
+                      mkRawMem(memTrsfrRead), mkRawMem(memRead), align),
+        m_slot0.MemCpy(mkRawPtr(dPtr), mkRawPtr(sPtr), len,
+                       mkSlot0Mem(memTrsfrRead), mkSlot0Mem(memRead), align),
+        m_slot1.MemCpy(mkRawPtr(dPtr), mkRawPtr(sPtr), len,
+                       mkSlot1Mem(memTrsfrRead), mkSlot1Mem(memRead), align));
   }
 
   /// \brief Executes symbolic memcpy from physical memory with concrete
@@ -545,17 +572,23 @@ public:
     return strct::insertVal(p.v(), 1 + SlotIdx, data);
   }
 
-  Expr isDereferenceable(FatPtrTy p, Expr byteSz) {
-    LOG("opsem", WARN << "isDereferenceable() not implemented!\n");
-    return m_ctx.alu().getFalse();
+  RawPtrTy getAddressable(FatPtrTy p) const { return mkRawPtr(p); }
+
+  bool isPtrTyVal(Expr e) const {
+    // struct with raw ptr + fat slots
+    return e && strct::isStructVal(e) && e->arity() == (1 + g_maxFatSlots);
+  }
+
+  bool isMemVal(Expr e) const {
+    // struct with raw ptr + fat slots
+    return e && strct::isStructVal(e) && e->arity() == (1 + g_maxFatSlots);
   }
 };
 
 FatMemManager::FatMemManager(Bv2OpSem &sem, Bv2OpSemContext &ctx,
                              unsigned ptrSz, unsigned wordSz, bool useLambdas)
-    : OpSemMemManagerBase(
-          sem, ctx, ptrSz, wordSz,
-          false /* this is a nop since we delegate to RawMemMgr */),
+    : MemManagerCore(sem, ctx, ptrSz, wordSz,
+                     false /* this is a nop since we delegate to RawMemMgr */),
       m_main(sem, ctx, ptrSz, wordSz, useLambdas),
       m_nullPtr(mkFatPtr(m_main.nullPtr())),
       m_slot0(sem, ctx, ptrSz, g_slotByteWidth, useLambdas),

@@ -93,6 +93,11 @@ static llvm::cl::opt<bool> SymbolizeLoops(
     llvm::cl::desc("Convert constant loop bounds into symbolic bounds"),
     llvm::cl::init(false));
 
+static llvm::cl::opt<bool>
+    KeepArithOverflow("horn-keep-arith-overflow",
+                      llvm::cl::desc("Keep arithmetic overflow intrinsics."),
+                      llvm::cl::init(false));
+
 static llvm::cl::opt<bool> SimplifyPointerLoops(
     "simplify-pointer-loops",
     llvm::cl::desc("Simplify loops that iterate over pointers"),
@@ -201,6 +206,11 @@ static llvm::cl::opt<bool> FatBoundsCheck(
     llvm::cl::init(false));
 
 static llvm::cl::opt<bool>
+    ExternalizeFns("externalize-fns",
+                   llvm::cl::desc("Run externalize functions pass"),
+                   llvm::cl::init(false));
+
+static llvm::cl::opt<bool>
     LowerIsDeref("lower-is-deref",
                  llvm::cl::desc("Lower sea_is_dereferenceable() calls"),
                  llvm::cl::init(false));
@@ -257,6 +267,12 @@ static llvm::cl::opt<bool>
     StaticTaint("static-taint",
                    llvm::cl::desc("Static taint analysis."),
                    llvm::cl::init(false));
+
+static llvm::cl::opt<bool> AddBranchSentinelOpt(
+    "add-branch-sentinel",
+    llvm::cl::desc(
+        "Add a branch sentinel instruction before every branch instruction"),
+    llvm::cl::init(false));
 
 // removes extension from filename if there is one
 std::string getFileName(const std::string &str) {
@@ -431,6 +447,12 @@ int main(int argc, char **argv) {
     pm_wrapper.add(seahorn::createFatBufferBoundsCheckPass());
   } else if (LowerIsDeref) {
     pm_wrapper.add(seahorn::createLowerIsDerefPass());
+  } else if (AddBranchSentinelOpt) {
+    initializeAddBranchSentinelPassPass(Registry);
+    pm_wrapper.add(seahorn::createAddBranchSentinelPassPass());
+  } else if (ExternalizeFns) {
+    // -- Externalize some user-selected functions
+    pm_wrapper.add(seahorn::createExternalizeFunctionsPass());
   }
   // default pre-processing pipeline
   else {
@@ -461,7 +483,7 @@ int main(int argc, char **argv) {
 
     // turn all functions internal so that we can inline them if requested
     auto PreserveMain = [=](const llvm::GlobalValue &GV) {
-      return GV.getName() == "main";
+      return GV.getName() == "main" || GV.getName() == "bcmp";
     };
     pm_wrapper.add(llvm::createInternalizePass(PreserveMain));
 
@@ -535,8 +557,9 @@ int main(int argc, char **argv) {
     pm_wrapper.add(llvm::createDeadInstEliminationPass());
     pm_wrapper.add(seahorn::createRemoveUnreachableBlocksPass());
 
-    // lower arithmetic with overflow intrinsics
-    pm_wrapper.add(seahorn::createLowerArithWithOverflowIntrinsicsPass());
+    if (!KeepArithOverflow)
+      // lower arithmetic with overflow intrinsics
+      pm_wrapper.add(seahorn::createLowerArithWithOverflowIntrinsicsPass());
     // lower libc++abi functions
     pm_wrapper.add(seahorn::createLowerLibCxxAbiFunctionsPass());
 
@@ -596,6 +619,10 @@ int main(int argc, char **argv) {
           llvm::createGlobalDCEPass()); // kill unused internal global
       pm_wrapper.add(seahorn::createPromoteMallocPass());
       pm_wrapper.add(seahorn::createRemoveUnreachableBlocksPass());
+
+      // -- Promote memcpy to loads-and-stores for easier alias analysis.
+      // -- inline can help with alignment which will help this pass
+      pm_wrapper.add(seahorn::createPromoteMemcpyPass());
     }
 
     // -- EVERYTHING IS MORE EXPENSIVE AFTER INLINING

@@ -2,13 +2,15 @@
 #include "BvOpSem2Context.hh"
 
 namespace seahorn {
-
-using namespace seahorn::details;
-
+namespace details {
 template <typename BaseT>
 class OpSemMemManagerMixin : public BaseT, public OpSemMemManager {
 
 public:
+  using TrackingTag = typename BaseT::TrackingTag;
+  using FatMemTag = typename BaseT::FatMemTag;
+  using WideMemTag = typename BaseT::WideMemTag;
+
   using Base = BaseT;
   using PtrTy = Expr;
   using MemRegTy = Expr;
@@ -39,8 +41,8 @@ public:
   template <typename... Ts>
   OpSemMemManagerMixin(Ts &&... Args)
       : BaseT(std::forward<Ts>(Args)...),
-        OpSemMemManager(base().sem(), base().ctx(), base().ptrSzInBytes(),
-                        base().wordSzInBytes(), base().isIgnoreAlignment()) {}
+        OpSemMemManager(base().sem(), base().ctx(), base().ptrSizeInBytes(),
+                        base().wordSizeInBytes(), base().isIgnoreAlignment()) {}
   virtual ~OpSemMemManagerMixin() = default;
 
   PtrSortTy ptrSort() const override {
@@ -181,6 +183,7 @@ public:
     return toMemValTy(std::move(res));
   }
 
+  // TODO: move common logic from memmgr to mixin.
   Expr loadValueFromMem(PtrTy ptr, MemValTy mem, const llvm::Type &ty,
                         uint64_t align) override {
     auto res = base().loadValueFromMem(BasePtrTy(std::move(ptr)),
@@ -203,11 +206,28 @@ public:
     return toMemValTy(std::move(res));
   }
 
-  MemValTy MemCpy(PtrTy dPtr, PtrTy sPtr, unsigned len, MemValTy memTrsfrRead,
+  MemValTy MemSet(PtrTy ptr, Expr _val, Expr len, MemValTy mem,
                   uint32_t align) override {
+    auto res = base().MemSet(BasePtrTy(std::move(ptr)), _val, len,
+                             BaseMemValTy(std::move(mem)), align);
+    return toMemValTy(std::move(res));
+  }
+
+  MemValTy MemCpy(PtrTy dPtr, PtrTy sPtr, unsigned len, MemValTy memTrsfrRead,
+                  MemValTy memRead, uint32_t align) override {
     auto res =
         base().MemCpy(BasePtrTy(std::move(dPtr)), BasePtrTy(std::move(sPtr)),
-                      len, BaseMemValTy(std::move(memTrsfrRead)), align);
+                      len, BaseMemValTy(std::move(memTrsfrRead)),
+                      BaseMemValTy(std::move(memRead)), align);
+    return toMemValTy(std::move(res));
+  }
+
+  MemValTy MemCpy(PtrTy dPtr, PtrTy sPtr, Expr len, MemValTy memTrsfrRead,
+                  MemValTy memRead, uint32_t align) override {
+    auto res =
+        base().MemCpy(BasePtrTy(std::move(dPtr)), BasePtrTy(std::move(sPtr)),
+                      len, BaseMemValTy(std::move(memTrsfrRead)),
+                      BaseMemValTy(std::move(memRead)), align);
     return toMemValTy(std::move(res));
   }
 
@@ -290,18 +310,134 @@ public:
   }
 
   Expr getFatData(PtrTy p, unsigned SlotIdx) override {
-    auto res = base().getFatData(BasePtrTy(std::move(p)), SlotIdx);
-    return res;
+    return hana::eval_if(
+        MemoryFeatures::has_fatmem(hana::type<BaseT>{}),
+        [&](auto _) {
+          auto res = _(base()).getFatData(BasePtrTy(std::move(p)), SlotIdx);
+          return res;
+        },
+        [&] {
+          LOG("opsem", WARN << "getFatData() not implemented!\n");
+          return Expr();
+        });
   }
 
   /// \brief returns Expr after setting data.
   PtrTy setFatData(PtrTy p, unsigned SlotIdx, Expr data) override {
-    auto res = base().setFatData(BasePtrTy(std::move(p)), SlotIdx, data);
-    return toPtrTy(std::move(res));
+    return hana::eval_if(
+        MemoryFeatures::has_fatmem(hana::type<BaseT>{}),
+        [&](auto _) {
+          auto res =
+              _(base()).setFatData(BasePtrTy(std::move(p)), SlotIdx, data);
+          return toPtrTy(std::move(res));
+        },
+        [&] {
+          LOG("opsem", WARN << "setFatData() not implemented!\n");
+          return p;
+        });
   }
 
-  Expr isDereferenceable(PtrTy p, Expr byteSz) {
-    return base().isDereferenceable(BasePtrTy(std::move(p)), byteSz);
+  Expr isDereferenceable(PtrTy p, Expr byteSz) override {
+    return hana::eval_if(
+        MemoryFeatures::has_widemem(hana::type<BaseT>{}),
+        [&](auto _) {
+          return _(base()).isDereferenceable(BasePtrTy(std::move(p)), byteSz);
+        },
+        [&] {
+          LOG("opsem", WARN << "isDerefernceable() not implemented!\n");
+          return Expr();
+        });
+  }
+
+  MemValTy setMetadata(MetadataKind kind, PtrTy p, MemValTy mem,
+                       unsigned val) override {
+    return hana::eval_if(
+        MemoryFeatures::has_tracking(hana::type<BaseT>{}),
+        [&](auto _) {
+          return toMemValTy(std::move(
+              _(base()).setMetadata(kind, BasePtrTy(std::move(p)),
+                                    BaseMemValTy(std::move(mem)), val)));
+        },
+        [&] {
+          LOG("opsem.memtrack.verbose",
+              WARN << "setMetadata() not implemented!\n");
+          return mem;
+        });
+  }
+
+  unsigned int getMetaDataMemWordSzInBits() {
+    return hana::eval_if(
+        MemoryFeatures::has_tracking(hana::type<BaseT>{}),
+        [&](auto _) { return _(base()).getMetaDataMemWordSzInBits(); },
+        [&] { return 0; });
+  }
+
+  Expr isMetadataSet(MetadataKind kind, PtrTy p, MemValTy mem) override {
+    return hana::eval_if(
+        MemoryFeatures::has_tracking(hana::type<BaseT>{}),
+        [&](auto _) {
+          return _(base()).isMetadataSet(kind, BasePtrTy(std::move(p)),
+                                         BaseMemValTy(std::move(mem)));
+        },
+        [&] {
+          LOG("opsem.memtrack.verbose",
+              WARN << "isMetadataSet() not implemented!\n");
+          return Expr();
+        });
+  }
+
+  Expr getMetaData(MetadataKind kind, PtrTy p, MemValTy memIn,
+                   unsigned int byteSz) {
+    return hana::eval_if(
+        MemoryFeatures::has_tracking(hana::type<BaseT>{}),
+        [&](auto _) {
+          return _(base()).getMetaData(kind, BasePtrTy(std::move(p)),
+                                       BaseMemValTy(std::move(memIn)), byteSz);
+        },
+        [&] { return Expr(); });
+  }
+
+  MemValTy memsetMetaData(MetadataKind kind, PtrTy p, Expr len, MemValTy memIn,
+                          unsigned int val) {
+    return hana::eval_if(
+        MemoryFeatures::has_tracking(hana::type<BaseT>{}),
+        [&](auto _) {
+          auto r =
+              _(base()).memsetMetaData(kind, BasePtrTy(std::move(p)), len,
+                                       BaseMemValTy(std::move(memIn)), val);
+          return toMemValTy(std::move(r));
+        },
+        [&] { return memIn; });
+  }
+
+  MemValTy memsetMetaData(MetadataKind kind, PtrTy p, unsigned int len,
+                          MemValTy memIn, unsigned int val) {
+    return hana::eval_if(
+        MemoryFeatures::has_tracking(hana::type<BaseT>{}),
+        [&](auto _) {
+          auto r =
+              _(base()).memsetMetaData(kind, BasePtrTy(std::move(p)), len,
+                                       BaseMemValTy(std::move(memIn)), val);
+          return toMemValTy(std::move(r));
+        },
+        [&] { return memIn; });
+  }
+
+  bool isPtrTyVal(Expr e) { return base().isPtrTyVal(e); }
+
+  Expr ptrToAddr(Expr p) {
+    if (!isPtrTyVal(p))
+      return Expr();
+    return Expr(base().getAddressable(BasePtrTy(p)));
+  }
+
+  bool isMemVal(Expr e) { return base().isMemVal(e); }
+
+  Expr getRawMem(Expr e) {
+    if (!isMemVal(e))
+      return Expr();
+    return Expr(BaseMemValTy(e).getRaw());
   }
 };
+} // namespace details
 } // namespace seahorn

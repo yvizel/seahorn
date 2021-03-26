@@ -80,7 +80,7 @@ if (GIT_FOUND)
   add_custom_target (sea-dsa-git
     ${GIT_EXECUTABLE} clone ${SEA_DSA_REPO} ${CMAKE_SOURCE_DIR}/sea-dsa -b dev10)
   add_custom_target (clam-git
-    ${GIT_EXECUTABLE} clone ${CLAM_REPO} ${CMAKE_SOURCE_DIR}/clam -b dev10)
+    ${GIT_EXECUTABLE} clone ${CLAM_REPO} ${CMAKE_SOURCE_DIR}/clam)
   add_custom_target (extra
     ${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_LIST_FILE}
     DEPENDS
@@ -247,8 +247,9 @@ if(NOT LLVM_FOUND)
   return()
 endif()
 
-set (Boost_USE_STATIC_LIBS ${SEAHORN_STATIC_EXE})
-find_package (Boost 1.65 REQUIRED)
+# boost version >= 1.71 because of https://github.com/boostorg/hana/issues/446
+set(Boost_USE_STATIC_LIBS ${SEAHORN_STATIC_EXE})
+find_package(Boost 1.71 REQUIRED)
 if (Boost_FOUND)
   include_directories (${Boost_INCLUDE_DIRS})
   if(NOT LLVM_ENABLE_EH)
