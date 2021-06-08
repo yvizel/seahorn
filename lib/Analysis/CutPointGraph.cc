@@ -9,6 +9,8 @@
 #include "boost/range.hpp"
 #include "seahorn/Support/SeaDebug.h"
 
+#include "seahorn/HornifyConditionSynthesis.hh"
+
 enum ExtraCpHeuristics { H0, H1, H2};
 static llvm::cl::opt<ExtraCpHeuristics>
 ExtraCp("horn-extra-cps", 
@@ -21,6 +23,16 @@ ExtraCp("horn-extra-cps",
             clEnumValN (H2, "h2", /*"more-reach-cp-than-children",*/ 
                         "Add block if it reaches more cutpoints than its successors")),
         llvm::cl::init (H0));
+
+static llvm::cl::opt<ExtraCpHeuristics>
+SynthCp("horn-synth-cps",
+llvm::cl::desc("Generate cut-points for synthesis"),
+llvm::cl::values(
+    clEnumValN (H0, "h0", /*"none",*/
+                "None"),
+clEnumValN (H1, "h1", /*"backedge-src",*/
+            "Add block if source of a back-edge")),
+llvm::cl::init (H0));
             
 namespace seahorn
 {
@@ -113,7 +125,16 @@ namespace seahorn
                 errs () << "Adding (pred) cp: " << pred->getName () << "\n";);
             addCpMap (cp_map, pred);
           }
-        }      
+        }
+
+      if (SynthCp == H1) {
+        if (SynthesisUtils::isSynthesisBranch(*BB)) {
+          addCpMap(cp_map, BB);
+          for (const BasicBlock *succ :
+              boost::make_iterator_range (succ_begin (BB), succ_end(BB)))
+            addCpMap(cp_map, succ);
+        }
+      }
     }
     
     if (ExtraCp == H2) {
