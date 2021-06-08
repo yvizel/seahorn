@@ -15,6 +15,19 @@ namespace seahorn {
 using namespace expr;
 using namespace llvm;
 
+class SynthesisUtils {
+private:
+  static std::unordered_set<const Value*> m_markings;
+
+  SynthesisUtils() { }
+
+public:
+  static bool isSynthesisBranch(const BasicBlock& bb);
+  static void collectSelects(const BasicBlock &bb,
+                             std::vector<const SelectInst*>& selects);
+  static bool hasSynthesisFunction(const Instruction* I, bool reset=false);
+};
+
 class CollectSynthesisTargets : public WtoElementVisitor<Expr> {
 private:
   const HornifyModule & m_parent;
@@ -22,7 +35,7 @@ private:
   ExprVector m_loop;
   std::vector<const SelectInst*> m_selects;
 
-  std::unordered_set<const Value*> m_markings;
+
 
 public:
   CollectSynthesisTargets(const HornifyModule & parent)
@@ -31,16 +44,16 @@ public:
   virtual void visit (const wto_singleton_t &s) {
     Expr rel = s.get();
     const BasicBlock & bb = m_parent.predicateBb(rel);
-    collectSelects(bb);
-    if (isSynthesisBranch(bb))
+    SynthesisUtils::collectSelects(bb, m_selects);
+    if (SynthesisUtils::isSynthesisBranch(bb))
       m_if.push_back(rel);
   }
 
   virtual void visit (const wto_component_t &c) {
     Expr rel = c.head();
     const BasicBlock & bb = m_parent.predicateBb(rel);
-    collectSelects(bb);
-    if (isSynthesisBranch(bb))
+    SynthesisUtils::collectSelects(bb, m_selects);
+    if (SynthesisUtils::isSynthesisBranch(bb))
       m_loop.push_back(rel);
     for (auto &e : c) { e.accept(this); }
   }
@@ -48,11 +61,6 @@ public:
   const ExprVector & getIfs() { return m_if; }
   const ExprVector & getLoops() { return m_loop; }
   std::vector<const SelectInst*> & getSelects() { return m_selects; }
-
-private:
-  bool isSynthesisBranch(const BasicBlock& bb);
-  void collectSelects(const BasicBlock &bb);
-  bool hasSynthesisFunction(const Instruction* I, bool reset=false);
 };
 
 class HornifyConditionSynthesis {

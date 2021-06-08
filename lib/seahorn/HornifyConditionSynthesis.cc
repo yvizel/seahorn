@@ -4,8 +4,9 @@
 
 namespace seahorn {
 
-bool CollectSynthesisTargets::hasSynthesisFunction(const Instruction *I,
-                                                   bool reset) {
+std::unordered_set<const Value*> SynthesisUtils::m_markings;
+
+bool SynthesisUtils::hasSynthesisFunction(const Instruction *I, bool reset) {
   if (reset) m_markings.clear();
   if (m_markings.find(I) != m_markings.end()) return false;
   m_markings.insert(I);
@@ -27,7 +28,7 @@ bool CollectSynthesisTargets::hasSynthesisFunction(const Instruction *I,
   return false;
 }
 
-bool CollectSynthesisTargets::isSynthesisBranch(const BasicBlock & bb) {
+bool SynthesisUtils::isSynthesisBranch(const BasicBlock & bb) {
   const Instruction *terminator = bb.getTerminator();
   if (!isa<BranchInst>(terminator)) return false;
 
@@ -36,18 +37,19 @@ bool CollectSynthesisTargets::isSynthesisBranch(const BasicBlock & bb) {
 
   const Value *cond = branch->getCondition();
   if (const Instruction *I = dyn_cast<Instruction>(cond))
-    return hasSynthesisFunction(I);
+    return hasSynthesisFunction(I, true);
   return false;
 }
 
-void CollectSynthesisTargets::collectSelects(const BasicBlock &bb) {
+void SynthesisUtils::collectSelects(const BasicBlock &bb,
+                                    std::vector<const SelectInst*>& selects) {
   // Check if there are select instructions that require condition synthesis
   unsigned count=0;
   for (auto & I : bb) {
     if (const SelectInst *SI = dyn_cast<const SelectInst>(&I)) {
       if (const Instruction *i = dyn_cast<Instruction>(SI->getCondition()))
-        if (hasSynthesisFunction(i)) {
-          m_selects.push_back(SI);
+        if (hasSynthesisFunction(i, true)) {
+          selects.push_back(SI);
           count++;
         }
     }
