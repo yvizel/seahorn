@@ -1,6 +1,16 @@
-// RUN: %sea smt %s --step=small -o %t.smt2
-// RUN: %z3 %t.smt2 fp.spacer.order_children=2 2>&1 | OutputCheck %s
-// CHECK: ^unsat$
+// RUN: %sea smt %s --step=small -o %t.sm.smt2
+// RUN: %z3 %t.sm.smt2 fp.spacer.order_children=2 2>&1 | OutputCheck %s
+//
+// RUN: %sea smt %s --step=small --inline -o %t.sm.inline.smt2
+// RUN: %z3 %t.sm.inline.smt2 fp.spacer.order_children=2 2>&1 | OutputCheck %s
+//
+// RUN: %sea smt %s --step=large -o %t.lg.smt2
+// RUN: %z3 %t.lg.smt2 fp.spacer.order_children=2 2>&1 | OutputCheck %s
+//
+// RUN: %sea smt %s --step=large --inline -o %t.lg.inline.smt2
+// RUN: %z3 %t.lg.inline.smt2 fp.spacer.order_children=2 2>&1 | OutputCheck %s
+//
+// CHECK: ^sat$
 
 #include "seahorn/seahorn.h"
 
@@ -39,23 +49,10 @@ int check(int *count, int *max) {
 
 // Test.
 int main(void) {
-  // Program:
-  //   class Counter {
-  //     int count;
-  //     int max;
+  // See 05_object_unsat.c.
   //
-  //     Counter(int nMax): count(0), max(nMax) { assume(max > 0); }
-  //
-  //     void incr() { if (count < max) ++count; }
-  //     void decr() { if (count > 0) --count; }
-  //     void set(int nMax) { assume(nMax > 0); count = 0; max = nMax; }
-  //     void check() { return count >= max; }
-  //   };
-  // Property: check() => (count == max)
-  //
-  // An object invariant is implied by the constructor, and invariant under any
-  // method of the object. If an object invariant implies a property, then the
-  // property must hold.
+  // The specification is now count < max, which is not true of the program.
+  // Hence, the program is SAT.
 
   // constructor => inv
   int count1 = 0;
@@ -77,5 +74,5 @@ int main(void) {
   int count3 = nd8();
   int max3 = nd9();
   assume(inv(count3, max3));
-  if (check(&count3, &max3)) sassert(count3 == max3);
+  sassert(count3 < max3);
 }

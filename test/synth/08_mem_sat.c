@@ -1,6 +1,16 @@
-// RUN: %sea smt %s --step=small -o %t.smt2
-// RUN: %z3 %t.smt2 fp.spacer.order_children=2 2>&1 | OutputCheck %s
-// CHECK: ^unsat$
+// RUN: %sea smt %s --step=small -o %t.sm.smt2
+// RUN: %z3 %t.sm.smt2 fp.spacer.order_children=2 2>&1 | OutputCheck %s
+//
+// RUN: %sea smt %s --step=small --inline -o %t.sm.inline.smt2
+// RUN: %z3 %t.sm.inline.smt2 fp.spacer.order_children=2 2>&1 | OutputCheck %s
+//
+// RUN: %sea smt %s --step=large -o %t.lg.smt2
+// RUN: %z3 %t.lg.smt2 fp.spacer.order_children=2 2>&1 | OutputCheck %s
+//
+// RUN: %sea smt %s --step=large --inline -o %t.lg.inline.smt2
+// RUN: %z3 %t.lg.inline.smt2 fp.spacer.order_children=2 2>&1 | OutputCheck %s
+//
+// CHECK: ^sat$
 
 #include "seahorn/seahorn.h"
 
@@ -19,26 +29,13 @@ bool PARTIAL_FN inv(int owner, int sum, int i, int v) {
 
 // Test.
 int main(void) {
-  // Assumption: init => forall i: m[i] = 0
-  // Program:
-  //   mapping(int => int) m;
-  //   int owner;
-  //   int sum = 0;
-  //   
-  //   void body(int i) {
-  //     if (i == owner) {
-  //       v += 1; sum += 1;
-  //     }
-  //   }
+  // See 08_mem_unsat.c.
+  //
   // Property: If a reactive system implements body, then it is always the case
   //           that v[i] <= sum.
   //
-  // A (sound but incomplete) solution to the above problem is to find a
-  // compositional invariant Inv such that:
-  // 1. Init => Inv
-  // 2. Inv(i) && Tr(i) => Inv'(i)
-  // 3. Inv(i) && i != j && Tr(i) && Inv(j) => Inv'(i)
-  // In this case, such an invariant does exist and the program must be UNSAT.
+  // This property does not hold. As PCMC is sound, a compositional invariant
+  // does not exist. Therefore, the program is SAT.
 
   int owner = nd1();
   int sum = 0;
@@ -59,7 +56,7 @@ int main(void) {
       v += 1;
       sum += 1;
     }
-    sassert(v <= sum);
+    sassert(v == sum);
 
     // END_TX[
     __VERIFIER_assert(inv(owner, sum, i, v));

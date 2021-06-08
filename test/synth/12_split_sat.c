@@ -1,6 +1,16 @@
-// RUN: %sea smt %s --step=small -o %t.smt2
-// RUN: %z3 %t.smt2 fp.spacer.order_children=2 2>&1 | OutputCheck %s
-// CHECK: ^unsat$
+// RUN: %sea smt %s --step=small -o %t.sm.smt2
+// RUN: %z3 %t.sm.smt2 fp.spacer.order_children=2 2>&1 | OutputCheck %s
+//
+// RUN: %sea smt %s --step=small --inline -o %t.sm.inline.smt2
+// RUN: %z3 %t.sm.inline.smt2 fp.spacer.order_children=2 2>&1 | OutputCheck %s
+//
+// RUN: %sea smt %s --step=large -o %t.lg.smt2
+// RUN: %z3 %t.lg.smt2 fp.spacer.order_children=2 2>&1 | OutputCheck %s
+//
+// RUN: %sea smt %s --step=large --inline -o %t.lg.inline.smt2
+// RUN: %z3 %t.lg.inline.smt2 fp.spacer.order_children=2 2>&1 | OutputCheck %s
+//
+// CHECK: ^sat$
 
 #include "seahorn/seahorn.h"
 
@@ -23,7 +33,7 @@ bool PARTIAL_FN inv2(int sum, int v) {
 
 // Test.
 int main(void) {
-  // see 07_mem_unsat.c.
+  // see 08_mem_sat.c.
 
   int owner = nd1();
   int sum = 0;
@@ -46,7 +56,7 @@ int main(void) {
       v += 1;
       sum += 1;
     }
-    sassert(v <= sum);
+    sassert(v == sum);
 
     // END_TX[
     if (i == owner) __VERIFIER_assert(inv1(sum, v));

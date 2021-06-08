@@ -12,7 +12,7 @@ namespace details {
 static const unsigned int g_slotBitWidth = 64;
 static const unsigned int g_slotByteWidth = g_slotBitWidth / 8;
 
-static const unsigned int g_uninit = 0xDEADBEEF;
+static const unsigned int g_uninit_size = 0;
 static const unsigned int g_uninit_small = 0xDEAD;
 static const unsigned int g_num_slots = 3;
 
@@ -25,7 +25,7 @@ ExtraWideMemManager<T>::ExtraWideMemManager(Bv2OpSem &sem, Bv2OpSemContext &ctx,
       m_main(sem, ctx, ptrSz, wordSz, useLambdas),
       m_offset(sem, ctx, ptrSz, ptrSz, useLambdas, true),
       m_size(sem, ctx, ptrSz, g_slotByteWidth, useLambdas, true),
-      m_uninit_size(m_ctx.alu().ui(g_uninit, g_slotBitWidth)),
+      m_uninit_size(m_ctx.alu().ui(g_uninit_size, g_slotBitWidth)),
       m_nullPtr(PtrTy(m_main.nullPtr(), m_ctx.alu().ui(0UL, ptrSizeInBits()),
                       m_uninit_size)) {
   // Currently, we only support RawMemManagerCore or subclasses of it.
@@ -259,9 +259,8 @@ ExtraWideMemManager<T>::storeValueToMem(Expr _val,
   const unsigned byteSz =
       m_sem.getTD().getTypeStoreSize(const_cast<llvm::Type *>(&ty));
   ExprFactory &efac = base.v()->efac();
-  // init memval to a default value
-  MemValTy res(m_main.zeroedMemory(),
-               m_ctx.alu().ui(g_uninit_small, wordSizeInBits()), m_uninit_size);
+  // init memval to a non det value
+  MemValTy res = MemValTy(Expr());
   switch (ty.getTypeID()) {
   case Type::IntegerTyID:
     if (ty.getScalarSizeInBits() < byteSz * 8) {

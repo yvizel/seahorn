@@ -180,7 +180,7 @@ bool PromoteVerifierCalls::runOnFunction(Function &F) {
   };
 
   bool Changed = false;
-  for (auto &I : boost::make_iterator_range(inst_begin(F), inst_end(F))) {
+  for (auto &I : instructions(F)) {
     if (!isa<CallInst>(&I))
       continue;
 
@@ -195,8 +195,15 @@ bool PromoteVerifierCalls::runOnFunction(Function &F) {
     if (!fn && CS.getCalledValue())
       fn = dyn_cast<const Function>(CS.getCalledValue()->stripPointerCasts());
 
+    // -- expect functions we promote to not be defined in the module,
+    // -- if they are defined, then do not promote and treat as regular
+    // -- functions
+    if (fn && !fn->empty())
+      continue;
+
     if (fn && (fn->getName().equals("__VERIFIER_assume") ||
                fn->getName().equals("__VERIFIER_assert") ||
+               fn->getName().equals("__SEA_assume") ||
                fn->getName().equals("__VERIFIER_assert_not") ||
                // CBMC
                fn->getName().equals("__CPROVER_assume") ||
@@ -210,7 +217,8 @@ bool PromoteVerifierCalls::runOnFunction(Function &F) {
       if (auto partialFn = extractPartialFnCall(arg0)) {
         // Selects proper synthesis call.
         Function *nfn;
-        if (fn->getName().equals("__VERIFIER_assume"))
+        if (fn->getName().equals("__VERIFIER_assume") ||
+            fn->getName().equals("__SEA_assume"))
           nfn = m_synthAssumeFn;
         else if (fn->getName().equals("__VERIFIER_assert"))
           nfn = m_synthAssertFn;
@@ -225,7 +233,9 @@ bool PromoteVerifierCalls::runOnFunction(Function &F) {
       } else {
         // Selects proper verification call.
         Function *nfn;
-        if (fn->getName().equals("__VERIFIER_assume"))
+        if (fn->getName().equals("__SEA_assume"))
+          nfn = m_assumeFn;
+        else if (fn->getName().equals("__VERIFIER_assume"))
           nfn = m_assumeFn;
         else if (fn->getName().equals("llvm.invariant"))
           nfn = m_assumeFn;
