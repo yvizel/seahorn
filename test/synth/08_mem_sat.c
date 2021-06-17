@@ -12,7 +12,7 @@
 //
 // CHECK: ^sat$
 
-#include "seahorn/seahorn.h"
+#include "seahorn/seasynth.h"
 
 extern int nd1();
 extern int nd2();
@@ -59,8 +59,8 @@ int main(void) {
     sassert(v == sum);
 
     // END_TX[
-    __VERIFIER_assert(inv(owner, sum, i, v));
-    __VERIFIER_assert(inv(owner, sum, j, v_j));
+    sassert(inv(owner, sum, i, v));
+    sassert(inv(owner, sum, j, v_j));
     // ]END
   }
 }

@@ -12,7 +12,7 @@
 //
 // CHECK: ^unsat$
 
-#include "seahorn/seahorn.h"
+#include "seahorn/seasynth.h"
 
 extern int nd1();
 extern int nd2();
@@ -53,7 +53,7 @@ int main(void) {
   int y1 = nd2();
   int z1 = nd3();
   assume((w1 != 0) && (y1 == 2 * z1 + 6));
-  __VERIFIER_assert(itp(y1, z1));
+  sassert(itp(y1, z1));
 
   int x2 = nd4();
   int y2 = nd5();

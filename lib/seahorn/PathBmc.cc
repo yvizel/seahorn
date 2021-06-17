@@ -386,8 +386,9 @@ static bool isCriticalEdge(const BasicBlock *src, const BasicBlock *dst) {
  *       - a PHI node is translated into bj and tuple(bi,bj) => x=y
  *       - a branch is translated into b and tuple(bb,bbi) => f
  */
+template<class BmcTrace>
 bool PathBmcEngine::genPathCondFromCrabCex(
-    PathBmcTrace &cex, const std::vector<clam::statement_t *> &cex_stmts,
+    BmcTrace &cex, const std::vector<clam::statement_t *> &cex_stmts,
     ExprSet /*std::set<Expr, lessExpr>*/ &path_cond) {
 
   LOG("bmc-crab-blocking-clause",
@@ -635,8 +636,9 @@ void PathBmcEngine::extractPostConditionsFromCrabCex(
 
    Modify m_path_cond.
  */
+template<class BmcTrace>
 bool PathBmcEngine::pathEncodingAndSolveWithCrab(
-    PathBmcTrace &cex, bool keep_path_constraints,
+    BmcTrace &cex, bool keep_path_constraints,
     crab_invariants_map_t &crab_path_constraints,
     expr_invariants_map_t &path_constraints) {
 
@@ -749,14 +751,15 @@ bool PathBmcEngine::pathEncodingAndSolveWithCrab(
   NOTE: Currently, blocking clauses are Boolean since the only
   abstraction we handle is Boolean.
 */
+template<class BmcTrace>
 solver::SolverResult PathBmcEngine::pathEncodingAndSolveWithSmt(
-    const PathBmcTrace &cex, const expr_invariants_map_t & /*invariants*/,
+    const BmcTrace &cex, const expr_invariants_map_t & /*invariants*/,
     // extra constraints inferred by
     // crab for current implicant
     const expr_invariants_map_t & /*path_constraints*/) {
 
-  const ExprVector &path_formula = cex.getImplicantFormula();
-  const ExprMap &path_cond_map = cex.getImplicantBoolMap();
+  const ExprVector &path_formula = cex.get_implicant_formula();
+  const ExprMap &path_cond_map = cex.get_implicant_bools_map();
 
   LOG(
       "bmc-details", errs() << "PATH FORMULA:\n";

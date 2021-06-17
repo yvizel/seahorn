@@ -6,7 +6,7 @@
 //
 // CHECK: ^sat$
 
-#include "seahorn/seahorn.h"
+#include "seahorn/seasynth.h"
 
 #define ALLOC_L1 0
 #define ALLOC_L2 1
@@ -46,7 +46,7 @@ struct Node
 
 void push(struct Node *n)
 {
-    __VERIFIER_assert(inv(n->id_addr, n->id_alloc, n->data, n->next_addr, n->next_alloc));
+    sassert(inv(n->id_addr, n->id_alloc, n->data, n->next_addr, n->next_alloc));
 }
 
 void pull(struct Node *n)

@@ -12,7 +12,7 @@
 //
 // CHECK: ^sat$
 
-#include "seahorn/seahorn.h"
+#include "seahorn/seasynth.h"
 
 extern int nd1();
 extern int nd2();
@@ -36,7 +36,7 @@ int main(void) {
   int n1 = nd1();
   assume(n1 > 0);
 
-  __VERIFIER_assert(inv(x1, n1));
+  sassert(inv(x1, n1));
 
   int x2 = nd2();
   int y2 = nd3();
@@ -44,7 +44,7 @@ int main(void) {
   assume(inv(x2, n2));
   if (x2 < n2) {
     x2 += 1; y2 += 1;
-    __VERIFIER_assert(inv(x2, n2));
+    sassert(inv(x2, n2));
     assume(0);
   }
 
