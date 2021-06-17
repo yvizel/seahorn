@@ -126,13 +126,22 @@ namespace seahorn
             addCpMap (cp_map, pred);
           }
         }
+    }
 
-      if (SynthCp == H1) {
+    if (SynthCp == H1) {
+    for (const BasicBlock *BB : topo) {
         if (SynthesisUtils::isSynthesisBranch(*BB)) {
-          addCpMap(cp_map, BB);
+          if (!lookup (cp_map, BB)) {
+            LOG("cpg", errs() << "synth cp: " << BB->getName() << "\n");
+            addCpMap(cp_map, BB);
+          }
           for (const BasicBlock *succ :
-              boost::make_iterator_range (succ_begin (BB), succ_end(BB)))
-            addCpMap(cp_map, succ);
+               boost::make_iterator_range(succ_begin(BB), succ_end(BB))) {
+            if (!lookup (cp_map, succ)) {
+              LOG("cpg", errs() << "synth cp: " << succ->getName() << "\n");
+              addCpMap(cp_map, succ);
+            }
+          }
         }
       }
     }
