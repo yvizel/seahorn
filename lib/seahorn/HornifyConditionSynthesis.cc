@@ -147,6 +147,13 @@ Expr HornifyConditionSynthesis::createJoinPredicate(
 
   Expr joinPost = bind::fapp(joinPred, joinArgs);
 
+  errs() << "===========\n";
+  errs() << "Join, True, False Predicates:\n";
+  joinName->dump();
+  bind::fname(bind::fname(pred1))->dump();
+  bind::fname(bind::fname(pred2))->dump();
+  errs() << "===========\n";
+
   return joinPost;
 }
 
