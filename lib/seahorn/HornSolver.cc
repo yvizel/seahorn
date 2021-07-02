@@ -17,7 +17,7 @@ using namespace llvm;
 
 static llvm::cl::opt<std::string> ChcEngine("horn-pdr-engine",
                                             llvm::cl::desc("CHC engine to use"),
-                                            cl::init("spacer"), cl::Hidden);
+                                            cl::init("auto-config"), cl::Hidden);
 
 static llvm::cl::opt<bool>
     LocalContext("horn-solver-local-ctx", cl::init(false),
@@ -29,7 +29,7 @@ static llvm::cl::opt<bool>
 static llvm::cl::opt<bool>
     SimplifierPve("horn-tail-simplifier-pve",
                   cl::desc("Set fp.xform.tail_simplifier_pve"),
-                  cl::init(false));
+                  cl::init(true));
 
 static llvm::cl::opt<bool> EstimateSizeInvars(
     "horn-estimate-size-invars",
@@ -48,12 +48,12 @@ static llvm::cl::opt<bool> FlexTrace("horn-flex-trace", cl::Hidden,
                                      cl::init(false));
 
 static llvm::cl::opt<unsigned> HornChildren("horn-solver-child-order",
-                                            cl::Hidden, cl::init(2));
+                                            cl::Hidden, cl::init(0));
 
 static llvm::cl::opt<unsigned> PdrContexts("horn-pdr-contexts", cl::Hidden,
                                            cl::init(500));
 
-static llvm::cl::opt<bool> WeakAbs("horn-weak-abs", cl::Hidden, cl::init(false),
+static llvm::cl::opt<bool> WeakAbs("horn-weak-abs", cl::Hidden, cl::init(true),
                                    cl::desc("Perform weak abstraction"));
 
 static llvm::cl::opt<bool>
@@ -61,11 +61,11 @@ static llvm::cl::opt<bool>
                cl::desc("Ground proof obligations to ensure QF"));
 
 static llvm::cl::opt<bool>
-    UseMbqi("horn-use-mbqi", cl::Hidden, cl::init(false),
+    UseMbqi("horn-use-mbqi", cl::Hidden, cl::init(true),
             cl::desc("Use model-based quantifier instantiation"));
 
 static llvm::cl::opt<bool> KeepProxy("horn-keep-proxy", cl::Hidden,
-                                     cl::init(false),
+                                     cl::init(true),
                                      cl::desc("Keep proxy variables"));
 
 static llvm::cl::opt<unsigned>
@@ -107,7 +107,7 @@ static llvm::cl::opt<unsigned>
                  cl::desc("Maximum exploration depth"), cl::init(UINT_MAX));
 
 static llvm::cl::opt<bool>
-    UseEufGen("horn-use-euf-gen", cl::Hidden, cl::init(true),
+    UseEufGen("horn-use-euf-gen", cl::Hidden, cl::init(false),
               cl::desc("Use euf generalizer for equalities"));
 
 namespace seahorn {
@@ -145,8 +145,7 @@ bool HornSolver::runOnModule(Module &M) {
   params.set(":spacer.elim_aux", true);
   params.set(":spacer.reach_dnf", true);
   // params.set ("print_statistics", true);
-  params.set(":spacer.use_bg_invs", UseInvariant == solver_detail::INACTIVE ||
-                                        UseInvariant == solver_detail::BG_ONLY);
+  params.set(":spacer.use_bg_invs", false);
   params.set(":spacer.weak_abs", WeakAbs);
   params.set(":spacer.mbqi", UseMbqi);
   params.set(":spacer.iuc", IUC);
