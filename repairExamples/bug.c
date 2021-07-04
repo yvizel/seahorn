@@ -21,12 +21,6 @@ extern void g();
 #define NOZCROSS_correct   100    /* in feet */
 				/* variables */
 
-
-
-int Up_Separation;
-int Down_Separation;
-
-
 #define TCAS_TA 1
 #define OTHER 2
 #define TCAS_TA_correct 1
@@ -42,68 +36,34 @@ int Climb_Inhibit;		/* true/false */
 #define DOWNWARD_RA_correct 2
 
 //bat
-int  ALIM();
 int  Inhibit_Biased_Climb();
 bool   Non_Crossing_Biased_Climb();
 bool   Non_Crossing_Biased_Descend();
 int  alt_sep_test();
-int  AllRepair_correct_ALIM();
 int  AllRepair_correct_Inhibit_Biased_Climb();
 bool   AllRepair_correct_Non_Crossing_Biased_Climb();
 bool   AllRepair_correct_Non_Crossing_Biased_Descend();
 int  AllRepair_correct_alt_sep_test();
 
 
-int ALIM ()
-{
- return 550;
-}
-
 int Inhibit_Biased_Climb ()
 {
-    if (find_condition()){ //Climb_Inhibit
-    //if (Climb_Inhibit) {
+    if (find_condition()){ 
 	g();
-	return Up_Separation + NOZCROSS;
+	return 401 + NOZCROSS;
     } else {
-	return Up_Separation;
+	return 401;
     }
 }
 
 bool Non_Crossing_Biased_Climb()
 {
-    int upward_preferred;
-    int upward_crossing_situation;
-    bool result;
-
-    upward_preferred = Inhibit_Biased_Climb() > Down_Separation;
-    if (upward_preferred)
-    {
-	result =  ((!(Down_Separation >= ALIM())));
-    }
-    else
-    {	
-	result =   (Up_Separation >= ALIM());
-    }
-    return result;
+    return Inhibit_Biased_Climb() > 550;
 }
 
 bool Non_Crossing_Biased_Descend()
 {
-    int upward_preferred;
-    int upward_crossing_situation;
-    bool result;
-
-    upward_preferred = Inhibit_Biased_Climb() > Down_Separation;
-    if (upward_preferred)
-    {
-	result =  (Down_Separation >= ALIM());
-    }
-    else
-    {
-	result =  ( (Up_Separation >= ALIM()));
-    }
-    return result;
+    return !(Inhibit_Biased_Climb() > 401);
 }
 
 int alt_sep_test()
@@ -143,60 +103,25 @@ int AllRepair_correct_alt_sep_test()
 //<ASSUME_CORRECT>
 
 
-int AllRepair_correct_ALIM ()
-{
- return 500;
-}
-
 int AllRepair_correct_Inhibit_Biased_Climb ()
 {
-    return (Climb_Inhibit ? Up_Separation + NOZCROSS_correct : Up_Separation);
+    return (Climb_Inhibit ? 401 + NOZCROSS_correct : 401);
 }
 
 bool AllRepair_correct_Non_Crossing_Biased_Climb()
 {
-    int upward_preferred;
-    int upward_crossing_situation;
-    bool result;
-
-    //upward_preferred = AllRepair_correct_Inhibit_Biased_Climb() > Down_Separation;
-    if (AllRepair_correct_Inhibit_Biased_Climb() > Down_Separation)
-    {
-  result = ( (!(Down_Separation >= AllRepair_correct_ALIM())));
-    }
-    else
-    {
-  result = (Up_Separation >= AllRepair_correct_ALIM());
-    }
-    return result;
+    return AllRepair_correct_Inhibit_Biased_Climb() > 500;
 }
 
 bool AllRepair_correct_Non_Crossing_Biased_Descend()
 {
-    int upward_preferred;
-    int upward_crossing_situation;
-    bool result;
-
-    //upward_preferred = AllRepair_correct_Inhibit_Biased_Climb() > Down_Separation;
-    if (AllRepair_correct_Inhibit_Biased_Climb() > Down_Separation)
-    {
-  result = (Down_Separation >= AllRepair_correct_ALIM());
-    }
-    else
-    {
-  result =  ( (Up_Separation >= AllRepair_correct_ALIM()));
-    }
-    return result;
+    return !(AllRepair_correct_Inhibit_Biased_Climb() > 401);
 }
-
 
 int main()
 {
-    Up_Separation = nd();// = atoi(argv[8]);
-    Down_Separation = nd();// = atoi(argv[9]);
     Climb_Inhibit = nd();// = atoi(argv[12]);
     assume(Climb_Inhibit>=0 && Climb_Inhibit<=1);
-    assume(Up_Separation<=100000 && Down_Separation<=100000);
 
     int res = alt_sep_test();
     int res_correct = AllRepair_correct_alt_sep_test();
