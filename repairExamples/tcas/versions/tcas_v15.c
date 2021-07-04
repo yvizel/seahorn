@@ -1,6 +1,6 @@
 #include "seahorn/seahorn.h"
 extern int nd();
-extern int find_condition();
+extern bool find_condition();
 extern void g();
 
 /*  -*- Last-Edit:  Fri Jan 29 11:13:27 1993 by Tarak S. Goradia; -*- */
