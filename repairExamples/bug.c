@@ -21,8 +21,6 @@ extern void g();
 #define NOZCROSS_correct   100    /* in feet */
 				/* variables */
 
-int High_Confidence;
-int Two_of_Three_Reports_Valid;
 
 
 int Up_Separation;
@@ -194,10 +192,6 @@ bool AllRepair_correct_Non_Crossing_Biased_Descend()
 
 int main()
 {
-    High_Confidence = nd();// = atoi(argv[2]);
-    assume(High_Confidence>=0 && High_Confidence<=1);
-    Two_of_Three_Reports_Valid = nd();// = atoi(argv[3]);
-    assume(Two_of_Three_Reports_Valid>=0 && Two_of_Three_Reports_Valid<=1);
     Up_Separation = nd();// = atoi(argv[8]);
     Down_Separation = nd();// = atoi(argv[9]);
     Climb_Inhibit = nd();// = atoi(argv[12]);
