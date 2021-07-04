@@ -21,12 +21,9 @@ extern void g();
 #define NOZCROSS_correct   100    /* in feet */
 				/* variables */
 
-int Cur_Vertical_Sep;
 int High_Confidence;
 int Two_of_Three_Reports_Valid;
 
-int Alt_Layer_Value;		/* 0, 1, 2, 3 */
-int Positive_RA_Alt_Thresh[4];
 
 int Up_Separation;
 int Down_Separation;
@@ -58,17 +55,10 @@ bool   AllRepair_correct_Non_Crossing_Biased_Climb();
 bool   AllRepair_correct_Non_Crossing_Biased_Descend();
 int  AllRepair_correct_alt_sep_test();
 
-void initialize()
-{
-    Positive_RA_Alt_Thresh[0] = 400;
-    Positive_RA_Alt_Thresh[1] = 550; //500 -> 550
-    Positive_RA_Alt_Thresh[2] = 640;
-    Positive_RA_Alt_Thresh[3] = 740;
-}
 
 int ALIM ()
 {
- return Positive_RA_Alt_Thresh[Alt_Layer_Value];
+ return 550;
 }
 
 int Inhibit_Biased_Climb ()
@@ -95,7 +85,7 @@ bool Non_Crossing_Biased_Climb()
     }
     else
     {	
-	result =  (Cur_Vertical_Sep >= MINSEP) && (Up_Separation >= ALIM());
+	result =   (Up_Separation >= ALIM());
     }
     return result;
 }
@@ -109,7 +99,7 @@ bool Non_Crossing_Biased_Descend()
     upward_preferred = Inhibit_Biased_Climb() > Down_Separation;
     if (upward_preferred)
     {
-	result = (Cur_Vertical_Sep >= MINSEP) && (Down_Separation >= ALIM());
+	result =  (Down_Separation >= ALIM());
     }
     else
     {
@@ -154,17 +144,10 @@ int AllRepair_correct_alt_sep_test()
 
 //<ASSUME_CORRECT>
 
-void AllRepair_correct_initialize()
-{
-    Positive_RA_Alt_Thresh[0] = 400;
-    Positive_RA_Alt_Thresh[1] = 500;
-    Positive_RA_Alt_Thresh[2] = 640;
-    Positive_RA_Alt_Thresh[3] = 740;
-}
 
 int AllRepair_correct_ALIM ()
 {
- return Positive_RA_Alt_Thresh[Alt_Layer_Value];
+ return 500;
 }
 
 int AllRepair_correct_Inhibit_Biased_Climb ()
@@ -185,7 +168,7 @@ bool AllRepair_correct_Non_Crossing_Biased_Climb()
     }
     else
     {
-  result = (Cur_Vertical_Sep >= MINSEP_correct) && (Up_Separation >= AllRepair_correct_ALIM());
+  result = (Up_Separation >= AllRepair_correct_ALIM());
     }
     return result;
 }
@@ -199,7 +182,7 @@ bool AllRepair_correct_Non_Crossing_Biased_Descend()
     //upward_preferred = AllRepair_correct_Inhibit_Biased_Climb() > Down_Separation;
     if (AllRepair_correct_Inhibit_Biased_Climb() > Down_Separation)
     {
-  result = (Cur_Vertical_Sep >= MINSEP_correct) && (Down_Separation >= AllRepair_correct_ALIM());
+  result = (Down_Separation >= AllRepair_correct_ALIM());
     }
     else
     {
@@ -211,22 +194,17 @@ bool AllRepair_correct_Non_Crossing_Biased_Descend()
 
 int main()
 {
-    Cur_Vertical_Sep = nd();// = atoi(argv[1]);
     High_Confidence = nd();// = atoi(argv[2]);
     assume(High_Confidence>=0 && High_Confidence<=1);
     Two_of_Three_Reports_Valid = nd();// = atoi(argv[3]);
     assume(Two_of_Three_Reports_Valid>=0 && Two_of_Three_Reports_Valid<=1);
-    Alt_Layer_Value = nd();// = atoi(argv[7]);
-    assume(Alt_Layer_Value>=0 && Alt_Layer_Value<=3);
     Up_Separation = nd();// = atoi(argv[8]);
     Down_Separation = nd();// = atoi(argv[9]);
     Climb_Inhibit = nd();// = atoi(argv[12]);
     assume(Climb_Inhibit>=0 && Climb_Inhibit<=1);
-    assume(Up_Separation<=100000 && Down_Separation<=100000 && Cur_Vertical_Sep<=100000);
+    assume(Up_Separation<=100000 && Down_Separation<=100000);
 
-    initialize();
     int res = alt_sep_test();
-    AllRepair_correct_initialize();
     int res_correct = AllRepair_correct_alt_sep_test();
     sassert(res == res_correct);
     return 0;
