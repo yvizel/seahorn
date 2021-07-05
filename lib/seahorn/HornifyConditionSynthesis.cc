@@ -293,8 +293,7 @@ Expr HornifyConditionSynthesis::createJoinTr(const Expr tr1, const Expr tr2) {
   if (conds.size() > 0) {
     assert(isOpX<TRUE>(conds.back()) || bind::isBoolConst(conds.back()) ||
            isOpX<NEG>(conds.back()));
-    condMap.insert(std::make_pair(conds.back(), mk<TRUE>(m_efac)));
-    newTr1 = replace(tr1, condMap);
+    newTr1 = mknary<AND>(tr1->begin(), tr1->end()-1);
   }
 
   conds.clear();
@@ -312,9 +311,7 @@ Expr HornifyConditionSynthesis::createJoinTr(const Expr tr1, const Expr tr2) {
   if (conds.size() > 0) {
     assert(isOpX<TRUE>(conds.back()) || bind::isBoolConst(conds.back()) ||
            isOpX<NEG>(conds.back()));
-    condMap.clear();
-    condMap.insert(std::make_pair(conds.back(), mk<TRUE>(m_efac)));
-    newTr2 = replace(tr2, condMap);
+    newTr2 = mknary<AND>(tr2->begin(), tr2->end()-1);
   }
 
   Expr newTr = boolop::simplify(boolop::land(newTr1, newTr2));
