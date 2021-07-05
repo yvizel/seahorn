@@ -10,30 +10,14 @@ extern void g();
  * */
 
 #include <stdio.h>
-
-#define OLEV       600		/* in feets/minute */
-#define MAXALTDIFF 600		/* max altitude difference in feet */
-#define MINSEP     300          /* min separation in feet */
-#define NOZCROSS   100		/* in feet */
-#define OLEV_correct       600    /* in feets/minute */
-#define MAXALTDIFF_correct 600    /* max altitude difference in feet */
-#define MINSEP_correct     300          /* min separation in feet */
+#define NOZCROSS   100          /* in feet */
 #define NOZCROSS_correct   100    /* in feet */
-				/* variables */
-
-#define TCAS_TA 1
-#define OTHER 2
-#define TCAS_TA_correct 1
-#define OTHER_correct 2
 
 int Climb_Inhibit;		/* true/false */
 
 #define UNRESOLVED 0
 #define UPWARD_RA 1
 #define DOWNWARD_RA 2
-#define UNRESOLVED_correct 0
-#define UPWARD_RA_correct 1
-#define DOWNWARD_RA_correct 2
 
 //bat
 int  Inhibit_Biased_Climb();
@@ -87,13 +71,13 @@ int AllRepair_correct_alt_sep_test()
     bool need_upward_RA;
     int alt_sep;
 
-    alt_sep = UNRESOLVED_correct;
+    alt_sep = UNRESOLVED;
 
   need_upward_RA = AllRepair_correct_Non_Crossing_Biased_Climb();
   if (need_upward_RA)
       alt_sep = UPWARD_RA;
   else
-      alt_sep = UNRESOLVED_correct;
+      alt_sep = UNRESOLVED;
 
     return alt_sep;
 }
