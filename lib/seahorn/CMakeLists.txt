@@ -8,6 +8,7 @@ add_llvm_library (seahorn.LIB DISABLE_LLVM_LINK_LLVM_DYLIB
   HornifyModule.cc
   HornifyFunction.cc
   HornifyConditionSynthesis.cc
+  CondSynthesisSygus.cc
   FlatHornifyFunction.cc
   IncHornifyFunction.cc
   HornWrite.cc

@@ -13,6 +13,8 @@
 #include "seahorn/Support/SeaDebug.h"
 #include <climits>
 
+#include "seahorn/CondSynthesisSygus.hh"
+
 using namespace llvm;
 
 static llvm::cl::opt<std::string> ChcEngine("horn-pdr-engine",
@@ -301,16 +303,27 @@ void HornSolver::printInvars(Function &F, HornDbModel &model) {
     Expr bbPred = hm.bbPredicate(BB);
 
     outs() << *bind::fname(bbPred) << ":";
+//    std::ostringstream ss;
+//        ss << *bind::fname(bbPred);
+//    std::string name_string = ss.str();
+//    if (name_string == "main@_117"){//bat 228 117
+
     const ExprVector &live = hm.live(BB);
     // Expr invars = fp.getCoverDelta (bind::fapp (bbPred, live));
     Expr invars = model.getDef(bind::fapp(bbPred, live));
 
-    if (isOpX<AND>(invars)) {
-      outs() << "\n\t";
-      for (size_t i = 0; i < invars->arity(); ++i)
-        outs() << "\t" << *invars->arg(i) << "\n";
-    } else
-      outs() << " " << *invars << "\n";
+	CondSynthesisSygus syg(bind::fapp(bbPred, live),bind::fapp(bbPred, live),bind::fapp(bbPred, live));
+	std::cout<<syg;
+
+//    if (isOpX<AND>(invars)) {
+//      outs() << "\n\t";
+//      for (size_t i = 0; i < invars->arity(); ++i)
+//        outs() << "\t" << *invars->arg(i) << "\n";
+//    } else
+//      outs() << " " << *invars << "\n";
+
+//    }//bat
+
   }
 }
 
