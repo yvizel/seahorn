@@ -129,6 +129,27 @@ bool HornSolver::runOnModule(Module &M) {
   // Load the Horn clause database
   auto &db = hm.getHornClauseDB();
 
+  std::string branchPredName = "main@.critedge1!_Cond";
+  std::string thenPredName = "main@_99";
+  std::string elsePredName = "main@_95";
+  Expr branchFapp;
+  Expr thenFapp;
+  Expr elseFapp;
+  for (seahorn::HornRule& rule : db.getRules()){
+	  std::ostringstream ss;
+	  ss << *bind::fname(bind::fname(rule.head())); // fapp -> fdecl -> fname
+	  if (ss.str() == branchPredName){
+		  outs() <<"found branch!\n";
+		  branchFapp = rule.head();
+	  } else if (ss.str() == thenPredName){
+		  outs() <<"found then!\n";
+		  thenFapp = rule.head();
+	  } else if (ss.str() == elsePredName){
+		  outs() <<"found else!\n";
+		  elseFapp = rule.head();
+	  }
+  }
+
   if (LocalContext) {
     m_local_ctx.reset(new EZ3(hm.getExprFactory()));
     m_fp.reset(new ZFixedPoint<EZ3>(*m_local_ctx));
@@ -171,6 +192,18 @@ bool HornSolver::runOnModule(Module &M) {
     Stats::resume("Horn");
     m_result= fp.readFromFile("reverse.smt2");
     Stats::stop("Horn");
+
+    Expr branchInterp;
+    Expr thenInterp;
+    Expr elseInterp;
+    if (!m_result){ //todo: add flag for when we want to use sygus
+    	branchInterp = fp.getCoverDelta(branchFapp);
+    	thenInterp = fp.getCoverDelta(thenFapp);
+    	elseInterp = fp.getCoverDelta(elseFapp);
+    }
+	CondSynthesisSygus syg(branchFapp, thenFapp, elseFapp, branchInterp, thenInterp, elseInterp);
+	std::cout<<syg;
+
   } else {
     db.loadZFixedPoint(fp, SkipConstraints);
 
@@ -302,30 +335,18 @@ void HornSolver::printInvars(Function &F, HornDbModel &model) {
 
     Expr bbPred = hm.bbPredicate(BB);
 
-//    outs() << *bind::fname(bbPred) << ":";
-//    std::ostringstream ss;
-//        ss << *bind::fname(bbPred);
-//    std::string name_string = ss.str();
-//    if (name_string == "main@_195"){//bat 228 117
-
+    outs() << *bind::fname(bbPred) << ":";
     const ExprVector &live = hm.live(BB);
     // Expr invars = fp.getCoverDelta (bind::fapp (bbPred, live));
     Expr invars = model.getDef(bind::fapp(bbPred, live));
 
-	CondSynthesisSygus syg(bind::fapp(bbPred, live),bind::fapp(bbPred, live),bind::fapp(bbPred, live),invars,invars,invars);
-	std::cout<<syg;
-
-//    if (isOpX<AND>(invars)) {
-//      outs() << "\n\t";
-//      for (size_t i = 0; i < invars->arity(); ++i)
-//        outs() << "\t" << *invars->arg(i) << "\n";
-//    } else
-//      outs() << " " << *invars << "\n";
-
-//    }//bat
-
+    if (isOpX<AND>(invars)) {
+      outs() << "\n\t";
+      for (size_t i = 0; i < invars->arity(); ++i)
+        outs() << "\t" << *invars->arg(i) << "\n";
+    } else
+      outs() << " " << *invars << "\n";
   }
 }
-
 
 } // namespace seahorn
