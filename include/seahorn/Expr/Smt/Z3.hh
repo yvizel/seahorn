@@ -956,6 +956,15 @@ public:
       res.push_back(z3.toExpr(rule));
     }
   }
+
+  tribool readFromFile(std::string name) {
+    Z3_ast_vector v = Z3_fixedpoint_from_file(ctx, fp, name.c_str());
+    assert(Z3_ast_vector_size(ctx, v) > 0);
+    Z3_ast q = Z3_ast_vector_get(ctx, v, 0);
+    tribool res = z3l_to_tribool(Z3_fixedpoint_query(ctx, fp, q));
+    ctx.check_error();
+    return res;
+  }
 };
 
 } // namespace seahorn

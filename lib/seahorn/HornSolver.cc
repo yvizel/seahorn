@@ -81,6 +81,12 @@ static llvm::cl::opt<unsigned>
     // 3: use additive IUC plugin
     IUCArith("horn-iuc-arith", cl::Hidden, cl::init(1));
 
+static llvm::cl::opt<bool>
+    HornReadFromFile ("horn-read-file",
+                        llvm::cl::desc("TODO!"),
+                        llvm::cl::init
+                            (false));
+
 namespace solver_detail {
 enum invariant_usage_t {
   INACTIVE // add them but without using them (only debugging purposes)
@@ -145,7 +151,8 @@ bool HornSolver::runOnModule(Module &M) {
   params.set(":spacer.elim_aux", true);
   params.set(":spacer.reach_dnf", true);
   // params.set ("print_statistics", true);
-  params.set(":spacer.use_bg_invs", false);
+  params.set(":spacer.use_bg_invs", UseInvariant == solver_detail::INACTIVE ||
+                                    UseInvariant == solver_detail::BG_ONLY);
   params.set(":spacer.weak_abs", WeakAbs);
   params.set(":spacer.mbqi", UseMbqi);
   params.set(":spacer.iuc", IUC);
@@ -158,16 +165,22 @@ bool HornSolver::runOnModule(Module &M) {
   params.set(":spacer.max_level", HornMaxDepth);
   fp.set(params);
 
-  db.loadZFixedPoint(fp, SkipConstraints);
+  if (HornReadFromFile) {
+    Stats::resume("Horn");
+    m_result= fp.readFromFile("reverse.smt2");
+    Stats::stop("Horn");
+  } else {
+    db.loadZFixedPoint(fp, SkipConstraints);
 
-  if (UseInvariant == solver_detail::INACTIVE) {
-    params.set(":spacer.use_bg_invs", false);
-    fp.set(params);
+    if (UseInvariant == solver_detail::INACTIVE) {
+      params.set(":spacer.use_bg_invs", false);
+      fp.set(params);
+    }
+
+    Stats::resume("Horn");
+    m_result = fp.query();
+    Stats::stop("Horn");
   }
-
-  Stats::resume("Horn");
-  m_result = fp.query();
-  Stats::stop("Horn");
 
   if (m_result)
     outs() << "sat";
