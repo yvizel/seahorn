@@ -212,7 +212,14 @@ bool HornSolver::runOnModule(Module &M) {
     	elseInterp = fp.getCoverDelta(elseFapp);
     }
 	CondSynthesisSygus syg(branchFapp, thenFapp, elseFapp, branchInterp, thenInterp, elseInterp);
-	std::cout<<syg;
+	std::ofstream sygusFile("boundaries.sl");
+	  if (sygusFile.is_open())
+	  {
+		sygusFile << syg;
+		sygusFile.close();
+		outs() << "Wrote to SyGuS file 'boundaries.sl'\n";
+	  }
+	  else errs() << "Unable to write to sygus file";
 
   } else {
     db.loadZFixedPoint(fp, SkipConstraints);
