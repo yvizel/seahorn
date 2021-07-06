@@ -276,42 +276,67 @@ void HornifyConditionSynthesis::handleSelect(
   m_db.buildIndexes();
 }
 
+/**
+ * The function assumes the following:
+ * In Small step semantics, the last argument of the TR (a big AND)
+ * is the condition.
+ * In Large step semantics need to look for an implication of a
+ * constant Bool, this indicates the condition. The rest of the predicates
+ * in the TR indicates the BBs.
+ * @param tr1
+ * @param tr2
+ * @return
+ */
 Expr HornifyConditionSynthesis::createJoinTr(const Expr tr1, const Expr tr2) {
   ExprVector conds;
   for (auto arg = tr1->args_begin()+1;
        arg != tr1->args_end();
        arg++) {
-    if (bind::isBoolConst(*arg) || isOpX<NEG>(*arg)) {
-      if (!isOpX<TRUE>(*arg)) {
+    Expr a = *arg;
+    if (m_largeStep) {
+      if (isOpX<IMPL>(*arg))
+        a = a->arg(1);
+      else continue;
+    }
+    if (bind::isBoolConst(a) || isOpX<NEG>(a)) {
+      if (!isOpX<TRUE>(a)) {
         conds.push_back(*arg);
       }
     }
   }
 
-  Expr newTr1 = tr1;
+  Expr newTr1 = mk<TRUE>(m_efac);
   ExprMap condMap;
   if (conds.size() > 0) {
     assert(isOpX<TRUE>(conds.back()) || bind::isBoolConst(conds.back()) ||
-           isOpX<NEG>(conds.back()));
-    newTr1 = mknary<AND>(tr1->begin(), tr1->end()-1);
+           isOpX<NEG>(conds.back()) || (m_largeStep && isOpX<IMPL>(conds.back())));
+    condMap.insert(std::make_pair(conds.back(), mk<TRUE>(m_efac)));
+    newTr1 = boolop::simplify(replace(tr1, condMap));
   }
 
   conds.clear();
   for (auto arg = tr2->args_begin()+1;
        arg != tr2->args_end();
        arg++) {
-    if (bind::isBoolConst(*arg) || isOpX<NEG>(*arg)) {
-      if (!isOpX<TRUE>(*arg)) {
+    Expr a = *arg;
+    if (m_largeStep) {
+      if (isOpX<IMPL>(*arg))
+        a = a->arg(1);
+      else continue;
+    }
+    if (bind::isBoolConst(a) || isOpX<NEG>(a)) {
+      if (!isOpX<TRUE>(a)) {
         conds.push_back(*arg);
       }
     }
   }
 
-  Expr newTr2 = tr2;
+  Expr newTr2 = mk<TRUE>(m_efac);
   if (conds.size() > 0) {
     assert(isOpX<TRUE>(conds.back()) || bind::isBoolConst(conds.back()) ||
-           isOpX<NEG>(conds.back()));
-    newTr2 = mknary<AND>(tr2->begin(), tr2->end()-1);
+           isOpX<NEG>(conds.back()) || (m_largeStep && isOpX<IMPL>(conds.back())));
+    condMap.insert(std::make_pair(conds.back(), mk<TRUE>(m_efac)));
+    newTr2 = replace(tr2, condMap);
   }
 
   Expr newTr = boolop::simplify(boolop::land(newTr1, newTr2));
@@ -408,7 +433,7 @@ void HornifyConditionSynthesis::runOnFunction(Function &F) {
     m_synthDb.addRule(synth);
   }
 
-  m_synthDb.buildIndexes();
+  //m_synthDb.buildIndexes();
 
   ZFixedPoint<EZ3> fp (m_parent.getZContext ());
   ZParams<EZ3> params (m_parent.getZContext ());
@@ -419,16 +444,22 @@ void HornifyConditionSynthesis::runOnFunction(Function &F) {
   std::ofstream reverseSmt(fileName);
   reverseSmt << fp << "\n";
   reverseSmt.close();
+
   outs() << "Printed file\n";
 
   m_db.m_queries.clear();
   m_db.m_vars.clear();
   m_db.m_rules.clear();
+  m_db.m_rels.clear();
+
+  for (auto rel : m_synthDb.getRelations())
+    m_db.registerRelation(rel);
 
   for (auto rule : m_synthDb.getRules())
     m_db.addRule(rule);
 
   m_db.addQuery(m_synthDb.getQueries()[0]);
+  m_db.buildIndexes();
 }
 
 } // namespace seahorn
