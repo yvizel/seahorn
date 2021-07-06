@@ -302,17 +302,17 @@ void HornSolver::printInvars(Function &F, HornDbModel &model) {
 
     Expr bbPred = hm.bbPredicate(BB);
 
-    outs() << *bind::fname(bbPred) << ":";
+//    outs() << *bind::fname(bbPred) << ":";
 //    std::ostringstream ss;
 //        ss << *bind::fname(bbPred);
 //    std::string name_string = ss.str();
-//    if (name_string == "main@_117"){//bat 228 117
+//    if (name_string == "main@_195"){//bat 228 117
 
     const ExprVector &live = hm.live(BB);
     // Expr invars = fp.getCoverDelta (bind::fapp (bbPred, live));
     Expr invars = model.getDef(bind::fapp(bbPred, live));
 
-	CondSynthesisSygus syg(bind::fapp(bbPred, live),bind::fapp(bbPred, live),bind::fapp(bbPred, live));
+	CondSynthesisSygus syg(bind::fapp(bbPred, live),bind::fapp(bbPred, live),bind::fapp(bbPred, live),invars,invars,invars);
 	std::cout<<syg;
 
 //    if (isOpX<AND>(invars)) {
@@ -326,5 +326,6 @@ void HornSolver::printInvars(Function &F, HornDbModel &model) {
 
   }
 }
+
 
 } // namespace seahorn
