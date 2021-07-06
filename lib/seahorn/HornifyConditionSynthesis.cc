@@ -154,6 +154,16 @@ Expr HornifyConditionSynthesis::createJoinPredicate(
   bind::fname(bind::fname(pred2))->dump();
   errs() << "===========\n";
 
+  std::ofstream myfile ("names.txt");
+    if (myfile.is_open())
+    {
+      myfile << joinName << "\n";
+      myfile << bind::fname(bind::fname(pred1)) << "\n";
+      myfile << bind::fname(bind::fname(pred2)) << "\n";
+      myfile.close();
+    }
+    else errs() << "Unable to write to names file";
+
   return joinPost;
 }
 

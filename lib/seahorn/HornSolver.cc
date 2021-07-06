@@ -129,9 +129,19 @@ bool HornSolver::runOnModule(Module &M) {
   // Load the Horn clause database
   auto &db = hm.getHornClauseDB();
 
-  std::string branchPredName = "main@.critedge1!_Cond";
-  std::string thenPredName = "main@_99";
-  std::string elsePredName = "main@_95";
+  std::string branchPredName;
+  std::string thenPredName;
+  std::string elsePredName;
+  std::ifstream namesFile("names.txt");
+  if (namesFile.is_open()){
+	  std::getline (namesFile,branchPredName);
+	  std::getline (namesFile,thenPredName);
+	  std::getline (namesFile,elsePredName);
+	  outs() << "branchname:" << branchPredName << " thenname:" << thenPredName << " elsename:" << elsePredName << "\n";
+	  namesFile.close();
+  } else {
+	  errs() << "Unable to read from names file.\n";
+  }
   Expr branchFapp;
   Expr thenFapp;
   Expr elseFapp;
