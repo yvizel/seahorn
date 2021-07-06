@@ -440,7 +440,7 @@ bool HornifyModule::runOnFunction(Function &F) {
 
   if (ConditionSynthesis) {
     assert(Step == hm_detail::LARGE_STEP || Step == hm_detail::SMALL_STEP);
-    HornifyConditionSynthesis hcs(*this, *hf);
+    HornifyConditionSynthesis hcs(*this, *hf, Step == hm_detail::LARGE_STEP);
     hcs.runOnFunction(F);
   }
 

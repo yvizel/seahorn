@@ -83,6 +83,7 @@ protected:
 
   HornifyModule &m_parent;
   HornifyFunction &m_hf;
+  bool m_largeStep;
 
   HornClauseDB &m_db;
   ExprFactory &m_efac;
@@ -104,8 +105,8 @@ protected:
   Expr createJoinTr(const Expr tr1, const Expr tr2);
 
 public:
-  HornifyConditionSynthesis(HornifyModule &parent, HornifyFunction &hf)
-      : m_parent(parent), m_hf(hf), m_db(m_parent.getHornClauseDB()),
+  HornifyConditionSynthesis(HornifyModule &parent, HornifyFunction &hf, bool large)
+      : m_parent(parent), m_hf(hf), m_largeStep(large), m_db(m_parent.getHornClauseDB()),
         m_efac(parent.getZContext().getExprFactory()),
         m_synthDb(m_efac) {}
 
