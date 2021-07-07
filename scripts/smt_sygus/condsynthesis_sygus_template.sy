@@ -1,0 +1,32 @@
+(set-logic ALL)
+(synth-fun Condition ((x!0 Int) (x!1 Int) (x!2 Int)) Bool) ;vars and types of join function
+
+;definitions from z3 solution
+(define-fun main@_bb->TrueBranch ((x!0 Int) (x!1 Int) (x!2 Int)) Bool
+  (let ((a!1 (not (>= (+ x!2 (* (- 1) x!0)) 0))))
+    (or a!1 (not (>= x!1 0)))))
+(define-fun main@_bb1->FalseBranch ((x!0 Int) (x!1 Int) (x!2 Int)) Bool
+  (not (>= (+ x!0 x!1 (* (- 1) x!2)) 0)))
+(define-fun main@_bb2 ((x!0 Int) (x!1 Int)) Bool
+  (let ((a!1 (not (>= (+ x!1 (* (- 1) x!0)) 0))))
+    (and (not (>= (+ x!0 x!1) 0)) a!1)))
+
+
+(define-fun psi_f ((x!0 Int) (x!1 Int) (x!2 Int)) Bool ;vars and types of join function
+	(and (main@_bb1->FalseBranch x!0 x!1 x!2) (not (main@_bb->TrueBranch x!0 x!1 x!2))) ; applications of then/else preds on their vars
+)
+
+(define-fun psi_t ((x!0 Int) (x!1 Int) (x!2 Int)) Bool ;vars and types of join function
+	(or (main@_bb1->FalseBranch x!0 x!1 x!2) (not (main@_bb->TrueBranch x!0 x!1 x!2))) ; applications of then/else preds on their vars
+)
+
+;all vars of join function
+(declare-var x!0 Int) 
+(declare-var x!1 Int)
+(declare-var x!2 Int)
+
+
+(constraint (=> (psi_f x!0 x!1 x!2) (Condition x!0 x!1 x!2))) ;list of vars of join function 
+(constraint (=> (Condition x!0 x!1 x!2) (psi_t x!0 x!1 x!2))) ;list of vars of join function 
+
+(check-synth)

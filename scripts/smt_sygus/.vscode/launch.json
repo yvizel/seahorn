@@ -1,0 +1,37 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "toSyg",
+            "type": "python",
+            "request": "launch",
+            "program": "funcdefsToSygus.py",
+            "console": "integratedTerminal",
+            "args": ["funcdefs.smt2", "names.txt", "out"]
+        },
+        {
+            "name": "toSmt",
+            "type": "python",
+            "request": "launch",
+            "program": "z3outToSmt2.py",
+            "console": "integratedTerminal",
+            "args": [
+                "funcdefs.smt2",
+                "out"
+            ]
+        },
+        {
+            "name": "parseZ3toObj",
+            "type": "python",
+            "request": "launch",
+            "program": "funcdefsToSygus.py",
+            "console": "integratedTerminal",
+            "args": [
+                "funcdefs.smt2"
+            ]
+        }
+    ]
+}
