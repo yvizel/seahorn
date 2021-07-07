@@ -40,7 +40,6 @@ def until_define(lines, start):
 def get_fun(text, i):
     assert "define-fun" in text[i]
     new_i = until_define(text, i + 1)
-    print("\n".join(text[i:new_i+1]))
     return (new_i, FunDef(sexpdata.loads("\n".join(text[i:new_i]).replace(".", "_"))))
 
 def get_all_funs(in_file):
