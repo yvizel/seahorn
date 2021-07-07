@@ -129,14 +129,25 @@ bool HornSolver::runOnModule(Module &M) {
   // Load the Horn clause database
   auto &db = hm.getHornClauseDB();
 
+  std::string branchPredLine;
   std::string branchPredName;
+  std::string thenPredLine;
   std::string thenPredName;
+  std::string elsePredLine;
   std::string elsePredName;
   std::ifstream namesFile("names.txt");
   if (namesFile.is_open()){
-	  std::getline (namesFile,branchPredName);
-	  std::getline (namesFile,thenPredName);
-	  std::getline (namesFile,elsePredName);
+	  std::getline (namesFile,branchPredLine);
+	  int strpos = branchPredLine.find(" ");
+	  errs() << strpos << "\n";
+	  branchPredName = branchPredLine.substr(0, strpos);
+	  errs() << branchPredName << "\n";
+	  std::getline (namesFile,thenPredLine);
+	  strpos = thenPredLine.find(" ");
+	  thenPredName = thenPredLine.substr(0, strpos);
+	  std::getline (namesFile,elsePredLine);
+	  strpos = elsePredLine.find(" ");
+	  elsePredName = elsePredLine.substr(0, strpos);
 	  outs() << "branchname:" << branchPredName << " thenname:" << thenPredName << " elsename:" << elsePredName << "\n";
 	  namesFile.close();
   } else {
