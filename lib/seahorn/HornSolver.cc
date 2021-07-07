@@ -129,47 +129,47 @@ bool HornSolver::runOnModule(Module &M) {
   // Load the Horn clause database
   auto &db = hm.getHornClauseDB();
 
-  std::string branchPredLine;
-  std::string branchPredName;
-  std::string thenPredLine;
-  std::string thenPredName;
-  std::string elsePredLine;
-  std::string elsePredName;
-  std::ifstream namesFile("names.txt");
-  if (namesFile.is_open()){
-	  std::getline (namesFile,branchPredLine);
-	  int strpos = branchPredLine.find(" ");
-	  errs() << strpos << "\n";
-	  branchPredName = branchPredLine.substr(0, strpos);
-	  errs() << branchPredName << "\n";
-	  std::getline (namesFile,thenPredLine);
-	  strpos = thenPredLine.find(" ");
-	  thenPredName = thenPredLine.substr(0, strpos);
-	  std::getline (namesFile,elsePredLine);
-	  strpos = elsePredLine.find(" ");
-	  elsePredName = elsePredLine.substr(0, strpos);
-	  outs() << "branchname:" << branchPredName << " thenname:" << thenPredName << " elsename:" << elsePredName << "\n";
-	  namesFile.close();
-  } else {
-	  errs() << "Unable to read from names file.\n";
-  }
-  Expr branchFapp;
-  Expr thenFapp;
-  Expr elseFapp;
-  for (seahorn::HornRule& rule : db.getRules()){
-	  std::ostringstream ss;
-	  ss << *bind::fname(bind::fname(rule.head())); // fapp -> fdecl -> fname
-	  if (ss.str() == branchPredName){
-		  outs() <<"found branch!\n";
-		  branchFapp = rule.head();
-	  } else if (ss.str() == thenPredName){
-		  outs() <<"found then!\n";
-		  thenFapp = rule.head();
-	  } else if (ss.str() == elsePredName){
-		  outs() <<"found else!\n";
-		  elseFapp = rule.head();
-	  }
-  }
+//  std::string branchPredLine;
+//  std::string branchPredName;
+//  std::string thenPredLine;
+//  std::string thenPredName;
+//  std::string elsePredLine;
+//  std::string elsePredName;
+//  std::ifstream namesFile("names.txt");
+//  if (namesFile.is_open()){
+//	  std::getline (namesFile,branchPredLine);
+//	  int strpos = branchPredLine.find(" ");
+//	  errs() << strpos << "\n";
+//	  branchPredName = branchPredLine.substr(0, strpos);
+//	  errs() << branchPredName << "\n";
+//	  std::getline (namesFile,thenPredLine);
+//	  strpos = thenPredLine.find(" ");
+//	  thenPredName = thenPredLine.substr(0, strpos);
+//	  std::getline (namesFile,elsePredLine);
+//	  strpos = elsePredLine.find(" ");
+//	  elsePredName = elsePredLine.substr(0, strpos);
+//	  outs() << "branchname:" << branchPredName << " thenname:" << thenPredName << " elsename:" << elsePredName << "\n";
+//	  namesFile.close();
+//  } else {
+//	  errs() << "Unable to read from names file.\n";
+//  }
+//  Expr branchFapp;
+//  Expr thenFapp;
+//  Expr elseFapp;
+//  for (seahorn::HornRule& rule : db.getRules()){
+//	  std::ostringstream ss;
+//	  ss << *bind::fname(bind::fname(rule.head())); // fapp -> fdecl -> fname
+//	  if (ss.str() == branchPredName){
+//		  outs() <<"found branch!\n";
+//		  branchFapp = rule.head();
+//	  } else if (ss.str() == thenPredName){
+//		  outs() <<"found then!\n";
+//		  thenFapp = rule.head();
+//	  } else if (ss.str() == elsePredName){
+//		  outs() <<"found else!\n";
+//		  elseFapp = rule.head();
+//	  }
+//  }
 
   if (LocalContext) {
     m_local_ctx.reset(new EZ3(hm.getExprFactory()));
@@ -214,23 +214,23 @@ bool HornSolver::runOnModule(Module &M) {
     m_result= fp.readFromFile("reverse.smt2");
     Stats::stop("Horn");
 
-    Expr branchInterp;
-    Expr thenInterp;
-    Expr elseInterp;
-    if (!m_result){ //todo: add flag for when we want to use sygus
-    	branchInterp = fp.getCoverDelta(branchFapp);
-    	thenInterp = fp.getCoverDelta(thenFapp);
-    	elseInterp = fp.getCoverDelta(elseFapp);
-    }
-	CondSynthesisSygus syg(branchFapp, thenFapp, elseFapp, branchInterp, thenInterp, elseInterp);
-	std::ofstream sygusFile("boundaries.sl");
-	  if (sygusFile.is_open())
-	  {
-		sygusFile << syg;
-		sygusFile.close();
-		outs() << "Wrote to SyGuS file 'boundaries.sl'\n";
-	  }
-	  else errs() << "Unable to write to sygus file";
+//    Expr branchInterp;
+//    Expr thenInterp;
+//    Expr elseInterp;
+//    if (!m_result){ //todo: add flag for when we want to use sygus
+//    	branchInterp = fp.getCoverDelta(branchFapp);
+//    	thenInterp = fp.getCoverDelta(thenFapp);
+//    	elseInterp = fp.getCoverDelta(elseFapp);
+//    }
+//	CondSynthesisSygus syg(branchFapp, thenFapp, elseFapp, branchInterp, thenInterp, elseInterp);
+//	std::ofstream sygusFile("boundaries.sl");
+//	  if (sygusFile.is_open())
+//	  {
+//		sygusFile << syg;
+//		sygusFile.close();
+//		outs() << "Wrote to SyGuS file 'boundaries.sl'\n";
+//	  }
+//	  else errs() << "Unable to write to sygus file";
 
   } else {
     db.loadZFixedPoint(fp, SkipConstraints);
