@@ -157,9 +157,23 @@ Expr HornifyConditionSynthesis::createJoinPredicate(
   std::ofstream myfile ("names.txt");
     if (myfile.is_open())
     {
-      myfile << joinName << "\n";
-      myfile << bind::fname(bind::fname(pred1)) << "\n";
-      myfile << bind::fname(bind::fname(pred2)) << "\n";
+      myfile << joinName;
+      for (auto & arg : joinArgs){
+    	  myfile << " " << *(bind::fname(bind::fname(arg)));
+      }
+      myfile << "\n";
+      myfile << bind::fname(bind::fname(pred1));
+      for (auto it = pred1->args_begin()+1 ; it != pred1->args_end() ; it++){
+    	  Expr arg = *it;
+    	  myfile << " " << *(bind::fname(bind::fname(arg)));
+      }
+      myfile << "\n";
+      myfile << bind::fname(bind::fname(pred2));
+      for (auto it = pred2->args_begin()+1 ; it != pred2->args_end() ; it++){
+    	  Expr arg = *it;
+    	  myfile << " " << *(bind::fname(bind::fname(arg)));
+      }
+      myfile << "\n";
       myfile.close();
     }
     else errs() << "Unable to write to names file";
