@@ -31,7 +31,11 @@ if __name__ == "__main__":
         f.write("(set-logic ALL)\n")
 
         # Condition to synthesis using the first function in names as parameters
-        f.write("(synth-fun Condition {} Bool)\n".format(names[0].str_params()))
+        f.write("(synth-fun Condition {} Bool\n"
+                "    ((Start Bool ((and Start Start) (or Start Start) Atom ))\n"
+                "    (Atom Bool ((>= Expr Expr) (<= Expr Expr) ))\n"
+                "    (Expr Int ((Constant Int) (Variable Int) )))\n"
+                ")\n".format(names[0].str_params()))
 
         for fun in funs:
             sexpdata.dump(fun.dec, f)
