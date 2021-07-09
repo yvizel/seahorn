@@ -7,12 +7,19 @@ from copy import deepcopy
 from argparse import ArgumentParser
 from collections import defaultdict
 
+# TODO: Add generators for array and functions with parameters
+# TODO: fix usage of int as bool by checking != 0. Including:
+# TODO:     if statements, trenary operator, assignments (any binary expression)
+
 class SketchVisitor(pycparser.c_ast.NodeVisitor):
     def __init__(self, f):
         self.main_coord = None
         self.cond_use_locations = []
         self.current_func_decl = [[]]
         self.f = f
+        self.defined_fun = set()
+        self.declared = set()
+        self.bit_mode = 0
 
     def visit_FuncDef(self, node):
         if os.path.basename(node.decl.coord.file) != os.path.basename(self.f):
@@ -24,6 +31,7 @@ class SketchVisitor(pycparser.c_ast.NodeVisitor):
             self.current_func_decl.append([d for d in node.param_decls])
         else:
             self.current_func_decl.append([])
+        self.defined_fun.add(node.decl.name)
         self.visit(node.body)
         self.current_func_decl.pop()
         
@@ -46,6 +54,50 @@ class SketchVisitor(pycparser.c_ast.NodeVisitor):
             node.name = "seahorn_nd"
         elif node.name != "find_condition":
             self.current_func_decl.append(node)
+        if isinstance(node.type, pycparser.c_ast.ArrayDecl):
+            node.type.type.type.names[0] += "[{}]".format(node.type.dim.value)
+            node.type = node.type.type
+        self.declared.add(node)
+
+    def visit_BinaryOp(self, node):
+        if node.op in ["&&", "||"]:
+            self.bit_mode += 1
+            self.visit(node.left)
+            self.visit(node.right)
+            self.bit_mode -= 1
+
+    def visit_UnaryOp(self, node):
+        if node.op == "!":
+            self.bit_mode += 1
+            self.visit(node.expr)
+            self.bit_mode -= 1
+    
+    def visit_If(self, node):
+        self.bit_mode += 1
+        self.visit(node.cond)
+        self.bit_mode -= 1
+        self.visit(node.iftrue)
+        if node.iffalse:
+            self.visit(node.iffalse)
+
+    def visit_TernaryOp(self, node):
+        self.bit_mode += 1
+        self.visit(node.cond)
+        self.bit_mode -= 1
+        self.visit(node.iftrue)
+        self.visit(node.iffalse)
+
+    def visit_ID(self, node):
+        if self.bit_mode > 0:
+            dec = next((d for d in self.declared if d.name == node.name), None)
+            if dec is None: 
+                print("no dec for", node.name, "assuming int")
+                typ = 'int'
+            else:
+                typ = dec.type.type.names[0]
+            if typ != 'bool':
+                node.name = "({} != 0)".format(node.name)
+            
 
 if __name__ == '__main__':
     arg_parser = ArgumentParser()
@@ -66,6 +118,11 @@ if __name__ == '__main__':
     
     sketcher = SketchVisitor(in_file)
     sketcher.visit(ast)
+    for f in sketcher.defined_fun:
+        for d in sketcher.declared:
+            if f == d.name:
+                print("removed ", d.name)
+                ast.ext.remove(d)
     generators = []
     coords = set()
     for (coord, decs) in sketcher.cond_use_locations:
@@ -78,6 +135,9 @@ if __name__ == '__main__':
         del by_type['void']
         generators.append([])
         for k in by_type.keys(): 
+            # TODO: fix resulting generators
+            if '[' in k:
+                continue
             res = []
             d_type = None
             for d in by_type[k]:
@@ -127,13 +187,24 @@ if __name__ == '__main__':
     bool x = {{| ??(1) | base_generator_for_bool_{0}() |}};
     if(t == 3){{return x;}}
     if(t == 4){{return !x;}}
-    int y = {{| ??(1) | base_generator_for_bool_{0}() |}};
+    bit y = {{| ??(1) | base_generator_for_bool_{0}() |}};
     if(t == 5){{return x&&y;}}
     if(t == 6){{return x||y;}}
 }}"""
+
+    nd_func = """int NDCNT=0;
+int getND_private(int i);
+int getND(){
+    //Every time this function is called
+    //it produces a new non-deterministic value.
+    return getND_private(NDCNT++);
+}"""
 
     with open(in_file + '.sk', 'w') as f:
         new_text = text + '\n' + '\n'.join([g for gs in generators for g in gs])
         new_text += '\n' + '\n'.join([int_generator_template.format(coord) for coord in coords])
         new_text += '\n' + '\n'.join([bool_generator_template.format(coord) for coord in coords])
-        f.write(new_text)
+        new_text = new_text.replace('bool', 'bit')
+        new_text += '\n' + nd_func
+        lines = new_text.splitlines()
+        f.writelines([l + '\n' for l in lines if 'typedef' not in l.lower() and (not l.strip().lower().startswith('g();')) and not l.strip().lower().startswith('extern')])
