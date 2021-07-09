@@ -5,16 +5,25 @@ from copy import deepcopy
 
 import sexpdata
 
+default_grammar = grammar = """    ((Start Bool ((and Start Start) (or Start Start) Atom ))
+    (Atom Bool ((>= Expr Expr) (<= Expr Expr) ))
+    (Expr Int ((Constant Int) (Variable Int) )))
+"""
 
 if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument("in_file")
     parser.add_argument("name_file")
     parser.add_argument("out_file")
+    parser.add_argument("--grammar", default="")
     args = parser.parse_args()
 
+    grammar = default_grammar
+    if args.grammar:
+        with open(args.grammar, 'r') as f:
+            grammar = f.read()
+
     funs = get_all_funs(args.in_file)
-    
     with open(args.name_file, 'r') as f:
         names = []
         for l in f.readlines():
@@ -22,7 +31,7 @@ if __name__ == "__main__":
                 continue
             l = l.strip().split()
             fun = deepcopy(next((x for x in funs if x.str_name() == l[0].replace('.', '_')), None))
-            assert fun is not None
+            assert fun is not None, "Could not find {} in funs\nfuns:{}".format(l[0].replace('.', '_'), funs)
             assert len(fun.dec[2]) == len(l) - 1
             fun.dec[2] = [[sexpdata.Symbol('s' + l[i + 1].replace(".", "_")), p[1]] for (i, p) in enumerate(fun.dec[2])]
             names.append(fun)
@@ -31,11 +40,7 @@ if __name__ == "__main__":
         f.write("(set-logic ALL)\n")
 
         # Condition to synthesis using the first function in names as parameters
-        f.write("(synth-fun Condition {} Bool\n"
-                "    ((Start Bool ((and Start Start) (or Start Start) Atom ))\n"
-                "    (Atom Bool ((>= Expr Expr) (<= Expr Expr) ))\n"
-                "    (Expr Int ((Constant Int) (Variable Int) )))\n"
-                ")\n".format(names[0].str_params()))
+        f.write("(synth-fun Condition {} Bool\n{})\n".format(names[0].str_params(), grammar))
 
         for fun in funs:
             sexpdata.dump(fun.dec, f)
