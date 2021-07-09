@@ -8,8 +8,6 @@ from argparse import ArgumentParser
 from collections import defaultdict
 
 # TODO: Add generators for array and functions with parameters
-# TODO: fix usage of int as bool by checking != 0. Including:
-# TODO:     if statements, trenary operator, assignments (any binary expression)
 
 class SketchVisitor(pycparser.c_ast.NodeVisitor):
     def __init__(self, f):
@@ -165,9 +163,9 @@ if __name__ == '__main__':
     text = generator.visit(ast)
     int_generator_template = """generator int generator_for_int_{0}() {{
     int t = ??(6);
-    int x = {{| ?? | base_generator_for_int_{0}() |}};
+    int x = {{| 50 | 100 | 300 | 600 | ?? | base_generator_for_int_{0}() |}};
     if(t == 0){{return x;}}
-    int y = {{| ?? | base_generator_for_int_{0}() |}};
+    int y = {{| 50 | 100 | 300 | 600 | ?? | base_generator_for_int_{0}() |}};
     if(t == 1){{return x+y;}}
     if(t == 2){{return x-y;}}
     if(t == 3){{return x*y;}}
