@@ -18,6 +18,7 @@ class SketchVisitor(pycparser.c_ast.NodeVisitor):
         self.defined_fun = set()
         self.declared = set()
         self.bit_mode = 0
+        self.nodes_to_make_gen = {}
 
     def visit_FuncDef(self, node):
         if os.path.basename(node.decl.coord.file) != os.path.basename(self.f):
@@ -25,6 +26,7 @@ class SketchVisitor(pycparser.c_ast.NodeVisitor):
         if node.decl.name == "main":
             node.decl.quals.append('harness')
         prev = self.current_func_decl 
+        self.current_func_decl[-1].append(node.decl.type)
         if node.param_decls:
             self.current_func_decl.append([d for d in node.param_decls])
         else:
@@ -38,8 +40,9 @@ class SketchVisitor(pycparser.c_ast.NodeVisitor):
         if os.path.basename(node.coord.file) != os.path.basename(self.f):
             return
         if node.name.name == "find_condition":
-            self.cond_use_locations.append((node.coord, [x for l in self.current_func_decl for x in l]))
+            self.cond_use_locations.append((node.coord, [[x for x in l] for l in self.current_func_decl]))
             node.name.name = "generator_for_bool_{0}".format(node.coord.line)
+            self.nodes_to_make_gen[node.coord.line] = node
         if node.name.name == "__SEA_assume":
             node.name.name = "assume"
         if node.name.name == "nd":
@@ -51,7 +54,7 @@ class SketchVisitor(pycparser.c_ast.NodeVisitor):
         if node.name == "nd":
             node.name = "seahorn_nd"
         elif node.name != "find_condition":
-            self.current_func_decl.append(node)
+            self.current_func_decl[-1].append(node.type)
         if isinstance(node.type, pycparser.c_ast.ArrayDecl):
             node.type.type.type.names[0] += "[{}]".format(node.type.dim.value)
             node.type = node.type.type
@@ -123,22 +126,31 @@ if __name__ == '__main__':
                 ast.ext.remove(d)
     generators = []
     coords = set()
+    types_coord_to_params = defaultdict(lambda: "")
     for (coord, decs) in sketcher.cond_use_locations:
-        by_type = defaultdict(list)
-        for d in decs:
+        by_type = defaultdict(lambda: (list(), list()))
+        for d in decs[0]:
             if isinstance(d.type, pycparser.c_ast.TypeDecl):
-                by_type[d.type.type.names[0]].append(d)
+                by_type[d.type.type.names[0]][0].append(d)
             else:
-                by_type[d.type.names[0]].append(d)
-        del by_type['void']
+                by_type[d.type.names[0]][0].append(d)
+        if len(decs) > 0:
+            for d in decs[-1]:
+                if isinstance(d.type, pycparser.c_ast.TypeDecl):
+                    by_type[d.type.type.names[0]][1].append(d)
+                else:
+                    by_type[d.type.names[0]][1].append(d)
+        if 'void' in by_type:
+            del by_type['void']
         generators.append([])
         for k in by_type.keys(): 
             # TODO: fix resulting generators
             if '[' in k:
                 continue
             res = []
+            for_params = []
             d_type = None
-            for d in by_type[k]:
+            for d in by_type[k][0]:
                 if isinstance(d, pycparser.c_ast.TypeDecl):
                     res.append(d.declname)
                     d_type = d
@@ -147,10 +159,22 @@ if __name__ == '__main__':
                     d_type = d.type
                 else:
                     print(type(d))
-            generator = "{| " + " | ".join(res) + " |}"
-            generators[-1].append("""generator {} base_generator_for_{}_{}() {{
+            for d in by_type[k][1]:
+                if isinstance(d, pycparser.c_ast.TypeDecl):
+                    for_params.append(d.declname)
+                    d_type = d
+                elif isinstance(d, pycparser.c_ast.FuncDecl) and not d.args:
+                    # for_params.append(d.type.declname + '()')
+                    # d_type = d.type
+                    pass
+                else:
+                    print(type(d))
+            generator = "{| " + " | ".join(res+for_params) + " |}"
+            as_params = ", ".join([k + " " + n for n in for_params])
+            types_coord_to_params[(coord.line, k)] = as_params
+            generators[-1].append("""generator {} base_generator_for_{}_{}({}) {{
     return {};
-}}""".format(k, k, coord.line, generator))
+}}""".format(k, k, coord.line, as_params, generator))
             coords.add(coord.line)
     generator = pycparser.c_generator.CGenerator()
     found = False
@@ -161,31 +185,31 @@ if __name__ == '__main__':
     if found:
         ast.ext.remove(n)
     text = generator.visit(ast)
-    int_generator_template = """generator int generator_for_int_{0}() {{
+    int_generator_template = """generator int generator_for_int_{0}({1}) {{
     int t = ??(6);
-    int x = {{| 50 | 100 | 300 | 600 | ?? | base_generator_for_int_{0}() |}};
+    int x = {{| 50 | 100 | 300 | 600 | ?? | base_generator_for_int_{0}({2}) |}};
     if(t == 0){{return x;}}
-    int y = {{| 50 | 100 | 300 | 600 | ?? | base_generator_for_int_{0}() |}};
+    int y = {{| 50 | 100 | 300 | 600 | ?? | base_generator_for_int_{0}({2}) |}};
     if(t == 1){{return x+y;}}
     if(t == 2){{return x-y;}}
     if(t == 3){{return x*y;}}
     if(t == 4){{return x/y;}}
 }}"""
 
-    bool_generator_template = """generator bool generator_for_bool_{0}() {{
+    bool_generator_template = """generator bool generator_for_bool_{0}({1}) {{
     int t = ??(6);
     if(t==0) {{
-        int y = generator_for_int_{0}();
-        int z = generator_for_int_{0}();
+        int y = generator_for_int_{0}({2});
+        int z = generator_for_int_{0}({2});
         int t2 = ??(2);
         if(t2 == 0) {{return y < z;}}
         if(t2 == 1) {{return y == z;}}
         if(t2 == 2) {{return y <= z;}}
     }}
-    bool x = {{| ??(1) | base_generator_for_bool_{0}() |}};
+    bool x = {{| ??(1) | base_generator_for_bool_{0}({3}) |}};
     if(t == 3){{return x;}}
     if(t == 4){{return !x;}}
-    bit y = {{| ??(1) | base_generator_for_bool_{0}() |}};
+    bit y = {{| ??(1) | base_generator_for_bool_{0}({3}) |}};
     if(t == 5){{return x&&y;}}
     if(t == 6){{return x||y;}}
 }}"""
@@ -199,10 +223,24 @@ int getND(){
 }"""
 
     with open(in_file + '.sk', 'w') as f:
-        new_text = text + '\n' + '\n'.join([g for gs in generators for g in gs])
-        new_text += '\n' + '\n'.join([int_generator_template.format(coord) for coord in coords])
-        new_text += '\n' + '\n'.join([bool_generator_template.format(coord) for coord in coords])
-        new_text = new_text.replace('bool', 'bit')
+        for coord in coords:
+            new_text = text + '\n' + '\n'.join([g for gs in generators for g in gs])
+            new_text += '\n' + int_generator_template.format(coord, types_coord_to_params[(coord, 'int')], types_coord_to_params[(coord, 'int')].replace("int ", ""))
+            full_bool_params = types_coord_to_params[(coord, 'int')]
+            if full_bool_params and types_coord_to_params[(coord, 'bool')]:
+                full_bool_params += ", " + types_coord_to_params[(coord, 'bool')]
+            new_text += '\n' + bool_generator_template.format(coord, full_bool_params, types_coord_to_params[(coord, 'int')].replace("int ", ""), types_coord_to_params[(coord, 'bool')].replace("bool ", ""))
         new_text += '\n' + nd_func
+        for coord in coords:
+            full_bool_params = types_coord_to_params[(coord, 'int')]
+            if full_bool_params and types_coord_to_params[(coord, 'bool')]:
+                full_bool_params += ", "
+            full_bool_params += types_coord_to_params[(coord, 'bool')]
+            new_call = "generator_for_bool_{0}({1})".format(coord, full_bool_params.replace('int ', '').replace('bool ', ''))
+            old_call = "generator_for_bool_{0}()".format(coord)
+            for p in types_coord_to_params[(coord, 'int')].split(", "):
+                new_text = new_text.replace(p + ';', p + ' = getND();')
+            new_text = new_text.replace(old_call, new_call)
+        new_text = new_text.replace('bool', 'bit')
         lines = new_text.splitlines()
         f.writelines([l + '\n' for l in lines if 'typedef' not in l.lower() and (not l.strip().lower().startswith('g();')) and not l.strip().lower().startswith('extern')])
