@@ -239,6 +239,9 @@ int getND(){
             new_call = "generator_for_bool_{0}({1})".format(coord, full_bool_params.replace('int ', '').replace('bool ', ''))
             old_call = "generator_for_bool_{0}()".format(coord)
             for p in types_coord_to_params[(coord, 'int')].split(", "):
+                if p == 'Positive_RA_Alt_Thresh' or not p.strip():
+                    continue
+                print('replacing ' + p)
                 new_text = new_text.replace(p + ';', p + ' = getND();')
             new_text = new_text.replace(old_call, new_call)
         new_text = new_text.replace('bool', 'bit')
