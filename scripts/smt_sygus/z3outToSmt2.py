@@ -9,6 +9,9 @@ class FunDef:
         assert len(list) == 5
         self.dec = list
 
+    def __repr__(self):
+        return sexpdata.dumps(self.dec).__repr__()
+
     def str_name(self):
         return self.dec[1].value()
 
