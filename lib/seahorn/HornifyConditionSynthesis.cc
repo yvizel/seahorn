@@ -39,9 +39,16 @@ bool SynthesisUtils::isSynthesisBranch(const BasicBlock & bb) {
   if (!isa<BranchInst>(terminator)) return false;
 
   const BranchInst *branch = cast<BranchInst>(terminator);
-  if (!branch->isConditional()) return false;
+  const Value *cond = nullptr;
+  if (branch->isConditional()) {
+    cond = branch->getCondition();
+  }
+  /*else if (branch->getSuccessor(0)->getName().contains("verifier.error")) {
+    auto inst = bb.begin();
+    cond = &(*inst);
+  }*/
+  else return false;
 
-  const Value *cond = branch->getCondition();
   if (const Instruction *I = dyn_cast<Instruction>(cond))
     return hasSynthesisFunction(I, true);
   return false;
