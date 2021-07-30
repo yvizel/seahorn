@@ -10,8 +10,14 @@ bool SynthesisUtils::hasSynthesisFunction(const Instruction *I, bool reset) {
   if (reset) m_markings.clear();
   if (m_markings.find(I) != m_markings.end()) return false;
   m_markings.insert(I);
-  for (const Value *op : I->operand_values()) {
 
+  std::vector<const Value*> operands;
+  if (const PHINode *phi = dyn_cast<const PHINode>(I)) {
+    operands.insert(operands.begin(), phi->value_op_begin(), phi->value_op_end());
+  } else {
+    operands.insert(operands.begin(), I->op_begin(), I->op_end());
+  }
+  for (const Value *op : operands) {
     const CallInst *ci = dyn_cast<const CallInst>(op);
     const Function *F = dyn_cast<const Function>(op);
     if (ci || F) {
