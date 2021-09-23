@@ -4,7 +4,7 @@
 #include "seahorn/Analysis/CutPointGraph.hh"
 #include "seahorn/Expr/Expr.hh"
 #include "seahorn/Expr/Smt/Solver.hh"
-#include "seahorn/LegacyOperationalSemantics.hh"
+#include "seahorn/OperationalSemantics.hh"
 #include "seahorn/Support/SeaAssert.h"
 #include "seahorn/Support/SeaLog.hh"
 #include "seahorn/Bmc.hh"
@@ -20,6 +20,7 @@ class raw_ostream;
 } // namespace llvm
 namespace seadsa {
 class ShadowMem;
+class SeaMemorySSA;
 }
 
 namespace seahorn {
@@ -35,14 +36,14 @@ namespace seahorn {
 
 /* Dummy class for PathBmcEngine */
 class PathBmcEngine {
-  LegacyOperationalSemantics &m_sem;
+  OperationalSemantics &m_sem;
   llvm::SmallVector<const CutPoint *, 8> m_cps;
   llvm::SmallVector<const CpEdge *, 8> m_cp_edges;
   std::vector<SymStore> m_states;
   ExprVector m_side;
 
 public:
-  PathBmcEngine(seahorn::LegacyOperationalSemantics &sem,
+  PathBmcEngine(seahorn::OperationalSemantics &sem,
                 llvm::TargetLibraryInfoWrapperPass &tli, seadsa::ShadowMem &sm)
       : m_sem(sem) {}
 
@@ -60,7 +61,7 @@ public:
 
   solver::SolverResult result() { return solver::SolverResult::UNKNOWN; }
 
-  LegacyOperationalSemantics &sem() { return m_sem; }
+  OperationalSemantics &sem() { return m_sem; }
 
   ExprFactory &efac() { return m_sem.efac(); }
   
@@ -78,7 +79,6 @@ public:
 #else
 
 #include "clam/Clam.hh"
-#include "seahorn/LiveSymbols.hh"
 
 #include <memory>
 #include <queue>
@@ -98,9 +98,11 @@ namespace seahorn {
 
 class PathBmcEngine {
 public:
-  PathBmcEngine(LegacyOperationalSemantics &sem,
+  PathBmcEngine(OperationalSemantics &sem,
                 llvm::TargetLibraryInfoWrapperPass &tli, seadsa::ShadowMem &sm);
 
+  PathBmcEngine(const PathBmcEngine &engine) = delete;
+  
   virtual ~PathBmcEngine();
 
   void addCutPoint(const CutPoint &cp);
@@ -120,10 +122,15 @@ public:
   solver::SolverResult result() { return m_result; }
 
   /// return the operational semantics
-  LegacyOperationalSemantics &sem() {
-    return static_cast<LegacyOperationalSemantics &>(m_sem);
+  OperationalSemantics &sem() {
+    return static_cast<OperationalSemantics &>(m_sem);
   }
 
+  /// return the context of the operational semantics
+  OpSemContext &semCtx() {
+    return *m_semCtx;
+  }
+  
   /// return Expression factory
   ExprFactory &efac() { return m_sem.efac(); }
 
@@ -162,8 +169,6 @@ protected:
   const CutPointGraph *m_cpg;
   // the function
   const llvm::Function *m_fn;
-  // live symbols
-  std::unique_ptr<LiveSymbols> m_ls;
   // symbolic store
   SymStore m_ctxState;
   /// precise encoding of m_cps
@@ -178,20 +183,21 @@ protected:
   /// last result of the main solver (m_boolean_solver)
   solver::SolverResult m_result;
 
-  // Path condition of the spurious counterexample
-  ExprVector m_path_cond;
-  // Sanity check: bookeeping of all generated blocking clauses.
-  std::unordered_set<Expr> m_blocking_clauses;
+  // generalized path to be excluded from the Boolean abstraction
+  ExprVector m_gen_path;
+  // sanity check: bookeeping of all generated blocking clauses.
+  ExprSet m_blocking_clauses;
 
-  // Queue for unsolved path formulas
+  // queue for unsolved path formulas
   std::queue<std::pair<unsigned, ExprVector>> m_unsolved_path_formulas;
-  // Count number of path
+  // count number of path
   unsigned m_num_paths;
 
   //// Crab stuff
   llvm::TargetLibraryInfoWrapperPass &m_tli;
   // shadow mem pass
   seadsa::ShadowMem &m_sm;
+  seadsa::SeaMemorySSA *m_mem_ssa;
   // crab's cfg builder manager
   std::unique_ptr<clam::CrabBuilderManager> m_cfg_builder_man;
   // crab instance to solve paths
@@ -201,7 +207,8 @@ protected:
   using expr_invariants_map_t = DenseMap<const BasicBlock *, ExprVector>;
   using crab_invariants_map_t = clam::IntraClam::abs_dom_map_t;
 
-  /// Construct the precise (monolithic) encoding
+  /// Construct the precise (monolithic) encoding. The result is
+  /// stored in m_precise_side.
   void encode();
 
   /// Check for satisfiability of the boolean abstraction kept in
@@ -209,51 +216,52 @@ protected:
   void solveBoolAbstraction();
 
   /// Refine the boolean abstraction by removing a generalization of
-  /// the last visited path which is already in m_path_cond. Return
+  /// the last visited path which is already in m_gen_path. Return
   /// false if some error happened.
-  bool blockPath();
+  bool refineBoolAbstraction();
 
-  /// Check feasibility of a path induced by model using SMT solver.
+  /// Check feasibility of a path induced by trace using SMT solver.
   /// Return true (sat), false (unsat), or indeterminate (inconclusive).
-  /// If unsat then it produces a blocking clause.
+  /// If unsat then it produces a blocking clause stored in m_gen_path.
   template<class BmcTrace>
   solver::SolverResult
-  pathEncodingAndSolveWithSmt(const BmcTrace &trace,
-                              const expr_invariants_map_t &invariants,
-                              const expr_invariants_map_t &path_constraints);
-
-  // Build Crab CFG, run pre-analyses, etc
-  void initializeCrab();
+  solvePathWithSmt(const BmcTrace &trace,
+		   const expr_invariants_map_t &invariants,
+		   const expr_invariants_map_t &postconditions);
 
   /// Check feasibility of a path induced by trace using abstract
   /// interpretation.
   /// Return true (sat) or false (unsat). If unsat then it produces a
   /// blocking clause.
   ///
-  /// If keep_path_constraints then path_constraints contains the
-  /// post-state produced for each block along the cex.
+  /// If compute_sp then crab_postconditions contains the post-state
+  /// produced for each block along the cex. expr_postconditions is
+  /// the translation of crab_postconditions from Crab to Expr.
   template<class BmcTrace>  
   bool
-  pathEncodingAndSolveWithCrab(BmcTrace &trace, bool keep_path_constraints,
-                               crab_invariants_map_t &crab_path_constraints,
-                               expr_invariants_map_t &path_constraints);
+  solvePathWithCrab(BmcTrace &trace, bool compute_sp,
+		    crab_invariants_map_t &crab_postconditions,
+		    expr_invariants_map_t &expr_postconditions);
 
-  // Run Crab on the whole program and assert invariants them as
-  // implications (bb_i => inv_i) in the precise encoding.
-  void addGlobalCrabInvariants(expr_invariants_map_t &invariants);
-
-  /// Extract the path condition from the cex generated by the
-  /// abstract interpreter.
+  /// Encode the cex generated by Crab as a conjunction of Boolean
+  /// literals that represents the path.
   template<class BmcTrace>    
-  bool genPathCondFromCrabCex(BmcTrace &cex,
-                              const std::vector<clam::statement_t *> &cex_stmts,
-                              ExprSet &path_cond);
+  bool encodeBoolPathFromCrabCex(BmcTrace &cex,
+				 const std::vector<clam::statement_t *> &cex_stmts,
+				 ExprSet &path);
 
   /// Given a sequence of basic blocks, extract the invariants per
   /// block and convert them to Expr's
   void extractPostConditionsFromCrabCex(
       const std::vector<const llvm::BasicBlock *> &cex,
       const crab_invariants_map_t &invariants, expr_invariants_map_t &out);
+  
+  // Build Crab CFG, run pre-analyses, etc
+  void initializeCrab();
+  
+  // Run Crab on the whole program and assert invariants them as
+  // implications (bb_i => inv_i) in the precise encoding.
+  void addWholeProgramCrabInvariants(expr_invariants_map_t &invariants);
 
   /// out contains all invariants (per block) inferred by crab.
   void loadCrabInvariants(const clam::IntraClam &analysis,
