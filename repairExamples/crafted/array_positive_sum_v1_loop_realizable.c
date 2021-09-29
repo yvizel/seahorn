@@ -1,13 +1,21 @@
 #include "seahorn/seahorn.h"
 extern int nd();
+extern void g();
 extern int find_condition();
 #define N 7
 
 int positive_sum(int a[], int n){
 	int sum = 0;
 	for (int i=0; i<n; i++){
+		for (int i=0; i<n; i++){
+			g();
+		}
 		if (find_condition()){
+			g();
 			sum += a[i];
+		}
+		for (int i=0; i<n; i++){
+			g();
 		}
 	}
 	return sum;
