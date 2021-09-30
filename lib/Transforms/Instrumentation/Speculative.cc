@@ -25,7 +25,7 @@ using namespace llvm;
 
 char Speculative::ID = 0;
 
-void Speculative::addSpeculation(IRBuilder<> &B, std::string name, Value *cond, Value *spec, BasicBlock *bb) {
+void Speculative::addSpeculation(IRBuilder<> &B, std::string name, Value *cond, Value *spec, BasicBlock *bb, Function *fenceFkt) {
   B.SetInsertPoint(bb->getFirstNonPHI());
   // The assumption for speculation is a XOR between the actual condition and
   // the speculation variable. This is because we want to have mutual exclusion.
@@ -33,6 +33,10 @@ void Speculative::addSpeculation(IRBuilder<> &B, std::string name, Value *cond, 
   // to assume it was taken due to speculative execution.
   Value *assumption = B.CreateBinOp(Instruction::Xor, cond, spec, name + "__xor");
   B.CreateCall(m_assumeFn, assumption, "");
+  Value *fence = B.CreateCall(fenceFkt);
+  Value *stop = B.CreateAnd(spec, fence, "");
+  Value *notStop = B.CreateNot(stop, "");
+  B.CreateCall(m_assumeFn, notStop, "");
 }
 
 void Speculative::initSpecCount(IRBuilder<> &B, LoadInst & spec) {
@@ -90,6 +94,16 @@ bool Speculative::insertSpeculation(IRBuilder<> &B, BranchInst &BI) {
   if (isErrorBB(thenBB) || isErrorBB(elseBB))
 	  return false;
 
+  Module *M = BI.getModule();
+  LLVMContext &ctx = M->getContext();
+  AttrBuilder AttrB;
+  AttributeList as = AttributeList::get(ctx, AttributeList::FunctionIndex, AttrB);
+
+  Function *thenFence = dyn_cast<Function>(
+      M->getOrInsertFunction("fence_" + std::to_string(m_numOfFences++), as, m_BoolTy).getCallee());
+  Function *elseFence = dyn_cast<Function>(
+      M->getOrInsertFunction("fence_" + std::to_string(m_numOfFences++), as, m_BoolTy).getCallee());
+
   outs() << "Here...\n";
 
   std::string name = "spec" + std::to_string(++m_numOfSpec);
@@ -109,8 +123,8 @@ bool Speculative::insertSpeculation(IRBuilder<> &B, BranchInst &BI) {
 
   BI.setCondition(condNd);
 
-  addSpeculation(B, name + "__then", cond, spec, thenBB);
-  addSpeculation(B, name + "__else", negCond, spec, elseBB);
+  addSpeculation(B, name + "__then", cond, spec, thenBB, thenFence);
+  addSpeculation(B, name + "__else", negCond, spec, elseBB, elseFence);
 
   // Now initialize the counter
   initSpecCount(B, *spec);

@@ -36,11 +36,12 @@ namespace seahorn
     GlobalVariable * m_SpecCount;
 
     unsigned m_numOfSpec;
+    unsigned m_numOfFences;
 
     Value* createNdBoolean (IRBuilder<>& B);
     unsigned getId (const Instruction *n);
 
-    void addSpeculation(IRBuilder<>& B, std::string name, Value *cond, Value *spec, BasicBlock* bb);
+    void addSpeculation(IRBuilder<>& B, std::string name, Value *cond, Value *spec, BasicBlock* bb, Function *fenceFkt);
     bool insertSpeculation(IRBuilder<>& B, BranchInst& inst);
 
     BasicBlock* createErrorBlock (Function &F, IRBuilder<> &B, AllocaInst* specVar);
@@ -83,8 +84,9 @@ namespace seahorn
 		m_bb2spec(),
 		m_nd(nullptr),
 		m_BoolTy(nullptr),
-		m_numOfSpec(0) { }
-    
+		m_numOfSpec(0),
+                m_numOfFences(0) { }
+
     virtual bool runOnModule (llvm::Module &M);
     virtual bool runOnFunction (Function &F);
     virtual bool runOnBasicBlock(BasicBlock &B);
