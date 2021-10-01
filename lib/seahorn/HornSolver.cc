@@ -89,6 +89,12 @@ static llvm::cl::opt<bool>
                         llvm::cl::init
                             (false));
 
+static llvm::cl::opt<bool>
+    HornAvoidSynthesis ("horn-avoid-synthesis",
+                        llvm::cl::desc("TODO!"),
+                        llvm::cl::init
+                            (false));
+
 namespace solver_detail {
 enum invariant_usage_t {
   INACTIVE // add them but without using them (only debugging purposes)
@@ -123,6 +129,10 @@ char HornSolver::ID = 0;
 
 bool HornSolver::runOnModule(Module &M) {
   Stats::sset("Result", "UNKNOWN");
+
+  if (HornAvoidSynthesis) {
+	  return false;
+  }
 
   HornifyModule &hm = getAnalysis<HornifyModule>();
 
