@@ -8,11 +8,11 @@
 # and nonhorn.sl as samefilename.forward.sl. Save command line and git head in $2.
 
 shopt -s globstar nullglob
-echo "frontend command: sea pf <file> --inline  --keep-temp --temp-dir=/tmp/repair/ --step=large --horn-cond-synthesis --horn-synth-cps=h1 --horn-read-file" > "$2"
+echo "frontend command: sea pf <file> --inline  --keep-temp --temp-dir=/tmp/repair/ --step=large --horn-cond-synthesis --horn-synth-cps=h1 --horn-read-file --horn-avoid-synthesis" > "$2"
 echo -n "git head position: " >> "$2"
 git rev-parse HEAD >> "$2"
 for file in "$1"/**/*.c; do
-    if time sea pf "$file" --inline  --keep-temp --temp-dir=/tmp/repair/ --step=large --horn-cond-synthesis --horn-synth-cps=h1 --horn-read-file ; then
+    if time sea pf "$file" --inline  --keep-temp --temp-dir=/tmp/repair/ --step=large --horn-cond-synthesis --horn-synth-cps=h1 --horn-read-file --horn-avoid-synthesis ; then
         file_without_prefix="${file#$1}"
         echo "making directory $3/${file_without_prefix%/*}"
         mkdir -p "$3/${file_without_prefix%/*}"
