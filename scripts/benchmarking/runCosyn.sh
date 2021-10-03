@@ -13,5 +13,5 @@ for file in "$1"/**/*.smt2; do
     file_without_prefix="${file#$1}"
     echo "making directory $3/${file_without_prefix%/*}"
     mkdir -p "$3/${file_without_prefix%/*}"
-    { time z3 "$file" -T:60 -v:1 fp.xform.slice=false fp.xform.inline_linear=false fp.xform.inline_eager=false > "$3/$file_without_prefix.cosyn.res" 2> "$3/$file_without_prefix.cosyn.out" ; } 2> "$3/$file_without_prefix.cosyn.time"
+    { time z3 "$file" -T:60 -v:1 fp.xform.slice=false fp.xform.inline_linear=false fp.xform.inline_eager=false > "$3/${file_without_prefix%%.*}.cosyn.res" 2> "$3/${file_without_prefix%%.*}.cosyn.out" ; } 2> "$3/${file_without_prefix%%.*}.cosyn.time"
 done
