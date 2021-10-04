@@ -96,13 +96,31 @@ bool Speculative::insertSpeculation(IRBuilder<> &B, BranchInst &BI) {
 
   Module *M = BI.getModule();
   LLVMContext &ctx = M->getContext();
-  AttrBuilder AttrB;
-  AttributeList as = AttributeList::get(ctx, AttributeList::FunctionIndex, AttrB);
 
-  Function *thenFence = dyn_cast<Function>(
-      M->getOrInsertFunction("fence_" + std::to_string(m_numOfFences++), as, m_BoolTy).getCallee());
-  Function *elseFence = dyn_cast<Function>(
-      M->getOrInsertFunction("fence_" + std::to_string(m_numOfFences++), as, m_BoolTy).getCallee());
+  FunctionType *fenceType = FunctionType::get(m_BoolTy, false);
+  Function *fences[2];
+  for (int i = 0; i < 2; ++i) {
+    std::string fenceName = "fence_" + std::to_string(m_numOfFences++);
+    Function *fence = M->getFunction(fenceName);
+    if (!fence) {
+      fence = Function::Create(fenceType, Function::ExternalLinkage, fenceName, M);
+      fence->addFnAttr(Attribute::NoInline);
+      BasicBlock *bb = BasicBlock::Create(ctx, "entry", fence);
+      B.SetInsertPoint(bb);
+      Value *nd = B.CreateCall(m_ndBoolFn);
+      B.CreateRet(nd);
+    }
+    fences[i] = fence;
+  }
+
+//  AttrBuilder AttrB;
+//  AttrB.addAttribute(Attribute::NoInline);
+//  AttrB.addAttribute(Attribute::NoUnwind);
+//  AttributeList as = AttributeList::get(ctx, AttributeList::FunctionIndex, AttrB);
+//  Function *thenFence = dyn_cast<Function>(
+//      M->getOrInsertFunction("fence_" + std::to_string(m_numOfFences++), as, m_BoolTy).getCallee());
+//  Function *elseFence = dyn_cast<Function>(
+//      M->getOrInsertFunction("fence_" + std::to_string(m_numOfFences++), as, m_BoolTy).getCallee());
 
   outs() << "Here...\n";
 
@@ -123,8 +141,8 @@ bool Speculative::insertSpeculation(IRBuilder<> &B, BranchInst &BI) {
 
   BI.setCondition(condNd);
 
-  addSpeculation(B, name + "__then", cond, spec, thenBB, thenFence);
-  addSpeculation(B, name + "__else", negCond, spec, elseBB, elseFence);
+  addSpeculation(B, name + "__then", cond, spec, thenBB, fences[0]);
+  addSpeculation(B, name + "__else", negCond, spec, elseBB, fences[1]);
 
   // Now initialize the counter
   initSpecCount(B, *spec);
