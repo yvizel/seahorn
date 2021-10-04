@@ -1,0 +1,1904 @@
+(transform N7datalog13mk_coi_filterE...no-op 0s)
+(transform N7datalog25mk_interp_tail_simplifierE...25 rules 0.001s)
+(transform N7datalog27mk_quantifier_instantiationE...no-op 0s)
+(transform N7datalog8mk_scaleE...no-op 0s)
+(transform N7datalog18mk_karr_invariantsE...no-op 0s)
+(transform N7datalog14mk_array_blastE...no-op 0s)
+(transform N7datalog16mk_elim_term_iteE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...24 rules 0s)
+(transform N7datalog12mk_bit_blastE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog13mk_coi_filterE...no-op 0s)
+(transform N7datalog25mk_interp_tail_simplifierE...24 rules 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog13mk_coi_filterE...no-op 0s)
+(transform N7datalog25mk_interp_tail_simplifierE...24 rules 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+expand: query!0 (0, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 27.52 :after-memory 27.62)
+Entering level 1
+expand: query!0 (1, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (0, 1) FAR 1 U 0.00
+expand: main@entry!_BAD (0, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (1, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 27.62 :after-memory 27.82)
+Propagating: 0 1  ! 2 
+(spacer::context::propagate :time 0.00 :before-memory 27.82 :after-memory 27.82)
+Entering level 2
+expand: query!0 (2, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (1, 2) FAR 1 U 0.00
+expand: main@entry!_BAD (1, 0) FAR  w(0) 1.
+	create_child: main@entry (0, 2) FAR 1 U 0.00
+expand: main@entry (0, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (1, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (2, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 27.82 :after-memory 28.01)
+Propagating: 0 1 2  ! 3 
+(spacer::context::propagate :time 0.00 :before-memory 28.01 :after-memory 28.01)
+Entering level 3
+expand: query!0 (3, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (2, 3) FAR 1 U 0.00
+expand: main@entry!_BAD (2, 0) FAR  w(0) 1.
+	create_child: main@entry (1, 3) FAR 1 U 0.00
+expand: main@entry (1, 0) FAR  w(0) 1.
+	create_child: main@entry!_Cond (0, 3) FAR 3220 U 0.00
+expand: main@entry!_Cond (0, 0) FAR  w(0) 3220. F 0.00
+expand: main@entry (1, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (2, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (3, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 28.01 :after-memory 28.21)
+Propagating: 0 1 2 3  ! 4 
+(spacer::context::propagate :time 0.00 :before-memory 28.21 :after-memory 28.21)
+Entering level 4
+expand: query!0 (4, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (3, 4) FAR 1 U 0.00
+expand: main@entry!_BAD (3, 0) FAR  w(0) 1.
+	create_child: main@entry (2, 4) FAR 1 U 0.00
+expand: main@entry (2, 0) FAR  w(0) 1.
+	create_child: main@entry!_Cond (1, 4) FAR 3220 U 0.00
+expand: main@entry!_Cond (1, 0) FAR  w(0) 3220.
+	create_child: main@_19 (0, 4) FAR 3538 U 0.00
+expand: main@_19 (0, 0) FAR  w(0) 3538. F 0.00
+expand: main@entry!_Cond (1, 0) FAR  w(0) 3220. F 0.00
+expand: main@entry (2, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (3, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (4, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 28.21 :after-memory 28.50)
+Propagating: 0 1 2 3 4  ! 5 
+(spacer::context::propagate :time 0.00 :before-memory 28.50 :after-memory 28.50)
+Entering level 5
+expand: query!0 (5, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (4, 5) FAR 1 U 0.00
+expand: main@entry!_BAD (4, 0) FAR  w(0) 1.
+	create_child: main@entry (3, 5) FAR 1 U 0.00
+expand: main@entry (3, 0) FAR  w(0) 1.
+	create_child: main@entry!_Cond (2, 5) FAR 3220 U 0.00
+expand: main@entry!_Cond (2, 0) FAR  w(0) 3220.
+	create_child: main@_19 (1, 5) FAR 3538 U 0.00
+expand: main@_19 (1, 0) FAR  w(0) 3538.
+	create_child: main@_19!_Cond (0, 5) FAR 3730 U 0.00
+expand: main@_19!_Cond (0, 0) FAR  w(0) 3730. F 0.00
+expand: main@_19 (1, 0) FAR  w(0) 3538. F 0.00
+expand: main@entry!_Cond (2, 0) FAR  w(0) 3220. F 0.00
+expand: main@entry (3, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (4, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (5, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 28.50 :after-memory 28.79)
+Propagating: 0 1 2 3 4 5  ! 6 
+(spacer::context::propagate :time 0.00 :before-memory 28.79 :after-memory 28.79)
+Entering level 6
+expand: query!0 (6, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (5, 6) FAR 1 U 0.00
+expand: main@entry!_BAD (5, 0) FAR  w(0) 1.
+	create_child: main@entry (4, 6) FAR 1 U 0.00
+expand: main@entry (4, 0) FAR  w(0) 1.
+	create_child: main@entry!_Cond (3, 6) FAR 3220 U 0.00
+expand: main@entry!_Cond (3, 0) FAR  w(0) 3220.
+	create_child: main@_19 (2, 6) FAR 3538 U 0.00
+expand: main@_19 (2, 0) FAR  w(0) 3538.
+	create_child: main@_19!_Cond (1, 6) FAR 3730 U 0.00
+expand: main@_19!_Cond (1, 0) FAR  w(0) 3730.
+	create_child: main@_26 (0, 6) FAR 4406 U 0.00
+expand: main@_26 (0, 0) FAR  w(0) 4406. F 0.00
+expand: main@_19!_Cond (1, 0) FAR  w(0) 3730. F 0.00
+expand: main@_19 (2, 0) FAR  w(0) 3538. F 0.00
+expand: main@entry!_Cond (3, 0) FAR  w(0) 3220. F 0.00
+expand: main@entry (4, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (5, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (6, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 28.79 :after-memory 29.24)
+Propagating: 0 1 2 3 4 5 6  ! 7 
+(spacer::context::propagate :time 0.00 :before-memory 29.24 :after-memory 29.24)
+Entering level 7
+expand: query!0 (7, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (6, 7) FAR 1 U 0.00
+expand: main@entry!_BAD (6, 0) FAR  w(0) 1.
+	create_child: main@entry (5, 7) FAR 1 U 0.00
+expand: main@entry (5, 0) FAR  w(0) 1.
+	create_child: main@entry!_Cond (4, 7) FAR 3220 U 0.00
+expand: main@entry!_Cond (4, 0) FAR  w(0) 3220.
+	create_child: main@_19 (3, 7) FAR 3538 U 0.00
+expand: main@_19 (3, 0) FAR  w(0) 3538.
+	create_child: main@_19!_Cond (2, 7) FAR 3730 U 0.00
+expand: main@_19!_Cond (2, 0) FAR  w(0) 3730.
+	create_child: main@_26 (1, 7) FAR 4406 U 0.00
+expand: main@_26 (1, 0) FAR  w(0) 4406.
+	create_child: main@_26!_Cond (0, 7) FAR 4970 U 0.00
+expand: main@_26!_Cond (0, 0) FAR  w(0) 4970. F 0.00
+expand: main@_26 (1, 0) FAR  w(0) 4406. F 0.00
+expand: main@_19!_Cond (2, 0) FAR  w(0) 3730. F 0.00
+expand: main@_19 (3, 0) FAR  w(0) 3538. F 0.00
+expand: main@entry!_Cond (4, 0) FAR  w(0) 3220. F 0.00
+expand: main@entry (5, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (6, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (7, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 29.24 :after-memory 29.53)
+Propagating: 0 1 2 3 4 5 6 7  ! 8 
+(spacer::context::propagate :time 0.00 :before-memory 29.53 :after-memory 29.53)
+Entering level 8
+expand: query!0 (8, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (7, 8) FAR 1 U 0.00
+expand: main@entry!_BAD (7, 0) FAR  w(0) 1.
+	create_child: main@entry (6, 8) FAR 1 U 0.00
+expand: main@entry (6, 0) FAR  w(0) 1.
+	create_child: main@entry!_Cond (5, 8) FAR 3220 U 0.00
+expand: main@entry!_Cond (5, 0) FAR  w(0) 3220.
+	create_child: main@_19 (4, 8) FAR 3538 U 0.00
+expand: main@_19 (4, 0) FAR  w(0) 3538.
+	create_child: main@_19!_Cond (3, 8) FAR 3730 U 0.00
+expand: main@_19!_Cond (3, 0) FAR  w(0) 3730.
+	create_child: main@_26 (2, 8) FAR 4406 U 0.00
+expand: main@_26 (2, 0) FAR  w(0) 4406.
+	create_child: main@_26!_Cond (1, 8) FAR 4970 U 0.00
+expand: main@_26!_Cond (1, 0) FAR  w(0) 4970.
+	create_child: main@_33 (0, 8) FAR 5564 U 0.00
+expand: main@_33 (0, 0) FAR  w(0) 5564. F 0.00
+expand: main@_26!_Cond (1, 0) FAR  w(0) 4970. F 0.00
+expand: main@_26 (2, 0) FAR  w(0) 4406. F 0.00
+expand: main@_19!_Cond (3, 0) FAR  w(0) 3730. F 0.00
+expand: main@_19 (4, 0) FAR  w(0) 3538. F 0.00
+expand: main@entry!_Cond (5, 0) FAR  w(0) 3220. F 0.00
+expand: main@entry (6, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (7, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (8, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.01 :before-memory 29.53 :after-memory 29.92)
+Propagating: 0 1 2 3 4 5 6 7 8  ! 9 
+(spacer::context::propagate :time 0.00 :before-memory 29.92 :after-memory 29.92)
+Entering level 9
+expand: query!0 (9, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (8, 9) FAR 1 U 0.00
+expand: main@entry!_BAD (8, 0) FAR  w(0) 1.
+	create_child: main@entry (7, 9) FAR 1 U 0.00
+expand: main@entry (7, 0) FAR  w(0) 1.
+	create_child: main@entry!_Cond (6, 9) FAR 3220 U 0.00
+expand: main@entry!_Cond (6, 0) FAR  w(0) 3220.
+	create_child: main@_19 (5, 9) FAR 3538 U 0.00
+expand: main@_19 (5, 0) FAR  w(0) 3538.
+	create_child: main@_19!_Cond (4, 9) FAR 3730 U 0.00
+expand: main@_19!_Cond (4, 0) FAR  w(0) 3730.
+	create_child: main@_26 (3, 9) FAR 4406 U 0.00
+expand: main@_26 (3, 0) FAR  w(0) 4406.
+	create_child: main@_26!_Cond (2, 9) FAR 4970 U 0.00
+expand: main@_26!_Cond (2, 0) FAR  w(0) 4970.
+	create_child: main@_33 (1, 9) FAR 5564 U 0.00
+expand: main@_33 (1, 0) FAR  w(0) 5564.
+	create_child: main@_33!_Cond (0, 9) FAR 6250 U 0.00
+expand: main@_33!_Cond (0, 0) FAR  w(0) 6250. F 0.00
+expand: main@_33 (1, 0) FAR  w(0) 5564. F 0.00
+expand: main@_26!_Cond (2, 0) FAR  w(0) 4970. F 0.00
+expand: main@_26 (3, 0) FAR  w(0) 4406. F 0.00
+expand: main@_19!_Cond (4, 0) FAR  w(0) 3730. F 0.00
+expand: main@_19 (5, 0) FAR  w(0) 3538. F 0.00
+expand: main@entry!_Cond (6, 0) FAR  w(0) 3220. F 0.00
+expand: main@entry (7, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (8, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (9, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.01 :before-memory 29.92 :after-memory 30.32)
+Propagating: 0 1 2 3 4 5 6 7 8 9  ! 10 
+(spacer::context::propagate :time 0.00 :before-memory 30.32 :after-memory 30.32)
+Entering level 10
+expand: query!0 (10, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (9, 10) FAR 1 U 0.00
+expand: main@entry!_BAD (9, 0) FAR  w(0) 1.
+	create_child: main@entry (8, 10) FAR 1 U 0.00
+expand: main@entry (8, 0) FAR  w(0) 1.
+	create_child: main@entry!_Cond (7, 10) FAR 3220 U 0.00
+expand: main@entry!_Cond (7, 0) FAR  w(0) 3220.
+	create_child: main@_19 (6, 10) FAR 3538 U 0.00
+expand: main@_19 (6, 0) FAR  w(0) 3538.
+	create_child: main@_19!_Cond (5, 10) FAR 3730 U 0.00
+expand: main@_19!_Cond (5, 0) FAR  w(0) 3730.
+	create_child: main@_26 (4, 10) FAR 4406 U 0.00
+expand: main@_26 (4, 0) FAR  w(0) 4406.
+	create_child: main@_26!_Cond (3, 10) FAR 4970 U 0.00
+expand: main@_26!_Cond (3, 0) FAR  w(0) 4970.
+	create_child: main@_33 (2, 10) FAR 5564 U 0.00
+expand: main@_33 (2, 0) FAR  w(0) 5564.
+	create_child: main@_33!_Cond (1, 10) FAR 6250 U 0.00
+expand: main@_33!_Cond (1, 0) FAR  w(0) 6250.
+	create_child: main@_40 (0, 10) FAR 6965 U 0.00
+expand: main@_40 (0, 0) FAR  w(0) 6965. F 0.00
+expand: main@_33!_Cond (1, 0) FAR  w(0) 6250. F 0.00
+expand: main@_33 (2, 0) FAR  w(0) 5564. F 0.00
+expand: main@_26!_Cond (3, 0) FAR  w(0) 4970. F 0.00
+expand: main@_26 (4, 0) FAR  w(0) 4406. F 0.00
+expand: main@_19!_Cond (5, 0) FAR  w(0) 3730. F 0.00
+expand: main@_19 (6, 0) FAR  w(0) 3538. F 0.00
+expand: main@entry!_Cond (7, 0) FAR  w(0) 3220. F 0.00
+expand: main@entry (8, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (9, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (10, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.01 :before-memory 30.32 :after-memory 30.72)
+Propagating: 0 1 2 3 4 5 6 7 8 9 10  ! 11 
+(spacer::context::propagate :time 0.00 :before-memory 30.72 :after-memory 30.72)
+Entering level 11
+expand: query!0 (11, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (10, 11) FAR 1 U 0.00
+expand: main@entry!_BAD (10, 0) FAR  w(0) 1.
+	create_child: main@entry (9, 11) FAR 1 U 0.00
+expand: main@entry (9, 0) FAR  w(0) 1.
+	create_child: main@entry!_Cond (8, 11) FAR 3220 U 0.00
+expand: main@entry!_Cond (8, 0) FAR  w(0) 3220.
+	create_child: main@_19 (7, 11) FAR 3538 U 0.00
+expand: main@_19 (7, 0) FAR  w(0) 3538.
+	create_child: main@_19!_Cond (6, 11) FAR 3730 U 0.00
+expand: main@_19!_Cond (6, 0) FAR  w(0) 3730.
+	create_child: main@_26 (5, 11) FAR 4406 U 0.00
+expand: main@_26 (5, 0) FAR  w(0) 4406.
+	create_child: main@_26!_Cond (4, 11) FAR 4970 U 0.00
+expand: main@_26!_Cond (4, 0) FAR  w(0) 4970.
+	create_child: main@_33 (3, 11) FAR 5564 U 0.00
+expand: main@_33 (3, 0) FAR  w(0) 5564.
+	create_child: main@_33!_Cond (2, 11) FAR 6250 U 0.00
+expand: main@_33!_Cond (2, 0) FAR  w(0) 6250.
+	create_child: main@_40 (1, 11) FAR 6965 U 0.00
+expand: main@_40 (1, 0) FAR  w(0) 6965.
+	create_child: main@_40!_Cond (0, 11) FAR 7810 U 0.00
+expand: main@_40!_Cond (0, 0) FAR  w(0) 7810. F 0.00
+expand: main@_40 (1, 0) FAR  w(0) 6965. F 0.00
+expand: main@_33!_Cond (2, 0) FAR  w(0) 6250. F 0.00
+expand: main@_33 (3, 0) FAR  w(0) 5564. F 0.00
+expand: main@_26!_Cond (4, 0) FAR  w(0) 4970. F 0.00
+expand: main@_26 (5, 0) FAR  w(0) 4406. F 0.00
+expand: main@_19!_Cond (6, 0) FAR  w(0) 3730. F 0.00
+expand: main@_19 (7, 0) FAR  w(0) 3538. F 0.00
+expand: main@entry!_Cond (8, 0) FAR  w(0) 3220. F 0.00
+expand: main@entry (9, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (10, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (11, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.01 :before-memory 30.72 :after-memory 31.01)
+Propagating: 0 1 2 3 4 5 6 7 8 9 10 11  ! 12 
+(spacer::context::propagate :time 0.00 :before-memory 31.01 :after-memory 31.01)
+Entering level 12
+expand: query!0 (12, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (11, 12) FAR 1 U 0.00
+expand: main@entry!_BAD (11, 0) FAR  w(0) 1.
+	create_child: main@entry (10, 12) FAR 1 U 0.00
+expand: main@entry (10, 0) FAR  w(0) 1.
+	create_child: main@entry!_Cond (9, 12) FAR 3220 U 0.00
+expand: main@entry!_Cond (9, 0) FAR  w(0) 3220.
+	create_child: main@_19 (8, 12) FAR 3538 U 0.00
+expand: main@_19 (8, 0) FAR  w(0) 3538.
+	create_child: main@_19!_Cond (7, 12) FAR 3730 U 0.00
+expand: main@_19!_Cond (7, 0) FAR  w(0) 3730.
+	create_child: main@_26 (6, 12) FAR 4406 U 0.00
+expand: main@_26 (6, 0) FAR  w(0) 4406.
+	create_child: main@_26!_Cond (5, 12) FAR 4970 U 0.00
+expand: main@_26!_Cond (5, 0) FAR  w(0) 4970.
+	create_child: main@_33 (4, 12) FAR 5564 U 0.00
+expand: main@_33 (4, 0) FAR  w(0) 5564.
+	create_child: main@_33!_Cond (3, 12) FAR 6250 U 0.00
+expand: main@_33!_Cond (3, 0) FAR  w(0) 6250.
+	create_child: main@_40 (2, 12) FAR 6965 U 0.00
+expand: main@_40 (2, 0) FAR  w(0) 6965.
+	create_child: main@_40!_Cond (1, 12) FAR 7810 U 0.00
+expand: main@_40!_Cond (1, 0) FAR  w(0) 7810.
+	create_child: main@_47 (0, 12) FAR 8662 U 0.00
+expand: main@_47 (0, 0) FAR  w(0) 8662. F 0.00
+expand: main@_40!_Cond (1, 0) FAR  w(0) 7810. F 0.00
+expand: main@_40 (2, 0) FAR  w(0) 6965. F 0.00
+expand: main@_33!_Cond (3, 0) FAR  w(0) 6250. F 0.00
+expand: main@_33 (4, 0) FAR  w(0) 5564. F 0.00
+expand: main@_26!_Cond (5, 0) FAR  w(0) 4970. F 0.00
+expand: main@_26 (6, 0) FAR  w(0) 4406. F 0.00
+expand: main@_19!_Cond (7, 0) FAR  w(0) 3730. F 0.00
+expand: main@_19 (8, 0) FAR  w(0) 3538. F 0.00
+expand: main@entry!_Cond (9, 0) FAR  w(0) 3220. F 0.00
+expand: main@entry (10, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (11, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (12, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.01 :before-memory 31.01 :after-memory 31.70)
+Propagating: 0 1 2 3 4 5 6 7 8 9 10 11 12  ! 13 
+(spacer::context::propagate :time 0.00 :before-memory 31.70 :after-memory 31.70)
+Entering level 13
+expand: query!0 (13, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (12, 13) FAR 1 U 0.00
+expand: main@entry!_BAD (12, 0) FAR  w(0) 1.
+	create_child: main@entry (11, 13) FAR 1 U 0.00
+expand: main@entry (11, 0) FAR  w(0) 1.
+	create_child: main@entry!_Cond (10, 13) FAR 3220 U 0.00
+expand: main@entry!_Cond (10, 0) FAR  w(0) 3220.
+	create_child: main@_19 (9, 13) FAR 3538 U 0.00
+expand: main@_19 (9, 0) FAR  w(0) 3538.
+	create_child: main@_19!_Cond (8, 13) FAR 3730 U 0.00
+expand: main@_19!_Cond (8, 0) FAR  w(0) 3730.
+	create_child: main@_26 (7, 13) FAR 4406 U 0.00
+expand: main@_26 (7, 0) FAR  w(0) 4406.
+	create_child: main@_26!_Cond (6, 13) FAR 4970 U 0.00
+expand: main@_26!_Cond (6, 0) FAR  w(0) 4970.
+	create_child: main@_33 (5, 13) FAR 5564 U 0.00
+expand: main@_33 (5, 0) FAR  w(0) 5564.
+	create_child: main@_33!_Cond (4, 13) FAR 6250 U 0.00
+expand: main@_33!_Cond (4, 0) FAR  w(0) 6250.
+	create_child: main@_40 (3, 13) FAR 6965 U 0.00
+expand: main@_40 (3, 0) FAR  w(0) 6965.
+	create_child: main@_40!_Cond (2, 13) FAR 7810 U 0.00
+expand: main@_40!_Cond (2, 0) FAR  w(0) 7810.
+	create_child: main@_47 (1, 13) FAR 8662 U 0.00
+expand: main@_47 (1, 0) FAR  w(0) 8662.
+	create_child: main@_47!_Cond (0, 13) FAR 9646 U 0.00
+expand: main@_47!_Cond (0, 0) FAR  w(0) 9646. F 0.00
+expand: main@_47 (1, 0) FAR  w(0) 8662. F 0.00
+expand: main@_40!_Cond (2, 0) FAR  w(0) 7810. F 0.00
+expand: main@_40 (3, 0) FAR  w(0) 6965. F 0.00
+expand: main@_33!_Cond (4, 0) FAR  w(0) 6250. F 0.00
+expand: main@_33 (5, 0) FAR  w(0) 5564. F 0.00
+expand: main@_26!_Cond (6, 0) FAR  w(0) 4970. F 0.00
+expand: main@_26 (7, 0) FAR  w(0) 4406. F 0.00
+expand: main@_19!_Cond (8, 0) FAR  w(0) 3730. F 0.00
+expand: main@_19 (9, 0) FAR  w(0) 3538. F 0.00
+expand: main@entry!_Cond (10, 0) FAR  w(0) 3220. F 0.00
+expand: main@entry (11, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (12, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (13, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.01 :before-memory 31.70 :after-memory 32.09)
+Propagating: 0 1 2 3 4 5 6 7 8 9 10 11 12 13  ! 14 
+(spacer::context::propagate :time 0.00 :before-memory 32.09 :after-memory 32.09)
+Entering level 14
+expand: query!0 (14, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (13, 14) FAR 1 U 0.00
+expand: main@entry!_BAD (13, 0) FAR  w(0) 1.
+	create_child: main@entry (12, 14) FAR 1 U 0.00
+expand: main@entry (12, 0) FAR  w(0) 1.
+	create_child: main@entry!_Cond (11, 14) FAR 3220 U 0.00
+expand: main@entry!_Cond (11, 0) FAR  w(0) 3220.
+	create_child: main@_19 (10, 14) FAR 3538 U 0.00
+expand: main@_19 (10, 0) FAR  w(0) 3538.
+	create_child: main@_19!_Cond (9, 14) FAR 3730 U 0.00
+expand: main@_19!_Cond (9, 0) FAR  w(0) 3730.
+	create_child: main@_26 (8, 14) FAR 4406 U 0.00
+expand: main@_26 (8, 0) FAR  w(0) 4406.
+	create_child: main@_26!_Cond (7, 14) FAR 4970 U 0.00
+expand: main@_26!_Cond (7, 0) FAR  w(0) 4970.
+	create_child: main@_33 (6, 14) FAR 5564 U 0.00
+expand: main@_33 (6, 0) FAR  w(0) 5564.
+	create_child: main@_33!_Cond (5, 14) FAR 6250 U 0.00
+expand: main@_33!_Cond (5, 0) FAR  w(0) 6250.
+	create_child: main@_40 (4, 14) FAR 6965 U 0.00
+expand: main@_40 (4, 0) FAR  w(0) 6965.
+	create_child: main@_40!_Cond (3, 14) FAR 7810 U 0.00
+expand: main@_40!_Cond (3, 0) FAR  w(0) 7810.
+	create_child: main@_47 (2, 14) FAR 8662 U 0.00
+expand: main@_47 (2, 0) FAR  w(0) 8662.
+	create_child: main@_47!_Cond (1, 14) FAR 9646 U 0.00
+expand: main@_47!_Cond (1, 0) FAR  w(0) 9646.
+	create_child: main@_54 (0, 14) FAR 10643 U 0.00
+expand: main@_54 (0, 0) FAR  w(0) 10643. F 0.00
+expand: main@_47!_Cond (1, 0) FAR  w(0) 9646. F 0.00
+expand: main@_47 (2, 0) FAR  w(0) 8662. F 0.00
+expand: main@_40!_Cond (3, 0) FAR  w(0) 7810. F 0.00
+expand: main@_40 (4, 0) FAR  w(0) 6965. F 0.00
+expand: main@_33!_Cond (5, 0) FAR  w(0) 6250. F 0.00
+expand: main@_33 (6, 0) FAR  w(0) 5564. F 0.00
+expand: main@_26!_Cond (7, 0) FAR  w(0) 4970. F 0.00
+expand: main@_26 (8, 0) FAR  w(0) 4406. F 0.00
+expand: main@_19!_Cond (9, 0) FAR  w(0) 3730. F 0.00
+expand: main@_19 (10, 0) FAR  w(0) 3538. F 0.00
+expand: main@entry!_Cond (11, 0) FAR  w(0) 3220. F 0.00
+expand: main@entry (12, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (13, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (14, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.01 :before-memory 32.09 :after-memory 32.90)
+Propagating: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14  ! 15 
+(spacer::context::propagate :time 0.00 :before-memory 32.90 :after-memory 32.90)
+Entering level 15
+expand: query!0 (15, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (14, 15) FAR 1 U 0.00
+expand: main@entry!_BAD (14, 0) FAR  w(0) 1.
+	create_child: main@entry (13, 15) FAR 1 U 0.00
+expand: main@entry (13, 0) FAR  w(0) 1.
+	create_child: main@entry!_Cond (12, 15) FAR 3220 U 0.00
+expand: main@entry!_Cond (12, 0) FAR  w(0) 3220.
+	create_child: main@_19 (11, 15) FAR 3538 U 0.00
+expand: main@_19 (11, 0) FAR  w(0) 3538.
+	create_child: main@_19!_Cond (10, 15) FAR 3730 U 0.00
+expand: main@_19!_Cond (10, 0) FAR  w(0) 3730.
+	create_child: main@_26 (9, 15) FAR 4406 U 0.00
+expand: main@_26 (9, 0) FAR  w(0) 4406.
+	create_child: main@_26!_Cond (8, 15) FAR 4970 U 0.00
+expand: main@_26!_Cond (8, 0) FAR  w(0) 4970.
+	create_child: main@_33 (7, 15) FAR 5564 U 0.00
+expand: main@_33 (7, 0) FAR  w(0) 5564.
+	create_child: main@_33!_Cond (6, 15) FAR 6250 U 0.00
+expand: main@_33!_Cond (6, 0) FAR  w(0) 6250.
+	create_child: main@_40 (5, 15) FAR 6965 U 0.00
+expand: main@_40 (5, 0) FAR  w(0) 6965.
+	create_child: main@_40!_Cond (4, 15) FAR 7810 U 0.00
+expand: main@_40!_Cond (4, 0) FAR  w(0) 7810.
+	create_child: main@_47 (3, 15) FAR 8662 U 0.00
+expand: main@_47 (3, 0) FAR  w(0) 8662.
+	create_child: main@_47!_Cond (2, 15) FAR 9646 U 0.00
+expand: main@_47!_Cond (2, 0) FAR  w(0) 9646.
+	create_child: main@_54 (1, 15) FAR 10643 U 0.00
+expand: main@_54 (1, 0) FAR  w(0) 10643.
+	create_child: main@_54!_Cond (0, 15) FAR 11768 U 0.00
+expand: main@_54!_Cond (0, 0) FAR  w(0) 11768. F 0.00
+expand: main@_54 (1, 0) FAR  w(0) 10643. F 0.00
+expand: main@_47!_Cond (2, 0) FAR  w(0) 9646. F 0.00
+expand: main@_47 (3, 0) FAR  w(0) 8662. F 0.00
+expand: main@_40!_Cond (4, 0) FAR  w(0) 7810. F 0.00
+expand: main@_40 (5, 0) FAR  w(0) 6965. F 0.00
+expand: main@_33!_Cond (6, 0) FAR  w(0) 6250. F 0.00
+expand: main@_33 (7, 0) FAR  w(0) 5564. F 0.00
+expand: main@_26!_Cond (8, 0) FAR  w(0) 4970. F 0.00
+expand: main@_26 (9, 0) FAR  w(0) 4406. F 0.00
+expand: main@_19!_Cond (10, 0) FAR  w(0) 3730. F 0.00
+expand: main@_19 (11, 0) FAR  w(0) 3538. F 0.00
+expand: main@entry!_Cond (12, 0) FAR  w(0) 3220. F 0.00
+expand: main@entry (13, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (14, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (15, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.01 :before-memory 32.90 :after-memory 33.69)
+Propagating: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15  ! 16 
+(spacer::context::propagate :time 0.00 :before-memory 33.69 :after-memory 33.79)
+Entering level 16
+expand: query!0 (16, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (15, 16) FAR 1 U 0.00
+expand: main@entry!_BAD (15, 0) FAR  w(0) 1.
+	create_child: main@entry (14, 16) FAR 1 U 0.00
+expand: main@entry (14, 0) FAR  w(0) 1.
+	create_child: main@entry!_Cond (13, 16) FAR 3220 U 0.00
+expand: main@entry!_Cond (13, 0) FAR  w(0) 3220.
+	create_child: main@_19 (12, 16) FAR 3538 U 0.00
+expand: main@_19 (12, 0) FAR  w(0) 3538.
+	create_child: main@_19!_Cond (11, 16) FAR 3730 U 0.00
+expand: main@_19!_Cond (11, 0) FAR  w(0) 3730.
+	create_child: main@_26 (10, 16) FAR 4406 U 0.00
+expand: main@_26 (10, 0) FAR  w(0) 4406.
+	create_child: main@_26!_Cond (9, 16) FAR 4970 U 0.00
+expand: main@_26!_Cond (9, 0) FAR  w(0) 4970.
+	create_child: main@_33 (8, 16) FAR 5564 U 0.00
+expand: main@_33 (8, 0) FAR  w(0) 5564.
+	create_child: main@_33!_Cond (7, 16) FAR 6250 U 0.00
+expand: main@_33!_Cond (7, 0) FAR  w(0) 6250.
+	create_child: main@_40 (6, 16) FAR 6965 U 0.00
+expand: main@_40 (6, 0) FAR  w(0) 6965.
+	create_child: main@_40!_Cond (5, 16) FAR 7810 U 0.00
+expand: main@_40!_Cond (5, 0) FAR  w(0) 7810.
+	create_child: main@_47 (4, 16) FAR 8662 U 0.00
+expand: main@_47 (4, 0) FAR  w(0) 8662.
+	create_child: main@_47!_Cond (3, 16) FAR 9646 U 0.00
+expand: main@_47!_Cond (3, 0) FAR  w(0) 9646.
+	create_child: main@_54 (2, 16) FAR 10643 U 0.00
+expand: main@_54 (2, 0) FAR  w(0) 10643.
+	create_child: main@_54!_Cond (1, 16) FAR 11768 U 0.00
+expand: main@_54!_Cond (1, 0) FAR  w(0) 11768.
+	create_child: main@_59 (0, 16) FAR 15377 U 0.00
+expand: main@_59 (0, 0) FAR  w(0) 15377. F 0.00
+expand: main@_54!_Cond (1, 0) FAR  w(0) 11768. F 0.00
+expand: main@_54 (2, 0) FAR  w(0) 10643. F 0.00
+expand: main@_47!_Cond (3, 0) FAR  w(0) 9646. F 0.00
+expand: main@_47 (4, 0) FAR  w(0) 8662. F 0.00
+expand: main@_40!_Cond (5, 0) FAR  w(0) 7810. F 0.00
+expand: main@_40 (6, 0) FAR  w(0) 6965. F 0.00
+expand: main@_33!_Cond (7, 0) FAR  w(0) 6250. F 0.00
+expand: main@_33 (8, 0) FAR  w(0) 5564. F 0.00
+expand: main@_26!_Cond (9, 0) FAR  w(0) 4970. F 0.00
+expand: main@_26 (10, 0) FAR  w(0) 4406. F 0.00
+expand: main@_19!_Cond (11, 0) FAR  w(0) 3730. F 0.00
+expand: main@_19 (12, 0) FAR  w(0) 3538. F 0.00
+expand: main@entry!_Cond (13, 0) FAR  w(0) 3220. F 0.00
+expand: main@entry (14, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (15, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (16, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.02 :before-memory 33.79 :after-memory 35.62)
+Propagating: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16  ! 17 
+(spacer::context::propagate :time 0.00 :before-memory 35.62 :after-memory 35.91)
+Entering level 17
+expand: query!0 (17, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (16, 17) FAR 1 U 0.00
+expand: main@entry!_BAD (16, 0) FAR  w(0) 1.
+	create_child: main@entry (15, 17) FAR 1 U 0.00
+expand: main@entry (15, 0) FAR  w(0) 1.
+	create_child: main@entry!_Cond (14, 17) FAR 3220 U 0.00
+expand: main@entry!_Cond (14, 0) FAR  w(0) 3220.
+	create_child: main@_19 (13, 17) FAR 3538 U 0.00
+expand: main@_19 (13, 0) FAR  w(0) 3538.
+	create_child: main@_19!_Cond (12, 17) FAR 3730 U 0.00
+expand: main@_19!_Cond (12, 0) FAR  w(0) 3730.
+	create_child: main@_26 (11, 17) FAR 4406 U 0.00
+expand: main@_26 (11, 0) FAR  w(0) 4406.
+	create_child: main@_26!_Cond (10, 17) FAR 4970 U 0.00
+expand: main@_26!_Cond (10, 0) FAR  w(0) 4970.
+	create_child: main@_33 (9, 17) FAR 5564 U 0.00
+expand: main@_33 (9, 0) FAR  w(0) 5564.
+	create_child: main@_33!_Cond (8, 17) FAR 6250 U 0.00
+expand: main@_33!_Cond (8, 0) FAR  w(0) 6250.
+	create_child: main@_40 (7, 17) FAR 6965 U 0.00
+expand: main@_40 (7, 0) FAR  w(0) 6965.
+	create_child: main@_40!_Cond (6, 17) FAR 7810 U 0.00
+expand: main@_40!_Cond (6, 0) FAR  w(0) 7810.
+	create_child: main@_47 (5, 17) FAR 8662 U 0.00
+expand: main@_47 (5, 0) FAR  w(0) 8662.
+	create_child: main@_47!_Cond (4, 17) FAR 9646 U 0.00
+expand: main@_47!_Cond (4, 0) FAR  w(0) 9646.
+	create_child: main@_54 (3, 17) FAR 10643 U 0.00
+expand: main@_54 (3, 0) FAR  w(0) 10643.
+	create_child: main@_54!_Cond (2, 17) FAR 11768 U 0.00
+expand: main@_54!_Cond (2, 0) FAR  w(0) 11768.
+	create_child: main@_59 (1, 17) FAR 15377 U 0.00
+expand: main@_59 (1, 0) FAR  w(0) 15377. T 0.00
+is-reachable: main@_54!_Cond (2, 0) FAR 11768 T 0.00
+is-reachable: main@_54 (3, 0) FAR 10643
+	create_child: main@_52 (3, 17) FAR 23115 X 0.01
+is-reachable: main@_52 (3, 0) FAR 23115 F 0.01
+Deleting closed node: main@_54!_Cond(2, 17) 11768
+Deleting closed node: main@_54(3, 17) 10643
+expand: main@_52 (3, 0) FAR  w(0) 23115. F 0.00
+expand: main@_47!_Cond (4, 0) FAR  w(0) 9646. F 0.00
+expand: main@_47 (5, 0) FAR  w(0) 8662. F 0.00
+expand: main@_40!_Cond (6, 0) FAR  w(0) 7810. F 0.00
+expand: main@_40 (7, 0) FAR  w(0) 6965. F 0.00
+expand: main@_33!_Cond (8, 0) FAR  w(0) 6250. F 0.00
+expand: main@_33 (9, 0) FAR  w(0) 5564. F 0.00
+expand: main@_26!_Cond (10, 0) FAR  w(0) 4970. F 0.00
+expand: main@_26 (11, 0) FAR  w(0) 4406. F 0.00
+expand: main@_19!_Cond (12, 0) FAR  w(0) 3730. F 0.00
+expand: main@_19 (13, 0) FAR  w(0) 3538. F 0.00
+expand: main@entry!_Cond (14, 0) FAR  w(0) 3220. F 0.00
+expand: main@entry (15, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (16, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (17, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.04 :before-memory 35.91 :after-memory 40.15)
+Propagating: 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17  ! 18 
+(spacer::context::propagate :time 0.00 :before-memory 40.15 :after-memory 40.15)
+Entering level 18
+expand: query!0 (18, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (17, 18) FAR 1 U 0.00
+expand: main@entry!_BAD (17, 0) FAR  w(0) 1.
+	create_child: main@entry (16, 18) FAR 1 U 0.00
+expand: main@entry (16, 0) FAR  w(0) 1.
+	create_child: main@entry!_Cond (15, 18) FAR 3220 U 0.00
+expand: main@entry!_Cond (15, 0) FAR  w(0) 3220.
+	create_child: main@_19 (14, 18) FAR 3538 U 0.00
+expand: main@_19 (14, 0) FAR  w(0) 3538.
+	create_child: main@_19!_Cond (13, 18) FAR 3730 U 0.00
+expand: main@_19!_Cond (13, 0) FAR  w(0) 3730.
+	create_child: main@_26 (12, 18) FAR 4406 U 0.00
+expand: main@_26 (12, 0) FAR  w(0) 4406.
+	create_child: main@_26!_Cond (11, 18) FAR 4970 U 0.00
+expand: main@_26!_Cond (11, 0) FAR  w(0) 4970.
+	create_child: main@_33 (10, 18) FAR 5564 U 0.00
+expand: main@_33 (10, 0) FAR  w(0) 5564.
+	create_child: main@_33!_Cond (9, 18) FAR 6250 U 0.00
+expand: main@_33!_Cond (9, 0) FAR  w(0) 6250.
+	create_child: main@_40 (8, 18) FAR 6965 U 0.00
+expand: main@_40 (8, 0) FAR  w(0) 6965.
+	create_child: main@_40!_Cond (7, 18) FAR 7810 U 0.00
+expand: main@_40!_Cond (7, 0) FAR  w(0) 7810.
+	create_child: main@_47 (6, 18) FAR 8662 U 0.00
+expand: main@_47 (6, 0) FAR  w(0) 8662.
+	create_child: main@_47!_Cond (5, 18) FAR 9646 U 0.00
+expand: main@_47!_Cond (5, 0) FAR  w(0) 9646.
+	create_child: main@_52 (4, 18) FAR 23115 U 0.00
+expand: main@_52 (4, 0) FAR  w(0) 23115.
+	create_child: main@_54 (3, 18) FAR 26766 U 0.00
+expand: main@_54 (3, 0) FAR  w(0) 26766.
+	create_child: main@_54!_Cond (2, 18) FAR 28882 U 0.01
+expand: main@_54!_Cond (2, 0) FAR  w(0) 28882. T 0.01
+is-reachable: main@_54 (3, 0) FAR 26766 T 0.00
+is-reachable: main@_52 (4, 0) FAR 23115 T 0.00
+is-reachable: main@_47!_Cond (5, 0) FAR 9646 T 0.00
+is-reachable: main@_47 (6, 0) FAR 8662
+	create_child: main@_45 (6, 18) FAR 35418 X 0.01
+is-reachable: main@_45 (6, 0) FAR 35418 F 0.00
+Deleting closed node: main@_54(3, 18) 26766
+Deleting closed node: main@_52(4, 18) 23115
+Deleting closed node: main@_47!_Cond(5, 18) 9646
+Deleting closed node: main@_47(6, 18) 8662
+expand: main@_45 (6, 0) FAR  w(0) 35418. F 0.00
+expand: main@_40!_Cond (7, 0) FAR  w(0) 7810. F 0.00
+expand: main@_40 (8, 0) FAR  w(0) 6965. F 0.00
+expand: main@_33!_Cond (9, 0) FAR  w(0) 6250. F 0.00
+expand: main@_33 (10, 0) FAR  w(0) 5564. F 0.00
+expand: main@_26!_Cond (11, 0) FAR  w(0) 4970. F 0.00
+expand: main@_26 (12, 0) FAR  w(0) 4406. F 0.00
+expand: main@_19!_Cond (13, 0) FAR  w(0) 3730. F 0.00
+expand: main@_19 (14, 0) FAR  w(0) 3538. F 0.00
+expand: main@entry!_Cond (15, 0) FAR  w(0) 3220. F 0.00
+expand: main@entry (16, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (17, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (18, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.05 :before-memory 40.15 :after-memory 46.51)
+Propagating: 6 7 8 9 10 11 12 13 14 15 16 17 18  ! 19 
+(spacer::context::propagate :time 0.00 :before-memory 46.51 :after-memory 46.51)
+Entering level 19
+expand: query!0 (19, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (18, 19) FAR 1 U 0.00
+expand: main@entry!_BAD (18, 0) FAR  w(0) 1.
+	create_child: main@entry (17, 19) FAR 1 U 0.00
+expand: main@entry (17, 0) FAR  w(0) 1.
+	create_child: main@entry!_Cond (16, 19) FAR 3220 U 0.00
+expand: main@entry!_Cond (16, 0) FAR  w(0) 3220.
+	create_child: main@_19 (15, 19) FAR 3538 U 0.00
+expand: main@_19 (15, 0) FAR  w(0) 3538.
+	create_child: main@_19!_Cond (14, 19) FAR 3730 U 0.00
+expand: main@_19!_Cond (14, 0) FAR  w(0) 3730.
+	create_child: main@_26 (13, 19) FAR 4406 U 0.00
+expand: main@_26 (13, 0) FAR  w(0) 4406.
+	create_child: main@_26!_Cond (12, 19) FAR 4970 U 0.00
+expand: main@_26!_Cond (12, 0) FAR  w(0) 4970.
+	create_child: main@_33 (11, 19) FAR 5564 U 0.00
+expand: main@_33 (11, 0) FAR  w(0) 5564.
+	create_child: main@_33!_Cond (10, 19) FAR 6250 U 0.00
+expand: main@_33!_Cond (10, 0) FAR  w(0) 6250.
+	create_child: main@_40 (9, 19) FAR 6965 U 0.00
+expand: main@_40 (9, 0) FAR  w(0) 6965.
+	create_child: main@_40!_Cond (8, 19) FAR 7810 U 0.00
+expand: main@_40!_Cond (8, 0) FAR  w(0) 7810.
+	create_child: main@_45 (7, 19) FAR 35418 U 0.00
+expand: main@_45 (7, 0) FAR  w(0) 35418.
+	create_child: main@_47 (6, 19) FAR 38176 U 0.00
+expand: main@_47 (6, 0) FAR  w(0) 38176.
+	create_child: main@_47!_Cond (5, 19) FAR 40279 U 0.01
+expand: main@_47!_Cond (5, 0) FAR  w(0) 40279.
+	create_child: main@_54 (4, 19) FAR 43199 U 0.01
+expand: main@_54 (4, 0) FAR  w(0) 43199.
+	create_child: main@_54!_Cond (3, 19) FAR 44508 U 0.01
+expand: main@_54!_Cond (3, 0) FAR  w(0) 44508. T 0.01
+is-reachable: main@_54 (4, 0) FAR 43199 T 0.01
+is-reachable: main@_47!_Cond (5, 0) FAR 40279 T 0.00
+is-reachable: main@_47 (6, 0) FAR 38176 T 0.00
+is-reachable: main@_45 (7, 0) FAR 35418 T 0.00
+is-reachable: main@_40!_Cond (8, 0) FAR 7810 T 0.00
+is-reachable: main@_40 (9, 0) FAR 6965
+	create_child: main@_38 (9, 19) FAR 51089 X 0.01
+is-reachable: main@_38 (9, 0) FAR 51089 F 0.01
+Deleting closed node: main@_54(4, 19) 43199
+Deleting closed node: main@_47!_Cond(5, 19) 40279
+Deleting closed node: main@_47(6, 19) 38176
+Deleting closed node: main@_45(7, 19) 35418
+Deleting closed node: main@_40!_Cond(8, 19) 7810
+Deleting closed node: main@_40(9, 19) 6965
+expand: main@_38 (9, 0) FAR  w(0) 51089. F 0.00
+expand: main@_33!_Cond (10, 0) FAR  w(0) 6250. F 0.00
+expand: main@_33 (11, 0) FAR  w(0) 5564. F 0.00
+expand: main@_26!_Cond (12, 0) FAR  w(0) 4970. F 0.00
+expand: main@_26 (13, 0) FAR  w(0) 4406. F 0.00
+expand: main@_19!_Cond (14, 0) FAR  w(0) 3730. F 0.00
+expand: main@_19 (15, 0) FAR  w(0) 3538. F 0.00
+expand: main@entry!_Cond (16, 0) FAR  w(0) 3220. F 0.00
+expand: main@entry (17, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (18, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (19, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.08 :before-memory 46.51 :after-memory 56.71)
+Propagating: 9 10 11 12 13 14 15 16 17 18 19  ! 20 
+(spacer::context::propagate :time 0.00 :before-memory 56.71 :after-memory 56.71)
+Entering level 20
+expand: query!0 (20, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (19, 20) FAR 1 U 0.00
+expand: main@entry!_BAD (19, 0) FAR  w(0) 1.
+	create_child: main@entry (18, 20) FAR 1 U 0.00
+expand: main@entry (18, 0) FAR  w(0) 1.
+	create_child: main@entry!_Cond (17, 20) FAR 3220 U 0.00
+expand: main@entry!_Cond (17, 0) FAR  w(0) 3220.
+	create_child: main@_19 (16, 20) FAR 3538 U 0.00
+expand: main@_19 (16, 0) FAR  w(0) 3538.
+	create_child: main@_19!_Cond (15, 20) FAR 3730 U 0.00
+expand: main@_19!_Cond (15, 0) FAR  w(0) 3730.
+	create_child: main@_26 (14, 20) FAR 4406 U 0.00
+expand: main@_26 (14, 0) FAR  w(0) 4406.
+	create_child: main@_26!_Cond (13, 20) FAR 4970 U 0.00
+expand: main@_26!_Cond (13, 0) FAR  w(0) 4970.
+	create_child: main@_33 (12, 20) FAR 5564 U 0.00
+expand: main@_33 (12, 0) FAR  w(0) 5564.
+	create_child: main@_33!_Cond (11, 20) FAR 6250 U 0.00
+expand: main@_33!_Cond (11, 0) FAR  w(0) 6250.
+	create_child: main@_38 (10, 20) FAR 51089 U 0.00
+expand: main@_38 (10, 0) FAR  w(0) 51089.
+	create_child: main@_40 (9, 20) FAR 53972 U 0.00
+expand: main@_40 (9, 0) FAR  w(0) 53972.
+	create_child: main@_40!_Cond (8, 20) FAR 55806 U 0.01
+expand: main@_40!_Cond (8, 0) FAR  w(0) 55806.
+	create_child: main@_47 (7, 20) FAR 59084 U 0.01
+expand: main@_47 (7, 0) FAR  w(0) 59084.
+	create_child: main@_47!_Cond (6, 20) FAR 60427 U 0.01
+expand: main@_47!_Cond (6, 0) FAR  w(0) 60427.
+	create_child: main@_54 (5, 20) FAR 62061 U 0.01
+expand: main@_54 (5, 0) FAR  w(0) 62061.
+	create_child: main@_54!_Cond (4, 20) FAR 62443 U 0.01
+expand: main@_54!_Cond (4, 0) FAR  w(0) 62443. T 0.01
+is-reachable: main@_54 (5, 0) FAR 62061 T 0.01
+is-reachable: main@_47!_Cond (6, 0) FAR 60427 T 0.00
+is-reachable: main@_47 (7, 0) FAR 59084 T 0.01
+is-reachable: main@_40!_Cond (8, 0) FAR 55806 T 0.00
+is-reachable: main@_40 (9, 0) FAR 53972 T 0.00
+is-reachable: main@_38 (10, 0) FAR 51089 T 0.00
+is-reachable: main@_33!_Cond (11, 0) FAR 6250 T 0.01
+is-reachable: main@_33 (12, 0) FAR 5564
+	create_child: main@_31 (12, 20) FAR 70612 X 0.01
+is-reachable: main@_31 (12, 0) FAR 70612 F 0.01
+Deleting closed node: main@_54(5, 20) 62061
+Deleting closed node: main@_47!_Cond(6, 20) 60427
+Deleting closed node: main@_47(7, 20) 59084
+Deleting closed node: main@_40!_Cond(8, 20) 55806
+Deleting closed node: main@_40(9, 20) 53972
+Deleting closed node: main@_38(10, 20) 51089
+Deleting closed node: main@_33!_Cond(11, 20) 6250
+Deleting closed node: main@_33(12, 20) 5564
+expand: main@_31 (12, 0) FAR  w(0) 70612. F 0.00
+expand: main@_26!_Cond (13, 0) FAR  w(0) 4970. F 0.00
+expand: main@_26 (14, 0) FAR  w(0) 4406. F 0.00
+expand: main@_19!_Cond (15, 0) FAR  w(0) 3730. F 0.00
+expand: main@_19 (16, 0) FAR  w(0) 3538. F 0.00
+expand: main@entry!_Cond (17, 0) FAR  w(0) 3220. F 0.00
+expand: main@entry (18, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (19, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (20, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.12 :before-memory 56.71 :after-memory 70.44)
+Propagating: 12 13 14 15 16 17 18 19 20  ! 21 
+(spacer::context::propagate :time 0.00 :before-memory 70.44 :after-memory 70.44)
+Entering level 21
+expand: query!0 (21, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (20, 21) FAR 1 U 0.00
+expand: main@entry!_BAD (20, 0) FAR  w(0) 1.
+	create_child: main@entry (19, 21) FAR 1 U 0.00
+expand: main@entry (19, 0) FAR  w(0) 1.
+	create_child: main@entry!_Cond (18, 21) FAR 3220 U 0.00
+expand: main@entry!_Cond (18, 0) FAR  w(0) 3220.
+	create_child: main@_19 (17, 21) FAR 3538 U 0.00
+expand: main@_19 (17, 0) FAR  w(0) 3538.
+	create_child: main@_19!_Cond (16, 21) FAR 3730 U 0.00
+expand: main@_19!_Cond (16, 0) FAR  w(0) 3730.
+	create_child: main@_26 (15, 21) FAR 4406 U 0.00
+expand: main@_26 (15, 0) FAR  w(0) 4406.
+	create_child: main@_26!_Cond (14, 21) FAR 4970 U 0.00
+expand: main@_26!_Cond (14, 0) FAR  w(0) 4970.
+	create_child: main@_31 (13, 21) FAR 70612 U 0.00
+expand: main@_31 (13, 0) FAR  w(0) 70612.
+	create_child: main@_33 (12, 21) FAR 73842 U 0.00
+expand: main@_33 (12, 0) FAR  w(0) 73842.
+	create_child: main@_33!_Cond (11, 21) FAR 76440 U 0.01
+expand: main@_33!_Cond (11, 0) FAR  w(0) 76440.
+	create_child: main@_40 (10, 21) FAR 80871 U 0.01
+expand: main@_40 (10, 0) FAR  w(0) 80871.
+	create_child: main@_40!_Cond (9, 21) FAR 82678 U 0.01
+expand: main@_40!_Cond (9, 0) FAR  w(0) 82678.
+	create_child: main@_47 (8, 21) FAR 84479 U 0.01
+expand: main@_47 (8, 0) FAR  w(0) 84479.
+	create_child: main@_47!_Cond (7, 21) FAR 85492 U 0.01
+expand: main@_47!_Cond (7, 0) FAR  w(0) 85492.
+	create_child: main@_54 (6, 21) FAR 87499 U 0.01
+expand: main@_54 (6, 0) FAR  w(0) 87499.
+	create_child: main@_54!_Cond (5, 21) FAR 88155 U 0.01
+expand: main@_54!_Cond (5, 0) FAR  w(0) 88155. T 0.01
+is-reachable: main@_54 (6, 0) FAR 87499 T 0.01
+is-reachable: main@_47!_Cond (7, 0) FAR 85492 T 0.00
+is-reachable: main@_47 (8, 0) FAR 84479 T 0.01
+is-reachable: main@_40!_Cond (9, 0) FAR 82678 T 0.00
+is-reachable: main@_40 (10, 0) FAR 80871 T 0.01
+is-reachable: main@_33!_Cond (11, 0) FAR 76440 F 0.00
+Deleting closed node: main@_54(6, 21) 87499
+Deleting closed node: main@_47!_Cond(7, 21) 85492
+Deleting closed node: main@_47(8, 21) 84479
+Deleting closed node: main@_40!_Cond(9, 21) 82678
+Deleting closed node: main@_40(10, 21) 80871
+expand: main@_33!_Cond (11, 0) FAR  w(1) 76440. T 0.00
+is-reachable: main@_33 (12, 0) FAR 73842 T 0.01
+is-reachable: main@_31 (13, 0) FAR 70612 T 0.00
+is-reachable: main@_26!_Cond (14, 0) FAR 4970 T 0.01
+is-reachable: main@_26 (15, 0) FAR 4406
+	create_child: main@_24 (15, 21) FAR 97123 X 0.01
+is-reachable: main@_24 (15, 0) FAR 97123 F 0.01
+Deleting closed node: main@_33(12, 21) 73842
+Deleting closed node: main@_31(13, 21) 70612
+Deleting closed node: main@_26!_Cond(14, 21) 4970
+Deleting closed node: main@_26(15, 21) 4406
+expand: main@_24 (15, 0) FAR  w(0) 97123. F 0.00
+expand: main@_19!_Cond (16, 0) FAR  w(0) 3730. F 0.00
+expand: main@_19 (17, 0) FAR  w(0) 3538. F 0.00
+expand: main@entry!_Cond (18, 0) FAR  w(0) 3220. F 0.00
+expand: main@entry (19, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (20, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (21, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.18 :before-memory 70.44 :after-memory 86.46)
+Propagating: 15 16 17 18 19 20 21  ! 22 
+(spacer::context::propagate :time 0.00 :before-memory 86.46 :after-memory 86.46)
+Entering level 22
+expand: query!0 (22, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (21, 22) FAR 1 U 0.00
+expand: main@entry!_BAD (21, 0) FAR  w(0) 1.
+	create_child: main@entry (20, 22) FAR 1 U 0.00
+expand: main@entry (20, 0) FAR  w(0) 1.
+	create_child: main@entry!_Cond (19, 22) FAR 3220 U 0.00
+expand: main@entry!_Cond (19, 0) FAR  w(0) 3220.
+	create_child: main@_19 (18, 22) FAR 3538 U 0.00
+expand: main@_19 (18, 0) FAR  w(0) 3538.
+	create_child: main@_19!_Cond (17, 22) FAR 3730 U 0.00
+expand: main@_19!_Cond (17, 0) FAR  w(0) 3730.
+	create_child: main@_24 (16, 22) FAR 97123 U 0.01
+expand: main@_24 (16, 0) FAR  w(0) 97123.
+	create_child: main@_26 (15, 22) FAR 101476 U 0.00
+expand: main@_26 (15, 0) FAR  w(0) 101476.
+	create_child: main@_26!_Cond (14, 22) FAR 104494 U 0.01
+expand: main@_26!_Cond (14, 0) FAR  w(0) 104494.
+	create_child: main@_33 (13, 22) FAR 109898 U 0.01
+expand: main@_33 (13, 0) FAR  w(0) 109898.
+	create_child: main@_33!_Cond (12, 22) FAR 111692 U 0.01
+expand: main@_33!_Cond (12, 0) FAR  w(0) 111692.
+	create_child: main@_40 (11, 22) FAR 113264 U 0.01
+expand: main@_40 (11, 0) FAR  w(0) 113264.
+	create_child: main@_40!_Cond (10, 22) FAR 115113 U 0.01
+expand: main@_40!_Cond (10, 0) FAR  w(0) 115113.
+	create_child: main@_47 (9, 22) FAR 117748 U 0.01
+expand: main@_47 (9, 0) FAR  w(0) 117748.
+	create_child: main@_47!_Cond (8, 22) FAR 118337 U 0.01
+expand: main@_47!_Cond (8, 0) FAR  w(0) 118337.
+	create_child: main@_54 (7, 22) FAR 120681 U 0.01
+expand: main@_54 (7, 0) FAR  w(0) 120681.
+	create_child: main@_54!_Cond (6, 22) FAR 121617 U 0.01
+expand: main@_54!_Cond (6, 0) FAR  w(0) 121617. T 0.01
+is-reachable: main@_54 (7, 0) FAR 120681 T 0.01
+is-reachable: main@_47!_Cond (8, 0) FAR 118337 T 0.00
+is-reachable: main@_47 (9, 0) FAR 117748 T 0.01
+is-reachable: main@_40!_Cond (10, 0) FAR 115113 T 0.00
+is-reachable: main@_40 (11, 0) FAR 113264 T 0.02
+is-reachable: main@_33!_Cond (12, 0) FAR 111692 T 0.01
+is-reachable: main@_33 (13, 0) FAR 109898 T 0.02
+is-reachable: main@_26!_Cond (14, 0) FAR 104494 T 0.01
+is-reachable: main@_26 (15, 0) FAR 101476 T 0.01
+is-reachable: main@_24 (16, 0) FAR 97123 T 0.00
+is-reachable: main@_19!_Cond (17, 0) FAR 3730 T 0.01
+is-reachable: main@_19 (18, 0) FAR 3538
+	create_child: main@_17 (18, 22) FAR 132422 X 0.01
+is-reachable: main@_17 (18, 0) FAR 132422 F 0.01
+Deleting closed node: main@_54(7, 22) 120681
+Deleting closed node: main@_47!_Cond(8, 22) 118337
+Deleting closed node: main@_47(9, 22) 117748
+Deleting closed node: main@_40!_Cond(10, 22) 115113
+Deleting closed node: main@_40(11, 22) 113264
+Deleting closed node: main@_33!_Cond(12, 22) 111692
+Deleting closed node: main@_33(13, 22) 109898
+Deleting closed node: main@_26!_Cond(14, 22) 104494
+Deleting closed node: main@_26(15, 22) 101476
+Deleting closed node: main@_24(16, 22) 97123
+Deleting closed node: main@_19!_Cond(17, 22) 3730
+Deleting closed node: main@_19(18, 22) 3538
+expand: main@_17 (18, 0) FAR  w(0) 132422. F 0.00
+expand: main@entry!_Cond (19, 0) FAR  w(0) 3220. F 0.00
+expand: main@entry (20, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (21, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (22, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.27 :before-memory 86.46 :after-memory 110.69)
+Propagating: 18 19 20 21 22  ! 23 
+(spacer::context::propagate :time 0.00 :before-memory 110.69 :after-memory 110.79)
+Entering level 23
+expand: query!0 (23, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (22, 23) FAR 1 U 0.00
+expand: main@entry!_BAD (22, 0) FAR  w(0) 1.
+	create_child: main@entry (21, 23) FAR 1 U 0.00
+expand: main@entry (21, 0) FAR  w(0) 1.
+	create_child: main@entry!_Cond (20, 23) FAR 3220 U 0.00
+expand: main@entry!_Cond (20, 0) FAR  w(0) 3220.
+	create_child: main@_17 (19, 23) FAR 132422 U 0.00
+expand: main@_17 (19, 0) FAR  w(0) 132422.
+	create_child: main@_19 (18, 23) FAR 136669 U 0.00
+expand: main@_19 (18, 0) FAR  w(0) 136669.
+	create_child: main@_19!_Cond (17, 23) FAR 140907 U 0.01
+expand: main@_19!_Cond (17, 0) FAR  w(0) 140907.
+	create_child: main@_26 (16, 23) FAR 146408 U 0.02
+expand: main@_26 (16, 0) FAR  w(0) 146408.
+	create_child: main@_26!_Cond (15, 23) FAR 149493 U 0.01
+expand: main@_26!_Cond (15, 0) FAR  w(0) 149493.
+	create_child: main@_33 (14, 23) FAR 152148 U 0.01
+expand: main@_33 (14, 0) FAR  w(0) 152148.
+	create_child: main@_33!_Cond (13, 23) FAR 153557 U 0.01
+expand: main@_33!_Cond (13, 0) FAR  w(0) 153557.
+	create_child: main@_40 (12, 23) FAR 156720 U 0.01
+expand: main@_40 (12, 0) FAR  w(0) 156720.
+	create_child: main@_40!_Cond (11, 23) FAR 157149 U 0.01
+expand: main@_40!_Cond (11, 0) FAR  w(0) 157149.
+	create_child: main@_47 (10, 23) FAR 160082 U 0.01
+expand: main@_47 (10, 0) FAR  w(0) 160082.
+	create_child: main@_47!_Cond (9, 23) FAR 160549 U 0.01
+expand: main@_47!_Cond (9, 0) FAR  w(0) 160549.
+	create_child: main@_54 (8, 23) FAR 163170 U 0.01
+expand: main@_54 (8, 0) FAR  w(0) 163170.
+	create_child: main@_54!_Cond (7, 23) FAR 164309 U 0.01
+expand: main@_54!_Cond (7, 0) FAR  w(0) 164309.
+	create_child: main@largestGap.exit.i (6, 23) FAR 165173 U 0.01
+expand: main@largestGap.exit.i (6, 0) FAR  w(0) 165173. F 0.03
+expand: main@_54!_Cond (7, 0) FAR  w(0) 164309. F 0.04
+expand: main@_54 (8, 0) FAR  w(0) 163170. F 0.03
+expand: main@_47!_Cond (9, 0) FAR  w(0) 160549. F 0.03
+expand: main@_47 (10, 0) FAR  w(0) 160082. F 0.03
+expand: main@_40!_Cond (11, 0) FAR  w(0) 157149. F 0.04
+expand: main@_40 (12, 0) FAR  w(0) 156720. F 0.03
+expand: main@_33!_Cond (13, 0) FAR  w(0) 153557. F 0.04
+expand: main@_33 (14, 0) FAR  w(0) 152148. F 0.03
+expand: main@_26!_Cond (15, 0) FAR  w(0) 149493. F 0.04
+expand: main@_26 (16, 0) FAR  w(0) 146408. F 0.03
+expand: main@_19!_Cond (17, 0) FAR  w(0) 140907. F 0.03
+expand: main@_19 (18, 0) FAR  w(0) 136669. F 0.02
+expand: main@_17 (19, 0) FAR  w(0) 132422. F 0.02
+expand: main@entry!_Cond (20, 0) FAR  w(0) 3220.
+	create_child: main@_19 (19, 23) FAR 177778 U 0.00
+expand: main@_19 (19, 0) FAR  w(0) 177778.
+	create_child: main@_19!_Cond (18, 23) FAR 177869 U 0.00
+expand: main@_19!_Cond (18, 0) FAR  w(0) 177869.
+	create_child: main@_26 (17, 23) FAR 176549 U 0.00
+expand: main@_26 (17, 0) FAR  w(0) 176549.
+	create_child: main@_26!_Cond (16, 23) FAR 177998 U 0.00
+expand: main@_26!_Cond (16, 0) FAR  w(0) 177998.
+	create_child: main@_33 (15, 23) FAR 178134 U 0.00
+expand: main@_33 (15, 0) FAR  w(0) 178134.
+	create_child: main@_33!_Cond (14, 23) FAR 174578 U 0.01
+expand: main@_33!_Cond (14, 0) FAR  w(0) 174578.
+	create_child: main@_40 (13, 23) FAR 178269 U 0.00
+expand: main@_40 (13, 0) FAR  w(0) 178269.
+	create_child: main@_40!_Cond (12, 23) FAR 178339 U 0.00
+expand: main@_40!_Cond (12, 0) FAR  w(0) 178339.
+	create_child: main@_47 (11, 23) FAR 178468 U 0.01
+expand: main@_47 (11, 0) FAR  w(0) 178468.
+	create_child: main@_47!_Cond (10, 23) FAR 178557 U 0.00
+expand: main@_47!_Cond (10, 0) FAR  w(0) 178557.
+	create_child: main@_54 (9, 23) FAR 178691 U 0.00
+expand: main@_54 (9, 0) FAR  w(0) 178691.
+	create_child: main@_54!_Cond (8, 23) FAR 178785 U 0.00
+expand: main@_54!_Cond (8, 0) FAR  w(0) 178785.
+	create_child: main@_59 (7, 23) FAR 179007 U 0.01
+expand: main@_59 (7, 0) FAR  w(0) 179007. T 0.01
+is-reachable: main@_54!_Cond (8, 0) FAR 178785 T 0.01
+is-reachable: main@_54 (9, 0) FAR 178691
+	create_child: main@_52 (9, 23) FAR 181943 X 0.02
+is-reachable: main@_52 (9, 0) FAR 181943 F 0.01
+Deleting closed node: main@_54!_Cond(8, 23) 178785
+Deleting closed node: main@_54(9, 23) 178691
+expand: main@_52 (9, 0) FAR  w(0) 181943.
+	create_child: main@_54 (8, 23) FAR 183597 U 0.00
+expand: main@_54 (8, 0) FAR  w(0) 183597.
+	create_child: main@_54!_Cond (7, 23) FAR 179832 U 0.01
+expand: main@_54!_Cond (7, 0) FAR  w(0) 179832. T 0.01
+is-reachable: main@_54 (8, 0) FAR 183597 F 0.00
+expand: main@_54 (8, 0) FAR  w(1) 183597. T 0.01
+is-reachable: main@_52 (9, 0) FAR 181943 T 0.00
+is-reachable: main@_47!_Cond (10, 0) FAR 178557 T 0.01
+is-reachable: main@_47 (11, 0) FAR 178468
+	create_child: main@_45 (11, 23) FAR 187366 X 0.01
+is-reachable: main@_45 (11, 0) FAR 187366 F 0.01
+Deleting closed node: main@_52(9, 23) 181943
+Deleting closed node: main@_47!_Cond(10, 23) 178557
+Deleting closed node: main@_47(11, 23) 178468
+expand: main@_45 (11, 0) FAR  w(0) 187366.
+	create_child: main@_47 (10, 23) FAR 189065 U 0.00
+expand: main@_47 (10, 0) FAR  w(0) 189065.
+	create_child: main@_47!_Cond (9, 23) FAR 178526 U 0.01
+expand: main@_47!_Cond (9, 0) FAR  w(0) 178526.
+	create_child: main@_54 (8, 23) FAR 191652 U 0.01
+expand: main@_54 (8, 0) FAR  w(0) 191652.
+	create_child: main@_54!_Cond (7, 23) FAR 192083 U 0.01
+expand: main@_54!_Cond (7, 0) FAR  w(0) 192083. T 0.01
+is-reachable: main@_54 (8, 0) FAR 191652 T 0.02
+is-reachable: main@_47!_Cond (9, 0) FAR 178526 T 0.00
+is-reachable: main@_47 (10, 0) FAR 189065 T 0.00
+is-reachable: main@_45 (11, 0) FAR 187366 T 0.00
+is-reachable: main@_40!_Cond (12, 0) FAR 178339 T 0.01
+is-reachable: main@_40 (13, 0) FAR 178269
+	create_child: main@_38 (13, 23) FAR 196136 X 0.02
+is-reachable: main@_38 (13, 0) FAR 196136 F 0.01
+Deleting closed node: main@_54(8, 23) 191652
+Deleting closed node: main@_47!_Cond(9, 23) 178526
+Deleting closed node: main@_47(10, 23) 189065
+Deleting closed node: main@_45(11, 23) 187366
+Deleting closed node: main@_40!_Cond(12, 23) 178339
+Deleting closed node: main@_40(13, 23) 178269
+expand: main@_38 (13, 0) FAR  w(0) 196136.
+	create_child: main@_40 (12, 23) FAR 198015 U 0.00
+expand: main@_40 (12, 0) FAR  w(0) 198015.
+	create_child: main@_40!_Cond (11, 23) FAR 199150 U 0.01
+expand: main@_40!_Cond (11, 0) FAR  w(0) 199150.
+	create_child: main@_47 (10, 23) FAR 200906 U 0.01
+expand: main@_47 (10, 0) FAR  w(0) 200906.
+	create_child: main@_47!_Cond (9, 23) FAR 201907 U 0.01
+expand: main@_47!_Cond (9, 0) FAR  w(0) 201907.
+	create_child: main@_54 (8, 23) FAR 202904 U 0.01
+expand: main@_54 (8, 0) FAR  w(0) 202904.
+	create_child: main@_54!_Cond (7, 23) FAR 202650 U 0.01
+expand: main@_54!_Cond (7, 0) FAR  w(0) 202650. T 0.01
+is-reachable: main@_54 (8, 0) FAR 202904 T 0.01
+is-reachable: main@_47!_Cond (9, 0) FAR 201907 T 0.01
+is-reachable: main@_47 (10, 0) FAR 200906 T 0.04
+is-reachable: main@_40!_Cond (11, 0) FAR 199150 T 0.01
+is-reachable: main@_40 (12, 0) FAR 198015 T 0.01
+is-reachable: main@_38 (13, 0) FAR 196136 T 0.00
+is-reachable: main@_33!_Cond (14, 0) FAR 174578 T 0.01
+is-reachable: main@_33 (15, 0) FAR 178134
+	create_child: main@_31 (15, 23) FAR 207546 X 0.02
+is-reachable: main@_31 (15, 0) FAR 207546 F 0.01
+Deleting closed node: main@_54(8, 23) 202904
+Deleting closed node: main@_47!_Cond(9, 23) 201907
+Deleting closed node: main@_47(10, 23) 200906
+Deleting closed node: main@_40!_Cond(11, 23) 199150
+Deleting closed node: main@_40(12, 23) 198015
+Deleting closed node: main@_38(13, 23) 196136
+Deleting closed node: main@_33!_Cond(14, 23) 174578
+Deleting closed node: main@_33(15, 23) 178134
+expand: main@_31 (15, 0) FAR  w(0) 207546.
+	create_child: main@_33 (14, 23) FAR 209547 U 0.00
+expand: main@_33 (14, 0) FAR  w(0) 209547.
+	create_child: main@_33!_Cond (13, 23) FAR 210925 U 0.01
+expand: main@_33!_Cond (13, 0) FAR  w(0) 210925.
+	create_child: main@_40 (12, 23) FAR 212318 U 0.02
+expand: main@_40 (12, 0) FAR  w(0) 212318.
+	create_child: main@_40!_Cond (11, 23) FAR 213668 U 0.01
+expand: main@_40!_Cond (11, 0) FAR  w(0) 213668.
+	create_child: main@_47 (10, 23) FAR 215035 U 0.01
+expand: main@_47 (10, 0) FAR  w(0) 215035.
+	create_child: main@_47!_Cond (9, 23) FAR 214743 U 0.01
+expand: main@_47!_Cond (9, 0) FAR  w(0) 214743.
+	create_child: main@_54 (8, 23) FAR 215908 U 0.01
+expand: main@_54 (8, 0) FAR  w(0) 215908.
+	create_child: main@_54!_Cond (7, 23) FAR 215329 U 0.01
+expand: main@_54!_Cond (7, 0) FAR  w(0) 215329. T 0.01
+is-reachable: main@_54 (8, 0) FAR 215908 T 0.02
+is-reachable: main@_47!_Cond (9, 0) FAR 214743 T 0.01
+is-reachable: main@_47 (10, 0) FAR 215035 T 0.02
+is-reachable: main@_40!_Cond (11, 0) FAR 213668 T 0.01
+is-reachable: main@_40 (12, 0) FAR 212318 T 0.02
+is-reachable: main@_33!_Cond (13, 0) FAR 210925 T 0.01
+is-reachable: main@_33 (14, 0) FAR 209547 T 0.01
+is-reachable: main@_31 (15, 0) FAR 207546 T 0.00
+is-reachable: main@_26!_Cond (16, 0) FAR 177998 T 0.02
+is-reachable: main@_26 (17, 0) FAR 176549
+	create_child: main@_24 (17, 23) FAR 221504 X 0.02
+is-reachable: main@_24 (17, 0) FAR 221504 F 0.01
+Deleting closed node: main@_54(8, 23) 215908
+Deleting closed node: main@_47!_Cond(9, 23) 214743
+Deleting closed node: main@_47(10, 23) 215035
+Deleting closed node: main@_40!_Cond(11, 23) 213668
+Deleting closed node: main@_40(12, 23) 212318
+Deleting closed node: main@_33!_Cond(13, 23) 210925
+Deleting closed node: main@_33(14, 23) 209547
+Deleting closed node: main@_31(15, 23) 207546
+Deleting closed node: main@_26!_Cond(16, 23) 177998
+Deleting closed node: main@_26(17, 23) 176549
+expand: main@_24 (17, 0) FAR  w(0) 221504.
+	create_child: main@_26 (16, 23) FAR 223766 U 0.00
+expand: main@_26 (16, 0) FAR  w(0) 223766.
+	create_child: main@_26!_Cond (15, 23) FAR 225357 U 0.01
+expand: main@_26!_Cond (15, 0) FAR  w(0) 225357.
+	create_child: main@_33 (14, 23) FAR 228022 U 0.01
+expand: main@_33 (14, 0) FAR  w(0) 228022.
+	create_child: main@_33!_Cond (13, 23) FAR 228345 U 0.01
+expand: main@_33!_Cond (13, 0) FAR  w(0) 228345.
+	create_child: main@_40 (12, 23) FAR 228688 U 0.01
+expand: main@_40 (12, 0) FAR  w(0) 228688.
+	create_child: main@_40!_Cond (11, 23) FAR 229516 U 0.01
+expand: main@_40!_Cond (11, 0) FAR  w(0) 229516.
+	create_child: main@_47 (10, 23) FAR 230799 U 0.01
+expand: main@_47 (10, 0) FAR  w(0) 230799.
+	create_child: main@_47!_Cond (9, 23) FAR 230551 U 0.01
+expand: main@_47!_Cond (9, 0) FAR  w(0) 230551.
+	create_child: main@_54 (8, 23) FAR 231690 U 0.01
+expand: main@_54 (8, 0) FAR  w(0) 231690.
+	create_child: main@_54!_Cond (7, 23) FAR 231803 U 0.01
+expand: main@_54!_Cond (7, 0) FAR  w(0) 231803. T 0.01
+is-reachable: main@_54 (8, 0) FAR 231690 T 0.02
+is-reachable: main@_47!_Cond (9, 0) FAR 230551 T 0.01
+is-reachable: main@_47 (10, 0) FAR 230799 T 0.02
+is-reachable: main@_40!_Cond (11, 0) FAR 229516 T 0.01
+is-reachable: main@_40 (12, 0) FAR 228688 T 0.02
+is-reachable: main@_33!_Cond (13, 0) FAR 228345 T 0.01
+is-reachable: main@_33 (14, 0) FAR 228022 T 0.02
+is-reachable: main@_26!_Cond (15, 0) FAR 225357 T 0.01
+is-reachable: main@_26 (16, 0) FAR 223766 T 0.01
+is-reachable: main@_24 (17, 0) FAR 221504 T 0.00
+is-reachable: main@_19!_Cond (18, 0) FAR 177869 T 0.01
+is-reachable: main@_19 (19, 0) FAR 177778
+	create_child: main@_17 (19, 23) FAR 238087 X 0.02
+is-reachable: main@_17 (19, 0) FAR 238087 F 0.01
+Deleting closed node: main@_54(8, 23) 231690
+Deleting closed node: main@_47!_Cond(9, 23) 230551
+Deleting closed node: main@_47(10, 23) 230799
+Deleting closed node: main@_40!_Cond(11, 23) 229516
+Deleting closed node: main@_40(12, 23) 228688
+Deleting closed node: main@_33!_Cond(13, 23) 228345
+Deleting closed node: main@_33(14, 23) 228022
+Deleting closed node: main@_26!_Cond(15, 23) 225357
+Deleting closed node: main@_26(16, 23) 223766
+Deleting closed node: main@_24(17, 23) 221504
+Deleting closed node: main@_19!_Cond(18, 23) 177869
+Deleting closed node: main@_19(19, 23) 177778
+expand: main@_17 (19, 0) FAR  w(0) 238087.
+	create_child: main@_19 (18, 23) FAR 238912 U 0.00
+expand: main@_19 (18, 0) FAR  w(0) 238912.
+	create_child: main@_19!_Cond (17, 23) FAR 240579 U 0.01
+expand: main@_19!_Cond (17, 0) FAR  w(0) 240579.
+	create_child: main@_26 (16, 23) FAR 243016 U 0.01
+expand: main@_26 (16, 0) FAR  w(0) 243016.
+	create_child: main@_26!_Cond (15, 23) FAR 244035 U 0.01
+expand: main@_26!_Cond (15, 0) FAR  w(0) 244035.
+	create_child: main@_33 (14, 23) FAR 244868 U 0.01
+expand: main@_33 (14, 0) FAR  w(0) 244868.
+	create_child: main@_33!_Cond (13, 23) FAR 245301 U 0.01
+expand: main@_33!_Cond (13, 0) FAR  w(0) 245301.
+	create_child: main@_40 (12, 23) FAR 246458 U 0.01
+expand: main@_40 (12, 0) FAR  w(0) 246458.
+	create_child: main@_40!_Cond (11, 23) FAR 245905 U 0.01
+expand: main@_40!_Cond (11, 0) FAR  w(0) 245905.
+	create_child: main@_47 (10, 23) FAR 247224 U 0.01
+expand: main@_47 (10, 0) FAR  w(0) 247224.
+	create_child: main@_47!_Cond (9, 23) FAR 246868 U 0.01
+expand: main@_47!_Cond (9, 0) FAR  w(0) 246868.
+	create_child: main@_54 (8, 23) FAR 247751 U 0.01
+expand: main@_54 (8, 0) FAR  w(0) 247751.
+	create_child: main@_54!_Cond (7, 23) FAR 247531 U 0.01
+expand: main@_54!_Cond (7, 0) FAR  w(0) 247531. F 0.04
+expand: main@_54 (8, 0) FAR  w(0) 247751. F 0.03
+expand: main@_47!_Cond (9, 0) FAR  w(0) 246868. F 0.04
+expand: main@_47 (10, 0) FAR  w(0) 247224. F 0.04
+expand: main@_40!_Cond (11, 0) FAR  w(0) 245905. F 0.03
+expand: main@_40 (12, 0) FAR  w(0) 246458. F 0.04
+expand: main@_33!_Cond (13, 0) FAR  w(0) 245301. F 0.04
+expand: main@_33 (14, 0) FAR  w(0) 244868. F 0.04
+expand: main@_26!_Cond (15, 0) FAR  w(0) 244035. F 0.05
+expand: main@_26 (16, 0) FAR  w(0) 243016. F 0.03
+expand: main@_19!_Cond (17, 0) FAR  w(0) 240579. F 0.03
+expand: main@_19 (18, 0) FAR  w(0) 238912. F 0.02
+expand: main@_17 (19, 0) FAR  w(0) 238087. F 0.02
+expand: main@entry!_Cond (20, 0) FAR  w(0) 3220.
+	create_child: main@_19 (19, 23) FAR 251652 U 0.01
+expand: main@_19 (19, 0) FAR  w(0) 251652.
+	create_child: main@_19!_Cond (18, 23) FAR 251840 UNDEF 0.00
+expand: main@_19!_Cond (18, 0) FAR  w(0) 251840. T 0.01
+is-reachable: main@_19 (19, 0) FAR 251652 F 0.00
+expand: main@_19 (19, 0) FAR  w(1) 251652.
+	create_child: main@_17 (19, 23) FAR 253256 X 0.01
+expand: main@_17 (19, 0) FAR  w(0) 253256.
+	create_child: main@_19 (18, 23) FAR 254027 U 0.01
+expand: main@_19 (18, 0) FAR  w(0) 254027. F 0.04
+expand: main@_17 (19, 0) FAR  w(0) 253256. F 0.03
+expand: main@entry!_Cond (20, 0) FAR  w(0) 3220.
+	create_child: main@_19 (19, 23) FAR 255716 U 0.00
+expand: main@_19 (19, 0) FAR  w(0) 255716.
+	create_child: main@_17 (19, 23) FAR 256930 X 0.01
+expand: main@_17 (19, 0) FAR  w(0) 256930.
+	create_child: main@_19 (18, 23) FAR 256258 UNDEF 0.01
+expand: main@_19 (18, 0) FAR  w(0) 256258.
+	create_child: main@_19!_Cond (17, 23) FAR 257225 U 0.01
+expand: main@_19!_Cond (17, 0) FAR  w(0) 257225.
+	create_child: main@_26 (16, 23) FAR 257186 U 0.01
+expand: main@_26 (16, 0) FAR  w(0) 257186.
+	create_child: main@_26!_Cond (15, 23) FAR 257587 UNDEF 0.01
+expand: main@_26!_Cond (15, 0) FAR  w(0) 257587.
+	create_child: main@_33 (14, 23) FAR 257455 U 0.01
+expand: main@_33 (14, 0) FAR  w(0) 257455.
+	create_child: main@_33!_Cond (13, 23) FAR 256941 U 0.01
+expand: main@_33!_Cond (13, 0) FAR  w(0) 256941.
+	create_child: main@_40 (12, 23) FAR 257310 U 0.01
+expand: main@_40 (12, 0) FAR  w(0) 257310.
+	create_child: main@_40!_Cond (11, 23) FAR 257269 U 0.01
+expand: main@_40!_Cond (11, 0) FAR  w(0) 257269.
+	create_child: main@_47 (10, 23) FAR 258016 U 0.01
+expand: main@_47 (10, 0) FAR  w(0) 258016.
+	create_child: main@_47!_Cond (9, 23) FAR 248247 U 0.01
+expand: main@_47!_Cond (9, 0) FAR  w(0) 248247.
+	create_child: main@_54 (8, 23) FAR 249284 U 0.01
+expand: main@_54 (8, 0) FAR  w(0) 249284. F 0.03
+expand: main@_47!_Cond (9, 0) FAR  w(0) 248247. F 0.04
+expand: main@_47 (10, 0) FAR  w(0) 258016. F 0.03
+expand: main@_40!_Cond (11, 0) FAR  w(0) 257269. F 0.03
+expand: main@_40 (12, 0) FAR  w(0) 257310. F 0.03
+expand: main@_33!_Cond (13, 0) FAR  w(0) 256941. F 0.03
+expand: main@_33 (14, 0) FAR  w(0) 257455. F 0.03
+expand: main@_26!_Cond (15, 0) FAR  w(0) 257587. F 0.04
+expand: main@_26 (16, 0) FAR  w(0) 257186. F 0.02
+expand: main@_19!_Cond (17, 0) FAR  w(0) 257225. F 0.03
+expand: main@_19 (18, 0) FAR  w(0) 256258. F 0.03
+expand: main@_17 (19, 0) FAR  w(0) 256930. F 0.02
+expand: main@entry!_Cond (20, 0) FAR  w(0) 3220.
+	create_child: main@_19 (19, 23) FAR 259822 U 0.00
+expand: main@_19 (19, 0) FAR  w(0) 259822.
+	create_child: main@_19!_Cond (18, 23) FAR 260098 U 0.00
+expand: main@_19!_Cond (18, 0) FAR  w(0) 260098.
+	create_child: main@_26 (17, 23) FAR 260234 U 0.01
+expand: main@_26 (17, 0) FAR  w(0) 260234.
+	create_child: main@_24 (17, 23) FAR 261423 X 0.01
+expand: main@_24 (17, 0) FAR  w(0) 261423.
+	create_child: main@_26 (16, 23) FAR 262885 U 0.01
+expand: main@_26 (16, 0) FAR  w(0) 262885. T 0.01
+is-reachable: main@_24 (17, 0) FAR 261423 T 0.00
+is-reachable: main@_19!_Cond (18, 0) FAR 260098 T 0.01
+is-reachable: main@_19 (19, 0) FAR 259822
+	create_child: main@_17 (19, 23) FAR 265847 X 0.01
+is-reachable: main@_17 (19, 0) FAR 265847 F 0.01
+Deleting closed node: main@_24(17, 23) 261423
+Deleting closed node: main@_19!_Cond(18, 23) 260098
+Deleting closed node: main@_19(19, 23) 259822
+expand: main@_17 (19, 0) FAR  w(0) 265847.
+	create_child: main@_19 (18, 23) FAR 266256 U 0.00
+expand: main@_19 (18, 0) FAR  w(0) 266256.
+	create_child: main@_19!_Cond (17, 23) FAR 267353 U 0.01
+expand: main@_19!_Cond (17, 0) FAR  w(0) 267353.
+	create_child: main@_26 (16, 23) FAR 269213 U 0.01
+expand: main@_26 (16, 0) FAR  w(0) 269213. F 0.04
+expand: main@_19!_Cond (17, 0) FAR  w(0) 267353. F 0.04
+expand: main@_19 (18, 0) FAR  w(0) 266256. F 0.03
+expand: main@_17 (19, 0) FAR  w(0) 265847. F 0.01
+expand: main@entry!_Cond (20, 0) FAR  w(0) 3220.
+	create_child: main@_19 (19, 23) FAR 270478 U 0.00
+expand: main@_19 (19, 0) FAR  w(0) 270478.
+	create_child: main@_19!_Cond (18, 23) FAR 270089 U 0.00
+expand: main@_19!_Cond (18, 0) FAR  w(0) 270089.
+	create_child: main@_26 (17, 23) FAR 270634 U 0.01
+expand: main@_26 (17, 0) FAR  w(0) 270634.
+	create_child: main@_24 (17, 23) FAR 271942 X 0.02
+expand: main@_24 (17, 0) FAR  w(0) 271942. T 0.01
+is-reachable: main@_19!_Cond (18, 0) FAR 270089 T 0.01
+is-reachable: main@_19 (19, 0) FAR 270478
+	create_child: main@_17 (19, 23) FAR 273836 X 0.01
+is-reachable: main@_17 (19, 0) FAR 273836 F 0.00
+Deleting closed node: main@_19!_Cond(18, 23) 270089
+Deleting closed node: main@_19(19, 23) 270478
+expand: main@_17 (19, 0) FAR  w(0) 273836.
+	create_child: main@_19 (18, 23) FAR 272313 U 0.00
+expand: main@_19 (18, 0) FAR  w(0) 272313.
+	create_child: main@_19!_Cond (17, 23) FAR 274106 U 0.01
+expand: main@_19!_Cond (17, 0) FAR  w(0) 274106.
+	create_child: main@_26 (16, 23) FAR 266047 U 0.01
+expand: main@_26 (16, 0) FAR  w(0) 266047.
+	create_child: main@_26!_Cond (15, 23) FAR 274452 U 0.01
+expand: main@_26!_Cond (15, 0) FAR  w(0) 274452.
+	create_child: main@_33 (14, 23) FAR 275232 U 0.01
+expand: main@_33 (14, 0) FAR  w(0) 275232. F 0.04
+expand: main@_26!_Cond (15, 0) FAR  w(0) 274452. F 0.03
+expand: main@_26 (16, 0) FAR  w(0) 266047. F 0.03
+expand: main@_19!_Cond (17, 0) FAR  w(0) 274106. F 0.03
+expand: main@_19 (18, 0) FAR  w(0) 272313. F 0.03
+expand: main@_17 (19, 0) FAR  w(0) 273836. F 0.02
+expand: main@entry!_Cond (20, 0) FAR  w(0) 3220.
+	create_child: main@_19 (19, 23) FAR 275297 U 0.00
+expand: main@_19 (19, 0) FAR  w(0) 275297.
+	create_child: main@_19!_Cond (18, 23) FAR 275807 U 0.00
+expand: main@_19!_Cond (18, 0) FAR  w(0) 275807. T 0.01
+is-reachable: main@_19 (19, 0) FAR 275297
+	create_child: main@_17 (19, 23) FAR 278090 X 0.02
+is-reachable: main@_17 (19, 0) FAR 278090 F 0.01
+expand: main@_17 (19, 0) FAR  w(0) 278090.
+	create_child: main@_19 (18, 23) FAR 278220 U 0.00
+expand: main@_19 (18, 0) FAR  w(0) 278220.
+	create_child: main@_19!_Cond (17, 23) FAR 278782 U 0.01
+expand: main@_19!_Cond (17, 0) FAR  w(0) 278782. F 0.04
+expand: main@_19 (18, 0) FAR  w(0) 278220. F 0.03
+expand: main@_17 (19, 0) FAR  w(0) 278090. F 0.03
+expand: main@entry!_Cond (20, 0) FAR  w(0) 3220.
+	create_child: main@_19 (19, 23) FAR 275646 U 0.00
+expand: main@_19 (19, 0) FAR  w(0) 275646.
+	create_child: main@_19!_Cond (18, 23) FAR 279542 U 0.00
+expand: main@_19!_Cond (18, 0) FAR  w(0) 279542.
+	create_child: main@_26 (17, 23) FAR 279643 U 0.00
+expand: main@_26 (17, 0) FAR  w(0) 279643.
+	create_child: main@_26!_Cond (16, 23) FAR 279786 U 0.01
+expand: main@_26!_Cond (16, 0) FAR  w(0) 279786.
+	create_child: main@_33 (15, 23) FAR 259598 U 0.01
+expand: main@_33 (15, 0) FAR  w(0) 259598.
+	create_child: main@_33!_Cond (14, 23) FAR 280048 U 0.01
+expand: main@_33!_Cond (14, 0) FAR  w(0) 280048.
+	create_child: main@_40 (13, 23) FAR 257490 U 0.01
+expand: main@_40 (13, 0) FAR  w(0) 257490.
+	create_child: main@_40!_Cond (12, 23) FAR 251822 U 0.01
+expand: main@_40!_Cond (12, 0) FAR  w(0) 251822.
+	create_child: main@_47 (11, 23) FAR 280546 U 0.01
+expand: main@_47 (11, 0) FAR  w(0) 280546.
+	create_child: main@_47!_Cond (10, 23) FAR 248179 U 0.01
+expand: main@_47!_Cond (10, 0) FAR  w(0) 248179.
+	create_child: main@_54 (9, 23) FAR 256352 U 0.01
+expand: main@_54 (9, 0) FAR  w(0) 256352.
+	create_child: main@_52 (9, 23) FAR 282039 X 0.02
+expand: main@_52 (9, 0) FAR  w(0) 282039.
+	create_child: main@_54 (8, 23) FAR 283232 U 0.01
+expand: main@_54 (8, 0) FAR  w(0) 283232.
+	create_child: main@_54!_Cond (7, 23) FAR 283956 U 0.01
+expand: main@_54!_Cond (7, 0) FAR  w(0) 283956. T 0.01
+is-reachable: main@_54 (8, 0) FAR 283232 F 0.00
+expand: main@_54 (8, 0) FAR  w(1) 283232. T 0.00
+is-reachable: main@_52 (9, 0) FAR 282039 T 0.00
+is-reachable: main@_47!_Cond (10, 0) FAR 248179 T 0.01
+is-reachable: main@_47 (11, 0) FAR 280546
+	create_child: main@_45 (11, 23) FAR 286016 X 0.01
+is-reachable: main@_45 (11, 0) FAR 286016 F 0.01
+Deleting closed node: main@_52(9, 23) 282039
+Deleting closed node: main@_47!_Cond(10, 23) 248179
+Deleting closed node: main@_47(11, 23) 280546
+expand: main@_45 (11, 0) FAR  w(0) 286016.
+	create_child: main@_47 (10, 23) FAR 287660 U 0.00
+expand: main@_47 (10, 0) FAR  w(0) 287660.
+	create_child: main@_47!_Cond (9, 23) FAR 288694 U 0.01
+expand: main@_47!_Cond (9, 0) FAR  w(0) 288694. T 0.01
+is-reachable: main@_47 (10, 0) FAR 287660 T 0.01
+is-reachable: main@_45 (11, 0) FAR 286016 T 0.00
+is-reachable: main@_40!_Cond (12, 0) FAR 251822 T 0.01
+is-reachable: main@_40 (13, 0) FAR 257490
+	create_child: main@_38 (13, 23) FAR 291189 X 0.01
+is-reachable: main@_38 (13, 0) FAR 291189 F 0.01
+Deleting closed node: main@_47(10, 23) 287660
+Deleting closed node: main@_45(11, 23) 286016
+Deleting closed node: main@_40!_Cond(12, 23) 251822
+Deleting closed node: main@_40(13, 23) 257490
+expand: main@_38 (13, 0) FAR  w(0) 291189.
+	create_child: main@_40 (12, 23) FAR 292764 U 0.00
+expand: main@_40 (12, 0) FAR  w(0) 292764.
+	create_child: main@_40!_Cond (11, 23) FAR 293890 U 0.01
+expand: main@_40!_Cond (11, 0) FAR  w(0) 293890.
+	create_child: main@_47 (10, 23) FAR 295243 U 0.01
+expand: main@_47 (10, 0) FAR  w(0) 295243.
+	create_child: main@_47!_Cond (9, 23) FAR 295653 U 0.01
+expand: main@_47!_Cond (9, 0) FAR  w(0) 295653.
+	create_child: main@_54 (8, 23) FAR 296463 U 0.01
+expand: main@_54 (8, 0) FAR  w(0) 296463.
+	create_child: main@_54!_Cond (7, 23) FAR 296805 U 0.01
+expand: main@_54!_Cond (7, 0) FAR  w(0) 296805. T 0.01
+is-reachable: main@_54 (8, 0) FAR 296463 T 0.02
+is-reachable: main@_47!_Cond (9, 0) FAR 295653 T 0.01
+is-reachable: main@_47 (10, 0) FAR 295243 T 0.02
+is-reachable: main@_40!_Cond (11, 0) FAR 293890 T 0.01
+is-reachable: main@_40 (12, 0) FAR 292764 T 0.01
+is-reachable: main@_38 (13, 0) FAR 291189 T 0.00
+is-reachable: main@_33!_Cond (14, 0) FAR 280048 T 0.01
+is-reachable: main@_33 (15, 0) FAR 259598
+	create_child: main@_31 (15, 23) FAR 300436 X 0.02
+is-reachable: main@_31 (15, 0) FAR 300436 F 0.01
+Deleting closed node: main@_54(8, 23) 296463
+Deleting closed node: main@_47!_Cond(9, 23) 295653
+Deleting closed node: main@_47(10, 23) 295243
+Deleting closed node: main@_40!_Cond(11, 23) 293890
+Deleting closed node: main@_40(12, 23) 292764
+Deleting closed node: main@_38(13, 23) 291189
+Deleting closed node: main@_33!_Cond(14, 23) 280048
+Deleting closed node: main@_33(15, 23) 259598
+expand: main@_31 (15, 0) FAR  w(0) 300436.
+	create_child: main@_33 (14, 23) FAR 302060 U 0.00
+expand: main@_33 (14, 0) FAR  w(0) 302060.
+	create_child: main@_33!_Cond (13, 23) FAR 303536 U 0.01
+expand: main@_33!_Cond (13, 0) FAR  w(0) 303536.
+	create_child: main@_40 (12, 23) FAR 305222 U 0.01
+expand: main@_40 (12, 0) FAR  w(0) 305222.
+	create_child: main@_40!_Cond (11, 23) FAR 304396 U 0.01
+expand: main@_40!_Cond (11, 0) FAR  w(0) 304396.
+	create_child: main@_47 (10, 23) FAR 306433 U 0.01
+expand: main@_47 (10, 0) FAR  w(0) 306433.
+	create_child: main@_47!_Cond (9, 23) FAR 306294 U 0.01
+expand: main@_47!_Cond (9, 0) FAR  w(0) 306294.
+	create_child: main@_54 (8, 23) FAR 307138 U 0.01
+expand: main@_54 (8, 0) FAR  w(0) 307138.
+	create_child: main@_54!_Cond (7, 23) FAR 306766 U 0.01
+expand: main@_54!_Cond (7, 0) FAR  w(0) 306766. T 0.01
+is-reachable: main@_54 (8, 0) FAR 307138 T 0.01
+is-reachable: main@_47!_Cond (9, 0) FAR 306294 T 0.01
+is-reachable: main@_47 (10, 0) FAR 306433 T 0.02
+is-reachable: main@_40!_Cond (11, 0) FAR 304396 T 0.01
+is-reachable: main@_40 (12, 0) FAR 305222 T 0.02
+is-reachable: main@_33!_Cond (13, 0) FAR 303536 T 0.01
+is-reachable: main@_33 (14, 0) FAR 302060 T 0.01
+is-reachable: main@_31 (15, 0) FAR 300436 T 0.00
+is-reachable: main@_26!_Cond (16, 0) FAR 279786 T 0.01
+is-reachable: main@_26 (17, 0) FAR 279643
+	create_child: main@_24 (17, 23) FAR 310319 X 0.01
+is-reachable: main@_24 (17, 0) FAR 310319 F 0.01
+Deleting closed node: main@_54(8, 23) 307138
+Deleting closed node: main@_47!_Cond(9, 23) 306294
+Deleting closed node: main@_47(10, 23) 306433
+Deleting closed node: main@_40!_Cond(11, 23) 304396
+Deleting closed node: main@_40(12, 23) 305222
+Deleting closed node: main@_33!_Cond(13, 23) 303536
+Deleting closed node: main@_33(14, 23) 302060
+Deleting closed node: main@_31(15, 23) 300436
+Deleting closed node: main@_26!_Cond(16, 23) 279786
+Deleting closed node: main@_26(17, 23) 279643
+expand: main@_24 (17, 0) FAR  w(0) 310319.
+	create_child: main@_26 (16, 23) FAR 312198 U 0.00
+expand: main@_26 (16, 0) FAR  w(0) 312198.
+	create_child: main@_26!_Cond (15, 23) FAR 312960 U 0.01
+expand: main@_26!_Cond (15, 0) FAR  w(0) 312960. T 0.01
+is-reachable: main@_26 (16, 0) FAR 312198 T 0.01
+is-reachable: main@_24 (17, 0) FAR 310319 T 0.01
+is-reachable: main@_19!_Cond (18, 0) FAR 279542 T 0.02
+is-reachable: main@_19 (19, 0) FAR 275646
+	create_child: main@_17 (19, 23) FAR 315588 X 0.02
+is-reachable: main@_17 (19, 0) FAR 315588 F 0.01
+Deleting closed node: main@_26(16, 23) 312198
+Deleting closed node: main@_24(17, 23) 310319
+Deleting closed node: main@_19!_Cond(18, 23) 279542
+Deleting closed node: main@_19(19, 23) 275646
+expand: main@_17 (19, 0) FAR  w(0) 315588.
+	create_child: main@_19 (18, 23) FAR 315824 U 0.00
+expand: main@_19 (18, 0) FAR  w(0) 315824.
+	create_child: main@_19!_Cond (17, 23) FAR 316499 U 0.01
+expand: main@_19!_Cond (17, 0) FAR  w(0) 316499.
+	create_child: main@_26 (16, 23) FAR 317424 U 0.01
+expand: main@_26 (16, 0) FAR  w(0) 317424.
+	create_child: main@_26!_Cond (15, 23) FAR 318457 U 0.01
+expand: main@_26!_Cond (15, 0) FAR  w(0) 318457.
+	create_child: main@_33 (14, 23) FAR 318879 U 0.01
+expand: main@_33 (14, 0) FAR  w(0) 318879.
+	create_child: main@_33!_Cond (13, 23) FAR 319963 U 0.01
+expand: main@_33!_Cond (13, 0) FAR  w(0) 319963.
+	create_child: main@_40 (12, 23) FAR 321912 U 0.01
+expand: main@_40 (12, 0) FAR  w(0) 321912.
+	create_child: main@_40!_Cond (11, 23) FAR 322530 U 0.01
+expand: main@_40!_Cond (11, 0) FAR  w(0) 322530.
+	create_child: main@_47 (10, 23) FAR 323431 U 0.01
+expand: main@_47 (10, 0) FAR  w(0) 323431.
+	create_child: main@_47!_Cond (9, 23) FAR 323233 U 0.01
+expand: main@_47!_Cond (9, 0) FAR  w(0) 323233.
+	create_child: main@_54 (8, 23) FAR 324366 U 0.01
+expand: main@_54 (8, 0) FAR  w(0) 324366.
+	create_child: main@_54!_Cond (7, 23) FAR 324710 U 0.01
+expand: main@_54!_Cond (7, 0) FAR  w(0) 324710.
+	create_child: main@largestGap.exit.i (6, 23) FAR 325755 U 0.01
+expand: main@largestGap.exit.i (6, 0) FAR  w(0) 325755. F 0.14
+expand: main@_54!_Cond (7, 0) FAR  w(0) 324710. F 0.10
+expand: main@_54 (8, 0) FAR  w(0) 324366. F 0.05
+expand: main@_47!_Cond (9, 0) FAR  w(0) 323233. F 0.05
+expand: main@_47 (10, 0) FAR  w(0) 323431. F 0.04
+expand: main@_40!_Cond (11, 0) FAR  w(0) 322530. F 0.05
+expand: main@_40 (12, 0) FAR  w(0) 321912. F 0.04
+expand: main@_33!_Cond (13, 0) FAR  w(0) 319963. F 0.05
+expand: main@_33 (14, 0) FAR  w(0) 318879. F 0.05
+expand: main@_26!_Cond (15, 0) FAR  w(0) 318457. F 0.04
+expand: main@_26 (16, 0) FAR  w(0) 317424. F 0.04
+expand: main@_19!_Cond (17, 0) FAR  w(0) 316499. F 0.05
+expand: main@_19 (18, 0) FAR  w(0) 315824. F 0.03
+expand: main@_17 (19, 0) FAR  w(0) 315588. F 0.03
+expand: main@entry!_Cond (20, 0) FAR  w(0) 3220.
+	create_child: main@_19 (19, 23) FAR 339425 U 0.01
+expand: main@_19 (19, 0) FAR  w(0) 339425.
+	create_child: main@_19!_Cond (18, 23) FAR 338741 U 0.01
+expand: main@_19!_Cond (18, 0) FAR  w(0) 338741.
+	create_child: main@_26 (17, 23) FAR 339582 U 0.01
+expand: main@_26 (17, 0) FAR  w(0) 339582.
+	create_child: main@_26!_Cond (16, 23) FAR 338075 U 0.01
+expand: main@_26!_Cond (16, 0) FAR  w(0) 338075.
+	create_child: main@_33 (15, 23) FAR 339825 U 0.01
+expand: main@_33 (15, 0) FAR  w(0) 339825.
+	create_child: main@_33!_Cond (14, 23) FAR 339935 U 0.01
+expand: main@_33!_Cond (14, 0) FAR  w(0) 339935.
+	create_child: main@_40 (13, 23) FAR 340046 U 0.01
+expand: main@_40 (13, 0) FAR  w(0) 340046.
+	create_child: main@_40!_Cond (12, 23) FAR 340188 U 0.01
+expand: main@_40!_Cond (12, 0) FAR  w(0) 340188.
+	create_child: main@_47 (11, 23) FAR 340350 U 0.01
+expand: main@_47 (11, 0) FAR  w(0) 340350.
+	create_child: main@_47!_Cond (10, 23) FAR 335575 U 0.01
+expand: main@_47!_Cond (10, 0) FAR  w(0) 335575.
+	create_child: main@_54 (9, 23) FAR 340713 U 0.01
+expand: main@_54 (9, 0) FAR  w(0) 340713.
+	create_child: main@_54!_Cond (8, 23) FAR 340922 U 0.01
+expand: main@_54!_Cond (8, 0) FAR  w(0) 340922. T 0.01
+is-reachable: main@_54 (9, 0) FAR 340713
+	create_child: main@_52 (9, 23) FAR 341611 X 0.02
+is-reachable: main@_52 (9, 0) FAR 341611 T 0.01
+is-reachable: main@_47!_Cond (10, 0) FAR 335575 T 0.01
+is-reachable: main@_47 (11, 0) FAR 340350 F 0.00
+Deleting closed node: main@_52(9, 23) 341611
+Deleting closed node: main@_47!_Cond(10, 23) 335575
+expand: main@_47 (11, 0) FAR  w(1) 340350.
+	create_child: main@_45 (11, 23) FAR 343511 X 0.01
+expand: main@_45 (11, 0) FAR  w(0) 343511.
+	create_child: main@_47 (10, 23) FAR 344244 U 0.01
+expand: main@_47 (10, 0) FAR  w(0) 344244.
+	create_child: main@_47!_Cond (9, 23) FAR 344703 U 0.01
+expand: main@_47!_Cond (9, 0) FAR  w(0) 344703.
+	create_child: main@_54 (8, 23) FAR 345391 U 0.01
+expand: main@_54 (8, 0) FAR  w(0) 345391.
+	create_child: main@_54!_Cond (7, 23) FAR 341302 U 0.01
+expand: main@_54!_Cond (7, 0) FAR  w(0) 341302. T 0.01
+is-reachable: main@_54 (8, 0) FAR 345391 T 0.01
+is-reachable: main@_47!_Cond (9, 0) FAR 344703 T 0.01
+is-reachable: main@_47 (10, 0) FAR 344244 T 0.01
+is-reachable: main@_45 (11, 0) FAR 343511 T 0.00
+is-reachable: main@_40!_Cond (12, 0) FAR 340188 T 0.01
+is-reachable: main@_40 (13, 0) FAR 340046
+	create_child: main@_38 (13, 23) FAR 347317 X 0.01
+is-reachable: main@_38 (13, 0) FAR 347317 F 0.01
+Deleting closed node: main@_54(8, 23) 345391
+Deleting closed node: main@_47!_Cond(9, 23) 344703
+Deleting closed node: main@_47(10, 23) 344244
+Deleting closed node: main@_45(11, 23) 343511
+Deleting closed node: main@_40!_Cond(12, 23) 340188
+Deleting closed node: main@_40(13, 23) 340046
+expand: main@_38 (13, 0) FAR  w(0) 347317.
+	create_child: main@_40 (12, 23) FAR 348453 U 0.00
+expand: main@_40 (12, 0) FAR  w(0) 348453.
+	create_child: main@_40!_Cond (11, 23) FAR 349006 U 0.01
+expand: main@_40!_Cond (11, 0) FAR  w(0) 349006. T 0.01
+is-reachable: main@_40 (12, 0) FAR 348453 T 0.01
+is-reachable: main@_38 (13, 0) FAR 347317 T 0.00
+is-reachable: main@_33!_Cond (14, 0) FAR 339935 F 0.01
+Deleting closed node: main@_40(12, 23) 348453
+Deleting closed node: main@_38(13, 23) 347317
+expand: main@_33!_Cond (14, 0) FAR  w(1) 339935. T 0.01
+is-reachable: main@_33 (15, 0) FAR 339825
+	create_child: main@_31 (15, 23) FAR 350776 X 0.01
+is-reachable: main@_31 (15, 0) FAR 350776 F 0.01
+expand: main@_31 (15, 0) FAR  w(0) 350776.
+	create_child: main@_33 (14, 23) FAR 352114 U 0.00
+expand: main@_33 (14, 0) FAR  w(0) 352114.
+	create_child: main@_33!_Cond (13, 23) FAR 352710 U 0.01
+expand: main@_33!_Cond (13, 0) FAR  w(0) 352710.
+	create_child: main@_40 (12, 23) FAR 353180 U 0.01
+expand: main@_40 (12, 0) FAR  w(0) 353180.
+	create_child: main@_40!_Cond (11, 23) FAR 353361 UNDEF 0.01
+expand: main@_40!_Cond (11, 0) FAR  w(0) 353361.
+	create_child: main@_47 (10, 23) FAR 354134 UNDEF 0.01
+expand: main@_47 (10, 0) FAR  w(0) 354134.
+	create_child: main@_47!_Cond (9, 23) FAR 354534 U 0.01
+expand: main@_47!_Cond (9, 0) FAR  w(0) 354534.
+	create_child: main@_54 (8, 23) FAR 355600 U 0.01
+expand: main@_54 (8, 0) FAR  w(0) 355600.
+	create_child: main@_54!_Cond (7, 23) FAR 355817 U 0.01
+expand: main@_54!_Cond (7, 0) FAR  w(0) 355817. T 0.01
+is-reachable: main@_54 (8, 0) FAR 355600 T 0.02
+is-reachable: main@_47!_Cond (9, 0) FAR 354534 T 0.01
+is-reachable: main@_47 (10, 0) FAR 354134 T 0.01
+is-reachable: main@_40!_Cond (11, 0) FAR 353361 T 0.01
+is-reachable: main@_40 (12, 0) FAR 353180 T 0.02
+is-reachable: main@_33!_Cond (13, 0) FAR 352710 T 0.01
+is-reachable: main@_33 (14, 0) FAR 352114 T 0.01
+is-reachable: main@_31 (15, 0) FAR 350776 T 0.01
+is-reachable: main@_26!_Cond (16, 0) FAR 338075 T 0.01
+is-reachable: main@_26 (17, 0) FAR 339582
+	create_child: main@_24 (17, 23) FAR 359529 X 0.02
+is-reachable: main@_24 (17, 0) FAR 359529 F 0.01
+Deleting closed node: main@_54(8, 23) 355600
+Deleting closed node: main@_47!_Cond(9, 23) 354534
+Deleting closed node: main@_47(10, 23) 354134
+Deleting closed node: main@_40!_Cond(11, 23) 353361
+Deleting closed node: main@_40(12, 23) 353180
+Deleting closed node: main@_33!_Cond(13, 23) 352710
+Deleting closed node: main@_33(14, 23) 352114
+Deleting closed node: main@_31(15, 23) 350776
+Deleting closed node: main@_26!_Cond(16, 23) 338075
+Deleting closed node: main@_26(17, 23) 339582
+expand: main@_24 (17, 0) FAR  w(0) 359529.
+	create_child: main@_26 (16, 23) FAR 361711 U 0.00
+expand: main@_26 (16, 0) FAR  w(0) 361711.
+	create_child: main@_26!_Cond (15, 23) FAR 362310 U 0.01
+expand: main@_26!_Cond (15, 0) FAR  w(0) 362310. T 0.01
+is-reachable: main@_26 (16, 0) FAR 361711 T 0.01
+is-reachable: main@_24 (17, 0) FAR 359529 T 0.01
+is-reachable: main@_19!_Cond (18, 0) FAR 338741 F 0.01
+Deleting closed node: main@_26(16, 23) 361711
+Deleting closed node: main@_24(17, 23) 359529
+expand: main@_19!_Cond (18, 0) FAR  w(1) 338741. T 0.01
+is-reachable: main@_19 (19, 0) FAR 339425
+	create_child: main@_17 (19, 23) FAR 364394 X 0.02
+is-reachable: main@_17 (19, 0) FAR 364394 F 0.01
+expand: main@_17 (19, 0) FAR  w(0) 364394.
+	create_child: main@_19 (18, 23) FAR 365548 U 0.00
+expand: main@_19 (18, 0) FAR  w(0) 365548.
+	create_child: main@_19!_Cond (17, 23) FAR 366082 U 0.01
+expand: main@_19!_Cond (17, 0) FAR  w(0) 366082.
+	create_child: main@_26 (16, 23) FAR 367257 U 0.01
+expand: main@_26 (16, 0) FAR  w(0) 367257.
+	create_child: main@_26!_Cond (15, 23) FAR 367869 U 0.01
+expand: main@_26!_Cond (15, 0) FAR  w(0) 367869.
+	create_child: main@_33 (14, 23) FAR 368071 U 0.01
+expand: main@_33 (14, 0) FAR  w(0) 368071.
+	create_child: main@_33!_Cond (13, 23) FAR 368918 U 0.01
+expand: main@_33!_Cond (13, 0) FAR  w(0) 368918.
+	create_child: main@_40 (12, 23) FAR 369693 U 0.01
+expand: main@_40 (12, 0) FAR  w(0) 369693.
+	create_child: main@_40!_Cond (11, 23) FAR 369574 U 0.01
+expand: main@_40!_Cond (11, 0) FAR  w(0) 369574.
+	create_child: main@_47 (10, 23) FAR 370008 U 0.01
+expand: main@_47 (10, 0) FAR  w(0) 370008.
+	create_child: main@_47!_Cond (9, 23) FAR 370181 UNDEF 0.01
+expand: main@_47!_Cond (9, 0) FAR  w(0) 370181.
+	create_child: main@_54 (8, 23) FAR 370918 U 0.01
+expand: main@_54 (8, 0) FAR  w(0) 370918.
+	create_child: main@_54!_Cond (7, 23) FAR 356286 U 0.01
+expand: main@_54!_Cond (7, 0) FAR  w(0) 356286. F 0.08
+expand: main@_54 (8, 0) FAR  w(0) 370918. F 0.07
+expand: main@_47!_Cond (9, 0) FAR  w(0) 370181. F 0.06
+expand: main@_47 (10, 0) FAR  w(0) 370008. F 0.05
+expand: main@_40!_Cond (11, 0) FAR  w(0) 369574. F 0.07
+expand: main@_40 (12, 0) FAR  w(0) 369693. F 0.06
+expand: main@_33!_Cond (13, 0) FAR  w(0) 368918. F 0.06
+expand: main@_33 (14, 0) FAR  w(0) 368071. F 0.06
+expand: main@_26!_Cond (15, 0) FAR  w(0) 367869. F 0.06
+expand: main@_26 (16, 0) FAR  w(0) 367257. F 0.07
+expand: main@_19!_Cond (17, 0) FAR  w(0) 366082. F 0.06
+expand: main@_19 (18, 0) FAR  w(0) 365548. F 0.04
+expand: main@_17 (19, 0) FAR  w(0) 364394. F 0.03
+expand: main@entry!_Cond (20, 0) FAR  w(0) 3220.
+	create_child: main@_19 (19, 23) FAR 375345 U 0.01
+expand: main@_19 (19, 0) FAR  w(0) 375345.
+	create_child: main@_19!_Cond (18, 23) FAR 375371 U 0.01
+expand: main@_19!_Cond (18, 0) FAR  w(0) 375371.
+	create_child: main@_26 (17, 23) FAR 375820 U 0.01
+expand: main@_26 (17, 0) FAR  w(0) 375820.
+	create_child: main@_26!_Cond (16, 23) FAR 376025 UNDEF 0.01
+expand: main@_26!_Cond (16, 0) FAR  w(0) 376025.
+	create_child: main@_33 (15, 23) FAR 377291 U 0.03
+expand: main@_33 (15, 0) FAR  w(0) 377291.
+	create_child: main@_33!_Cond (14, 23) FAR 377615 U 0.01
+expand: main@_33!_Cond (14, 0) FAR  w(0) 377615. T 0.02
+is-reachable: main@_33 (15, 0) FAR 377291 T 0.02
+is-reachable: main@_26!_Cond (16, 0) FAR 376025 T 0.01
+is-reachable: main@_26 (17, 0) FAR 375820 T 0.02
+is-reachable: main@_19!_Cond (18, 0) FAR 375371 T 0.01
+is-reachable: main@_19 (19, 0) FAR 375345
+	create_child: main@_17 (19, 23) FAR 383816 X 0.02
+is-reachable: main@_17 (19, 0) FAR 383816 F 0.01
+Deleting closed node: main@_33(15, 23) 377291
+Deleting closed node: main@_26!_Cond(16, 23) 376025
+Deleting closed node: main@_26(17, 23) 375820
+Deleting closed node: main@_19!_Cond(18, 23) 375371
+Deleting closed node: main@_19(19, 23) 375345
+expand: main@_17 (19, 0) FAR  w(0) 383816.
+	create_child: main@_19 (18, 23) FAR 381831 UNDEF 0.00
+expand: main@_19 (18, 0) FAR  w(0) 381831.
+	create_child: main@_19!_Cond (17, 23) FAR 382836 U 0.01
+expand: main@_19!_Cond (17, 0) FAR  w(0) 382836.
+	create_child: main@_26 (16, 23) FAR 384927 U 0.01
+expand: main@_26 (16, 0) FAR  w(0) 384927. F 0.05
+expand: main@_19!_Cond (17, 0) FAR  w(0) 382836. F 0.04
+expand: main@_19 (18, 0) FAR  w(0) 381831. F 0.03
+expand: main@_17 (19, 0) FAR  w(0) 383816. F 0.02
+expand: main@entry!_Cond (20, 0) FAR  w(0) 3220.
+	create_child: main@_19 (19, 23) FAR 385038 U 0.00
+expand: main@_19 (19, 0) FAR  w(0) 385038.
+	create_child: main@_19!_Cond (18, 23) FAR 383207 U 0.01
+expand: main@_19!_Cond (18, 0) FAR  w(0) 383207.
+	create_child: main@_26 (17, 23) FAR 384019 U 0.01
+expand: main@_26 (17, 0) FAR  w(0) 384019. T 0.02
+is-reachable: main@_19!_Cond (18, 0) FAR 383207 T 0.01
+is-reachable: main@_19 (19, 0) FAR 385038 F 0.01
+Deleting closed node: main@_19!_Cond(18, 23) 383207
+expand: main@_19 (19, 0) FAR  w(1) 385038.
+	create_child: main@_17 (19, 23) FAR 387907 X 0.01
+expand: main@_17 (19, 0) FAR  w(0) 387907. F 0.02
+expand: main@entry!_Cond (20, 0) FAR  w(0) 3220.
+	create_child: main@_19 (19, 23) FAR 384603 U 0.00
+expand: main@_19 (19, 0) FAR  w(0) 384603.
+	create_child: main@_19!_Cond (18, 23) FAR 384847 U 0.01
+expand: main@_19!_Cond (18, 0) FAR  w(0) 384847.
+	create_child: main@_26 (17, 23) FAR 386604 U 0.01
+expand: main@_26 (17, 0) FAR  w(0) 386604. T 0.02
+is-reachable: main@_19!_Cond (18, 0) FAR 384847 T 0.01
+is-reachable: main@_19 (19, 0) FAR 384603
+	create_child: main@_17 (19, 23) FAR 388656 X 0.01
+is-reachable: main@_17 (19, 0) FAR 388656 F 0.01
+Deleting closed node: main@_19!_Cond(18, 23) 384847
+Deleting closed node: main@_19(19, 23) 384603
+expand: main@_17 (19, 0) FAR  w(0) 388656.
+	create_child: main@_19 (18, 23) FAR 388135 U 0.00
+expand: main@_19 (18, 0) FAR  w(0) 388135.
+	create_child: main@_19!_Cond (17, 23) FAR 388990 U 0.01
+expand: main@_19!_Cond (17, 0) FAR  w(0) 388990.
+	create_child: main@_26 (16, 23) FAR 389255 U 0.01
+expand: main@_26 (16, 0) FAR  w(0) 389255.
+	create_child: main@_26!_Cond (15, 23) FAR 389306 U 0.01
+expand: main@_26!_Cond (15, 0) FAR  w(0) 389306.
+	create_child: main@_33 (14, 23) FAR 391055 U 0.01
+expand: main@_33 (14, 0) FAR  w(0) 391055. F 0.04
+expand: main@_26!_Cond (15, 0) FAR  w(0) 389306. F 0.05
+expand: main@_26 (16, 0) FAR  w(0) 389255. F 0.04
+expand: main@_19!_Cond (17, 0) FAR  w(0) 388990. F 0.04
+expand: main@_19 (18, 0) FAR  w(0) 388135. F 0.03
+expand: main@_17 (19, 0) FAR  w(0) 388656. F 0.02
+expand: main@entry!_Cond (20, 0) FAR  w(0) 3220.
+	create_child: main@_19 (19, 23) FAR 390735 U 0.00
+expand: main@_19 (19, 0) FAR  w(0) 390735.
+	create_child: main@_19!_Cond (18, 23) FAR 390600 U 0.01
+expand: main@_19!_Cond (18, 0) FAR  w(0) 390600.
+	create_child: main@_26 (17, 23) FAR 390676 U 0.01
+expand: main@_26 (17, 0) FAR  w(0) 390676.
+	create_child: main@_26!_Cond (16, 23) FAR 378063 U 0.01
+expand: main@_26!_Cond (16, 0) FAR  w(0) 378063.
+	create_child: main@_33 (15, 23) FAR 390446 U 0.02
+expand: main@_33 (15, 0) FAR  w(0) 390446.
+	create_child: main@_31 (15, 23) FAR 392145 X 0.02
+expand: main@_31 (15, 0) FAR  w(0) 392145.
+	create_child: main@_33 (14, 23) FAR 392555 U 0.01
+expand: main@_33 (14, 0) FAR  w(0) 392555. T 0.01
+is-reachable: main@_31 (15, 0) FAR 392145 T 0.01
+is-reachable: main@_26!_Cond (16, 0) FAR 378063 F 0.01
+Deleting closed node: main@_31(15, 23) 392145
+expand: main@_26!_Cond (16, 0) FAR  w(1) 378063. T 0.01
+is-reachable: main@_26 (17, 0) FAR 390676
+	create_child: main@_24 (17, 23) FAR 394482 X 0.02
+is-reachable: main@_24 (17, 0) FAR 394482 F 0.01
+expand: main@_24 (17, 0) FAR  w(0) 394482.
+	create_child: main@_26 (16, 23) FAR 394913 U 0.00
+expand: main@_26 (16, 0) FAR  w(0) 394913.
+	create_child: main@_26!_Cond (15, 23) FAR 395687 U 0.01
+expand: main@_26!_Cond (15, 0) FAR  w(0) 395687.
+	create_child: main@_33 (14, 23) FAR 396136 U 0.01
+expand: main@_33 (14, 0) FAR  w(0) 396136. T 0.02
+is-reachable: main@_26!_Cond (15, 0) FAR 395687 T 0.01
+is-reachable: main@_26 (16, 0) FAR 394913 T 0.01
+is-reachable: main@_24 (17, 0) FAR 394482 T 0.01
+is-reachable: main@_19!_Cond (18, 0) FAR 390600 T 0.01
+is-reachable: main@_19 (19, 0) FAR 390735
+	create_child: main@_17 (19, 23) FAR 398414 X 0.02
+is-reachable: main@_17 (19, 0) FAR 398414 F 0.01
+Deleting closed node: main@_26!_Cond(15, 23) 395687
+Deleting closed node: main@_26(16, 23) 394913
+Deleting closed node: main@_24(17, 23) 394482
+Deleting closed node: main@_19!_Cond(18, 23) 390600
+Deleting closed node: main@_19(19, 23) 390735
+expand: main@_17 (19, 0) FAR  w(0) 398414.
+	create_child: main@_19 (18, 23) FAR 398025 U 0.00
+expand: main@_19 (18, 0) FAR  w(0) 398025.
+	create_child: main@_19!_Cond (17, 23) FAR 398764 U 0.01
+expand: main@_19!_Cond (17, 0) FAR  w(0) 398764.
+	create_child: main@_26 (16, 23) FAR 398895 U 0.01
+expand: main@_26 (16, 0) FAR  w(0) 398895.
+	create_child: main@_26!_Cond (15, 23) FAR 398909 U 0.01
+expand: main@_26!_Cond (15, 0) FAR  w(0) 398909.
+	create_child: main@_33 (14, 23) FAR 400326 U 0.01
+expand: main@_33 (14, 0) FAR  w(0) 400326.
+	create_child: main@_33!_Cond (13, 23) FAR 399215 U 0.01
+expand: main@_33!_Cond (13, 0) FAR  w(0) 399215.
+	create_child: main@_40 (12, 23) FAR 401088 U 0.01
+expand: main@_40 (12, 0) FAR  w(0) 401088. F 0.07
+expand: main@_33!_Cond (13, 0) FAR  w(0) 399215. F 0.05
+expand: main@_33 (14, 0) FAR  w(0) 400326. F 0.03
+expand: main@_26!_Cond (15, 0) FAR  w(0) 398909. F 0.05
+expand: main@_26 (16, 0) FAR  w(0) 398895. F 0.05
+expand: main@_19!_Cond (17, 0) FAR  w(0) 398764. F 0.05
+expand: main@_19 (18, 0) FAR  w(0) 398025. F 0.04
+expand: main@_17 (19, 0) FAR  w(0) 398414. F 0.03
+expand: main@entry!_Cond (20, 0) FAR  w(0) 3220.
+	create_child: main@_19 (19, 23) FAR 402333 U 0.00
+expand: main@_19 (19, 0) FAR  w(0) 402333.
+	create_child: main@_19!_Cond (18, 23) FAR 396491 U 0.01
+expand: main@_19!_Cond (18, 0) FAR  w(0) 396491.
+	create_child: main@_26 (17, 23) FAR 402735 U 0.01
+expand: main@_26 (17, 0) FAR  w(0) 402735.
+	create_child: main@_26!_Cond (16, 23) FAR 402253 U 0.01
+expand: main@_26!_Cond (16, 0) FAR  w(0) 402253.
+	create_child: main@_33 (15, 23) FAR 399355 U 0.01
+expand: main@_33 (15, 0) FAR  w(0) 399355.
+	create_child: main@_33!_Cond (14, 23) FAR 400141 U 0.01
+expand: main@_33!_Cond (14, 0) FAR  w(0) 400141.
+	create_child: main@_38 (13, 23) FAR 403767 U 0.01
+expand: main@_38 (13, 0) FAR  w(0) 403767.
+	create_child: main@_40 (12, 23) FAR 404017 U 0.01
+expand: main@_40 (12, 0) FAR  w(0) 404017.
+	create_child: main@_40!_Cond (11, 23) FAR 404624 U 0.01
+expand: main@_40!_Cond (11, 0) FAR  w(0) 404624.
+	create_child: main@_47 (10, 23) FAR 404745 U 0.01
+expand: main@_47 (10, 0) FAR  w(0) 404745.
+	create_child: main@_47!_Cond (9, 23) FAR 404732 U 0.01
+expand: main@_47!_Cond (9, 0) FAR  w(0) 404732.
+	create_child: main@_54 (8, 23) FAR 405655 U 0.01
+expand: main@_54 (8, 0) FAR  w(0) 405655.
+	create_child: main@_54!_Cond (7, 23) FAR 405840 U 0.01
+expand: main@_54!_Cond (7, 0) FAR  w(0) 405840. T 0.01
+is-reachable: main@_54 (8, 0) FAR 405655 T 0.02
+is-reachable: main@_47!_Cond (9, 0) FAR 404732 F 0.00
+Deleting closed node: main@_54(8, 23) 405655
+expand: main@_47!_Cond (9, 0) FAR  w(1) 404732. T 0.01
+is-reachable: main@_47 (10, 0) FAR 404745 T 0.02
+is-reachable: main@_40!_Cond (11, 0) FAR 404624 T 0.01
+is-reachable: main@_40 (12, 0) FAR 404017 T 0.01
+is-reachable: main@_38 (13, 0) FAR 403767 T 0.01
+is-reachable: main@_33!_Cond (14, 0) FAR 400141 T 0.01
+is-reachable: main@_33 (15, 0) FAR 399355
+	create_child: main@_31 (15, 23) FAR 409165 X 0.01
+is-reachable: main@_31 (15, 0) FAR 409165 F 0.01
+Deleting closed node: main@_47(10, 23) 404745
+Deleting closed node: main@_40!_Cond(11, 23) 404624
+Deleting closed node: main@_40(12, 23) 404017
+Deleting closed node: main@_38(13, 23) 403767
+Deleting closed node: main@_33!_Cond(14, 23) 400141
+Deleting closed node: main@_33(15, 23) 399355
+expand: main@_31 (15, 0) FAR  w(0) 409165.
+	create_child: main@_33 (14, 23) FAR 409591 U 0.00
+expand: main@_33 (14, 0) FAR  w(0) 409591.
+	create_child: main@_33!_Cond (13, 23) FAR 410238 U 0.01
+expand: main@_33!_Cond (13, 0) FAR  w(0) 410238.
+	create_child: main@_40 (12, 23) FAR 410294 U 0.01
+expand: main@_40 (12, 0) FAR  w(0) 410294.
+	create_child: main@_40!_Cond (11, 23) FAR 411423 U 0.01
+expand: main@_40!_Cond (11, 0) FAR  w(0) 411423.
+	create_child: main@_47 (10, 23) FAR 412168 U 0.01
+expand: main@_47 (10, 0) FAR  w(0) 412168.
+	create_child: main@_47!_Cond (9, 23) FAR 411793 U 0.01
+expand: main@_47!_Cond (9, 0) FAR  w(0) 411793.
+	create_child: main@_54 (8, 23) FAR 412859 U 0.01
+expand: main@_54 (8, 0) FAR  w(0) 412859.
+	create_child: main@_54!_Cond (7, 23) FAR 412581 U 0.01
+expand: main@_54!_Cond (7, 0) FAR  w(0) 412581. T 0.01
+is-reachable: main@_54 (8, 0) FAR 412859 T 0.07
+is-reachable: main@_47!_Cond (9, 0) FAR 411793 T 0.01
+is-reachable: main@_47 (10, 0) FAR 412168 T 0.02
+is-reachable: main@_40!_Cond (11, 0) FAR 411423 T 0.01
+is-reachable: main@_40 (12, 0) FAR 410294 T 0.02
+is-reachable: main@_33!_Cond (13, 0) FAR 410238 T 0.01
+is-reachable: main@_33 (14, 0) FAR 409591 T 0.01
+is-reachable: main@_31 (15, 0) FAR 409165 T 0.01
+is-reachable: main@_26!_Cond (16, 0) FAR 402253 F 0.01
+Deleting closed node: main@_54(8, 23) 412859
+Deleting closed node: main@_47!_Cond(9, 23) 411793
+Deleting closed node: main@_47(10, 23) 412168
+Deleting closed node: main@_40!_Cond(11, 23) 411423
+Deleting closed node: main@_40(12, 23) 410294
+Deleting closed node: main@_33!_Cond(13, 23) 410238
+Deleting closed node: main@_33(14, 23) 409591
+Deleting closed node: main@_31(15, 23) 409165
+expand: main@_26!_Cond (16, 0) FAR  w(1) 402253. T 0.01
+is-reachable: main@_26 (17, 0) FAR 402735
+	create_child: main@_24 (17, 23) FAR 416888 X 0.02
+is-reachable: main@_24 (17, 0) FAR 416888 F 0.01
+expand: main@_24 (17, 0) FAR  w(0) 416888.
+	create_child: main@_26 (16, 23) FAR 417118 U 0.00
+expand: main@_26 (16, 0) FAR  w(0) 417118.
+	create_child: main@_26!_Cond (15, 23) FAR 417856 UNDEF 0.01
+expand: main@_26!_Cond (15, 0) FAR  w(0) 417856.
+	create_child: main@_33 (14, 23) FAR 418633 U 0.02
+expand: main@_33 (14, 0) FAR  w(0) 418633.
+	create_child: main@_33!_Cond (13, 23) FAR 418261 U 0.01
+expand: main@_33!_Cond (13, 0) FAR  w(0) 418261. T 0.01
+is-reachable: main@_33 (14, 0) FAR 418633 T 0.02
+is-reachable: main@_26!_Cond (15, 0) FAR 417856 T 0.01
+is-reachable: main@_26 (16, 0) FAR 417118 F 0.00
+Deleting closed node: main@_33(14, 23) 418633
+Deleting closed node: main@_26!_Cond(15, 23) 417856
+expand: main@_26 (16, 0) FAR  w(1) 417118. T 0.01
+is-reachable: main@_24 (17, 0) FAR 416888 T 0.01
+is-reachable: main@_19!_Cond (18, 0) FAR 396491 T 0.01
+is-reachable: main@_19 (19, 0) FAR 402333
+	create_child: main@_17 (19, 23) FAR 421318 X 0.02
+is-reachable: main@_17 (19, 0) FAR 421318 F 0.01
+Deleting closed node: main@_24(17, 23) 416888
+Deleting closed node: main@_19!_Cond(18, 23) 396491
+Deleting closed node: main@_19(19, 23) 402333
+expand: main@_17 (19, 0) FAR  w(0) 421318.
+	create_child: main@_19 (18, 23) FAR 421472 U 0.00
+expand: main@_19 (18, 0) FAR  w(0) 421472.
+	create_child: main@_19!_Cond (17, 23) FAR 421807 U 0.01
+expand: main@_19!_Cond (17, 0) FAR  w(0) 421807.
+	create_child: main@_26 (16, 23) FAR 422368 U 0.01
+expand: main@_26 (16, 0) FAR  w(0) 422368.
+	create_child: main@_26!_Cond (15, 23) FAR 422326 U 0.01
+expand: main@_26!_Cond (15, 0) FAR  w(0) 422326.
+	create_child: main@_33 (14, 23) FAR 423493 U 0.02
+expand: main@_33 (14, 0) FAR  w(0) 423493.
+	create_child: main@_33!_Cond (13, 23) FAR 423040 U 0.01
+expand: main@_33!_Cond (13, 0) FAR  w(0) 423040.
+	create_child: main@_40 (12, 23) FAR 423848 U 0.02
+expand: main@_40 (12, 0) FAR  w(0) 423848.
+	create_child: main@_40!_Cond (11, 23) FAR 422960 U 0.01
+expand: main@_40!_Cond (11, 0) FAR  w(0) 422960.
+	create_child: main@_47 (10, 23) FAR 424252 U 0.01
+expand: main@_47 (10, 0) FAR  w(0) 424252. F 0.05
+expand: main@_40!_Cond (11, 0) FAR  w(0) 422960. F 0.04
+expand: main@_40 (12, 0) FAR  w(0) 423848. F 0.06
+expand: main@_33!_Cond (13, 0) FAR  w(0) 423040. F 0.05
+expand: main@_33 (14, 0) FAR  w(0) 423493. F 0.05
+expand: main@_26!_Cond (15, 0) FAR  w(0) 422326. F 0.04
+expand: main@_26 (16, 0) FAR  w(0) 422368. F 0.04
+expand: main@_19!_Cond (17, 0) FAR  w(0) 421807. F 0.03
+expand: main@_19 (18, 0) FAR  w(0) 421472. F 0.03
+expand: main@_17 (19, 0) FAR  w(0) 421318.

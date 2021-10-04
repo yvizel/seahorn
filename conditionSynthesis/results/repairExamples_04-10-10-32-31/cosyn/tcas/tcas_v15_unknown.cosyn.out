@@ -1,0 +1,2071 @@
+(transform N7datalog13mk_coi_filterE...no-op 0s)
+(transform N7datalog25mk_interp_tail_simplifierE...13 rules 0.025s)
+(transform N7datalog27mk_quantifier_instantiationE...no-op 0s)
+(transform N7datalog8mk_scaleE...no-op 0s)
+(transform N7datalog18mk_karr_invariantsE...no-op 0s)
+(transform N7datalog14mk_array_blastE...no-op 0s)
+(transform N7datalog16mk_elim_term_iteE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...12 rules 0.003s)
+(transform N7datalog12mk_bit_blastE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog13mk_coi_filterE...no-op 0s)
+(transform N7datalog25mk_interp_tail_simplifierE...12 rules 0.001s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog13mk_coi_filterE...no-op 0s)
+(transform N7datalog25mk_interp_tail_simplifierE...12 rules 0.001s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+expand: query!0 (0, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 17.66 :after-memory 17.85)
+Entering level 1
+expand: query!0 (1, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (0, 1) FAR 1 U 0.00
+expand: main@entry!_BAD (0, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (1, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.01 :before-memory 17.85 :after-memory 19.63)
+Propagating: 0 1  ! 2 
+(spacer::context::propagate :time 0.00 :before-memory 19.63 :after-memory 19.92)
+Entering level 2
+expand: query!0 (2, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (1, 2) FAR 1 U 0.00
+expand: main@entry!_BAD (1, 0) FAR  w(0) 1.
+	create_child: main@entry (0, 2) FAR 1 U 0.00
+expand: main@entry (0, 0) FAR  w(0) 1. F 0.01
+expand: main@entry!_BAD (1, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (2, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.01 :before-memory 19.92 :after-memory 21.19)
+Propagating: 0 1 2  ! 3 
+(spacer::context::propagate :time 0.00 :before-memory 21.19 :after-memory 21.29)
+Entering level 3
+expand: query!0 (3, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (2, 3) FAR 1 U 0.00
+expand: main@entry!_BAD (2, 0) FAR  w(0) 1.
+	create_child: main@entry (1, 3) FAR 1 U 0.00
+expand: main@entry (1, 0) FAR  w(0) 1.
+	create_child: main@_58 (0, 3) FAR 26289 U 0.00
+expand: main@_58 (0, 0) FAR  w(0) 26289. F 0.00
+expand: main@entry (1, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (2, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (3, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.01 :before-memory 21.29 :after-memory 22.08)
+Propagating: 0 1 2 3  ! 4 
+(spacer::context::propagate :time 0.00 :before-memory 22.08 :after-memory 22.08)
+Entering level 4
+expand: query!0 (4, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (3, 4) FAR 1 U 0.00
+expand: main@entry!_BAD (3, 0) FAR  w(0) 1.
+	create_child: main@entry (2, 4) FAR 1 U 0.00
+expand: main@entry (2, 0) FAR  w(0) 1.
+	create_child: main@_58 (1, 4) FAR 26289 U 0.00
+expand: main@_58 (1, 0) FAR  w(0) 26289.
+	create_child: main@_58!_Cond (0, 4) FAR 26059 U 0.00
+expand: main@_58!_Cond (0, 0) FAR  w(0) 26059. F 0.00
+expand: main@_58 (1, 0) FAR  w(0) 26289. F 0.00
+expand: main@entry (2, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (3, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (4, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.01 :before-memory 22.08 :after-memory 23.19)
+Propagating: 0 1 2 3 4  ! 5 
+(spacer::context::propagate :time 0.00 :before-memory 23.19 :after-memory 23.19)
+Entering level 5
+expand: query!0 (5, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (4, 5) FAR 1 U 0.00
+expand: main@entry!_BAD (4, 0) FAR  w(0) 1.
+	create_child: main@entry (3, 5) FAR 1 U 0.00
+expand: main@entry (3, 0) FAR  w(0) 1.
+	create_child: main@_58 (2, 5) FAR 26289 U 0.00
+expand: main@_58 (2, 0) FAR  w(0) 26289.
+	create_child: main@_58!_Cond (1, 5) FAR 26059 U 0.00
+expand: main@_58!_Cond (1, 0) FAR  w(0) 26059.
+	create_child: main@_61 (0, 5) FAR 29063 U 0.00
+expand: main@_61 (0, 0) FAR  w(0) 29063. F 0.00
+expand: main@_58!_Cond (1, 0) FAR  w(0) 26059. F 0.00
+expand: main@_58 (2, 0) FAR  w(0) 26289. F 0.00
+expand: main@entry (3, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (4, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (5, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.01 :before-memory 23.19 :after-memory 24.54)
+Propagating: 0 1 2 3 4 5  ! 6 
+(spacer::context::propagate :time 0.00 :before-memory 24.54 :after-memory 24.54)
+Entering level 6
+expand: query!0 (6, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (5, 6) FAR 1 U 0.00
+expand: main@entry!_BAD (5, 0) FAR  w(0) 1.
+	create_child: main@entry (4, 6) FAR 1 U 0.00
+expand: main@entry (4, 0) FAR  w(0) 1.
+	create_child: main@_58 (3, 6) FAR 26289 U 0.00
+expand: main@_58 (3, 0) FAR  w(0) 26289.
+	create_child: main@_58!_Cond (2, 6) FAR 26059 U 0.00
+expand: main@_58!_Cond (2, 0) FAR  w(0) 26059.
+	create_child: main@_61 (1, 6) FAR 29063 U 0.00
+expand: main@_61 (1, 0) FAR  w(0) 29063.
+	create_child: main@.critedge1 (0, 6) FAR 31143 U 0.00
+expand: main@.critedge1 (0, 0) FAR  w(0) 31143. F 0.00
+expand: main@_61 (1, 0) FAR  w(0) 29063. F 0.00
+expand: main@_58!_Cond (2, 0) FAR  w(0) 26059. F 0.00
+expand: main@_58 (3, 0) FAR  w(0) 26289. F 0.00
+expand: main@entry (4, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (5, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (6, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.01 :before-memory 24.54 :after-memory 25.54)
+Propagating: 0 1 2 3 4 5 6  ! 7 
+(spacer::context::propagate :time 0.00 :before-memory 25.54 :after-memory 25.54)
+Entering level 7
+expand: query!0 (7, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (6, 7) FAR 1 U 0.00
+expand: main@entry!_BAD (6, 0) FAR  w(0) 1.
+	create_child: main@entry (5, 7) FAR 1 U 0.00
+expand: main@entry (5, 0) FAR  w(0) 1.
+	create_child: main@_58 (4, 7) FAR 26289 U 0.00
+expand: main@_58 (4, 0) FAR  w(0) 26289.
+	create_child: main@_58!_Cond (3, 7) FAR 26059 U 0.00
+expand: main@_58!_Cond (3, 0) FAR  w(0) 26059.
+	create_child: main@_61 (2, 7) FAR 29063 U 0.00
+expand: main@_61 (2, 0) FAR  w(0) 29063.
+	create_child: main@.critedge1 (1, 7) FAR 31143 U 0.00
+expand: main@.critedge1 (1, 0) FAR  w(0) 31143.
+	create_child: main@.critedge1!_Cond (0, 7) FAR 32661 U 0.00
+expand: main@.critedge1!_Cond (0, 0) FAR  w(0) 32661. F 0.01
+expand: main@.critedge1 (1, 0) FAR  w(0) 31143. F 0.00
+expand: main@_61 (2, 0) FAR  w(0) 29063. F 0.00
+expand: main@_58!_Cond (3, 0) FAR  w(0) 26059. F 0.00
+expand: main@_58 (4, 0) FAR  w(0) 26289. F 0.00
+expand: main@entry (5, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (6, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (7, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.03 :before-memory 25.54 :after-memory 28.87)
+Propagating: 0 1 2 3 4 5 6 7  ! 8 
+(spacer::context::propagate :time 0.01 :before-memory 28.87 :after-memory 29.79)
+Entering level 8
+expand: query!0 (8, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (7, 8) FAR 1 U 0.00
+expand: main@entry!_BAD (7, 0) FAR  w(0) 1.
+	create_child: main@entry (6, 8) FAR 1 U 0.00
+expand: main@entry (6, 0) FAR  w(0) 1.
+	create_child: main@_58 (5, 8) FAR 26289 U 0.00
+expand: main@_58 (5, 0) FAR  w(0) 26289.
+	create_child: main@_58!_Cond (4, 8) FAR 26059 U 0.00
+expand: main@_58!_Cond (4, 0) FAR  w(0) 26059.
+	create_child: main@_61 (3, 8) FAR 29063 U 0.00
+expand: main@_61 (3, 0) FAR  w(0) 29063.
+	create_child: main@.critedge1 (2, 8) FAR 31143 U 0.00
+expand: main@.critedge1 (2, 0) FAR  w(0) 31143.
+	create_child: main@.critedge1!_Cond (1, 8) FAR 32661 U 0.00
+expand: main@.critedge1!_Cond (1, 0) FAR  w(0) 32661(smt.stats :restarts  :decisions   :clauses/bin    :simplify   :memory)
+(smt.stats      :conflicts  :propagations   :lemmas     :deletions   )
+(smt.stats    0    146   9645  25991  4361/0   413     0    0   33.09)
+.
+	create_child: main@_95 (0, 8) FAR 48689 UNDEF 0.05
+expand: main@_95 (0, 0) FAR  w(0) 48689. F 0.06
+expand: main@.critedge1!_Cond (1, 0) FAR  w(0) 32661. F 0.04
+expand: main@.critedge1 (2, 0) FAR  w(0) 31143. F 0.01
+expand: main@_61 (3, 0) FAR  w(0) 29063.
+	create_child: main@.critedge1 (2, 8) FAR 58887 U 0.00
+expand: main@.critedge1 (2, 0) FAR  w(0) 58887.
+	create_child: main@.critedge1!_Cond (1, 8) FAR 58993 U 0.00
+expand: main@.critedge1!_Cond (1, 0) FAR  w(0) 58993.
+	create_child: main@_95 (0, 8) FAR 62124 U 0.04
+expand: main@_95 (0, 0) FAR  w(0) 62124. F 0.05
+expand: main@.critedge1!_Cond (1, 0) FAR  w(0) 58993
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.04
+expand: main@.critedge1 (2, 0) FAR  w(0) 58887
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.01
+expand: main@_61 (3, 0) FAR  w(0) 29063.
+	create_child: main@.critedge1 (2, 8) FAR 67545 U 0.00
+expand: main@.critedge1 (2, 0) FAR  w(0) 67545.
+	create_child: main@.critedge1!_Cond (1, 8) FAR 67642 U 0.00
+expand: main@.critedge1!_Cond (1, 0) FAR  w(0) 67642.
+	create_child: main@_95 (0, 8) FAR 68744 UNDEF 0.01
+expand: main@_95 (0, 0) FAR  w(0) 68744. UNDEF 0.00
+expand: main@_95 (0, 0) FAR  w(1) 68744.
+	create_child: main@_99 (0, 8) FAR 69707 X 0.01
+expand: main@_99 (0, 0) FAR  w(0) 69707. F 0.04
+expand: main@.critedge1!_Cond (1, 0) FAR  w(0) 67642.
+	create_child: main@_95 (0, 8) FAR 77888 UNDEF 0.01
+expand: main@_95 (0, 0) FAR  w(0) 77888.
+	create_child: main@_99 (0, 8) FAR 77870 X 0.01
+expand: main@_99 (0, 0) FAR  w(0) 77870. F 0.03
+expand: main@.critedge1!_Cond (1, 0) FAR  w(0) 67642.
+	create_child: main@_95 (0, 8) FAR 79306 UNDEF 0.01
+expand: main@_95 (0, 0) FAR  w(0) 79306. F 0.02
+expand: main@.critedge1!_Cond (1, 0) FAR  w(0) 67642.
+	create_child: main@_95 (0, 8) FAR 79391 U 0.01
+expand: main@_95 (0, 0) FAR  w(0) 79391. F 0.01
+expand: main@.critedge1!_Cond (1, 0) FAR  w(0) 67642.
+	create_child: main@_99 (0, 8) FAR 81080 U 0.01
+expand: main@_99 (0, 0) FAR  w(0) 81080. F 0.03
+expand: main@.critedge1!_Cond (1, 0) FAR  w(0) 67642.
+	create_child: main@_99 (0, 8) FAR 81275 U 0.01
+expand: main@_99 (0, 0) FAR  w(0) 81275. F 0.02
+expand: main@.critedge1!_Cond (1, 0) FAR  w(0) 67642.
+	create_child: main@_95 (0, 8) FAR 80780 U 0.01
+expand: main@_95 (0, 0) FAR  w(0) 80780. F 0.02
+expand: main@.critedge1!_Cond (1, 0) FAR  w(0) 67642.
+	create_child: main@_95 (0, 8) FAR 83259 U 0.00
+expand: main@_95 (0, 0) FAR  w(0) 83259. F 0.02
+expand: main@.critedge1!_Cond (1, 0) FAR  w(0) 67642.
+	create_child: main@_95 (0, 8) FAR 84073 U 0.00
+expand: main@_95 (0, 0) FAR  w(0) 84073. F 0.02
+expand: main@.critedge1!_Cond (1, 0) FAR  w(0) 67642.
+	create_child: main@_95 (0, 8) FAR 84388 U 0.00
+expand: main@_95 (0, 0) FAR  w(0) 84388. F 0.03
+expand: main@.critedge1!_Cond (1, 0) FAR  w(0) 67642. F 0.04
+expand: main@.critedge1 (2, 0) FAR  w(0) 67545
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.01
+expand: main@_61 (3, 0) FAR  w(0) 29063.
+	create_child: main@.critedge1 (2, 8) FAR 84294 UNDEF 0.00
+expand: main@.critedge1 (2, 0) FAR  w(0) 84294.
+	create_child: main@.critedge1!_Cond (1, 8) FAR 84487 U 0.00
+expand: main@.critedge1!_Cond (1, 0) FAR  w(0) 84487. T 0.01
+is-reachable: main@.critedge1 (2, 0) FAR 84294 F 0.00
+expand: main@.critedge1 (2, 0) FAR  w(1) 84294. T 0.00
+is-reachable: main@_61 (3, 0) FAR 29063 F 0.00
+expand: main@_61 (3, 0) FAR  w(1) 29063.
+	create_child: main@_65 (3, 8) FAR 69441 X 0.00
+expand: main@_65 (3, 0) FAR  w(0) 69441.
+	create_child: main@.critedge1 (2, 8) FAR 88703 UNDEF 0.01
+expand: main@.critedge1 (2, 0) FAR  w(0) 88703.
+	create_child: main@.critedge1!_Cond (1, 8) FAR 88861 U 0.00
+expand: main@.critedge1!_Cond (1, 0) FAR  w(0) 88861.
+	create_child: main@_95 (0, 8) FAR 89018 U 0.01
+expand: main@_95 (0, 0) FAR  w(0) 89018. F 0.02
+expand: main@.critedge1!_Cond (1, 0) FAR  w(0) 88861. F 0.02
+expand: main@.critedge1 (2, 0) FAR  w(0) 88703. F 0.01
+expand: main@_65 (3, 0) FAR  w(0) 69441. F 0.01
+expand: main@_58!_Cond (4, 0) FAR  w(0) 26059.
+	create_child: main@_61 (3, 8) FAR 90429 U 0.00
+expand: main@_61 (3, 0) FAR  w(0) 90429.
+	create_child: main@.critedge1 (2, 8) FAR 89297 U 0.00
+expand: main@.critedge1 (2, 0) FAR  w(0) 89297.
+	create_child: main@.critedge1!_Cond (1, 8) FAR 89424 U 0.00
+expand: main@.critedge1!_Cond (1, 0) FAR  w(0) 89424.
+	create_child: main@_95 (0, 8) FAR 91038 U 0.01
+expand: main@_95 (0, 0) FAR  w(0) 91038
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.03
+expand: main@.critedge1!_Cond (1, 0) FAR  w(0) 89424
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.04
+expand: main@.critedge1 (2, 0) FAR  w(0) 89297
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.01
+expand: main@_61 (3, 0) FAR  w(0) 90429
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.02
+expand: main@_58!_Cond (4, 0) FAR  w(0) 26059.
+	create_child: main@_61 (3, 8) FAR 93986 U 0.00
+expand: main@_61 (3, 0) FAR  w(0) 93986.
+	create_child: main@.critedge1 (2, 8) FAR 93032 U 0.00
+expand: main@.critedge1 (2, 0) FAR  w(0) 93032.
+	create_child: main@.critedge1!_Cond (1, 8) FAR 93675 U 0.00
+expand: main@.critedge1!_Cond (1, 0) FAR  w(0) 93675.
+	create_child: main@_95 (0, 8) FAR 94577 U 0.01
+expand: main@_95 (0, 0) FAR  w(0) 94577
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.02
+expand: main@.critedge1!_Cond (1, 0) FAR  w(0) 93675
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.03
+expand: main@.critedge1 (2, 0) FAR  w(0) 93032
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.01
+expand: main@_61 (3, 0) FAR  w(0) 93986
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.01
+expand: main@_58!_Cond (4, 0) FAR  w(0) 26059.
+	create_child: main@_61 (3, 8) FAR 94732 U 0.00
+expand: main@_61 (3, 0) FAR  w(0) 94732
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.01
+expand: main@_58!_Cond (4, 0) FAR  w(0) 26059
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.01
+expand: main@_58 (5, 0) FAR  w(0) 26289. F 0.01
+expand: main@entry (6, 0) FAR  w(0) 1.
+	create_child: main@_58 (5, 8) FAR 96117 U 0.01
+expand: main@_58 (5, 0) FAR  w(0) 96117.
+	create_child: main@_58!_Cond (4, 8) FAR 96172 U 0.00
+expand: main@_58!_Cond (4, 0) FAR  w(0) 96172.
+	create_child: main@_61 (3, 8) FAR 96238 U 0.00
+expand: main@_61 (3, 0) FAR  w(0) 96238.
+	create_child: main@.critedge1 (2, 8) FAR 96309 U 0.00
+expand: main@.critedge1 (2, 0) FAR  w(0) 96309.
+	create_child: main@.critedge1!_Cond (1, 8) FAR 94503 U 0.00
+expand: main@.critedge1!_Cond (1, 0) FAR  w(0) 94503. F 0.01
+expand: main@.critedge1 (2, 0) FAR  w(0) 96309. F 0.01
+expand: main@_61 (3, 0) FAR  w(0) 96238.
+	create_child: main@.critedge1 (2, 8) FAR 96110 UNDEF 0.00
+expand: main@.critedge1 (2, 0) FAR  w(0) 96110.
+	create_child: main@.critedge1!_Cond (1, 8) FAR 96413 U 0.00
+expand: main@.critedge1!_Cond (1, 0) FAR  w(0) 96413. T 0.02
+is-reachable: main@.critedge1 (2, 0) FAR 96110 T 0.00
+is-reachable: main@_61 (3, 0) FAR 96238 F 0.00
+Deleting closed node: main@.critedge1(2, 8) 96110
+expand: main@_61 (3, 0) FAR  w(1) 96238.
+	create_child: main@.critedge1 (2, 8) FAR 98039 U 0.00
+expand: main@.critedge1 (2, 0) FAR  w(0) 98039.
+	create_child: main@.critedge1!_Cond (1, 8) FAR 97627 U 0.00
+expand: main@.critedge1!_Cond (1, 0) FAR  w(0) 97627.
+	create_child: main@_95 (0, 8) FAR 98220 U 0.01
+expand: main@_95 (0, 0) FAR  w(0) 98220. F 0.01
+expand: main@.critedge1!_Cond (1, 0) FAR  w(0) 97627. F 0.01
+expand: main@.critedge1 (2, 0) FAR  w(0) 98039. F 0.01
+expand: main@_61 (3, 0) FAR  w(1) 96238.
+	create_child: main@.critedge1 (2, 8) FAR 97847 U 0.00
+expand: main@.critedge1 (2, 0) FAR  w(0) 97847.
+	create_child: main@.critedge1!_Cond (1, 8) FAR 98592 U 0.00
+expand: main@.critedge1!_Cond (1, 0) FAR  w(0) 98592.
+	create_child: main@_95 (0, 8) FAR 99173 U 0.01
+expand: main@_95 (0, 0) FAR  w(0) 99173
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.03
+expand: main@.critedge1!_Cond (1, 0) FAR  w(0) 98592
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.04
+expand: main@.critedge1 (2, 0) FAR  w(0) 97847
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.02
+expand: main@_61 (3, 0) FAR  w(1) 96238.
+	create_child: main@.critedge1 (2, 8) FAR 100454 U 0.00
+expand: main@.critedge1 (2, 0) FAR  w(0) 100454.
+	create_child: main@.critedge1!_Cond (1, 8) FAR 100490 U 0.00
+expand: main@.critedge1!_Cond (1, 0) FAR  w(0) 100490.
+	create_child: main@_95 (0, 8) FAR 99670 U 0.01
+expand: main@_95 (0, 0) FAR  w(0) 99670. F 0.05
+expand: main@.critedge1!_Cond (1, 0) FAR  w(0) 100490. F 0.06
+expand: main@.critedge1 (2, 0) FAR  w(0) 100454
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.02
+expand: main@_61 (3, 0) FAR  w(1) 96238
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.02
+expand: main@_58!_Cond (4, 0) FAR  w(0) 96172.
+	create_child: main@_61 (3, 8) FAR 99862 U 0.00
+expand: main@_61 (3, 0) FAR  w(0) 99862.
+	create_child: main@.critedge1 (2, 8) FAR 101556 U 0.00
+expand: main@.critedge1 (2, 0) FAR  w(0) 101556.
+	create_child: main@.critedge1!_Cond (1, 8) FAR 101384 U 0.00
+expand: main@.critedge1!_Cond (1, 0) FAR  w(0) 101384.
+	create_child: main@_95 (0, 8) FAR 101045 U 0.01
+expand: main@_95 (0, 0) FAR  w(0) 101045
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.03
+expand: main@.critedge1!_Cond (1, 0) FAR  w(0) 101384
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.04
+expand: main@.critedge1 (2, 0) FAR  w(0) 101556
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.01
+expand: main@_61 (3, 0) FAR  w(0) 99862.
+	create_child: main@.critedge1 (2, 8) FAR 101380 U 0.00
+expand: main@.critedge1 (2, 0) FAR  w(0) 101380.
+	create_child: main@.critedge1!_Cond (1, 8) FAR 101530 U 0.00
+expand: main@.critedge1!_Cond (1, 0) FAR  w(0) 101530. F 0.01
+expand: main@.critedge1 (2, 0) FAR  w(0) 101380. F 0.01
+expand: main@_61 (3, 0) FAR  w(0) 99862
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.02
+expand: main@_58!_Cond (4, 0) FAR  w(0) 96172.
+	create_child: main@_61 (3, 8) FAR 100358 U 0.00
+expand: main@_61 (3, 0) FAR  w(0) 100358.
+	create_child: main@.critedge1 (2, 8) FAR 100033 U 0.00
+expand: main@.critedge1 (2, 0) FAR  w(0) 100033.
+	create_child: main@.critedge1!_Cond (1, 8) FAR 102424 U 0.00
+expand: main@.critedge1!_Cond (1, 0) FAR  w(0) 102424.
+	create_child: main@_95 (0, 8) FAR 100380 U 0.01
+expand: main@_95 (0, 0) FAR  w(0) 100380.
+	create_child: main@_99 (0, 8) FAR 101900 X 0.01
+expand: main@_99 (0, 0) FAR  w(0) 101900. F 0.03
+expand: main@.critedge1!_Cond (1, 0) FAR  w(0) 102424.
+	create_child: main@_95 (0, 8) FAR 102739 U 0.01
+expand: main@_95 (0, 0) FAR  w(0) 102739. F 0.02
+expand: main@.critedge1!_Cond (1, 0) FAR  w(0) 102424.
+	create_child: main@_95 (0, 8) FAR 103702 U 0.00
+expand: main@_95 (0, 0) FAR  w(0) 103702.
+	create_child: main@_99 (0, 8) FAR 103260 X 0.01
+expand: main@_99 (0, 0) FAR  w(0) 103260. F 0.03
+expand: main@.critedge1!_Cond (1, 0) FAR  w(0) 102424.
+	create_child: main@_95 (0, 8) FAR 104108 U 0.00
+expand: main@_95 (0, 0) FAR  w(0) 104108.
+	create_child: main@_99 (0, 8) FAR 104159 X 0.01
+expand: main@_99 (0, 0) FAR  w(0) 104159. F 0.03
+expand: main@.critedge1!_Cond (1, 0) FAR  w(0) 102424.
+	create_child: main@_95 (0, 8) FAR 103504 U 0.00
+expand: main@_95 (0, 0) FAR  w(0) 103504. F 0.02
+expand: main@.critedge1!_Cond (1, 0) FAR  w(0) 102424.
+	create_child: main@_95 (0, 8) FAR 103713 U 0.00
+expand: main@_95 (0, 0) FAR  w(0) 103713.
+	create_child: main@_99 (0, 8) FAR 103728 X 0.01
+expand: main@_99 (0, 0) FAR  w(0) 103728. F 0.03
+expand: main@.critedge1!_Cond (1, 0) FAR  w(0) 102424
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.07
+expand: main@.critedge1 (2, 0) FAR  w(0) 100033
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.01
+expand: main@_61 (3, 0) FAR  w(0) 100358
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.01
+expand: main@_58!_Cond (4, 0) FAR  w(0) 96172
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.02
+expand: main@_58 (5, 0) FAR  w(0) 96117
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.02
+expand: main@entry (6, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (7, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (8, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 1.99 :before-memory 29.79 :after-memory 61.20)
+Propagating: 0 1 2 3 4 5 
+(spacer::context::propagate :time 0.00 :before-memory 61.20 :after-memory 61.20)
+(define-fun main@entry!_BAD () Bool
+  false)
+(define-fun main@_58 ((x!0 (Array Int Int))
+ (x!1 Int)
+ (x!2 Int)
+ (x!3 (Array Int Int))
+ (x!4 Int)
+ (x!5 (Array Int Int))
+ (x!6 Int)
+ (x!7 (Array Int Int))
+ (x!8 Int)
+ (x!9 (Array Int Int))
+ (x!10 Int)
+ (x!11 (Array Int Int))
+ (x!12 (Array Int Int))
+ (x!13 Int)
+ (x!14 (Array Int Int))
+ (x!15 Int)
+ (x!16 (Array Int Int))
+ (x!17 Int)
+ (x!18 (Array Int Int))
+ (x!19 Int)
+ (x!20 (Array Int Int))
+ (x!21 Int)
+ (x!22 (Array Int Int))
+ (x!23 Int)
+ (x!24 Int)
+ (x!25 (Array Int Int))
+ (x!26 Int)
+ (x!27 Int)) Bool
+  (let ((a!1 (not (= (select x!11 (+ 4 x!2)) 500)))
+        (a!2 (not (= (select x!11 (+ 12 x!2)) 740)))
+        (a!3 (not (= (select x!11 (+ 8 x!2)) 640))))
+  (let ((a!4 (or (<= (select x!12 x!13) 0)
+                 (<= (select x!9 x!10) 0)
+                 (not (= (select x!11 x!2) 400))
+                 a!1
+                 (not (>= (select x!16 x!17) 601))
+                 (not (<= (select x!14 x!15) 600))
+                 (not (>= (select x!0 x!1) 0))
+                 a!2
+                 a!3
+                 (not (>= (select x!3 x!4) 0))
+                 (not (= (select x!7 x!8) 0))))
+        (a!5 (or (<= (select x!12 x!13) 0)
+                 (not (= (select x!11 x!2) 400))
+                 a!1
+                 (not (>= (select x!16 x!17) 601))
+                 (not (<= (select x!14 x!15) 600))
+                 (not (>= (select x!0 x!1) 0))
+                 a!2
+                 a!3
+                 (not (>= (select x!3 x!4) 0))
+                 (not (<= (select x!5 x!6) 0)))))
+    (and a!4 a!5))))
+(define-fun main@_65 ((x!0 (Array Int Int))
+ (x!1 Int)
+ (x!2 Int)
+ (x!3 (Array Int Int))
+ (x!4 Int)
+ (x!5 (Array Int Int))
+ (x!6 Int)
+ (x!7 (Array Int Int))
+ (x!8 Int)
+ (x!9 (Array Int Int))
+ (x!10 Int)
+ (x!11 (Array Int Int))
+ (x!12 (Array Int Int))
+ (x!13 Int)
+ (x!14 (Array Int Int))
+ (x!15 Int)
+ (x!16 (Array Int Int))
+ (x!17 Int)
+ (x!18 (Array Int Int))
+ (x!19 Int)
+ (x!20 (Array Int Int))
+ (x!21 Int)
+ (x!22 (Array Int Int))
+ (x!23 Int)
+ (x!24 Int)
+ (x!25 (Array Int Int))
+ (x!26 Int)
+ (x!27 Int)) Bool
+  (let ((a!1 (>= (+ (select x!22 x!23) (* (- 1) (select x!25 x!26))) 0))
+        (a!2 (<= (+ (select x!20 x!21) (* (- 1) (select x!18 x!19))) 0)))
+    (or (not a!1) a!2 (not (= (select x!3 x!4) 0)))))
+(define-fun main@_99 ((x!0 (Array Int Int))
+ (x!1 Int)
+ (x!2 Int)
+ (x!3 (Array Int Int))
+ (x!4 Int)
+ (x!5 (Array Int Int))
+ (x!6 Int)
+ (x!7 (Array Int Int))
+ (x!8 Int)
+ (x!9 (Array Int Int))
+ (x!10 Int)
+ (x!11 (Array Int Int))
+ (x!12 (Array Int Int))
+ (x!13 Int)
+ (x!14 (Array Int Int))
+ (x!15 Int)
+ (x!16 (Array Int Int))
+ (x!17 Int)
+ (x!18 Int)
+ (x!19 (Array Int Int))
+ (x!20 Int)
+ (x!21 (Array Int Int))
+ (x!22 Int)
+ (x!23 (Array Int Int))
+ (x!24 Int)
+ (x!25 (Array Int Int))
+ (x!26 Int)) Bool
+  (let ((a!1 (not (<= (select x!11 (+ 8 x!2)) 640)))
+        (a!2 (>= (+ (select x!23 x!24) (* (- 1) (select x!25 x!26))) 0))
+        (a!6 (not (= (select x!11 (+ 12 x!2)) 740)))
+        (a!8 (not (<= (select x!11 (+ 4 x!2)) 500)))
+        (a!12 (not (= (select x!11 (+ 4 x!2)) 500))))
+  (let ((a!3 (or (not (>= (select x!25 x!26) 640))
+                 (<= (select x!9 x!10) 0)
+                 (not (>= (select x!16 x!17) 601))
+                 (not (= (select x!0 x!1) 2))
+                 (not (= (select x!3 x!4) 0))
+                 a!1
+                 (not (= (select x!7 x!8) 0))
+                 (<= (select x!12 x!13) 0)
+                 (not (<= (select x!14 x!15) 600))
+                 (not a!2)
+                 (not (= x!18 0))))
+        (a!4 (or (not (>= (select x!25 x!26) 640))
+                 (not (>= (select x!16 x!17) 601))
+                 (not (= (select x!0 x!1) 2))
+                 (not (<= (select x!5 x!6) 0))
+                 (not (= (select x!3 x!4) 0))
+                 a!1
+                 (<= (select x!12 x!13) 0)
+                 (not (<= (select x!14 x!15) 600))
+                 (not a!2)
+                 (not (= x!18 0))))
+        (a!5 (or (not (<= (select x!0 x!1) 0))
+                 (not (<= (select x!11 x!2) 400))
+                 (not (>= (select x!16 x!17) 601))
+                 (not (<= (select x!5 x!6) 0))
+                 (not (= (select x!3 x!4) 0))
+                 (not (>= (select x!25 x!26) 400))
+                 (<= (select x!12 x!13) 0)
+                 (not (<= (select x!14 x!15) 600))
+                 (not a!2)
+                 (not (= x!18 0))))
+        (a!7 (or (not (>= (select x!0 x!1) 3))
+                 (not (>= (select x!16 x!17) 601))
+                 (not (<= (select x!5 x!6) 0))
+                 (not (= (select x!3 x!4) 0))
+                 (<= (select x!12 x!13) 0)
+                 (not (<= (select x!14 x!15) 600))
+                 a!6
+                 (not a!2)
+                 (not (= x!18 0))))
+        (a!9 (or (not (= (select x!0 x!1) 1))
+                 (not (>= (select x!16 x!17) 601))
+                 (not (>= (select x!25 x!26) 500))
+                 a!8
+                 (not (<= (select x!5 x!6) 0))
+                 (not (= (select x!3 x!4) 0))
+                 (<= (select x!12 x!13) 0)
+                 (not (<= (select x!14 x!15) 600))
+                 (not a!2)
+                 (not (= x!18 0))))
+        (a!10 (or (not (<= (select x!0 x!1) 0))
+                  (<= (select x!9 x!10) 0)
+                  (not (<= (select x!11 x!2) 400))
+                  (not (>= (select x!16 x!17) 601))
+                  (not (= (select x!3 x!4) 0))
+                  (not (= (select x!7 x!8) 0))
+                  (not (>= (select x!25 x!26) 400))
+                  (<= (select x!12 x!13) 0)
+                  (not (<= (select x!14 x!15) 600))
+                  (not a!2)
+                  (not (= x!18 0))))
+        (a!11 (or (not (>= (select x!0 x!1) 3))
+                  (<= (select x!9 x!10) 0)
+                  (not (>= (select x!16 x!17) 601))
+                  (not (= (select x!3 x!4) 0))
+                  (not (= (select x!7 x!8) 0))
+                  (<= (select x!12 x!13) 0)
+                  (not (<= (select x!14 x!15) 600))
+                  a!6
+                  (not a!2)
+                  (not (= x!18 0))))
+        (a!13 (or (not (= (select x!0 x!1) 1))
+                  a!12
+                  (<= (select x!9 x!10) 0)
+                  (not (>= (select x!16 x!17) 601))
+                  (not (= (select x!3 x!4) 0))
+                  (not (= (select x!7 x!8) 0))
+                  (<= (select x!12 x!13) 0)
+                  (not (<= (select x!14 x!15) 600))
+                  (not a!2)
+                  (not (= x!18 0)))))
+    (and a!3 a!4 a!5 a!7 a!9 a!10 a!11 a!13))))
+(define-fun main@_58!_Cond ((x!0 Int)
+ (x!1 Int)
+ (x!2 Int)
+ (x!3 Int)
+ (x!4 Int)
+ (x!5 Int)
+ (x!6 Int)
+ (x!7 Int)
+ (x!8 Int)
+ (x!9 Int)
+ (x!10 Int)
+ (x!11 Int)
+ (x!12 Int)
+ (x!13 Int)
+ (x!14 Int)
+ (x!15 (Array Int Int))
+ (x!16 (Array Int Int))
+ (x!17 (Array Int Int))
+ (x!18 (Array Int Int))
+ (x!19 (Array Int Int))
+ (x!20 (Array Int Int))
+ (x!21 (Array Int Int))
+ (x!22 (Array Int Int))
+ (x!23 (Array Int Int))
+ (x!24 (Array Int Int))
+ (x!25 (Array Int Int))
+ (x!26 (Array Int Int))
+ (x!27 (Array Int Int))) Bool
+  (let ((a!1 (not (= (select x!27 (+ 12 x!2)) 740)))
+        (a!2 (not (= (select x!27 (+ 4 x!2)) 500)))
+        (a!3 (not (= (select x!27 (+ 8 x!2)) 640))))
+  (let ((a!4 (or (<= (select x!16 x!9) 0)
+                 (<= (select x!17 x!12) 0)
+                 (not (>= (select x!26 x!14) 0))
+                 a!1
+                 a!2
+                 (not (<= (select x!19 x!10) 600))
+                 (not (>= (select x!21 x!3) 0))
+                 (not (= (select x!27 x!2) 400))
+                 (not (>= (select x!15 x!6) 601))
+                 a!3
+                 (not (= (select x!24 x!13) 0))))
+        (a!5 (or (<= (select x!16 x!9) 0)
+                 (not (>= (select x!26 x!14) 0))
+                 a!1
+                 a!2
+                 (not (<= (select x!19 x!10) 600))
+                 (not (>= (select x!21 x!3) 0))
+                 (not (= (select x!27 x!2) 400))
+                 (not (>= (select x!15 x!6) 601))
+                 (not (<= (select x!25 x!11) 0))
+                 a!3)))
+    (and a!4 a!5))))
+(define-fun main@.critedge1 ((x!0 (Array Int Int))
+ (x!1 Int)
+ (x!2 Int)
+ (x!3 (Array Int Int))
+ (x!4 Int)
+ (x!5 (Array Int Int))
+ (x!6 Int)
+ (x!7 (Array Int Int))
+ (x!8 Int)
+ (x!9 (Array Int Int))
+ (x!10 Int)
+ (x!11 (Array Int Int))
+ (x!12 (Array Int Int))
+ (x!13 Int)
+ (x!14 (Array Int Int))
+ (x!15 Int)
+ (x!16 (Array Int Int))
+ (x!17 Int)
+ (x!18 Int)
+ (x!19 (Array Int Int))
+ (x!20 Int)
+ (x!21 (Array Int Int))
+ (x!22 Int)
+ (x!23 (Array Int Int))
+ (x!24 Int)
+ (x!25 Int)
+ (x!26 (Array Int Int))
+ (x!27 Int)
+ (x!28 Int)) Bool
+  (let ((a!1 (<= (+ (select x!21 x!22) (* (- 1) (select x!19 x!20))) 0))
+        (a!2 (not (= (select x!11 (+ 12 x!2)) 740)))
+        (a!3 (not (= (select x!11 (+ 4 x!2)) 500)))
+        (a!4 (not (<= (select x!11 (+ 8 x!2)) 640)))
+        (a!5 (>= (+ (select x!26 x!27) (* (- 1) (select x!23 x!24))) (- 99)))
+        (a!7 (>= (+ (select x!23 x!24) (* (- 1) (select x!26 x!27))) 100))
+        (a!8 (not (= (select x!11 (+ 8 x!2)) 640)))
+        (a!10 (select x!11 (+ x!2 (* 4 (select x!0 x!1)))))
+        (a!12 (not (>= (select x!11 (+ 12 x!2)) 740)))
+        (a!13 (not (>= (select x!11 (+ 4 x!2)) 500)))
+        (a!14 (not (>= (select x!11 (+ 8 x!2)) 640)))
+        (a!16 (not (<= (select x!11 (+ 4 x!2)) 500)))
+        (a!17 (>= (+ (select x!19 x!20) (* (- 1) (select x!21 x!22))) 0))
+        (a!19 (>= (+ (select x!23 x!24) (* (- 1) (select x!26 x!27))) 0))
+        (a!21 (not (<= (select x!11 (+ 12 x!2)) 740)))
+        (a!23 (<= (+ (select x!26 x!27) (* (- 1) (select x!23 x!24))) 0))
+        (a!25 (>= (+ (select x!21 x!22) (* (- 1) (select x!19 x!20))) 0)))
+  (let ((a!6 (or (<= (select x!12 x!13) 0)
+                 (<= (select x!9 x!10) 0)
+                 (not a!1)
+                 (not (<= (select x!14 x!15) 600))
+                 (not (>= (select x!16 x!17) 601))
+                 a!2
+                 (not (= x!18 0))
+                 a!3
+                 (not (<= (select x!11 x!2) 400))
+                 (not (>= (select x!3 x!4) 0))
+                 (not (= (select x!7 x!8) 0))
+                 (not (>= (select x!0 x!1) 0))
+                 a!4
+                 (not a!5)))
+        (a!9 (or (<= (select x!12 x!13) 0)
+                 (not (<= (select x!14 x!15) 600))
+                 (not (>= (select x!16 x!17) 601))
+                 (not a!7)
+                 a!8
+                 a!2
+                 (not (<= (select x!5 x!6) 0))
+                 (not (= (select x!11 x!2) 400))
+                 (not (= x!18 0))
+                 a!3))
+        (a!11 (not (>= (+ (select x!23 x!24) (* (- 1) a!10)) 0)))
+        (a!18 (or (<= (select x!12 x!13) 0)
+                  (not (<= (select x!14 x!15) 600))
+                  (not (>= (select x!16 x!17) 601))
+                  a!2
+                  (not (<= (select x!5 x!6) 0))
+                  (not (= x!18 0))
+                  (not (<= (select x!11 x!2) 400))
+                  (not (>= (select x!3 x!4) 0))
+                  (not (>= (select x!0 x!1) 0))
+                  a!16
+                  a!4
+                  (not a!17)
+                  (not a!5)))
+        (a!20 (or (not (= x!18 0)) a!1 (not (= (select x!3 x!4) 0)) (not a!19)))
+        (a!22 (or (<= (select x!12 x!13) 0)
+                  (not (<= (select x!14 x!15) 600))
+                  (not (>= (select x!16 x!17) 601))
+                  (not (<= (select x!5 x!6) 0))
+                  a!1
+                  (>= (+ (select x!23 x!24) (* (- 1) a!10)) 0)
+                  (not (<= (select x!11 x!2) 400))
+                  a!16
+                  a!4
+                  (not a!5)
+                  (<= x!18 0)
+                  (<= (select x!3 x!4) 0)
+                  a!21))
+        (a!24 (or (<= (select x!12 x!13) 0)
+                  (not (<= (select x!14 x!15) 600))
+                  (not (>= (select x!16 x!17) 601))
+                  (not (<= (select x!5 x!6) 0))
+                  a!1
+                  (>= (+ (select x!23 x!24) (* (- 1) a!10)) 0)
+                  (not (<= (select x!11 x!2) 400))
+                  a!16
+                  a!4
+                  a!23
+                  (<= x!18 0)
+                  a!21))
+        (a!26 (or (<= (select x!12 x!13) 0)
+                  (<= (select x!9 x!10) 0)
+                  (not (<= (select x!14 x!15) 600))
+                  (not (>= (select x!16 x!17) 601))
+                  a!1
+                  (>= (+ (select x!23 x!24) (* (- 1) a!10)) 0)
+                  (not (<= (select x!11 x!2) 400))
+                  (not (= (select x!7 x!8) 0))
+                  a!16
+                  a!4
+                  (not a!5)
+                  (<= x!18 0)
+                  (<= (select x!3 x!4) 0)
+                  a!21))
+        (a!27 (or (<= (select x!12 x!13) 0)
+                  (<= (select x!9 x!10) 0)
+                  (not (<= (select x!14 x!15) 600))
+                  (not (>= (select x!16 x!17) 601))
+                  (not a!7)
+                  a!8
+                  a!2
+                  (not (= (select x!11 x!2) 400))
+                  (not (= x!18 0))
+                  a!3
+                  (not (= (select x!7 x!8) 0))))
+        (a!28 (or (<= (select x!12 x!13) 0)
+                  (<= (select x!9 x!10) 0)
+                  (not (<= (select x!14 x!15) 600))
+                  (not (>= (select x!16 x!17) 601))
+                  a!1
+                  (>= (+ (select x!23 x!24) (* (- 1) a!10)) 0)
+                  (not (<= (select x!11 x!2) 400))
+                  (not (= (select x!7 x!8) 0))
+                  a!16
+                  a!4
+                  a!23
+                  (<= x!18 0)
+                  a!21)))
+  (let ((a!15 (or (not (= x!18 0))
+                  a!1
+                  a!11
+                  (not (>= (select x!11 x!2) 400))
+                  a!12
+                  a!13
+                  a!14)))
+    (and a!6
+         a!9
+         a!15
+         a!18
+         a!20
+         a!22
+         a!24
+         (or (not (= x!18 0)) (not a!17) (not a!5) (<= (select x!3 x!4) 0))
+         (or (not a!7) (not (= x!18 0)) (not a!25))
+         a!26
+         a!27
+         a!28
+         (or (not (= x!18 0)) (not a!17) a!23))))))
+(define-fun main@entry ((x!0 Int) (x!1 Int) (x!2 (Array Int Int)) (x!3 Int)) Bool
+  false)
+(define-fun main@_95 ((x!0 (Array Int Int))
+ (x!1 Int)
+ (x!2 Int)
+ (x!3 (Array Int Int))
+ (x!4 Int)
+ (x!5 (Array Int Int))
+ (x!6 Int)
+ (x!7 (Array Int Int))
+ (x!8 Int)
+ (x!9 (Array Int Int))
+ (x!10 Int)
+ (x!11 (Array Int Int))
+ (x!12 (Array Int Int))
+ (x!13 Int)
+ (x!14 (Array Int Int))
+ (x!15 Int)
+ (x!16 (Array Int Int))
+ (x!17 Int)
+ (x!18 Int)
+ (x!19 (Array Int Int))
+ (x!20 Int)
+ (x!21 (Array Int Int))
+ (x!22 Int)
+ (x!23 (Array Int Int))
+ (x!24 Int)
+ (x!25 Int)
+ (x!26 (Array Int Int))
+ (x!27 Int)) Bool
+  (let ((a!1 (>= (+ (select x!19 x!20) (* (- 1) (select x!21 x!22))) 0))
+        (a!2 (>= (+ (select x!26 x!27) (* (- 1) (select x!23 x!24))) (- 99)))
+        (a!4 (not (= (select x!11 (+ 4 x!2)) 500)))
+        (a!5 (not (= (select x!11 (+ 8 x!2)) 640)))
+        (a!6 (not (= (select x!11 (+ 12 x!2)) 740)))
+        (a!7 (>= (+ (select x!23 x!24) (* (- 1) (select x!26 x!27))) 100))
+        (a!9 (not (>= (select x!11 (+ 4 x!2)) 500)))
+        (a!10 (not (>= (select x!11 (+ 12 x!2)) 740)))
+        (a!11 (not (>= (select x!11 (+ 8 x!2)) 640)))
+        (a!12 (select x!11 (+ x!2 (* 4 (select x!0 x!1)))))
+        (a!14 (<= (+ (select x!21 x!22) (* (- 1) (select x!19 x!20))) 0))
+        (a!16 (<= (+ (select x!26 x!27) (* (- 1) (select x!23 x!24))) 0))
+        (a!18 (>= (+ (select x!23 x!24) (* (- 1) (select x!26 x!27))) 0))
+        (a!20 (not (<= (select x!11 (+ 8 x!2)) 640)))
+        (a!21 (not (<= (select x!11 (+ 12 x!2)) 740)))
+        (a!22 (not (<= (select x!11 (+ 4 x!2)) 500)))
+        (a!25 (>= (+ (select x!21 x!22) (* (- 1) (select x!19 x!20))) 0)))
+  (let ((a!3 (or (not (= x!18 0))
+                 (not a!1)
+                 (not a!2)
+                 (not (<= (select x!26 x!27) 639))
+                 (not (>= (select x!0 x!1) 2))
+                 (not (<= (select x!0 x!1) 3))))
+        (a!8 (or (not (= x!18 0))
+                 a!4
+                 a!5
+                 (<= (select x!12 x!13) 0)
+                 (not (= (select x!11 x!2) 400))
+                 (not (<= (select x!5 x!6) 0))
+                 a!6
+                 (not (>= (select x!16 x!17) 601))
+                 (not (<= (select x!14 x!15) 600))
+                 (not a!7)))
+        (a!13 (not (>= (+ (select x!23 x!24) (* (- 1) a!12)) 0)))
+        (a!17 (or (not (= x!18 0))
+                  (not a!1)
+                  (not a!2)
+                  (<= (select x!0 x!1) 0)
+                  (not (<= (select x!0 x!1) 2))
+                  (not (<= (select x!26 x!27) 499))))
+        (a!19 (or (not (= x!18 0)) a!14 (not a!18) (not (= (select x!3 x!4) 0))))
+        (a!23 (or (<= (select x!12 x!13) 0)
+                  (not (<= (select x!5 x!6) 0))
+                  (not (>= (select x!16 x!17) 601))
+                  (not (<= (select x!14 x!15) 600))
+                  (>= (+ (select x!23 x!24) (* (- 1) a!12)) 0)
+                  a!14
+                  (<= (select x!3 x!4) 0)
+                  (not a!2)
+                  a!20
+                  (<= x!18 0)
+                  a!21
+                  a!22
+                  (not (<= (select x!11 x!2) 400))))
+        (a!24 (or (<= (select x!12 x!13) 0)
+                  (not (<= (select x!5 x!6) 0))
+                  (not (>= (select x!16 x!17) 601))
+                  (not (<= (select x!14 x!15) 600))
+                  (>= (+ (select x!23 x!24) (* (- 1) a!12)) 0)
+                  a!14
+                  a!16
+                  a!20
+                  (<= x!18 0)
+                  a!21
+                  a!22
+                  (not (<= (select x!11 x!2) 400))))
+        (a!26 (or (<= (select x!12 x!13) 0)
+                  (not (>= (select x!16 x!17) 601))
+                  (not (<= (select x!14 x!15) 600))
+                  (>= (+ (select x!23 x!24) (* (- 1) a!12)) 0)
+                  a!14
+                  (<= (select x!3 x!4) 0)
+                  (not a!2)
+                  a!20
+                  (<= x!18 0)
+                  a!21
+                  a!22
+                  (not (<= (select x!11 x!2) 400))
+                  (<= (select x!9 x!10) 0)
+                  (not (= (select x!7 x!8) 0))))
+        (a!27 (or (not (= x!18 0))
+                  a!4
+                  a!5
+                  (<= (select x!12 x!13) 0)
+                  (not (= (select x!11 x!2) 400))
+                  a!6
+                  (not (>= (select x!16 x!17) 601))
+                  (not (<= (select x!14 x!15) 600))
+                  (not a!7)
+                  (<= (select x!9 x!10) 0)
+                  (not (= (select x!7 x!8) 0))))
+        (a!28 (or (not (= x!18 0))
+                  (not a!1)
+                  (not a!2)
+                  (not (>= (select x!0 x!1) 0))
+                  (not (<= (select x!26 x!27) 399))
+                  (not (<= (select x!0 x!1) 3))))
+        (a!29 (or (<= (select x!12 x!13) 0)
+                  (not (>= (select x!16 x!17) 601))
+                  (not (<= (select x!14 x!15) 600))
+                  (>= (+ (select x!23 x!24) (* (- 1) a!12)) 0)
+                  a!14
+                  a!16
+                  a!20
+                  (<= x!18 0)
+                  a!21
+                  a!22
+                  (not (<= (select x!11 x!2) 400))
+                  (<= (select x!9 x!10) 0)
+                  (not (= (select x!7 x!8) 0)))))
+  (let ((a!15 (or (not (= x!18 0))
+                  a!9
+                  a!10
+                  (not (>= (select x!11 x!2) 400))
+                  a!11
+                  a!13
+                  a!14)))
+    (and a!3
+         a!8
+         a!15
+         (or (not (= x!18 0)) (not a!1) a!16)
+         (or (not (= x!18 0)) (not a!1) (<= (select x!3 x!4) 0) (not a!2))
+         a!17
+         a!19
+         a!23
+         a!24
+         (or (not (= x!18 0)) (not a!7) (not a!25))
+         a!26
+         a!27
+         a!28
+         a!29)))))
+(define-fun main@.critedge1!_Cond ((x!0 Int)
+ (x!1 Int)
+ (x!2 Int)
+ (x!3 Int)
+ (x!4 Int)
+ (x!5 Int)
+ (x!6 Int)
+ (x!7 Int)
+ (x!8 Int)
+ (x!9 Int)
+ (x!10 Int)
+ (x!11 Int)
+ (x!12 Int)
+ (x!13 Int)
+ (x!14 (Array Int Int))
+ (x!15 (Array Int Int))
+ (x!16 (Array Int Int))
+ (x!17 (Array Int Int))
+ (x!18 (Array Int Int))
+ (x!19 (Array Int Int))
+ (x!20 (Array Int Int))
+ (x!21 (Array Int Int))
+ (x!22 (Array Int Int))
+ (x!23 (Array Int Int))
+ (x!24 (Array Int Int))
+ (x!25 (Array Int Int))
+ (x!26 (Array Int Int))
+ (x!27 Int)) Bool
+  (let ((a!1 (not (= (select x!26 (+ 12 x!1)) 740)))
+        (a!2 (not (= (select x!26 (+ 4 x!1)) 500)))
+        (a!3 (>= (+ (select x!17 x!6) (* (- 1) (select x!19 x!7))) 0))
+        (a!4 (>= (+ (select x!21 x!3) (* (- 1) (select x!22 x!4))) (- 99)))
+        (a!5 (not (<= (select x!26 (+ 8 x!1)) 640)))
+        (a!7 (>= (+ (select x!22 x!4) (* (- 1) (select x!21 x!3))) 100))
+        (a!8 (not (= (select x!26 (+ 8 x!1)) 640)))
+        (a!10 (<= (+ (select x!19 x!7) (* (- 1) (select x!17 x!6))) 0))
+        (a!11 (select x!26 (+ x!1 (* 4 (select x!20 x!2)))))
+        (a!13 (not (>= (select x!26 (+ 4 x!1)) 500)))
+        (a!14 (not (>= (select x!26 (+ 8 x!1)) 640)))
+        (a!15 (not (>= (select x!26 (+ 12 x!1)) 740)))
+        (a!17 (not (<= (select x!26 (+ 4 x!1)) 500)))
+        (a!19 (>= (+ (select x!22 x!4) (* (- 1) (select x!21 x!3))) 0))
+        (a!21 (not (<= (select x!26 (+ 12 x!1)) 740)))
+        (a!23 (<= (+ (select x!21 x!3) (* (- 1) (select x!22 x!4))) 0))
+        (a!25 (>= (+ (select x!19 x!7) (* (- 1) (select x!17 x!6))) 0)))
+  (let ((a!6 (or (<= (select x!16 x!11) 0)
+                 (<= (select x!15 x!8) 0)
+                 (not (<= (select x!18 x!9) 600))
+                 (not (>= (select x!14 x!5) 601))
+                 a!1
+                 a!2
+                 (not (= x!27 0))
+                 (not a!3)
+                 (not a!4)
+                 a!5
+                 (not (<= (select x!26 x!1) 400))
+                 (not (>= (select x!20 x!2) 0))
+                 (not (>= (select x!25 x!13) 0))
+                 (not (= (select x!23 x!12) 0))))
+        (a!9 (or (<= (select x!15 x!8) 0)
+                 (not (<= (select x!18 x!9) 600))
+                 (not (>= (select x!14 x!5) 601))
+                 (not a!7)
+                 (not (<= (select x!24 x!10) 0))
+                 a!1
+                 a!2
+                 a!8
+                 (not (= (select x!26 x!1) 400))
+                 (not (= x!27 0))))
+        (a!12 (not (>= (+ (select x!22 x!4) (* (- 1) a!11)) 0)))
+        (a!18 (or (<= (select x!15 x!8) 0)
+                  (not (<= (select x!18 x!9) 600))
+                  (not (>= (select x!14 x!5) 601))
+                  (not (<= (select x!24 x!10) 0))
+                  a!1
+                  (not (= x!27 0))
+                  (not a!3)
+                  (not a!4)
+                  a!17
+                  a!5
+                  (not (<= (select x!26 x!1) 400))
+                  (not (>= (select x!20 x!2) 0))
+                  (not (>= (select x!25 x!13) 0))))
+        (a!20 (or (not (= x!27 0))
+                  a!10
+                  (not (= (select x!25 x!13) 0))
+                  (not a!19)))
+        (a!22 (or (<= (select x!15 x!8) 0)
+                  (not (<= (select x!18 x!9) 600))
+                  (not (>= (select x!14 x!5) 601))
+                  (not (<= (select x!24 x!10) 0))
+                  (>= (+ (select x!22 x!4) (* (- 1) a!11)) 0)
+                  a!10
+                  (not a!4)
+                  a!17
+                  a!5
+                  (not (<= (select x!26 x!1) 400))
+                  (<= (select x!25 x!13) 0)
+                  (<= x!27 0)
+                  a!21))
+        (a!24 (or (<= (select x!15 x!8) 0)
+                  (not (<= (select x!18 x!9) 600))
+                  (not (>= (select x!14 x!5) 601))
+                  (not (<= (select x!24 x!10) 0))
+                  (>= (+ (select x!22 x!4) (* (- 1) a!11)) 0)
+                  a!10
+                  a!17
+                  a!5
+                  (not (<= (select x!26 x!1) 400))
+                  (<= x!27 0)
+                  a!23
+                  a!21))
+        (a!26 (or (<= (select x!16 x!11) 0)
+                  (<= (select x!15 x!8) 0)
+                  (not (<= (select x!18 x!9) 600))
+                  (not (>= (select x!14 x!5) 601))
+                  (not a!7)
+                  a!1
+                  a!2
+                  a!8
+                  (not (= (select x!26 x!1) 400))
+                  (not (= x!27 0))
+                  (not (= (select x!23 x!12) 0))))
+        (a!27 (or (<= (select x!16 x!11) 0)
+                  (<= (select x!15 x!8) 0)
+                  (not (<= (select x!18 x!9) 600))
+                  (not (>= (select x!14 x!5) 601))
+                  (>= (+ (select x!22 x!4) (* (- 1) a!11)) 0)
+                  a!10
+                  (not a!4)
+                  a!17
+                  a!5
+                  (not (<= (select x!26 x!1) 400))
+                  (not (= (select x!23 x!12) 0))
+                  (<= (select x!25 x!13) 0)
+                  (<= x!27 0)
+                  a!21))
+        (a!28 (or (<= (select x!16 x!11) 0)
+                  (<= (select x!15 x!8) 0)
+                  (not (<= (select x!18 x!9) 600))
+                  (not (>= (select x!14 x!5) 601))
+                  (>= (+ (select x!22 x!4) (* (- 1) a!11)) 0)
+                  a!10
+                  a!17
+                  a!5
+                  (not (<= (select x!26 x!1) 400))
+                  (not (= (select x!23 x!12) 0))
+                  (<= x!27 0)
+                  a!23
+                  a!21)))
+  (let ((a!16 (or (not (= x!27 0))
+                  a!10
+                  a!12
+                  a!13
+                  a!14
+                  (not (>= (select x!26 x!1) 400))
+                  a!15)))
+    (and a!6
+         a!9
+         a!16
+         a!18
+         a!20
+         a!22
+         a!24
+         (or (not (= x!27 0)) (not a!3) (not a!4) (<= (select x!25 x!13) 0))
+         (or (not a!7) (not (= x!27 0)) (not a!25))
+         a!26
+         a!27
+         (or (not (= x!27 0)) (not a!3) a!23)
+         a!28)))))
+(define-fun main@_61 ((x!0 (Array Int Int))
+ (x!1 Int)
+ (x!2 Int)
+ (x!3 (Array Int Int))
+ (x!4 Int)
+ (x!5 (Array Int Int))
+ (x!6 Int)
+ (x!7 (Array Int Int))
+ (x!8 Int)
+ (x!9 (Array Int Int))
+ (x!10 Int)
+ (x!11 (Array Int Int))
+ (x!12 (Array Int Int))
+ (x!13 Int)
+ (x!14 (Array Int Int))
+ (x!15 Int)
+ (x!16 (Array Int Int))
+ (x!17 Int)
+ (x!18 (Array Int Int))
+ (x!19 Int)
+ (x!20 (Array Int Int))
+ (x!21 Int)
+ (x!22 (Array Int Int))
+ (x!23 Int)
+ (x!24 Int)
+ (x!25 (Array Int Int))
+ (x!26 Int)
+ (x!27 Int)) Bool
+  (let ((a!1 (>= (+ (select x!18 x!19) (* (- 1) (select x!20 x!21))) 0))
+        (a!2 (not (= (select x!11 (+ 4 x!2)) 500)))
+        (a!3 (not (= (select x!11 (+ 8 x!2)) 640)))
+        (a!4 (not (= (select x!11 (+ 12 x!2)) 740)))
+        (a!8 (<= (+ (select x!25 x!26) (* (- 1) (select x!22 x!23))) 0)))
+  (let ((a!5 (or (not a!1)
+                 (<= (select x!12 x!13) 0)
+                 (<= (select x!9 x!10) 0)
+                 (not (= (select x!7 x!8) 0))
+                 a!2
+                 (not (= (select x!11 x!2) 400))
+                 (not (>= (select x!0 x!1) 0))
+                 a!3
+                 (not (>= (select x!16 x!17) 601))
+                 (not (<= (select x!14 x!15) 600))
+                 a!4
+                 (not (>= (select x!3 x!4) 0))))
+        (a!6 (or (<= (select x!12 x!13) 0)
+                 (not (<= (select x!5 x!6) 0))
+                 (<= (select x!3 x!4) 0)
+                 a!2
+                 (not (= (select x!11 x!2) 400))
+                 (not (>= (select x!0 x!1) 0))
+                 a!3
+                 (not (>= (select x!16 x!17) 601))
+                 (not (<= (select x!14 x!15) 600))
+                 a!4))
+        (a!7 (or (not a!1)
+                 (<= (select x!12 x!13) 0)
+                 (not (<= (select x!5 x!6) 0))
+                 a!2
+                 (not (= (select x!11 x!2) 400))
+                 (not (>= (select x!0 x!1) 0))
+                 a!3
+                 (not (>= (select x!16 x!17) 601))
+                 (not (<= (select x!14 x!15) 600))
+                 a!4
+                 (not (>= (select x!3 x!4) 0))))
+        (a!9 (or a!8
+                 (<= (select x!12 x!13) 0)
+                 (not (<= (select x!5 x!6) 0))
+                 a!2
+                 (not (= (select x!11 x!2) 400))
+                 (not (>= (select x!0 x!1) 0))
+                 a!3
+                 (not (>= (select x!16 x!17) 601))
+                 (not (<= (select x!14 x!15) 600))
+                 a!4
+                 (not (>= (select x!3 x!4) 0))))
+        (a!10 (or a!8
+                  (<= (select x!12 x!13) 0)
+                  (<= (select x!9 x!10) 0)
+                  (not (= (select x!7 x!8) 0))
+                  a!2
+                  (not (= (select x!11 x!2) 400))
+                  a!3
+                  (not (>= (select x!16 x!17) 601))
+                  (not (<= (select x!14 x!15) 600))
+                  a!4))
+        (a!11 (or (<= (select x!12 x!13) 0)
+                  (<= (select x!9 x!10) 0)
+                  (not (= (select x!7 x!8) 0))
+                  (<= (select x!3 x!4) 0)
+                  a!2
+                  (not (= (select x!11 x!2) 400))
+                  a!3
+                  (not (>= (select x!16 x!17) 601))
+                  (not (<= (select x!14 x!15) 600))
+                  a!4)))
+    (and a!5 a!6 a!7 a!9 a!10 a!11))))
