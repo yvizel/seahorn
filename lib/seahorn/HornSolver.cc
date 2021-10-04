@@ -189,8 +189,22 @@ bool HornSolver::runOnModule(Module &M) {
     HornDbModel dbModel;
     initDBModelFromFP(dbModel, db, fp);
     printInvars(M, dbModel);
-  } else if (PrintAnswer && m_result)
+  } else if (PrintAnswer && m_result) {
     printCex();
+    std::vector<std::string> fences;
+    getFencesAlongTrace(fences);
+    // Todo: choose a fence
+//    ZFixedPoint<EZ3> fp = *m_fp;
+//    const ExprVector& vars = fp.getVars();
+//    if (!vars.empty()) {
+//      std::cout << "Vars:\n";
+//      for (Expr var : vars) {
+//        var->Print(std::cout);
+//        std::cout << ",";
+//      }
+//      std::cout << std::endl;
+//    }
+  }
 
   if (EstimateSizeInvars)
     estimateSizeInvars(M);
@@ -206,6 +220,8 @@ void HornSolver::getAnalysisUsage(AnalysisUsage &AU) const {
 void HornSolver::printCex() {
   ZFixedPoint<EZ3> fp = *m_fp;
   // outs () << *fp.getCex () << "\n";
+//  // raises Error: unknown expression: (asserted (=> main@verifier.error.split query!0))
+//  outs() << fp.getAnswer() << "\n";
 
   ExprVector rules;
   fp.getCexRules(rules);
@@ -233,6 +249,25 @@ void HornSolver::printCex() {
 
     dst = bind::fname(bind::fname(dst));
     outs() << *dst << "\n";
+  }
+}
+
+void HornSolver::getFencesAlongTrace(std::vector<std::string> &fences) {
+  ZFixedPoint<EZ3> fp = *m_fp;
+  ExprVector rules;
+  fp.getCexRules(rules);
+//  boost::reverse(rules);
+  for (Expr r : rules) {
+    if (isOpX<IMPL>(r)) { continue; }
+    Expr expr;
+    expr = bind::fname(bind::fname(r));
+    std::string name = boost::lexical_cast<std::string>(*expr);
+    // match fence_[0-9]+@entry
+    int noFence = name.compare(0, 6, "fence_");
+    size_t at = name.find("@entry");
+    if (noFence || at == std::string::npos) { continue; }
+    name.erase(at);
+    fences.push_back(name);
   }
 }
 
@@ -297,9 +332,27 @@ void HornSolver::printInvars(Function &F, HornDbModel &model) {
       outs() << "\n\t";
       for (size_t i = 0; i < invars->arity(); ++i)
         outs() << "\t" << *invars->arg(i) << "\n";
-    } else
+    } else {
       outs() << " " << *invars << "\n";
+    }
+//    outs() << "dump vals\n";
+//    for (Expr v : live) {
+//      assert(bind::isFapp(v));
+//      Expr u = bind::fname(bind::fname(v));
+//      if (!isOpX<VALUE>(u)) {
+//        outs() << "NOT a value\n";
+//        continue;
+//      }
+//
+//      const Value *val = getTerm<const Value *>(u);
+//      // val->dump();
+//      val->print(outs(), true);
+//      outs() << "\n";
+//    }
+//    outs() << "dumped vals\n";
+//
   }
+//  outs() << "end function: " << F.getName() << "\n";
 }
 
 } // namespace seahorn
