@@ -1,0 +1,221 @@
+(declare-rel verifier.error (Bool Bool Bool ))
+(declare-rel main@entry (Int Int Int ))
+(declare-rel main@_6 (Int Int ))
+(declare-rel main@_4 (Int Int ))
+(declare-rel main@AllRepair_correct_main.exit.i.split ())
+(declare-rel main@entry!_BAD ())
+(declare-rel main@entry!_Cond (Int Int ))
+(declare-var main@%_19_0 Bool )
+(declare-var main@%_13_0 Int )
+(declare-var main@%_17_0 Int )
+(declare-var main@%_18_0 Bool )
+(declare-var main@%_15_0 Bool )
+(declare-var main@%_11_0 Bool )
+(declare-var main@%_5_0 Int )
+(declare-var main@%_9_0 Int )
+(declare-var main@%_10_0 Bool )
+(declare-var main@%.0.i.i2_4 Int )
+(declare-var main@%.0.i2.i_4 Int )
+(declare-var main@%_7_0 Bool )
+(declare-var main@%_0_0 Int )
+(declare-var @nd_0 Int )
+(declare-var main@%_2_0 Int )
+(declare-var @find_condition_0 Int )
+(declare-var main@%_3_0 Bool )
+(declare-var @g_0 Int )
+(declare-var main@entry_0 Bool )
+(declare-var main@%_1_0 Int )
+(declare-var main@_6_0 Bool )
+(declare-var main@_4_0 Bool )
+(declare-var main@.thread_0 Bool )
+(declare-var main@_8_0 Bool )
+(declare-var main@%..i.i_0 Int )
+(declare-var main@AllRepair_buggy_main.exit.i_0 Bool )
+(declare-var main@%.0.i.i_0 Int )
+(declare-var main@%.0.i.i_1 Int )
+(declare-var main@_14_0 Bool )
+(declare-var main@_16_0 Bool )
+(declare-var main@%..i1.i_0 Int )
+(declare-var main@_12_0 Bool )
+(declare-var main@AllRepair_correct_main.exit.i_0 Bool )
+(declare-var |tuple(main@_14_0, main@AllRepair_correct_main.exit.i_0)| Bool )
+(declare-var main@%.0.i.i2_0 Int )
+(declare-var main@%.0.i2.i_0 Int )
+(declare-var main@%.0.i.i2_1 Int )
+(declare-var main@%.0.i2.i_1 Int )
+(declare-var main@%.0.i.i2_2 Int )
+(declare-var main@%.0.i2.i_2 Int )
+(declare-var main@%.0.i.i2_3 Int )
+(declare-var main@%.0.i2.i_3 Int )
+(declare-var main@AllRepair_correct_main.exit.i.split_0 Bool )
+(rule (=> (main@entry @g_0 @nd_0 @find_condition_0) main@entry!_BAD))
+(rule (let ((a!1 (and main@AllRepair_correct_main.exit.i.split
+                true
+                true
+                (= main@%_7_0 (< main@%_1_0 101))
+                (=> main@.thread_0 (and main@.thread_0 main@_6_0))
+                (=> (and main@.thread_0 main@_6_0) (not main@%_7_0))
+                (=> main@_8_0 (and main@_8_0 main@_6_0))
+                (=> (and main@_8_0 main@_6_0) main@%_7_0)
+                (=> main@_8_0 (= main@%_9_0 (mod main@%_1_0 2)))
+                (=> main@_8_0 (= main@%_10_0 (= main@%_9_0 0)))
+                (=> main@_8_0 (= main@%..i.i_0 (ite main@%_10_0 1 0)))
+                (=> main@AllRepair_buggy_main.exit.i_0
+                    (and main@AllRepair_buggy_main.exit.i_0 main@_8_0))
+                (=> (and main@AllRepair_buggy_main.exit.i_0 main@_8_0)
+                    (= main@%.0.i.i_0 main@%..i.i_0))
+                (=> (and main@AllRepair_buggy_main.exit.i_0 main@_8_0)
+                    (= main@%.0.i.i_1 main@%.0.i.i_0))
+                (=> main@AllRepair_buggy_main.exit.i_0
+                    (= main@%_11_0 (< main@%_1_0 3)))
+                (=> main@_14_0
+                    (and main@_14_0 main@AllRepair_buggy_main.exit.i_0))
+                (=> (and main@_14_0 main@AllRepair_buggy_main.exit.i_0)
+                    (not main@%_11_0))
+                (=> main@_14_0 (= main@%_15_0 (< main@%_1_0 101)))
+                (=> main@_16_0 (and main@_16_0 main@_14_0))
+                (=> (and main@_16_0 main@_14_0) main@%_15_0)
+                (=> main@_16_0 (= main@%_17_0 (mod main@%_1_0 2)))
+                (=> main@_16_0 (= main@%_18_0 (= main@%_17_0 0)))
+                (=> main@_16_0 (= main@%..i1.i_0 (ite main@%_18_0 1 0)))
+                (=> main@_12_0
+                    (and main@_12_0 main@AllRepair_buggy_main.exit.i_0))
+                (=> (and main@_12_0 main@AllRepair_buggy_main.exit.i_0)
+                    main@%_11_0)
+                (=> main@_12_0 (= main@%_13_0 @g_0))
+                (=> |tuple(main@_14_0, main@AllRepair_correct_main.exit.i_0)|
+                    main@_14_0)
+                (=> main@AllRepair_correct_main.exit.i_0
+                    (or (and main@AllRepair_correct_main.exit.i_0
+                             main@.thread_0)
+                        (and main@AllRepair_correct_main.exit.i_0 main@_16_0)
+                        |tuple(main@_14_0, main@AllRepair_correct_main.exit.i_0)|
+                        (and main@AllRepair_correct_main.exit.i_0 main@_12_0)))
+                (=> |tuple(main@_14_0, main@AllRepair_correct_main.exit.i_0)|
+                    (not main@%_15_0))
+                (=> (and main@AllRepair_correct_main.exit.i_0 main@.thread_0)
+                    (= main@%.0.i.i2_0 0))
+                (=> (and main@AllRepair_correct_main.exit.i_0 main@.thread_0)
+                    (= main@%.0.i2.i_0 0))
+                (=> (and main@AllRepair_correct_main.exit.i_0 main@_16_0)
+                    (= main@%.0.i.i2_1 main@%.0.i.i_1))
+                (=> (and main@AllRepair_correct_main.exit.i_0 main@_16_0)
+                    (= main@%.0.i2.i_1 main@%..i1.i_0))
+                (=> |tuple(main@_14_0, main@AllRepair_correct_main.exit.i_0)|
+                    (= main@%.0.i.i2_2 main@%.0.i.i_1))
+                (=> |tuple(main@_14_0, main@AllRepair_correct_main.exit.i_0)|
+                    (= main@%.0.i2.i_2 0))
+                (=> (and main@AllRepair_correct_main.exit.i_0 main@_12_0)
+                    (= main@%.0.i.i2_3 main@%.0.i.i_1))
+                (=> (and main@AllRepair_correct_main.exit.i_0 main@_12_0)
+                    (= main@%.0.i2.i_3 0))
+                (=> (and main@AllRepair_correct_main.exit.i_0 main@.thread_0)
+                    (= main@%.0.i.i2_4 main@%.0.i.i2_0))
+                (=> (and main@AllRepair_correct_main.exit.i_0 main@.thread_0)
+                    (= main@%.0.i2.i_4 main@%.0.i2.i_0))
+                (=> (and main@AllRepair_correct_main.exit.i_0 main@_16_0)
+                    (= main@%.0.i.i2_4 main@%.0.i.i2_1))
+                (=> (and main@AllRepair_correct_main.exit.i_0 main@_16_0)
+                    (= main@%.0.i2.i_4 main@%.0.i2.i_1))
+                (=> |tuple(main@_14_0, main@AllRepair_correct_main.exit.i_0)|
+                    (= main@%.0.i.i2_4 main@%.0.i.i2_2))
+                (=> |tuple(main@_14_0, main@AllRepair_correct_main.exit.i_0)|
+                    (= main@%.0.i2.i_4 main@%.0.i2.i_2))
+                (=> (and main@AllRepair_correct_main.exit.i_0 main@_12_0)
+                    (= main@%.0.i.i2_4 main@%.0.i.i2_3))
+                (=> (and main@AllRepair_correct_main.exit.i_0 main@_12_0)
+                    (= main@%.0.i2.i_4 main@%.0.i2.i_3))
+                (=> main@AllRepair_correct_main.exit.i_0
+                    (= main@%_19_0 (= main@%.0.i.i2_4 main@%.0.i2.i_4)))
+                (=> main@AllRepair_correct_main.exit.i_0 (not main@%_19_0))
+                (=> main@AllRepair_correct_main.exit.i.split_0
+                    (and main@AllRepair_correct_main.exit.i.split_0
+                         main@AllRepair_correct_main.exit.i_0))
+                main@AllRepair_correct_main.exit.i.split_0)))
+  (=> a!1 (main@_6 @g_0 main@%_1_0))))
+(rule (let ((a!1 (and main@AllRepair_correct_main.exit.i.split
+                true
+                true
+                (= main@%_5_0 @g_0)
+                (=> main@AllRepair_buggy_main.exit.i_0
+                    (and main@AllRepair_buggy_main.exit.i_0 main@_4_0))
+                (=> (and main@AllRepair_buggy_main.exit.i_0 main@_4_0)
+                    (= main@%.0.i.i_0 0))
+                (=> (and main@AllRepair_buggy_main.exit.i_0 main@_4_0)
+                    (= main@%.0.i.i_1 main@%.0.i.i_0))
+                (=> main@AllRepair_buggy_main.exit.i_0
+                    (= main@%_11_0 (< main@%_1_0 3)))
+                (=> main@_14_0
+                    (and main@_14_0 main@AllRepair_buggy_main.exit.i_0))
+                (=> (and main@_14_0 main@AllRepair_buggy_main.exit.i_0)
+                    (not main@%_11_0))
+                (=> main@_14_0 (= main@%_15_0 (< main@%_1_0 101)))
+                (=> main@_16_0 (and main@_16_0 main@_14_0))
+                (=> (and main@_16_0 main@_14_0) main@%_15_0)
+                (=> main@_16_0 (= main@%_17_0 (mod main@%_1_0 2)))
+                (=> main@_16_0 (= main@%_18_0 (= main@%_17_0 0)))
+                (=> main@_16_0 (= main@%..i1.i_0 (ite main@%_18_0 1 0)))
+                (=> main@_12_0
+                    (and main@_12_0 main@AllRepair_buggy_main.exit.i_0))
+                (=> (and main@_12_0 main@AllRepair_buggy_main.exit.i_0)
+                    main@%_11_0)
+                (=> main@_12_0 (= main@%_13_0 @g_0))
+                (=> |tuple(main@_14_0, main@AllRepair_correct_main.exit.i_0)|
+                    main@_14_0)
+                (=> main@AllRepair_correct_main.exit.i_0
+                    (or (and main@AllRepair_correct_main.exit.i_0 main@_16_0)
+                        |tuple(main@_14_0, main@AllRepair_correct_main.exit.i_0)|
+                        (and main@AllRepair_correct_main.exit.i_0 main@_12_0)))
+                (=> |tuple(main@_14_0, main@AllRepair_correct_main.exit.i_0)|
+                    (not main@%_15_0))
+                (=> (and main@AllRepair_correct_main.exit.i_0 main@_16_0)
+                    (= main@%.0.i.i2_0 main@%.0.i.i_1))
+                (=> (and main@AllRepair_correct_main.exit.i_0 main@_16_0)
+                    (= main@%.0.i2.i_0 main@%..i1.i_0))
+                (=> |tuple(main@_14_0, main@AllRepair_correct_main.exit.i_0)|
+                    (= main@%.0.i.i2_1 main@%.0.i.i_1))
+                (=> |tuple(main@_14_0, main@AllRepair_correct_main.exit.i_0)|
+                    (= main@%.0.i2.i_1 0))
+                (=> (and main@AllRepair_correct_main.exit.i_0 main@_12_0)
+                    (= main@%.0.i.i2_2 main@%.0.i.i_1))
+                (=> (and main@AllRepair_correct_main.exit.i_0 main@_12_0)
+                    (= main@%.0.i2.i_2 0))
+                (=> (and main@AllRepair_correct_main.exit.i_0 main@_16_0)
+                    (= main@%.0.i.i2_3 main@%.0.i.i2_0))
+                (=> (and main@AllRepair_correct_main.exit.i_0 main@_16_0)
+                    (= main@%.0.i2.i_3 main@%.0.i2.i_0))
+                (=> |tuple(main@_14_0, main@AllRepair_correct_main.exit.i_0)|
+                    (= main@%.0.i.i2_3 main@%.0.i.i2_1))
+                (=> |tuple(main@_14_0, main@AllRepair_correct_main.exit.i_0)|
+                    (= main@%.0.i2.i_3 main@%.0.i2.i_1))
+                (=> (and main@AllRepair_correct_main.exit.i_0 main@_12_0)
+                    (= main@%.0.i.i2_3 main@%.0.i.i2_2))
+                (=> (and main@AllRepair_correct_main.exit.i_0 main@_12_0)
+                    (= main@%.0.i2.i_3 main@%.0.i2.i_2))
+                (=> main@AllRepair_correct_main.exit.i_0
+                    (= main@%_19_0 (= main@%.0.i.i2_3 main@%.0.i2.i_3)))
+                (=> main@AllRepair_correct_main.exit.i_0 (not main@%_19_0))
+                (=> main@AllRepair_correct_main.exit.i.split_0
+                    (and main@AllRepair_correct_main.exit.i.split_0
+                         main@AllRepair_correct_main.exit.i_0))
+                main@AllRepair_correct_main.exit.i.split_0)))
+  (=> a!1 (main@_4 @g_0 main@%_1_0))))
+(rule main@AllRepair_correct_main.exit.i.split)
+(rule (=> (and (main@entry!_Cond @g_0 main@%_1_0)
+         true
+         (= main@%_0_0 @nd_0)
+         (= main@%_2_0 @find_condition_0)
+         (=> main@_6_0 (and main@_6_0 main@entry_0))
+         true
+         main@_6_0
+         true
+         (= main@%_0_0 @nd_0)
+         (= main@%_2_0 @find_condition_0)
+         (=> main@_4_0 (and main@_4_0 main@entry_0))
+         true
+         main@_4_0)
+    (main@entry @g_0 @nd_0 @find_condition_0)))
+(rule (=> (and (main@_6 @g_0 main@%_1_0) (main@_4 @g_0 main@%_1_0))
+    (main@entry!_Cond @g_0 main@%_1_0)))
+(query main@entry!_BAD)
+
