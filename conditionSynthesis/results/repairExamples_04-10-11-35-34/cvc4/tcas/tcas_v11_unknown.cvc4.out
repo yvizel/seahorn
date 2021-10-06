@@ -1,0 +1,70 @@
+./repairExamples_04-10-11-35-34/forwardSl/tcas/tcas_v11_unknown.c.fwd.sl:1.9: No set-logic command was given before this point.
+./repairExamples_04-10-11-35-34/forwardSl/tcas/tcas_v11_unknown.c.fwd.sl:1.9: CVC4 will make all theories available.
+./repairExamples_04-10-11-35-34/forwardSl/tcas/tcas_v11_unknown.c.fwd.sl:1.9: Consider setting a stricter logic for (likely) better performance.
+./repairExamples_04-10-11-35-34/forwardSl/tcas/tcas_v11_unknown.c.fwd.sl:1.9: To suppress this warning in the future use (set-logic ALL).
+./repairExamples_04-10-11-35-34/forwardSl/tcas/tcas_v11_unknown.c.fwd.sl:2.78: No implementation for default Sygus grammar of type (Array Int Int)
+
+./repairExamples_04-10-11-35-34/forwardSl/tcas/tcas_v11_unknown.c.fwd.sl:3.465: No implementation for default Sygus grammar of type (Array Int Int)
+
+./repairExamples_04-10-11-35-34/forwardSl/tcas/tcas_v11_unknown.c.fwd.sl:4.478: No implementation for default Sygus grammar of type (Array Int Int)
+
+./repairExamples_04-10-11-35-34/forwardSl/tcas/tcas_v11_unknown.c.fwd.sl:5.465: No implementation for default Sygus grammar of type (Array Int Int)
+
+./repairExamples_04-10-11-35-34/forwardSl/tcas/tcas_v11_unknown.c.fwd.sl:6.460: No implementation for default Sygus grammar of type (Array Int Int)
+
+./repairExamples_04-10-11-35-34/forwardSl/tcas/tcas_v11_unknown.c.fwd.sl:7.461: No implementation for default Sygus grammar of type (Array Int Int)
+
+./repairExamples_04-10-11-35-34/forwardSl/tcas/tcas_v11_unknown.c.fwd.sl:8.461: No implementation for default Sygus grammar of type (Array Int Int)
+
+./repairExamples_04-10-11-35-34/forwardSl/tcas/tcas_v11_unknown.c.fwd.sl:9.454: No implementation for default Sygus grammar of type (Array Int Int)
+
+./repairExamples_04-10-11-35-34/forwardSl/tcas/tcas_v11_unknown.c.fwd.sl:10.471: No implementation for default Sygus grammar of type (Array Int Int)
+
+./repairExamples_04-10-11-35-34/forwardSl/tcas/tcas_v11_unknown.c.fwd.sl:11.476: No implementation for default Sygus grammar of type (Array Int Int)
+
+./repairExamples_04-10-11-35-34/forwardSl/tcas/tcas_v11_unknown.c.fwd.sl:12.471: No implementation for default Sygus grammar of type (Array Int Int)
+
+./repairExamples_04-10-11-35-34/forwardSl/tcas/tcas_v11_unknown.c.fwd.sl:13.497: No implementation for default Sygus grammar of type (Array Int Int)
+
+./repairExamples_04-10-11-35-34/forwardSl/tcas/tcas_v11_unknown.c.fwd.sl:14.475: No implementation for default Sygus grammar of type (Array Int Int)
+
+./repairExamples_04-10-11-35-34/forwardSl/tcas/tcas_v11_unknown.c.fwd.sl:15.490: No implementation for default Sygus grammar of type (Array Int Int)
+
+./repairExamples_04-10-11-35-34/forwardSl/tcas/tcas_v11_unknown.c.fwd.sl:16.471: No implementation for default Sygus grammar of type (Array Int Int)
+
+./repairExamples_04-10-11-35-34/forwardSl/tcas/tcas_v11_unknown.c.fwd.sl:17.461: No implementation for default Sygus grammar of type (Array Int Int)
+
+./repairExamples_04-10-11-35-34/forwardSl/tcas/tcas_v11_unknown.c.fwd.sl:18.458: No implementation for default Sygus grammar of type (Array Int Int)
+
+./repairExamples_04-10-11-35-34/forwardSl/tcas/tcas_v11_unknown.c.fwd.sl:21.460: No implementation for default Sygus grammar of type (Array Int Int)
+
+./repairExamples_04-10-11-35-34/forwardSl/tcas/tcas_v11_unknown.c.fwd.sl:22.476: No implementation for default Sygus grammar of type (Array Int Int)
+
+./repairExamples_04-10-11-35-34/forwardSl/tcas/tcas_v11_unknown.c.fwd.sl:23.470: No implementation for default Sygus grammar of type (Array Int Int)
+
+./repairExamples_04-10-11-35-34/forwardSl/tcas/tcas_v11_unknown.c.fwd.sl:24.477: No implementation for default Sygus grammar of type (Array Int Int)
+
+./repairExamples_04-10-11-35-34/forwardSl/tcas/tcas_v11_unknown.c.fwd.sl:25.470: No implementation for default Sygus grammar of type (Array Int Int)
+
+./repairExamples_04-10-11-35-34/forwardSl/tcas/tcas_v11_unknown.c.fwd.sl:26.471: No implementation for default Sygus grammar of type (Array Int Int)
+
+./repairExamples_04-10-11-35-34/forwardSl/tcas/tcas_v11_unknown.c.fwd.sl:27.477: No implementation for default Sygus grammar of type (Array Int Int)
+
+./repairExamples_04-10-11-35-34/forwardSl/tcas/tcas_v11_unknown.c.fwd.sl:28.467: No implementation for default Sygus grammar of type (Array Int Int)
+
+./repairExamples_04-10-11-35-34/forwardSl/tcas/tcas_v11_unknown.c.fwd.sl:29.474: No implementation for default Sygus grammar of type (Array Int Int)
+
+./repairExamples_04-10-11-35-34/forwardSl/tcas/tcas_v11_unknown.c.fwd.sl:30.469: No implementation for default Sygus grammar of type (Array Int Int)
+
+./repairExamples_04-10-11-35-34/forwardSl/tcas/tcas_v11_unknown.c.fwd.sl:31.474: No implementation for default Sygus grammar of type (Array Int Int)
+
+./repairExamples_04-10-11-35-34/forwardSl/tcas/tcas_v11_unknown.c.fwd.sl:32.470: No implementation for default Sygus grammar of type (Array Int Int)
+
+./repairExamples_04-10-11-35-34/forwardSl/tcas/tcas_v11_unknown.c.fwd.sl:33.484: No implementation for default Sygus grammar of type (Array Int Int)
+
+./repairExamples_04-10-11-35-34/forwardSl/tcas/tcas_v11_unknown.c.fwd.sl:34.485: No implementation for default Sygus grammar of type (Array Int Int)
+
+./repairExamples_04-10-11-35-34/forwardSl/tcas/tcas_v11_unknown.c.fwd.sl:35.480: No implementation for default Sygus grammar of type (Array Int Int)
+
+./repairExamples_04-10-11-35-34/forwardSl/tcas/tcas_v11_unknown.c.fwd.sl:36.480: No implementation for default Sygus grammar of type (Array Int Int)
+

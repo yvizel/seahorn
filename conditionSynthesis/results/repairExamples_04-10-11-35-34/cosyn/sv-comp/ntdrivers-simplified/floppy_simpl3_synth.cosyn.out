@@ -1,0 +1,57 @@
+(transform N7datalog13mk_coi_filterE...no-op 0s)
+(transform N7datalog25mk_interp_tail_simplifierE...4 rules 0.066s)
+(transform N7datalog27mk_quantifier_instantiationE...no-op 0s)
+(transform N7datalog8mk_scaleE...no-op 0s)
+(transform N7datalog18mk_karr_invariantsE...no-op 0s)
+(transform N7datalog14mk_array_blastE...no-op 0s)
+(transform N7datalog16mk_elim_term_iteE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...3 rules 0.028s)
+(transform N7datalog12mk_bit_blastE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog13mk_coi_filterE...no-op 0s)
+(transform N7datalog25mk_interp_tail_simplifierE...3 rules 0.003s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog13mk_coi_filterE...no-op 0s)
+(transform N7datalog25mk_interp_tail_simplifierE...3 rules 0.002s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+expand: query!0 (0, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 12.29 :after-memory 12.39)
+Entering level 1
+expand: query!0 (1, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (0, 1) FAR 1 U 0.00
+expand: main@entry!_BAD (0, 0) FAR  w(0) 1. F 0.03
+expand: query!0 (1, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.03 :before-memory 12.39 :after-memory 19.79)
+Propagating: 0 (smt.stats :restarts  :decisions  :clauses/bin     :simplify   :memory)
+(smt.stats      :conflicts  :propagations   :lemmas     :deletions   )
+(smt.stats    0    102   2502  22098 11362/0   209     0    0   20.36)
+1  ! 2 
+(spacer::context::propagate :time 0.02 :before-memory 19.79 :after-memory 21.41)
+Entering level 2
+expand: query!0 (2, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (1, 2) FAR 1 U 0.00
+expand: main@entry!_BAD (1, 0) FAR  w(0) 1(smt.stats    1    204   6897  49185 11377/0   384     0    0   22.30)
+(smt.stats    2    306   8455  73964 11481/0   543     0    0   23.09)
+.
+	create_child: main@entry (0, 2) FAR 1 U 0.05
+expand: main@entry (0, 0) FAR  w(0) 1(smt.stats :restarts  :decisions   :clauses/bin    :simplify   :memory)
+(smt.stats      :conflicts  :propagations   :lemmas     :deletions   )
+(smt.stats    0    103   1608  27315  9366/0   103     0    0   32.16)
+(smt.stats    1    204   3033  48478  9377/0   204     0    0   32.86)
+. F 0.11
+expand: main@entry!_BAD (1, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (2, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.16 :before-memory 21.41 :after-memory 33.58)
+Propagating: 0 
+(spacer::context::propagate :time 0.00 :before-memory 33.58 :after-memory 33.58)
+(define-fun main@entry!_BAD () Bool
+  false)
+(define-fun main@entry ((x!0 Int)) Bool
+  false)
