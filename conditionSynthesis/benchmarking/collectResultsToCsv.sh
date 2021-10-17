@@ -23,8 +23,10 @@ cat "$1/settings.out" >>"$csv"
 echo "source file location:,$2" >>"$csv"
 echo -n "filename,backward_exists,forward_exists" >>"$csv"
 for obj in "$1"/*; do
-  if [ -d "$obj" ]; then
-    echo -n ",$obj" >>"$csv"
+  toolname="$(basename -- "$obj")"
+  if [ -d "$obj" ] && [ "$toolname" != "reverseSmt2" ] && [ "$toolname" != "forwardSl" ]; then
+    echo -n ",$toolname"_res >>"$csv"
+    echo -n ",$toolname"_time >>"$csv"
   fi
 done
 echo "" >>"$csv"
