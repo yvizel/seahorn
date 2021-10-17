@@ -21,7 +21,7 @@ csv="$1/results.csv"
 echo "experiment directory:,$1" >"$csv"
 cat "$1/settings.out" >>"$csv"
 echo "source file location:,$2" >>"$csv"
-echo -n "filename,backward_exists,forward_exists" >>"$csv"
+echo -n "filename,expected_result,backward_exists,forward_exists" >>"$csv"
 for obj in "$1"/*; do
   toolname="$(basename -- "$obj")"
   if [ -d "$obj" ] && [ "$toolname" != "reverseSmt2" ] && [ "$toolname" != "forwardSl" ]; then
@@ -33,7 +33,11 @@ echo "" >>"$csv"
 shopt -s globstar nullglob
 for file in "$2"/**/*.c; do
   file_without_prefix=${file#$2}
-  echo -n "$file_without_prefix," >>"$csv"                                                                       # filename
+  echo -n "$file_without_prefix," >>"$csv" # filename
+  expected_result_with_extension="${file##*_}"
+  expected_result=${expected_result_with_extension%%.*}
+  [ "$expected_result" != "unrealizable" ] && [ "$expected_result" != "realizable" ] && expected_result="unknown"
+  echo -n "$expected_result," >>"$csv" # expected_result
   [ -f "$1/reverseSmt2/$file_without_prefix.reverse.smt2" ] && echo -n "yes," >>"$csv" || echo -n "no," >>"$csv" # backward_exists
   [ -f "$1/forwardSl/$file_without_prefix.fwd.sl" ] && echo -n "yes," >>"$csv" || echo -n "no," >>"$csv"         # forward_exists
   for obj in "$1"/*; do
