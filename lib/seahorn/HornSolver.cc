@@ -6,6 +6,7 @@
 
 #include "seahorn/Support/Stats.hh"
 #include "llvm/IR/Function.h"
+//#include "llvm/IR/IRBuilder.h"
 #include "llvm/Support/CommandLine.h"
 
 #include "boost/range/algorithm/reverse.hpp"
@@ -118,9 +119,11 @@ bool HornSolver::runOnModule(Module &M) {
 
   HornifyModule &hm = getAnalysis<HornifyModule>();
 
-  // Load the Horn clause database
-  auto &db = hm.getHornClauseDB();
+  return runOnModule(M, hm);
+}
 
+bool HornSolver::runOnModule(Module &M, HornifyModule &hm) {
+  // Todo: Do we have to free old Z3?
   if (LocalContext) {
     m_local_ctx.reset(new EZ3(hm.getExprFactory()));
     m_fp.reset(new ZFixedPoint<EZ3>(*m_local_ctx));
@@ -159,6 +162,9 @@ bool HornSolver::runOnModule(Module &M) {
   params.set(":spacer.max_level", HornMaxDepth);
   fp.set(params);
 
+  // Load the Horn clause database
+  auto &db = hm.getHornClauseDB();
+  outs() << "load DB to Z3\n";
   db.loadZFixedPoint(fp, SkipConstraints);
 
   if (UseInvariant == solver_detail::INACTIVE) {
@@ -193,7 +199,34 @@ bool HornSolver::runOnModule(Module &M) {
     printCex();
     std::vector<std::string> fences;
     getFencesAlongTrace(fences);
-    // Todo: choose a fence
+    // Todo: choose a fence wisely
+    if (!fences.empty()) {
+      std::string name = fences.back();
+      fences.pop_back();
+//      Function *fence = M.getFunction(name);
+//      if (fence) {
+//        fence->print(outs());
+//        outs() << "insert fence at " << name << '\n';
+//        fence->deleteBody();
+//        fence->setLinkage(llvm::GlobalValue::InternalLinkage);
+//        LLVMContext &ctx = M.getContext();
+//        IRBuilder<> B(ctx);
+//        BasicBlock *bb = BasicBlock::Create(ctx, "entry", fence);
+//        B.SetInsertPoint(bb);
+//        B.CreateRet(B.getTrue());
+//        fence->print(outs());
+//      }
+      Expr rule;
+      bool changed = db.changeFenceRules(name, rule);
+//      for (HornRule &r : db.getRules()) {
+//        outs() << *r.get() << '\n';
+//      }
+      if (changed) {
+//        outs() << "add to fp\n";
+//        fp.addRule(ExprSet(), rule);
+        return runOnModule(M, hm);
+      }
+    }
 //    ZFixedPoint<EZ3> fp = *m_fp;
 //    const ExprVector& vars = fp.getVars();
 //    if (!vars.empty()) {
