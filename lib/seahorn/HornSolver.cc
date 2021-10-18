@@ -257,6 +257,7 @@ void HornSolver::getFencesAlongTrace(std::vector<std::string> &fences) {
   ExprVector rules;
   fp.getCexRules(rules);
 //  boost::reverse(rules);
+  outs() << "found fences: ";
   for (Expr r : rules) {
     if (isOpX<IMPL>(r)) { continue; }
     Expr expr;
@@ -268,7 +269,9 @@ void HornSolver::getFencesAlongTrace(std::vector<std::string> &fences) {
     if (noFence || at == std::string::npos) { continue; }
     name.erase(at);
     fences.push_back(name);
+    outs() << name << ',';
   }
+  outs() << '\n';
 }
 
 void HornSolver::estimateSizeInvars(Module &M) {
