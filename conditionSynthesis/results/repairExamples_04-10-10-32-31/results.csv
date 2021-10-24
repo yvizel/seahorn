@@ -1,0 +1,91 @@
+experiment directory:,repairExamples_04-10-10-32-31,,,,,
+frontend command: sea pf <file> --inline  --keep-temp --temp-dir=/tmp/repair/ --step=large --horn-cond-synthesis --horn-synth-cps=h1 --horn-read-file --horn-avoid-synthesis,,,,,,
+git head position: 4337f78f130445306b5312166b51de17d099f544,,,,,,
+backend command: z3 <reversefile.smt2> -T:10 -v:1 fp.xform.slice=false fp.xform.inline_linear=false fp.xform.inline_eager=false,,,,,,
+cvc4 command: cvc4 nonhorn.sl --tlimit=10000,,,,,,
+source file location:,../repairExamples/,,,,,
+filename,backward_exists,forward_exists,Cosyn-res,Cosyn-time,cvc4-res,cvc4-time
+/Qlose/Qlose_findC_v1_realizable.c,yes,yes,sat,real	0m0.028s,unknown,real	0m10.005s
+/Qlose/Qlose_largestGap3_v1_realizable.c,yes,yes,timeout,real	0m10.013s,unknown,real	0m10.007s
+/codeflaws/4-A-synthesis_realizable.c,yes,yes,unsat,real	0m0.034s,unknown,real	0m10.005s
+/codeflaws/50-A-15-39-synthesis_realizable.c,yes,yes,sat,real	0m0.027s,unknown,real	0m10.006s
+/crafted/array_positive_sum_v1_loop_realizable.c,yes,yes,timeout,real	0m10.008s,unknown,real	0m10.006s
+/crafted/array_positive_sum_v1_realizable.c,no,no,error,error,error,error
+/crafted/array_positive_sum_v2_loop_unrealizable.c,yes,yes,sat,real	0m0.531s,unknown,real	0m10.005s
+/crafted/bat_bug3_realizable.c,yes,yes,unsat,real	0m0.033s,unknown,real	0m10.005s
+/crafted/bat_bug4_realizable.c,yes,yes,unsat,real	0m0.033s,unknown,real	0m10.005s
+/crafted/bat_bug_loop3_realizable.c,yes,yes,sat,real	0m0.016s,unknown,real	0m10.006s
+/crafted/bat_bug_loop5_realizable.c,yes,yes,unsat,real	0m0.010s,unknown,real	0m10.006s
+/crafted/bat_bug_loop_v1_realizable.c,yes,yes,unsat,real	0m0.039s,unknown,real	0m10.005s
+/crafted/bat_bug_loop_v2_realizable.c,yes,yes,unsat,real	0m0.045s,unknown,real	0m10.005s
+/crafted/bat_bug_loop_yakir_realizable.c,yes,yes,unsat,real	0m0.048s,unknown,real	0m10.005s
+/crafted/bat_bug_v1_realizable.c,yes,yes,unsat,real	0m0.028s,unknown,real	0m10.005s
+/crafted/bat_bug_v2_realizable.c,yes,yes,unsat,real	0m0.024s,unknown,real	0m10.005s
+/crafted/binary_search_synthesis_v1_realizable.c,yes,yes,unsat,real	0m0.085s,unknown,real	0m10.006s
+/crafted/binary_search_synthesis_v2_realizable.c,yes,yes,unsat,real	0m0.410s,unknown,real	0m10.008s
+/crafted/binary_search_synthesis_v3_unrealizable.c,yes,yes,sat,real	0m0.086s,unknown,real	0m0.792s
+/crafted/bubble_max_sort_v1_realizable.c,yes,yes,timeout,real	0m10.009s,unknown,real	0m10.007s
+/crafted/bubble_max_sort_v2_unrealizable.c,yes,yes,timeout,real	0m10.010s,unknown,real	0m10.006s
+/crafted/function_call_nontrivial_realizable.c,yes,yes,sat,real	0m0.021s,unknown,real	0m10.006s
+/crafted/function_call_realizable.c,yes,yes,sat,real	0m0.011s,unknown,real	0m0.272s
+/crafted/function_call_unrealizable.c,yes,yes,sat,real	0m0.014s,unknown,real	0m0.273s
+/crafted/if1_v1_realizable.c,yes,yes,sat,real	0m0.019s,unknown,real	0m10.005s
+/crafted/if2_v1_realizable.c,yes,yes,sat,real	0m0.019s,unknown,real	0m10.005s
+/crafted/loop_v1_unrealizable.c,yes,yes,sat,real	0m0.024s,unknown,real	0m10.006s
+/crafted/loop_with_assert_realizable.c,no,no,error,error,error,error
+/crafted/nonterminating_v1_realizable.c,yes,yes,unsat,real	0m0.009s,unknown,real	0m10.005s
+/crafted/one_branch_v1_unrealizable.c,yes,yes,sat,real	0m0.013s,unknown,real	0m0.270s
+/crafted/singleton_v1_unrealizable.c,yes,yes,sat,real	0m0.020s,unknown,real	0m6.416s
+/sv-comp/Problem10_label58_synth_unknown.c,yes,yes,sat,real	0m0.898s,,real	0m0.020s
+/sv-comp/Problem10_label58_withloop_unknown.c,yes,yes,timeout,real	0m10.006s,,real	0m0.024s
+/sv-comp/ntdrivers-simplified/cdaudio_simpl1_synth.cil-1_unknown.c,yes,yes,unsat,real	0m3.365s,unknown,real	0m10.007s
+/sv-comp/ntdrivers-simplified/cdaudio_simpl1_synth.cil-2_unknown.c,yes,yes,unsat,real	0m3.365s,unknown,real	0m10.007s
+/sv-comp/ntdrivers-simplified/diskperf_simpl1_synth.cil_unknown.c,yes,yes,unsat,real	0m0.546s,unknown,real	0m10.007s
+/sv-comp/ntdrivers-simplified/floppy_simpl3_synth.cil-1_unknown.c,yes,yes,unsat,real	0m0.332s,unsat,real	0m0.896s
+/sv-comp/ntdrivers-simplified/floppy_simpl3_synth.cil-2_unknown.c,yes,yes,unsat,real	0m0.332s,unsat,real	0m0.896s
+/sv-comp/ntdrivers-simplified/floppy_simpl4_synth.cil-1_unknown.c,yes,yes,unsat,real	0m0.989s,unknown,real	0m10.006s
+/sv-comp/ntdrivers-simplified/floppy_simpl4_synth.cil-2_unknown.c,yes,yes,unsat,real	0m0.989s,unknown,real	0m10.006s
+/sv-comp/ntdrivers-simplified/kbfiltr_simpl1_synth.cil_unknown.c,yes,yes,unsat,real	0m0.029s,unknown,real	0m10.013s
+/sv-comp/ntdrivers-simplified/kbfiltr_simpl2_synth.cil-1_unknown.c,yes,yes,sat,real	0m0.146s,unknown,real	0m0.685s
+/sv-comp/ntdrivers-simplified/kbfiltr_simpl2_synth.cil-2_unknown.c,yes,yes,sat,real	0m0.146s,unknown,real	0m0.685s
+/tcas/tcas_v10_realizable.c,yes,yes,unsat,real	0m4.443s,unknown,real	0m10.009s
+/tcas/tcas_v11_unknown.c,yes,yes,unsat,real	0m4.343s,unknown,real	0m10.009s
+/tcas/tcas_v12_unknown.c,yes,yes,unsat,real	0m1.837s,unknown,real	0m10.011s
+/tcas/tcas_v13_unknown.c,yes,yes,sat,real	0m0.477s,unknown,real	0m10.006s
+/tcas/tcas_v14_unknown.c,yes,yes,sat,real	0m0.096s,unknown,real	0m10.006s
+/tcas/tcas_v15_unknown.c,yes,yes,unsat,real	0m2.232s,unknown,real	0m10.006s
+/tcas/tcas_v16_unknown.c,yes,yes,sat,real	0m0.270s,unknown,real	0m10.006s
+/tcas/tcas_v17_unknown.c,yes,yes,sat,real	0m0.365s,unknown,real	0m10.007s
+/tcas/tcas_v18_unknown.c,yes,yes,sat,real	0m0.352s,unknown,real	0m10.007s
+/tcas/tcas_v19_unknown.c,yes,yes,sat,real	0m0.428s,unknown,real	0m10.006s
+/tcas/tcas_v1_realizable.c,yes,yes,unsat,real	0m1.590s,unknown,real	0m10.006s
+/tcas/tcas_v20_realizable.c,yes,yes,unsat,real	0m0.696s,unknown,real	0m10.007s
+/tcas/tcas_v21_unknown.c,yes,yes,unsat,real	0m0.693s,unknown,real	0m10.006s
+/tcas/tcas_v22_unknown.c,yes,yes,unsat,real	0m0.698s,unknown,real	0m10.005s
+/tcas/tcas_v23_unknown.c,yes,yes,unsat,real	0m1.836s,unknown,real	0m10.005s
+/tcas/tcas_v24_unknown.c,yes,yes,unsat,real	0m1.827s,unknown,real	0m10.006s
+/tcas/tcas_v25_realizable.c,yes,yes,unsat,real	0m2.122s,unknown,real	0m10.005s
+/tcas/tcas_v26_unknown.c,yes,yes,unsat,real	0m1.841s,unknown,real	0m10.007s
+/tcas/tcas_v27_unknown.c,yes,yes,unsat,real	0m1.838s,unknown,real	0m10.007s
+/tcas/tcas_v28_realizable.c,yes,yes,unsat,real	0m2.720s,unknown,real	0m10.007s
+/tcas/tcas_v29_unknown.c,yes,yes,sat,real	0m0.248s,unknown,real	0m10.006s
+/tcas/tcas_v2_unknown.c,yes,yes,unsat,real	0m2.725s,unknown,real	0m10.006s
+/tcas/tcas_v30_unknown.c,yes,yes,sat,real	0m0.210s,unknown,real	0m10.005s
+/tcas/tcas_v31_unknown.c,yes,yes,unsat,real	0m1.494s,unknown,real	0m10.013s
+/tcas/tcas_v32_unknown.c,yes,yes,unsat,real	0m2.018s,unknown,real	0m10.006s
+/tcas/tcas_v33_unknown.c,yes,yes,sat,real	0m0.247s,unknown,real	0m10.005s
+/tcas/tcas_v34_realizable.c,yes,yes,unsat,real	0m1.906s,unknown,real	0m10.008s
+/tcas/tcas_v35_unknown.c,yes,yes,unsat,real	0m4.157s,unknown,real	0m10.006s
+/tcas/tcas_v36_unknown.c,yes,yes,sat,real	0m0.459s,unknown,real	0m10.007s
+/tcas/tcas_v37_unknown.c,yes,yes,sat,real	0m0.304s,unknown,real	0m10.006s
+/tcas/tcas_v38_unknown.c,yes,yes,unsat,real	0m2.718s,unknown,real	0m10.007s
+/tcas/tcas_v39_unknown.c,yes,yes,unsat,real	0m2.123s,unknown,real	0m10.005s
+/tcas/tcas_v3_realizable.c,yes,yes,unsat,real	0m0.924s,unknown,real	0m1.105s
+/tcas/tcas_v40_realizable.c,yes,yes,unsat,real	0m2.002s,unknown,real	0m10.006s
+/tcas/tcas_v41_unknown.c,yes,yes,unsat,real	0m0.819s,unknown,real	0m10.005s
+/tcas/tcas_v4_realizable.c,yes,yes,unsat,real	0m0.813s,unknown,real	0m10.005s
+/tcas/tcas_v5_realizable.c,yes,yes,unsat,real	0m1.841s,unknown,real	0m10.009s
+/tcas/tcas_v6_realizable.c,yes,yes,unsat,real	0m4.676s,unknown,real	0m10.007s
+/tcas/tcas_v7_unknown.c,yes,yes,sat,real	0m0.352s,unknown,real	0m10.006s
+/tcas/tcas_v8_unknown.c,yes,yes,sat,real	0m0.688s,unknown,real	0m10.006s
+/tcas/tcas_v9_realizable.c,yes,yes,unsat,real	0m1.836s,unknown,real	0m10.005s

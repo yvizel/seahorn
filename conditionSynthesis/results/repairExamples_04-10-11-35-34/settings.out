@@ -1,0 +1,4 @@
+frontend command: sea pf <file> --inline  --keep-temp --temp-dir=/tmp/repair/ --step=large --horn-cond-synthesis --horn-synth-cps=h1 --horn-read-file --horn-avoid-synthesis
+git head position: 73c81d201e17c9bb405fffb66d7f9a14817d5006
+backend command: z3 <reversefile.smt2> -T:300 -v:1 fp.xform.slice=false fp.xform.inline_linear=false fp.xform.inline_eager=false
+cvc4 command: cvc4 nonhorn.sl --tlimit=300000

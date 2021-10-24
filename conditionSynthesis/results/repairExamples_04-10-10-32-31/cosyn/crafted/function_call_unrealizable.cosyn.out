@@ -1,0 +1,39 @@
+(transform N7datalog13mk_coi_filterE...no-op 0s)
+(transform N7datalog25mk_interp_tail_simplifierE...4 rules 0s)
+(transform N7datalog27mk_quantifier_instantiationE...no-op 0s)
+(transform N7datalog8mk_scaleE...no-op 0s)
+(transform N7datalog18mk_karr_invariantsE...no-op 0s)
+(transform N7datalog14mk_array_blastE...no-op 0s)
+(transform N7datalog16mk_elim_term_iteE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...3 rules 0s)
+(transform N7datalog12mk_bit_blastE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog13mk_coi_filterE...no-op 0s)
+(transform N7datalog25mk_interp_tail_simplifierE...3 rules 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog13mk_coi_filterE...no-op 0s)
+(transform N7datalog25mk_interp_tail_simplifierE...3 rules 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+expand: query!0 (0, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 7.29 :after-memory 7.39)
+Entering level 1
+expand: query!0 (1, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (0, 1) FAR 1 U 0.00
+expand: main@entry!_BAD (0, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (1, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 7.39 :after-memory 7.59)
+Propagating: 0 1  ! 2 
+(spacer::context::propagate :time 0.00 :before-memory 7.59 :after-memory 7.68)
+Entering level 2
+expand: query!0 (2, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (1, 2) FAR 1 U 0.00
+expand: main@entry!_BAD (1, 0) FAR  w(0) 1. T 0.00
+is-reachable: query!0 (2, 0) FAR 1 T 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 7.68 :after-memory 7.68)

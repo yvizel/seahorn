@@ -92,6 +92,7 @@ protected:
   void reverseRule(const HornRule & rule);
   void reverseDB();
   Expr createJoinPredicate(const Expr name, const Expr pred1, const Expr pred2);
+  Expr createForwardSynthPredicate(const Expr name, const Expr pred);
   void handleSelect(
       const SelectInst *SI,
       std::vector<BranchToRepair> & branches);

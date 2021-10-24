@@ -1,0 +1,16 @@
+./repairExamples_04-10-10-32-31/forwardSl/tcas/tcas_v34_realizable.c.fwd.sl:1.9: No set-logic command was given before this point.
+./repairExamples_04-10-10-32-31/forwardSl/tcas/tcas_v34_realizable.c.fwd.sl:1.9: CVC4 will make all theories available.
+./repairExamples_04-10-10-32-31/forwardSl/tcas/tcas_v34_realizable.c.fwd.sl:1.9: Consider setting a stricter logic for (likely) better performance.
+./repairExamples_04-10-10-32-31/forwardSl/tcas/tcas_v34_realizable.c.fwd.sl:1.9: To suppress this warning in the future use (set-logic ALL).
+./repairExamples_04-10-10-32-31/forwardSl/tcas/tcas_v34_realizable.c.fwd.sl:2.69: No implementation for default Sygus grammar of type (Array Int Int)
+
+./repairExamples_04-10-10-32-31/forwardSl/tcas/tcas_v34_realizable.c.fwd.sl:3.455: No implementation for default Sygus grammar of type (Array Int Int)
+
+./repairExamples_04-10-10-32-31/forwardSl/tcas/tcas_v34_realizable.c.fwd.sl:4.434: No implementation for default Sygus grammar of type (Array Int Int)
+
+./repairExamples_04-10-10-32-31/forwardSl/tcas/tcas_v34_realizable.c.fwd.sl:5.460: No implementation for default Sygus grammar of type (Array Int Int)
+
+./repairExamples_04-10-10-32-31/forwardSl/tcas/tcas_v34_realizable.c.fwd.sl:8.450: No implementation for default Sygus grammar of type (Array Int Int)
+
+./repairExamples_04-10-10-32-31/forwardSl/tcas/tcas_v34_realizable.c.fwd.sl:9.464: No implementation for default Sygus grammar of type (Array Int Int)
+

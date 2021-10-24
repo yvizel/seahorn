@@ -1,0 +1,14 @@
+./repairExamples_04-10-11-44-39/forwardSl/crafted/binary_search_synthesis_v2_realizable.c.fwd.sl:1.9: No set-logic command was given before this point.
+./repairExamples_04-10-11-44-39/forwardSl/crafted/binary_search_synthesis_v2_realizable.c.fwd.sl:1.9: CVC4 will make all theories available.
+./repairExamples_04-10-11-44-39/forwardSl/crafted/binary_search_synthesis_v2_realizable.c.fwd.sl:1.9: Consider setting a stricter logic for (likely) better performance.
+./repairExamples_04-10-11-44-39/forwardSl/crafted/binary_search_synthesis_v2_realizable.c.fwd.sl:1.9: To suppress this warning in the future use (set-logic ALL).
+./repairExamples_04-10-11-44-39/forwardSl/crafted/binary_search_synthesis_v2_realizable.c.fwd.sl:3.125: No implementation for default Sygus grammar of type (Array Int Int)
+
+./repairExamples_04-10-11-44-39/forwardSl/crafted/binary_search_synthesis_v2_realizable.c.fwd.sl:4.113: No implementation for default Sygus grammar of type (Array Int Int)
+
+./repairExamples_04-10-11-44-39/forwardSl/crafted/binary_search_synthesis_v2_realizable.c.fwd.sl:5.113: No implementation for default Sygus grammar of type (Array Int Int)
+
+./repairExamples_04-10-11-44-39/forwardSl/crafted/binary_search_synthesis_v2_realizable.c.fwd.sl:8.131: No implementation for default Sygus grammar of type (Array Int Int)
+
+./repairExamples_04-10-11-44-39/forwardSl/crafted/binary_search_synthesis_v2_realizable.c.fwd.sl:9.134: No implementation for default Sygus grammar of type (Array Int Int)
+

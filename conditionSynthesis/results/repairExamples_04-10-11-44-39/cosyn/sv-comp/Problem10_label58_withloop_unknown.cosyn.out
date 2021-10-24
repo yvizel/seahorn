@@ -1,0 +1,3705 @@
+(transform N7datalog13mk_coi_filterE...no-op 0s)
+(transform N7datalog25mk_interp_tail_simplifierE...12 rules 0.091s)
+(transform N7datalog27mk_quantifier_instantiationE...no-op 0s)
+(transform N7datalog8mk_scaleE...no-op 0s)
+(transform N7datalog18mk_karr_invariantsE...no-op 0s)
+(transform N7datalog14mk_array_blastE...no-op 0s)
+(transform N7datalog16mk_elim_term_iteE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...10 rules 0s)
+(transform N7datalog12mk_bit_blastE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog13mk_coi_filterE...no-op 0s)
+(transform N7datalog25mk_interp_tail_simplifierE...10 rules 0.003s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog13mk_coi_filterE...no-op 0s)
+(transform N7datalog25mk_interp_tail_simplifierE...10 rules 0.002s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+expand: query!0 (0, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 15.82 :after-memory 16.11)
+Entering level 1
+expand: query!0 (1, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (0, 1) FAR 1 U 0.00
+expand: main@entry!_BAD (0, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (1, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 16.11 :after-memory 16.42)
+Propagating: 0 1  ! 2 
+(spacer::context::propagate :time 0.00 :before-memory 16.42 :after-memory 16.42)
+Entering level 2
+expand: query!0 (2, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (1, 2) FAR 1 U 0.00
+expand: main@entry!_BAD (1, 0) FAR  w(0) 1.
+	create_child: main@entry (0, 2) FAR 1 U 0.00
+expand: main@entry (0, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (1, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (2, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 16.42 :after-memory 17.08)
+Propagating: 0 1 2  ! 3 
+(spacer::context::propagate :time 0.00 :before-memory 17.08 :after-memory 17.08)
+Entering level 3
+expand: query!0 (3, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (2, 3) FAR 1 U 0.00
+expand: main@entry!_BAD (2, 0) FAR  w(0) 1.
+	create_child: main@entry (1, 3) FAR 1 U 0.00
+expand: main@entry (1, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (0, 3) FAR 33191 U 0.00
+expand: main@empty.loop (0, 0) FAR  w(0) 33191. F 0.00
+expand: main@entry (1, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (2, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (3, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 17.08 :after-memory 17.70)
+Propagating: 0 1 2 3  ! 4 
+(spacer::context::propagate :time 0.00 :before-memory 17.70 :after-memory 17.70)
+Entering level 4
+expand: query!0 (4, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (3, 4) FAR 1 U 0.00
+expand: main@entry!_BAD (3, 0) FAR  w(0) 1.
+	create_child: main@entry (2, 4) FAR 1 U 0.00
+expand: main@entry (2, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (1, 4) FAR 33191 U 0.00
+expand: main@empty.loop (1, 0) FAR  w(0) 33191.
+	create_child: main@_3 (0, 4) FAR 33635 U 0.00
+expand: main@_3 (0, 0) FAR  w(0) 33635. F 0.00
+expand: main@empty.loop (1, 0) FAR  w(0) 33191. F 0.00
+expand: main@entry (2, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (3, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (4, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 17.70 :after-memory 18.41)
+Propagating: 0 1 2 3 4  ! 5 
+(spacer::context::propagate :time 0.00 :before-memory 18.41 :after-memory 18.41)
+Entering level 5
+expand: query!0 (5, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (4, 5) FAR 1 U 0.00
+expand: main@entry!_BAD (4, 0) FAR  w(0) 1.
+	create_child: main@entry (3, 5) FAR 1 U 0.00
+expand: main@entry (3, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (2, 5) FAR 33191 U 0.00
+expand: main@empty.loop (2, 0) FAR  w(0) 33191.
+	create_child: main@_3 (1, 5) FAR 33635 U 0.00
+expand: main@_3 (1, 0) FAR  w(0) 33635.
+	create_child: main@.lr.ph (0, 5) FAR 34158 U 0.00
+expand: main@.lr.ph (0, 0) FAR  w(0) 34158. F 0.00
+expand: main@_3 (1, 0) FAR  w(0) 33635. F 0.00
+expand: main@empty.loop (2, 0) FAR  w(0) 33191. F 0.00
+expand: main@entry (3, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (4, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (5, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 18.41 :after-memory 19.25)
+Propagating: 0 1 2 3 4 5  ! 6 
+(spacer::context::propagate :time 0.00 :before-memory 19.25 :after-memory 19.25)
+Entering level 6
+expand: query!0 (6, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (5, 6) FAR 1 U 0.00
+expand: main@entry!_BAD (5, 0) FAR  w(0) 1.
+	create_child: main@entry (4, 6) FAR 1 U 0.00
+expand: main@entry (4, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (3, 6) FAR 33191 U 0.00
+expand: main@empty.loop (3, 0) FAR  w(0) 33191.
+	create_child: main@_3 (2, 6) FAR 33635 U 0.00
+expand: main@_3 (2, 0) FAR  w(0) 33635.
+	create_child: main@.lr.ph (1, 6) FAR 34158 U 0.00
+expand: main@.lr.ph (1, 0) FAR  w(0) 34158. F 0.00
+expand: main@_3 (2, 0) FAR  w(0) 33635. F 0.00
+expand: main@empty.loop (3, 0) FAR  w(0) 33191. F 0.00
+expand: main@entry (4, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (5, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (6, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 19.25 :after-memory 19.35)
+Propagating: 1 2 3 4 5 6  ! 7 
+(spacer::context::propagate :time 0.00 :before-memory 19.35 :after-memory 19.35)
+Entering level 7
+expand: query!0 (7, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (6, 7) FAR 1 U 0.00
+expand: main@entry!_BAD (6, 0) FAR  w(0) 1.
+	create_child: main@entry (5, 7) FAR 1 U 0.00
+expand: main@entry (5, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (4, 7) FAR 33191 U 0.00
+expand: main@empty.loop (4, 0) FAR  w(0) 33191.
+	create_child: main@_3 (3, 7) FAR 33635 U 0.00
+expand: main@_3 (3, 0) FAR  w(0) 33635.
+	create_child: main@.lr.ph (2, 7) FAR 34158 U 0.00
+expand: main@.lr.ph (2, 0) FAR  w(0) 34158.
+	create_child: main@.lr.ph (1, 7) FAR 35545 U 0.00
+expand: main@.lr.ph (1, 0) FAR  w(0) 35545.
+	create_child: main@.lr.ph190 (0, 7) FAR 35618 U 0.00
+expand: main@.lr.ph190 (0, 0) FAR  w(0) 35618. F 0.03
+expand: main@.lr.ph (1, 0) FAR  w(0) 35545. F 0.00
+expand: main@.lr.ph (2, 0) FAR  w(0) 34158. F 0.00
+expand: main@_3 (3, 0) FAR  w(0) 33635. F 0.00
+expand: main@empty.loop (4, 0) FAR  w(0) 33191. F 0.00
+expand: main@entry (5, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (6, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (7, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.04 :before-memory 19.35 :after-memory 27.19)
+Propagating: 0 1 2 3 4 5 6 7  ! 8 
+(spacer::context::propagate :time 0.00 :before-memory 27.19 :after-memory 27.29)
+Entering level 8
+expand: query!0 (8, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (7, 8) FAR 1 U 0.00
+expand: main@entry!_BAD (7, 0) FAR  w(0) 1.
+	create_child: main@entry (6, 8) FAR 1 U 0.00
+expand: main@entry (6, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (5, 8) FAR 33191 U 0.00
+expand: main@empty.loop (5, 0) FAR  w(0) 33191.
+	create_child: main@_3 (4, 8) FAR 33635 U 0.00
+expand: main@_3 (4, 0) FAR  w(0) 33635.
+	create_child: main@.lr.ph (3, 8) FAR 34158 U 0.00
+expand: main@.lr.ph (3, 0) FAR  w(0) 34158.
+	create_child: main@.lr.ph (2, 8) FAR 35545 U 0.00
+expand: main@.lr.ph (2, 0) FAR  w(0) 35545.
+	create_child: main@.lr.ph190 (1, 8) FAR 35618 U 0.00
+expand: main@.lr.ph190 (1, 0) FAR  w(0) 35618.
+	create_child: main@.lr.ph190 (0, 8) FAR 61231 U 0.00
+expand: main@.lr.ph190 (0, 0) FAR  w(0) 61231. F 0.01
+expand: main@.lr.ph190 (1, 0) FAR  w(0) 35618. F 0.01
+expand: main@.lr.ph (2, 0) FAR  w(0) 35545. F 0.00
+expand: main@.lr.ph (3, 0) FAR  w(0) 34158. F 0.00
+expand: main@_3 (4, 0) FAR  w(0) 33635. F 0.00
+expand: main@empty.loop (5, 0) FAR  w(0) 33191. F 0.00
+expand: main@entry (6, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (7, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (8, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.03 :before-memory 27.29 :after-memory 29.60)
+Propagating: 0 1 2 3 4 5 6 7 8  ! 9 10 11 12 
+(spacer::context::propagate :time 0.02 :before-memory 29.60 :after-memory 30.44)
+Entering level 9
+expand: query!0 (9, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 30.44 :after-memory 30.55)
+Propagating: 9  ! 10 11 12 
+(spacer::context::propagate :time 0.00 :before-memory 30.55 :after-memory 30.55)
+Entering level 10
+expand: query!0 (10, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 30.55 :after-memory 30.55)
+Propagating: 10  ! 11 12 
+(spacer::context::propagate :time 0.00 :before-memory 30.55 :after-memory 30.55)
+Entering level 11
+expand: query!0 (11, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 30.55 :after-memory 30.55)
+Propagating: 11  ! 12 
+(spacer::context::propagate :time 0.00 :before-memory 30.55 :after-memory 30.55)
+Entering level 12
+expand: query!0 (12, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (11, 12) FAR 1 U 0.00
+expand: main@entry!_BAD (11, 0) FAR  w(0) 1.
+	create_child: main@entry (10, 12) FAR 1 U 0.00
+expand: main@entry (10, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (9, 12) FAR 33191 U 0.00
+expand: main@empty.loop (9, 0) FAR  w(0) 33191.
+	create_child: main@_3 (8, 12) FAR 33635 U 0.00
+expand: main@_3 (8, 0) FAR  w(0) 33635.
+	create_child: main@.lr.ph (7, 12) FAR 34158 U 0.00
+expand: main@.lr.ph (7, 0) FAR  w(0) 34158.
+	create_child: main@.lr.ph (6, 12) FAR 35545 U 0.00
+expand: main@.lr.ph (6, 0) FAR  w(0) 35545.
+	create_child: main@.lr.ph190 (5, 12) FAR 35618 U 0.00
+expand: main@.lr.ph190 (5, 0) FAR  w(0) 35618. F 0.04
+expand: main@.lr.ph (6, 0) FAR  w(0) 35545. F 0.00
+expand: main@.lr.ph (7, 0) FAR  w(0) 34158. F 0.00
+expand: main@_3 (8, 0) FAR  w(0) 33635. F 0.00
+expand: main@empty.loop (9, 0) FAR  w(0) 33191. F 0.00
+expand: main@entry (10, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (11, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (12, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.05 :before-memory 30.55 :after-memory 31.54)
+Propagating: 5 6 7 8 9 10 11 12  ! 13 
+(spacer::context::propagate :time 0.00 :before-memory 31.54 :after-memory 31.44)
+Entering level 13
+expand: query!0 (13, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (12, 13) FAR 1 U 0.00
+expand: main@entry!_BAD (12, 0) FAR  w(0) 1.
+	create_child: main@entry (11, 13) FAR 1 U 0.00
+expand: main@entry (11, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (10, 13) FAR 33191 U 0.00
+expand: main@empty.loop (10, 0) FAR  w(0) 33191.
+	create_child: main@_3 (9, 13) FAR 33635 U 0.00
+expand: main@_3 (9, 0) FAR  w(0) 33635.
+	create_child: main@.lr.ph (8, 13) FAR 34158 U 0.00
+expand: main@.lr.ph (8, 0) FAR  w(0) 34158.
+	create_child: main@.lr.ph (7, 13) FAR 35545 U 0.00
+expand: main@.lr.ph (7, 0) FAR  w(0) 35545.
+	create_child: main@.lr.ph190 (6, 13) FAR 35618 U 0.00
+expand: main@.lr.ph190 (6, 0) FAR  w(0) 35618.
+	create_child: main@.lr.ph190 (5, 13) FAR 61231 U 0.00
+expand: main@.lr.ph190 (5, 0) FAR  w(0) 61231.
+	create_child: main@_3 (4, 13) FAR 75713 U 0.01
+expand: main@_3 (4, 0) FAR  w(0) 75713.
+	create_child: main@.lr.ph (3, 13) FAR 75681 U 0.00
+expand: main@.lr.ph (3, 0) FAR  w(0) 75681.
+	create_child: main@.lr.ph (2, 13) FAR 75104 U 0.00
+expand: main@.lr.ph (2, 0) FAR  w(0) 75104.
+	create_child: main@.lr.ph190 (1, 13) FAR 75111 U 0.00
+expand: main@.lr.ph190 (1, 0) FAR  w(0) 75111.
+	create_child: main@.lr.ph190 (0, 13) FAR 74716 U 0.00
+expand: main@.lr.ph190 (0, 0) FAR  w(0) 74716. F 0.01
+expand: main@.lr.ph190 (1, 0) FAR  w(0) 75111. F 0.01
+expand: main@.lr.ph (2, 0) FAR  w(0) 75104. F 0.00
+expand: main@.lr.ph (3, 0) FAR  w(0) 75681. F 0.00
+expand: main@_3 (4, 0) FAR  w(0) 75713. F 0.00
+expand: main@.lr.ph190 (5, 0) FAR  w(0) 61231. F 0.08
+expand: main@.lr.ph190 (6, 0) FAR  w(0) 35618. F 0.03
+expand: main@.lr.ph (7, 0) FAR  w(0) 35545. F 0.01
+expand: main@.lr.ph (8, 0) FAR  w(0) 34158. F 0.01
+expand: main@_3 (9, 0) FAR  w(0) 33635. F 0.00
+expand: main@empty.loop (10, 0) FAR  w(0) 33191. F 0.00
+expand: main@entry (11, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (12, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (13, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.17 :before-memory 31.44 :after-memory 33.16)
+Propagating: 0 1 2 3 4 5 6 7 8 9 10 11 12 13  ! 14 
+(spacer::context::propagate :time 0.03 :before-memory 33.16 :after-memory 33.47)
+Entering level 14
+expand: query!0 (14, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (13, 14) FAR 1 U 0.00
+expand: main@entry!_BAD (13, 0) FAR  w(0) 1.
+	create_child: main@entry (12, 14) FAR 1 U 0.00
+expand: main@entry (12, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (11, 14) FAR 33191 U 0.00
+expand: main@empty.loop (11, 0) FAR  w(0) 33191.
+	create_child: main@_3 (10, 14) FAR 33635 U 0.00
+expand: main@_3 (10, 0) FAR  w(0) 33635.
+	create_child: main@.lr.ph (9, 14) FAR 34158 U 0.00
+expand: main@.lr.ph (9, 0) FAR  w(0) 34158.
+	create_child: main@.lr.ph (8, 14) FAR 35545 U 0.00
+expand: main@.lr.ph (8, 0) FAR  w(0) 35545.
+	create_child: main@.lr.ph190 (7, 14) FAR 35618 U 0.00
+expand: main@.lr.ph190 (7, 0) FAR  w(0) 35618.
+	create_child: main@.lr.ph190 (6, 14) FAR 61231 U 0.00
+expand: main@.lr.ph190 (6, 0) FAR  w(0) 61231. F 0.06
+expand: main@.lr.ph190 (7, 0) FAR  w(0) 35618. F 0.03
+expand: main@.lr.ph (8, 0) FAR  w(0) 35545. F 0.01
+expand: main@.lr.ph (9, 0) FAR  w(0) 34158. F 0.01
+expand: main@_3 (10, 0) FAR  w(0) 33635. F 0.00
+expand: main@empty.loop (11, 0) FAR  w(0) 33191. F 0.00
+expand: main@entry (12, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (13, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (14, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.12 :before-memory 33.47 :after-memory 34.60)
+Propagating: 6 7 8 9 10 11 12 13 14  ! 15 
+(spacer::context::propagate :time 0.01 :before-memory 34.60 :after-memory 35.36)
+Entering level 15
+expand: query!0 (15, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (14, 15) FAR 1 U 0.00
+expand: main@entry!_BAD (14, 0) FAR  w(0) 1.
+	create_child: main@entry (13, 15) FAR 1 U 0.00
+expand: main@entry (13, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (12, 15) FAR 33191 U 0.00
+expand: main@empty.loop (12, 0) FAR  w(0) 33191.
+	create_child: main@_3 (11, 15) FAR 33635 U 0.00
+expand: main@_3 (11, 0) FAR  w(0) 33635.
+	create_child: main@.lr.ph (10, 15) FAR 34158 U 0.00
+expand: main@.lr.ph (10, 0) FAR  w(0) 34158.
+	create_child: main@.lr.ph (9, 15) FAR 35545 U 0.00
+expand: main@.lr.ph (9, 0) FAR  w(0) 35545.
+	create_child: main@.lr.ph (8, 15) FAR 93549 U 0.00
+expand: main@.lr.ph (8, 0) FAR  w(0) 93549.
+	create_child: main@.lr.ph190 (7, 15) FAR 93607 U 0.00
+expand: main@.lr.ph190 (7, 0) FAR  w(0) 93607.
+	create_child: main@.lr.ph190 (6, 15) FAR 93648 U 0.00
+expand: main@.lr.ph190 (6, 0) FAR  w(0) 93648.
+	create_child: main@.lr.ph190 (5, 15) FAR 93745 U 0.00
+expand: main@.lr.ph190 (5, 0) FAR  w(0) 93745.
+	create_child: main@_3 (4, 15) FAR 94955 U 0.01
+expand: main@_3 (4, 0) FAR  w(0) 94955.
+	create_child: main@.lr.ph (3, 15) FAR 94999 U 0.00
+expand: main@.lr.ph (3, 0) FAR  w(0) 94999.
+	create_child: main@.lr.ph (2, 15) FAR 94906 U 0.00
+expand: main@.lr.ph (2, 0) FAR  w(0) 94906.
+	create_child: main@.lr.ph190 (1, 15) FAR 95178 U 0.00
+expand: main@.lr.ph190 (1, 0) FAR  w(0) 95178.
+	create_child: main@.lr.ph190 (0, 15) FAR 94207 U 0.00
+expand: main@.lr.ph190 (0, 0) FAR  w(0) 94207. F 0.01
+expand: main@.lr.ph190 (1, 0) FAR  w(0) 95178. F 0.01
+expand: main@.lr.ph (2, 0) FAR  w(0) 94906. F 0.00
+expand: main@.lr.ph (3, 0) FAR  w(0) 94999. F 0.00
+expand: main@_3 (4, 0) FAR  w(0) 94955. F 0.00
+expand: main@.lr.ph190 (5, 0) FAR  w(0) 93745. F 0.06
+expand: main@.lr.ph190 (6, 0) FAR  w(0) 93648. F 0.03
+expand: main@.lr.ph190 (7, 0) FAR  w(0) 93607. F 0.03
+expand: main@.lr.ph (8, 0) FAR  w(0) 93549. F 0.01
+expand: main@.lr.ph (9, 0) FAR  w(0) 35545. F 0.01
+expand: main@.lr.ph (10, 0) FAR  w(0) 34158. F 0.01
+expand: main@_3 (11, 0) FAR  w(0) 33635. F 0.00
+expand: main@empty.loop (12, 0) FAR  w(0) 33191. F 0.00
+expand: main@entry (13, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (14, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (15, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.19 :before-memory 35.36 :after-memory 39.64)
+Propagating: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15  ! 16 17 
+(spacer::context::propagate :time 0.05 :before-memory 39.64 :after-memory 40.06)
+Entering level 16
+expand: query!0 (16, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 40.06 :after-memory 40.15)
+Propagating: 16  ! 17 
+(spacer::context::propagate :time 0.00 :before-memory 40.15 :after-memory 40.15)
+Entering level 17
+expand: query!0 (17, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (16, 17) FAR 1 U 0.00
+expand: main@entry!_BAD (16, 0) FAR  w(0) 1.
+	create_child: main@entry (15, 17) FAR 1 U 0.00
+expand: main@entry (15, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (14, 17) FAR 33191 U 0.00
+expand: main@empty.loop (14, 0) FAR  w(0) 33191.
+	create_child: main@_3 (13, 17) FAR 33635 U 0.00
+expand: main@_3 (13, 0) FAR  w(0) 33635.
+	create_child: main@.lr.ph (12, 17) FAR 34158 U 0.00
+expand: main@.lr.ph (12, 0) FAR  w(0) 34158.
+	create_child: main@.lr.ph (11, 17) FAR 35545 U 0.00
+expand: main@.lr.ph (11, 0) FAR  w(0) 35545.
+	create_child: main@.lr.ph190 (10, 17) FAR 35618 U 0.00
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 35618.
+	create_child: main@.lr.ph190 (9, 17) FAR 61231 U 0.00
+expand: main@.lr.ph190 (9, 0) FAR  w(0) 61231.
+	create_child: main@_3 (8, 17) FAR 75713 U 0.01
+expand: main@_3 (8, 0) FAR  w(0) 75713.
+	create_child: main@.lr.ph (7, 17) FAR 75681 U 0.00
+expand: main@.lr.ph (7, 0) FAR  w(0) 75681.
+	create_child: main@.lr.ph (6, 17) FAR 75104 U 0.00
+expand: main@.lr.ph (6, 0) FAR  w(0) 75104. F 0.01
+expand: main@.lr.ph (7, 0) FAR  w(0) 75681. F 0.01
+expand: main@_3 (8, 0) FAR  w(0) 75713. F 0.00
+expand: main@.lr.ph190 (9, 0) FAR  w(0) 61231. F 0.06
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 35618. F 0.03
+expand: main@.lr.ph (11, 0) FAR  w(0) 35545. F 0.01
+expand: main@.lr.ph (12, 0) FAR  w(0) 34158. F 0.01
+expand: main@_3 (13, 0) FAR  w(0) 33635. F 0.00
+expand: main@empty.loop (14, 0) FAR  w(0) 33191. F 0.00
+expand: main@entry (15, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (16, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (17, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.14 :before-memory 40.15 :after-memory 40.64)
+Propagating: 6 7 8 9 10 11 12 13 14 15 16 17  ! 18 
+(spacer::context::propagate :time 0.02 :before-memory 40.64 :after-memory 40.64)
+Entering level 18
+expand: query!0 (18, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (17, 18) FAR 1 U 0.00
+expand: main@entry!_BAD (17, 0) FAR  w(0) 1.
+	create_child: main@entry (16, 18) FAR 1 U 0.00
+expand: main@entry (16, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (15, 18) FAR 33191 U 0.00
+expand: main@empty.loop (15, 0) FAR  w(0) 33191.
+	create_child: main@_3 (14, 18) FAR 33635 U 0.00
+expand: main@_3 (14, 0) FAR  w(0) 33635.
+	create_child: main@.lr.ph (13, 18) FAR 34158 U 0.00
+expand: main@.lr.ph (13, 0) FAR  w(0) 34158.
+	create_child: main@.lr.ph (12, 18) FAR 35545 U 0.00
+expand: main@.lr.ph (12, 0) FAR  w(0) 35545.
+	create_child: main@.lr.ph190 (11, 18) FAR 35618 U 0.00
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 35618.
+	create_child: main@.lr.ph190 (10, 18) FAR 61231 U 0.00
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 61231.
+	create_child: main@_3 (9, 18) FAR 75713 U 0.01
+expand: main@_3 (9, 0) FAR  w(0) 75713.
+	create_child: main@.lr.ph (8, 18) FAR 75681 U 0.00
+expand: main@.lr.ph (8, 0) FAR  w(0) 75681.
+	create_child: main@.lr.ph (7, 18) FAR 75104 U 0.00
+expand: main@.lr.ph (7, 0) FAR  w(0) 75104.
+	create_child: main@.lr.ph (6, 18) FAR 108668 U 0.00
+expand: main@.lr.ph (6, 0) FAR  w(0) 108668.
+	create_child: main@.lr.ph190 (5, 18) FAR 108674 U 0.00
+expand: main@.lr.ph190 (5, 0) FAR  w(0) 108674. F 0.03
+expand: main@.lr.ph (6, 0) FAR  w(0) 108668. F 0.00
+expand: main@.lr.ph (7, 0) FAR  w(0) 75104. F 0.00
+expand: main@.lr.ph (8, 0) FAR  w(0) 75681. F 0.01
+expand: main@_3 (9, 0) FAR  w(0) 75713. F 0.00
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 61231. F 0.06
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 35618. F 0.03
+expand: main@.lr.ph (12, 0) FAR  w(0) 35545. F 0.01
+expand: main@.lr.ph (13, 0) FAR  w(0) 34158. F 0.01
+expand: main@_3 (14, 0) FAR  w(0) 33635. F 0.00
+expand: main@empty.loop (15, 0) FAR  w(0) 33191. F 0.00
+expand: main@entry (16, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (17, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (18, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.18 :before-memory 40.64 :after-memory 41.31)
+Propagating: 5 6 7 8 9 10 11 12 13 14 15 16 17 18  ! 19 
+(spacer::context::propagate :time 0.03 :before-memory 41.31 :after-memory 41.31)
+Entering level 19
+expand: query!0 (19, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (18, 19) FAR 1 U 0.00
+expand: main@entry!_BAD (18, 0) FAR  w(0) 1.
+	create_child: main@entry (17, 19) FAR 1 U 0.00
+expand: main@entry (17, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (16, 19) FAR 33191 U 0.00
+expand: main@empty.loop (16, 0) FAR  w(0) 33191.
+	create_child: main@_3 (15, 19) FAR 33635 U 0.00
+expand: main@_3 (15, 0) FAR  w(0) 33635.
+	create_child: main@.lr.ph (14, 19) FAR 34158 U 0.00
+expand: main@.lr.ph (14, 0) FAR  w(0) 34158.
+	create_child: main@.lr.ph (13, 19) FAR 35545 U 0.00
+expand: main@.lr.ph (13, 0) FAR  w(0) 35545.
+	create_child: main@.lr.ph190 (12, 19) FAR 35618 U 0.00
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 35618.
+	create_child: main@.lr.ph190 (11, 19) FAR 61231 U 0.00
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 61231.
+	create_child: main@_3 (10, 19) FAR 75713 U 0.01
+expand: main@_3 (10, 0) FAR  w(0) 75713.
+	create_child: main@.lr.ph (9, 19) FAR 75681 U 0.00
+expand: main@.lr.ph (9, 0) FAR  w(0) 75681.
+	create_child: main@.lr.ph (8, 19) FAR 75104 U 0.00
+expand: main@.lr.ph (8, 0) FAR  w(0) 75104.
+	create_child: main@.lr.ph (7, 19) FAR 108668 U 0.00
+expand: main@.lr.ph (7, 0) FAR  w(0) 108668.
+	create_child: main@.lr.ph190 (6, 19) FAR 108674 U 0.00
+expand: main@.lr.ph190 (6, 0) FAR  w(0) 108674.
+	create_child: main@.lr.ph190 (5, 19) FAR 112823 U 0.00
+expand: main@.lr.ph190 (5, 0) FAR  w(0) 112823. F 0.03
+expand: main@.lr.ph190 (6, 0) FAR  w(0) 108674. F 0.02
+expand: main@.lr.ph (7, 0) FAR  w(0) 108668. F 0.01
+expand: main@.lr.ph (8, 0) FAR  w(0) 75104. F 0.01
+expand: main@.lr.ph (9, 0) FAR  w(0) 75681. F 0.01
+expand: main@_3 (10, 0) FAR  w(0) 75713. F 0.00
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 61231. F 0.08
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 35618. F 0.03
+expand: main@.lr.ph (13, 0) FAR  w(0) 35545.
+	create_child: main@.lr.ph (12, 19) FAR 93549 U 0.00
+expand: main@.lr.ph (12, 0) FAR  w(0) 93549.
+	create_child: main@.lr.ph190 (11, 19) FAR 93607 U 0.00
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 93607.
+	create_child: main@.lr.ph190 (10, 19) FAR 93648 U 0.00
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 93648.
+	create_child: main@.lr.ph190 (9, 19) FAR 93745 U 0.00
+expand: main@.lr.ph190 (9, 0) FAR  w(0) 93745.
+	create_child: main@_3 (8, 19) FAR 94955 U 0.01
+expand: main@_3 (8, 0) FAR  w(0) 94955.
+	create_child: main@.lr.ph (7, 19) FAR 94999 U 0.00
+expand: main@.lr.ph (7, 0) FAR  w(0) 94999.
+	create_child: main@.lr.ph (6, 19) FAR 94906 U 0.00
+expand: main@.lr.ph (6, 0) FAR  w(0) 94906.
+	create_child: main@.lr.ph190 (5, 19) FAR 95178 U 0.00
+expand: main@.lr.ph190 (5, 0) FAR  w(0) 95178. F 0.03
+expand: main@.lr.ph (6, 0) FAR  w(0) 94906. F 0.00
+expand: main@.lr.ph (7, 0) FAR  w(0) 94999. F 0.00
+expand: main@_3 (8, 0) FAR  w(0) 94955. F 0.00
+expand: main@.lr.ph190 (9, 0) FAR  w(0) 93745. F 0.04
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 93648. F 0.03
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 93607. F 0.03
+expand: main@.lr.ph (12, 0) FAR  w(0) 93549. F 0.01
+expand: main@.lr.ph (13, 0) FAR  w(0) 35545. F 0.01
+expand: main@.lr.ph (14, 0) FAR  w(0) 34158. F 0.01
+expand: main@_3 (15, 0) FAR  w(0) 33635. F 0.00
+expand: main@empty.loop (16, 0) FAR  w(0) 33191. F 0.00
+expand: main@entry (17, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (18, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (19, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.39 :before-memory 41.31 :after-memory 42.29)
+Propagating: 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19  ! 20 
+(spacer::context::propagate :time 0.04 :before-memory 42.29 :after-memory 42.29)
+Entering level 20
+expand: query!0 (20, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (19, 20) FAR 1 U 0.00
+expand: main@entry!_BAD (19, 0) FAR  w(0) 1.
+	create_child: main@entry (18, 20) FAR 1 U 0.00
+expand: main@entry (18, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (17, 20) FAR 33191 U 0.00
+expand: main@empty.loop (17, 0) FAR  w(0) 33191.
+	create_child: main@_3 (16, 20) FAR 33635 U 0.00
+expand: main@_3 (16, 0) FAR  w(0) 33635.
+	create_child: main@.lr.ph (15, 20) FAR 34158 U 0.00
+expand: main@.lr.ph (15, 0) FAR  w(0) 34158.
+	create_child: main@.lr.ph (14, 20) FAR 35545 U 0.00
+expand: main@.lr.ph (14, 0) FAR  w(0) 35545.
+	create_child: main@.lr.ph190 (13, 20) FAR 35618 U 0.00
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 35618.
+	create_child: main@.lr.ph190 (12, 20) FAR 61231 U 0.00
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 61231.
+	create_child: main@_3 (11, 20) FAR 75713 U 0.01
+expand: main@_3 (11, 0) FAR  w(0) 75713.
+	create_child: main@.lr.ph (10, 20) FAR 75681 U 0.00
+expand: main@.lr.ph (10, 0) FAR  w(0) 75681.
+	create_child: main@.lr.ph (9, 20) FAR 75104 U 0.00
+expand: main@.lr.ph (9, 0) FAR  w(0) 75104.
+	create_child: main@.lr.ph (8, 20) FAR 108668 U 0.00
+expand: main@.lr.ph (8, 0) FAR  w(0) 108668.
+	create_child: main@.lr.ph190 (7, 20) FAR 108674 U 0.00
+expand: main@.lr.ph190 (7, 0) FAR  w(0) 108674.
+	create_child: main@.lr.ph190 (6, 20) FAR 112823 U 0.00
+expand: main@.lr.ph190 (6, 0) FAR  w(0) 112823.
+	create_child: main@.lr.ph190 (5, 20) FAR 119997 U 0.00
+expand: main@.lr.ph190 (5, 0) FAR  w(0) 119997.
+	create_child: main@_3 (4, 20) FAR 122015 UNDEF 0.01
+expand: main@_3 (4, 0) FAR  w(0) 122015.
+	create_child: main@.lr.ph (3, 20) FAR 122009 U 0.00
+expand: main@.lr.ph (3, 0) FAR  w(0) 122009.
+	create_child: main@.lr.ph (2, 20) FAR 122035 U 0.00
+expand: main@.lr.ph (2, 0) FAR  w(0) 122035.
+	create_child: main@.lr.ph190 (1, 20) FAR 122041 U 0.00
+expand: main@.lr.ph190 (1, 0) FAR  w(0) 122041.
+	create_child: main@.lr.ph190 (0, 20) FAR 112854 U 0.00
+expand: main@.lr.ph190 (0, 0) FAR  w(0) 112854. F 0.01
+expand: main@.lr.ph190 (1, 0) FAR  w(0) 122041. F 0.01
+expand: main@.lr.ph (2, 0) FAR  w(0) 122035. F 0.00
+expand: main@.lr.ph (3, 0) FAR  w(0) 122009. F 0.00
+expand: main@_3 (4, 0) FAR  w(0) 122015. F 0.00
+expand: main@.lr.ph190 (5, 0) FAR  w(0) 119997. F 0.06
+expand: main@.lr.ph190 (6, 0) FAR  w(0) 112823. F 0.03
+expand: main@.lr.ph190 (7, 0) FAR  w(0) 108674. F 0.03
+expand: main@.lr.ph (8, 0) FAR  w(0) 108668. F 0.01
+expand: main@.lr.ph (9, 0) FAR  w(0) 75104. F 0.01
+expand: main@.lr.ph (10, 0) FAR  w(0) 75681. F 0.01
+expand: main@_3 (11, 0) FAR  w(0) 75713. F 0.00
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 61231. F 0.09
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 35618. F 0.04
+expand: main@.lr.ph (14, 0) FAR  w(0) 35545.
+	create_child: main@.lr.ph (13, 20) FAR 93549 U 0.00
+expand: main@.lr.ph (13, 0) FAR  w(0) 93549.
+	create_child: main@.lr.ph190 (12, 20) FAR 93607 U 0.00
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 93607.
+	create_child: main@.lr.ph190 (11, 20) FAR 93648 U 0.00
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 93648.
+	create_child: main@.lr.ph190 (10, 20) FAR 93745 U 0.00
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 93745.
+	create_child: main@_3 (9, 20) FAR 134453 UNDEF 0.01
+expand: main@_3 (9, 0) FAR  w(0) 134453.
+	create_child: main@.lr.ph (8, 20) FAR 135016 U 0.00
+expand: main@.lr.ph (8, 0) FAR  w(0) 135016.
+	create_child: main@.lr.ph (7, 20) FAR 134458 U 0.00
+expand: main@.lr.ph (7, 0) FAR  w(0) 134458.
+	create_child: main@.lr.ph190 (6, 20) FAR 135265 U 0.00
+expand: main@.lr.ph190 (6, 0) FAR  w(0) 135265.
+	create_child: main@.lr.ph190 (5, 20) FAR 134202 U 0.00
+expand: main@.lr.ph190 (5, 0) FAR  w(0) 134202. F 0.06
+expand: main@.lr.ph190 (6, 0) FAR  w(0) 135265. F 0.04
+expand: main@.lr.ph (7, 0) FAR  w(0) 134458. F 0.01
+expand: main@.lr.ph (8, 0) FAR  w(0) 135016. F 0.01
+expand: main@_3 (9, 0) FAR  w(0) 134453. F 0.00
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 93745. F 0.05
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 93648. F 0.03
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 93607. F 0.04
+expand: main@.lr.ph (13, 0) FAR  w(0) 93549. F 0.01
+expand: main@.lr.ph (14, 0) FAR  w(0) 35545. F 0.01
+expand: main@.lr.ph (15, 0) FAR  w(0) 34158. F 0.01
+expand: main@_3 (16, 0) FAR  w(0) 33635. F 0.00
+expand: main@empty.loop (17, 0) FAR  w(0) 33191. F 0.00
+expand: main@entry (18, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (19, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (20, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.63 :before-memory 42.29 :after-memory 48.15)
+Propagating: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20  ! 21 
+(spacer::context::propagate :time 0.11 :before-memory 48.15 :after-memory 48.56)
+Entering level 21
+expand: query!0 (21, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (20, 21) FAR 1 U 0.00
+expand: main@entry!_BAD (20, 0) FAR  w(0) 1.
+	create_child: main@entry (19, 21) FAR 1 U 0.00
+expand: main@entry (19, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (18, 21) FAR 33191 U 0.00
+expand: main@empty.loop (18, 0) FAR  w(0) 33191.
+	create_child: main@_3 (17, 21) FAR 33635 U 0.00
+expand: main@_3 (17, 0) FAR  w(0) 33635.
+	create_child: main@.lr.ph (16, 21) FAR 34158 U 0.00
+expand: main@.lr.ph (16, 0) FAR  w(0) 34158.
+	create_child: main@.lr.ph (15, 21) FAR 35545 U 0.00
+expand: main@.lr.ph (15, 0) FAR  w(0) 35545.
+	create_child: main@.lr.ph190 (14, 21) FAR 35618 U 0.00
+expand: main@.lr.ph190 (14, 0) FAR  w(0) 35618.
+	create_child: main@.lr.ph190 (13, 21) FAR 61231 U 0.00
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 61231.
+	create_child: main@_3 (12, 21) FAR 75713 U 0.01
+expand: main@_3 (12, 0) FAR  w(0) 75713.
+	create_child: main@.lr.ph (11, 21) FAR 75681 U 0.00
+expand: main@.lr.ph (11, 0) FAR  w(0) 75681.
+	create_child: main@.lr.ph (10, 21) FAR 75104 U 0.00
+expand: main@.lr.ph (10, 0) FAR  w(0) 75104.
+	create_child: main@.lr.ph (9, 21) FAR 108668 U 0.00
+expand: main@.lr.ph (9, 0) FAR  w(0) 108668.
+	create_child: main@.lr.ph190 (8, 21) FAR 108674 U 0.00
+expand: main@.lr.ph190 (8, 0) FAR  w(0) 108674.
+	create_child: main@.lr.ph190 (7, 21) FAR 112823 U 0.00
+expand: main@.lr.ph190 (7, 0) FAR  w(0) 112823.
+	create_child: main@.lr.ph190 (6, 21) FAR 119997 U 0.00
+expand: main@.lr.ph190 (6, 0) FAR  w(0) 119997. F 0.07
+expand: main@.lr.ph190 (7, 0) FAR  w(0) 112823. F 0.05
+expand: main@.lr.ph190 (8, 0) FAR  w(0) 108674. F 0.02
+expand: main@.lr.ph (9, 0) FAR  w(0) 108668. F 0.01
+expand: main@.lr.ph (10, 0) FAR  w(0) 75104. F 0.01
+expand: main@.lr.ph (11, 0) FAR  w(0) 75681. F 0.01
+expand: main@_3 (12, 0) FAR  w(0) 75713. F 0.00
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 61231. F 0.07
+expand: main@.lr.ph190 (14, 0) FAR  w(0) 35618. F 0.04
+expand: main@.lr.ph (15, 0) FAR  w(0) 35545.
+	create_child: main@.lr.ph (14, 21) FAR 93549 U 0.00
+expand: main@.lr.ph (14, 0) FAR  w(0) 93549.
+	create_child: main@.lr.ph190 (13, 21) FAR 93607 U 0.00
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 93607.
+	create_child: main@.lr.ph190 (12, 21) FAR 93648 U 0.00
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 93648.
+	create_child: main@.lr.ph190 (11, 21) FAR 93745 U 0.00
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 93745.
+	create_child: main@_3 (10, 21) FAR 94955 U 0.01
+expand: main@_3 (10, 0) FAR  w(0) 94955.
+	create_child: main@.lr.ph (9, 21) FAR 94999 U 0.00
+expand: main@.lr.ph (9, 0) FAR  w(0) 94999.
+	create_child: main@.lr.ph (8, 21) FAR 94906 U 0.00
+expand: main@.lr.ph (8, 0) FAR  w(0) 94906. F 0.01
+expand: main@.lr.ph (9, 0) FAR  w(0) 94999. F 0.01
+expand: main@_3 (10, 0) FAR  w(0) 94955. F 0.00
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 93745. F 0.06
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 93648. F 0.04
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 93607. F 0.04
+expand: main@.lr.ph (14, 0) FAR  w(0) 93549. F 0.01
+expand: main@.lr.ph (15, 0) FAR  w(0) 35545. F 0.01
+expand: main@.lr.ph (16, 0) FAR  w(0) 34158. F 0.01
+expand: main@_3 (17, 0) FAR  w(0) 33635. F 0.00
+expand: main@empty.loop (18, 0) FAR  w(0) 33191. F 0.00
+expand: main@entry (19, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (20, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (21, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.55 :before-memory 48.56 :after-memory 51.68)
+Propagating: 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21  ! 22 
+(spacer::context::propagate :time 0.08 :before-memory 51.68 :after-memory 51.88)
+Entering level 22
+expand: query!0 (22, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (21, 22) FAR 1 U 0.00
+expand: main@entry!_BAD (21, 0) FAR  w(0) 1.
+	create_child: main@entry (20, 22) FAR 1 U 0.00
+expand: main@entry (20, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (19, 22) FAR 33191 U 0.00
+expand: main@empty.loop (19, 0) FAR  w(0) 33191.
+	create_child: main@_3 (18, 22) FAR 33635 U 0.00
+expand: main@_3 (18, 0) FAR  w(0) 33635.
+	create_child: main@.lr.ph (17, 22) FAR 34158 U 0.00
+expand: main@.lr.ph (17, 0) FAR  w(0) 34158.
+	create_child: main@.lr.ph (16, 22) FAR 35545 U 0.00
+expand: main@.lr.ph (16, 0) FAR  w(0) 35545.
+	create_child: main@.lr.ph190 (15, 22) FAR 35618 U 0.00
+expand: main@.lr.ph190 (15, 0) FAR  w(0) 35618.
+	create_child: main@.lr.ph190 (14, 22) FAR 61231 U 0.00
+expand: main@.lr.ph190 (14, 0) FAR  w(0) 61231.
+	create_child: main@_3 (13, 22) FAR 75713 U 0.01
+expand: main@_3 (13, 0) FAR  w(0) 75713.
+	create_child: main@.lr.ph (12, 22) FAR 75681 U 0.00
+expand: main@.lr.ph (12, 0) FAR  w(0) 75681.
+	create_child: main@.lr.ph (11, 22) FAR 75104 U 0.00
+expand: main@.lr.ph (11, 0) FAR  w(0) 75104.
+	create_child: main@.lr.ph190 (10, 22) FAR 75111 U 0.00
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 75111. F 0.04
+expand: main@.lr.ph (11, 0) FAR  w(0) 75104.
+	create_child: main@.lr.ph (10, 22) FAR 108668 U 0.00
+expand: main@.lr.ph (10, 0) FAR  w(0) 108668.
+	create_child: main@.lr.ph190 (9, 22) FAR 108674 U 0.00
+expand: main@.lr.ph190 (9, 0) FAR  w(0) 108674. F 0.04
+expand: main@.lr.ph (10, 0) FAR  w(0) 108668.
+	create_child: main@.lr.ph (9, 22) FAR 170047 U 0.00
+expand: main@.lr.ph (9, 0) FAR  w(0) 170047.
+	create_child: main@.lr.ph190 (8, 22) FAR 169068 U 0.00
+expand: main@.lr.ph190 (8, 0) FAR  w(0) 169068.
+	create_child: main@.lr.ph190 (7, 22) FAR 170185 U 0.00
+expand: main@.lr.ph190 (7, 0) FAR  w(0) 170185.
+	create_child: main@.lr.ph190 (6, 22) FAR 170206 U 0.00
+expand: main@.lr.ph190 (6, 0) FAR  w(0) 170206.
+	create_child: main@.lr.ph190 (5, 22) FAR 170193 U 0.00
+expand: main@.lr.ph190 (5, 0) FAR  w(0) 170193. F 0.05
+expand: main@.lr.ph190 (6, 0) FAR  w(0) 170206. F 0.02
+expand: main@.lr.ph190 (7, 0) FAR  w(0) 170185. F 0.04
+expand: main@.lr.ph190 (8, 0) FAR  w(0) 169068. F 0.03
+expand: main@.lr.ph (9, 0) FAR  w(0) 170047. F 0.01
+expand: main@.lr.ph (10, 0) FAR  w(0) 108668. F 0.01
+expand: main@.lr.ph (11, 0) FAR  w(0) 75104. F 0.01
+expand: main@.lr.ph (12, 0) FAR  w(0) 75681. F 0.01
+expand: main@_3 (13, 0) FAR  w(0) 75713. F 0.00
+expand: main@.lr.ph190 (14, 0) FAR  w(0) 61231. F 0.08
+expand: main@.lr.ph190 (15, 0) FAR  w(0) 35618. F 0.04
+expand: main@.lr.ph (16, 0) FAR  w(0) 35545.
+	create_child: main@.lr.ph (15, 22) FAR 93549 U 0.00
+expand: main@.lr.ph (15, 0) FAR  w(0) 93549.
+	create_child: main@.lr.ph190 (14, 22) FAR 93607 U 0.00
+expand: main@.lr.ph190 (14, 0) FAR  w(0) 93607.
+	create_child: main@.lr.ph190 (13, 22) FAR 93648 U 0.00
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 93648.
+	create_child: main@.lr.ph190 (12, 22) FAR 93745 U 0.00
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 93745.
+	create_child: main@_3 (11, 22) FAR 94955 U 0.01
+expand: main@_3 (11, 0) FAR  w(0) 94955.
+	create_child: main@.lr.ph (10, 22) FAR 94999 U 0.00
+expand: main@.lr.ph (10, 0) FAR  w(0) 94999.
+	create_child: main@.lr.ph (9, 22) FAR 94906 U 0.00
+expand: main@.lr.ph (9, 0) FAR  w(0) 94906.
+	create_child: main@.lr.ph (8, 22) FAR 177540 U 0.00
+expand: main@.lr.ph (8, 0) FAR  w(0) 177540. F 0.01
+expand: main@.lr.ph (9, 0) FAR  w(0) 94906. F 0.01
+expand: main@.lr.ph (10, 0) FAR  w(0) 94999. F 0.01
+expand: main@_3 (11, 0) FAR  w(0) 94955. F 0.00
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 93745. F 0.06
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 93648. F 0.04
+expand: main@.lr.ph190 (14, 0) FAR  w(0) 93607. F 0.04
+expand: main@.lr.ph (15, 0) FAR  w(0) 93549.
+	create_child: main@.lr.ph (14, 22) FAR 182908 U 0.00
+expand: main@.lr.ph (14, 0) FAR  w(0) 182908.
+	create_child: main@.lr.ph190 (13, 22) FAR 182917 U 0.00
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 182917.
+	create_child: main@.lr.ph190 (12, 22) FAR 181616 U 0.00
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 181616.
+	create_child: main@.lr.ph190 (11, 22) FAR 182341 U 0.00
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 182341.
+	create_child: main@.lr.ph190 (10, 22) FAR 182801 U 0.00
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 182801.
+	create_child: main@_3 (9, 22) FAR 183759 U 0.01
+expand: main@_3 (9, 0) FAR  w(0) 183759.
+	create_child: main@.lr.ph (8, 22) FAR 180598 U 0.00
+expand: main@.lr.ph (8, 0) FAR  w(0) 180598.
+	create_child: main@.lr.ph (7, 22) FAR 183924 U 0.00
+expand: main@.lr.ph (7, 0) FAR  w(0) 183924. F 0.01
+expand: main@.lr.ph (8, 0) FAR  w(0) 180598. F 0.01
+expand: main@_3 (9, 0) FAR  w(0) 183759. F 0.00
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 182801. F 0.06
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 182341. F 0.04
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 181616. F 0.04
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 182917. F 0.04
+expand: main@.lr.ph (14, 0) FAR  w(0) 182908. F 0.01
+expand: main@.lr.ph (15, 0) FAR  w(0) 93549. F 0.01
+expand: main@.lr.ph (16, 0) FAR  w(0) 35545. F 0.01
+expand: main@.lr.ph (17, 0) FAR  w(0) 34158. F 0.01
+expand: main@_3 (18, 0) FAR  w(0) 33635. F 0.00
+expand: main@empty.loop (19, 0) FAR  w(0) 33191. F 0.00
+expand: main@entry (20, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (21, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (22, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.93 :before-memory 51.88 :after-memory 54.97)
+Propagating: 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22  ! 23 
+(spacer::context::propagate :time 0.14 :before-memory 54.97 :after-memory 55.08)
+Entering level 23
+expand: query!0 (23, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (22, 23) FAR 1 U 0.00
+expand: main@entry!_BAD (22, 0) FAR  w(0) 1.
+	create_child: main@entry (21, 23) FAR 1 U 0.00
+expand: main@entry (21, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (20, 23) FAR 33191 U 0.00
+expand: main@empty.loop (20, 0) FAR  w(0) 33191.
+	create_child: main@_3 (19, 23) FAR 33635 U 0.00
+expand: main@_3 (19, 0) FAR  w(0) 33635.
+	create_child: main@.lr.ph (18, 23) FAR 34158 U 0.00
+expand: main@.lr.ph (18, 0) FAR  w(0) 34158.
+	create_child: main@.lr.ph (17, 23) FAR 35545 U 0.00
+expand: main@.lr.ph (17, 0) FAR  w(0) 35545.
+	create_child: main@.lr.ph190 (16, 23) FAR 35618 U 0.00
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 35618.
+	create_child: main@.lr.ph190 (15, 23) FAR 61231 U 0.00
+expand: main@.lr.ph190 (15, 0) FAR  w(0) 61231.
+	create_child: main@_3 (14, 23) FAR 75713 U 0.01
+expand: main@_3 (14, 0) FAR  w(0) 75713.
+	create_child: main@.lr.ph (13, 23) FAR 75681 U 0.00
+expand: main@.lr.ph (13, 0) FAR  w(0) 75681.
+	create_child: main@.lr.ph (12, 23) FAR 75104 U 0.00
+expand: main@.lr.ph (12, 0) FAR  w(0) 75104.
+	create_child: main@.lr.ph190 (11, 23) FAR 75111 U 0.00
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 75111.
+	create_child: main@.lr.ph190 (10, 23) FAR 74716 U 0.00
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 74716. F 0.07
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 75111. F 0.04
+expand: main@.lr.ph (12, 0) FAR  w(0) 75104.
+	create_child: main@.lr.ph (11, 23) FAR 108668 U 0.00
+expand: main@.lr.ph (11, 0) FAR  w(0) 108668.
+	create_child: main@.lr.ph190 (10, 23) FAR 108674 U 0.00
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 108674.
+	create_child: main@.lr.ph190 (9, 23) FAR 112823 U 0.01
+expand: main@.lr.ph190 (9, 0) FAR  w(0) 112823. F 0.03
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 108674. F 0.03
+expand: main@.lr.ph (11, 0) FAR  w(0) 108668.
+	create_child: main@.lr.ph (10, 23) FAR 170047 U 0.00
+expand: main@.lr.ph (10, 0) FAR  w(0) 170047.
+	create_child: main@.lr.ph (9, 23) FAR 196850 U 0.00
+expand: main@.lr.ph (9, 0) FAR  w(0) 196850.
+	create_child: main@.lr.ph190 (8, 23) FAR 196877 U 0.00
+expand: main@.lr.ph190 (8, 0) FAR  w(0) 196877.
+	create_child: main@.lr.ph190 (7, 23) FAR 197013 U 0.00
+expand: main@.lr.ph190 (7, 0) FAR  w(0) 197013.
+	create_child: main@.lr.ph190 (6, 23) FAR 197026 U 0.00
+expand: main@.lr.ph190 (6, 0) FAR  w(0) 197026.
+	create_child: main@.lr.ph190 (5, 23) FAR 196172 U 0.00
+expand: main@.lr.ph190 (5, 0) FAR  w(0) 196172. F 0.04
+expand: main@.lr.ph190 (6, 0) FAR  w(0) 197026. F 0.06
+expand: main@.lr.ph190 (7, 0) FAR  w(0) 197013. F 0.03
+expand: main@.lr.ph190 (8, 0) FAR  w(0) 196877. F 0.03
+expand: main@.lr.ph (9, 0) FAR  w(0) 196850. F 0.01
+expand: main@.lr.ph (10, 0) FAR  w(0) 170047. F 0.01
+expand: main@.lr.ph (11, 0) FAR  w(0) 108668. F 0.01
+expand: main@.lr.ph (12, 0) FAR  w(0) 75104. F 0.01
+expand: main@.lr.ph (13, 0) FAR  w(0) 75681. F 0.01
+expand: main@_3 (14, 0) FAR  w(0) 75713. F 0.00
+expand: main@.lr.ph190 (15, 0) FAR  w(0) 61231. F 0.08
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 35618. F 0.04
+expand: main@.lr.ph (17, 0) FAR  w(0) 35545.
+	create_child: main@.lr.ph (16, 23) FAR 93549 U 0.00
+expand: main@.lr.ph (16, 0) FAR  w(0) 93549.
+	create_child: main@.lr.ph190 (15, 23) FAR 93607 U 0.00
+expand: main@.lr.ph190 (15, 0) FAR  w(0) 93607.
+	create_child: main@.lr.ph190 (14, 23) FAR 93648 U 0.01
+expand: main@.lr.ph190 (14, 0) FAR  w(0) 93648.
+	create_child: main@.lr.ph190 (13, 23) FAR 93745 U 0.00
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 93745.
+	create_child: main@_3 (12, 23) FAR 94955 U 0.01
+expand: main@_3 (12, 0) FAR  w(0) 94955.
+	create_child: main@.lr.ph (11, 23) FAR 94999 U 0.00
+expand: main@.lr.ph (11, 0) FAR  w(0) 94999.
+	create_child: main@.lr.ph (10, 23) FAR 94906 U 0.00
+expand: main@.lr.ph (10, 0) FAR  w(0) 94906. F 0.01
+expand: main@.lr.ph (11, 0) FAR  w(0) 94999. F 0.01
+expand: main@_3 (12, 0) FAR  w(0) 94955. F 0.00
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 93745. F 0.06
+expand: main@.lr.ph190 (14, 0) FAR  w(0) 93648. F 0.05
+expand: main@.lr.ph190 (15, 0) FAR  w(0) 93607. F 0.05
+expand: main@.lr.ph (16, 0) FAR  w(0) 93549.
+	create_child: main@.lr.ph (15, 23) FAR 182908 U 0.00
+expand: main@.lr.ph (15, 0) FAR  w(0) 182908.
+	create_child: main@.lr.ph190 (14, 23) FAR 182917 U 0.00
+expand: main@.lr.ph190 (14, 0) FAR  w(0) 182917.
+	create_child: main@.lr.ph190 (13, 23) FAR 181616 U 0.01
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 181616.
+	create_child: main@.lr.ph190 (12, 23) FAR 182341 U 0.00
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 182341.
+	create_child: main@.lr.ph190 (11, 23) FAR 182801 U 0.00
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 182801. F 0.06
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 182341. F 0.05
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 181616. F 0.04
+expand: main@.lr.ph190 (14, 0) FAR  w(0) 182917. F 0.05
+expand: main@.lr.ph (15, 0) FAR  w(0) 182908. F 0.01
+expand: main@.lr.ph (16, 0) FAR  w(0) 93549. F 0.01
+expand: main@.lr.ph (17, 0) FAR  w(0) 35545. F 0.01
+expand: main@.lr.ph (18, 0) FAR  w(0) 34158. F 0.01
+expand: main@_3 (19, 0) FAR  w(0) 33635. F 0.00
+expand: main@empty.loop (20, 0) FAR  w(0) 33191. F 0.00
+expand: main@entry (21, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (22, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (23, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 1.05 :before-memory 55.08 :after-memory 65.73)
+Propagating: 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23  ! 24 
+(spacer::context::propagate :time 0.21 :before-memory 65.73 :after-memory 66.22)
+Entering level 24
+expand: query!0 (24, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (23, 24) FAR 1 U 0.00
+expand: main@entry!_BAD (23, 0) FAR  w(0) 1.
+	create_child: main@entry (22, 24) FAR 1 U 0.00
+expand: main@entry (22, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (21, 24) FAR 33191 U 0.00
+expand: main@empty.loop (21, 0) FAR  w(0) 33191.
+	create_child: main@_3 (20, 24) FAR 33635 U 0.00
+expand: main@_3 (20, 0) FAR  w(0) 33635.
+	create_child: main@.lr.ph (19, 24) FAR 34158 U 0.00
+expand: main@.lr.ph (19, 0) FAR  w(0) 34158.
+	create_child: main@.lr.ph (18, 24) FAR 35545 U 0.00
+expand: main@.lr.ph (18, 0) FAR  w(0) 35545.
+	create_child: main@.lr.ph190 (17, 24) FAR 35618 U 0.00
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 35618.
+	create_child: main@.lr.ph190 (16, 24) FAR 61231 U 0.01
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 61231.
+	create_child: main@_3 (15, 24) FAR 75713 U 0.01
+expand: main@_3 (15, 0) FAR  w(0) 75713.
+	create_child: main@.lr.ph (14, 24) FAR 75681 U 0.00
+expand: main@.lr.ph (14, 0) FAR  w(0) 75681.
+	create_child: main@.lr.ph (13, 24) FAR 75104 U 0.00
+expand: main@.lr.ph (13, 0) FAR  w(0) 75104.
+	create_child: main@.lr.ph (12, 24) FAR 108668 U 0.00
+expand: main@.lr.ph (12, 0) FAR  w(0) 108668.
+	create_child: main@.lr.ph (11, 24) FAR 170047 U 0.00
+expand: main@.lr.ph (11, 0) FAR  w(0) 170047.
+	create_child: main@.lr.ph (10, 24) FAR 196850 U 0.00
+expand: main@.lr.ph (10, 0) FAR  w(0) 196850.
+	create_child: main@.lr.ph190 (9, 24) FAR 196877 U 0.00
+expand: main@.lr.ph190 (9, 0) FAR  w(0) 196877.
+	create_child: main@.lr.ph190 (8, 24) FAR 197013 U 0.01
+expand: main@.lr.ph190 (8, 0) FAR  w(0) 197013.
+	create_child: main@.lr.ph190 (7, 24) FAR 197026 U 0.00
+expand: main@.lr.ph190 (7, 0) FAR  w(0) 197026.
+	create_child: main@.lr.ph190 (6, 24) FAR 196172 U 0.00
+expand: main@.lr.ph190 (6, 0) FAR  w(0) 196172.
+	create_child: main@.lr.ph190 (5, 24) FAR 220744 U 0.00
+expand: main@.lr.ph190 (5, 0) FAR  w(0) 220744. F 0.06
+expand: main@.lr.ph190 (6, 0) FAR  w(0) 196172. F 0.03
+expand: main@.lr.ph190 (7, 0) FAR  w(0) 197026. F 0.04
+expand: main@.lr.ph190 (8, 0) FAR  w(0) 197013. F 0.05
+expand: main@.lr.ph190 (9, 0) FAR  w(0) 196877. F 0.05
+expand: main@.lr.ph (10, 0) FAR  w(0) 196850. F 0.01
+expand: main@.lr.ph (11, 0) FAR  w(0) 170047. F 0.01
+expand: main@.lr.ph (12, 0) FAR  w(0) 108668. F 0.01
+expand: main@.lr.ph (13, 0) FAR  w(0) 75104. F 0.01
+expand: main@.lr.ph (14, 0) FAR  w(0) 75681. F 0.01
+expand: main@_3 (15, 0) FAR  w(0) 75713. F 0.00
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 61231. F 0.08
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 35618. F 0.05
+expand: main@.lr.ph (18, 0) FAR  w(0) 35545.
+	create_child: main@.lr.ph (17, 24) FAR 93549 U 0.00
+expand: main@.lr.ph (17, 0) FAR  w(0) 93549.
+	create_child: main@.lr.ph190 (16, 24) FAR 93607 U 0.00
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 93607.
+	create_child: main@.lr.ph190 (15, 24) FAR 93648 U 0.01
+expand: main@.lr.ph190 (15, 0) FAR  w(0) 93648.
+	create_child: main@.lr.ph190 (14, 24) FAR 93745 U 0.00
+expand: main@.lr.ph190 (14, 0) FAR  w(0) 93745.
+	create_child: main@_3 (13, 24) FAR 94955 U 0.01
+expand: main@_3 (13, 0) FAR  w(0) 94955.
+	create_child: main@.lr.ph (12, 24) FAR 94999 U 0.00
+expand: main@.lr.ph (12, 0) FAR  w(0) 94999.
+	create_child: main@.lr.ph (11, 24) FAR 94906 U 0.00
+expand: main@.lr.ph (11, 0) FAR  w(0) 94906.
+	create_child: main@.lr.ph190 (10, 24) FAR 95178 U 0.00
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 95178.
+	create_child: main@.lr.ph190 (9, 24) FAR 94207 U 0.01
+expand: main@.lr.ph190 (9, 0) FAR  w(0) 94207. F 0.06
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 95178. F 0.05
+expand: main@.lr.ph (11, 0) FAR  w(0) 94906.
+	create_child: main@.lr.ph (10, 24) FAR 177540 U 0.00
+expand: main@.lr.ph (10, 0) FAR  w(0) 177540. F 0.01
+expand: main@.lr.ph (11, 0) FAR  w(0) 94906. F 0.01
+expand: main@.lr.ph (12, 0) FAR  w(0) 94999. F 0.01
+expand: main@_3 (13, 0) FAR  w(0) 94955. F 0.00
+expand: main@.lr.ph190 (14, 0) FAR  w(0) 93745. F 0.09
+expand: main@.lr.ph190 (15, 0) FAR  w(0) 93648. F 0.04
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 93607. F 0.05
+expand: main@.lr.ph (17, 0) FAR  w(0) 93549.
+	create_child: main@.lr.ph (16, 24) FAR 182908 U 0.00
+expand: main@.lr.ph (16, 0) FAR  w(0) 182908.
+	create_child: main@.lr.ph190 (15, 24) FAR 182917 U 0.00
+expand: main@.lr.ph190 (15, 0) FAR  w(0) 182917.
+	create_child: main@.lr.ph190 (14, 24) FAR 181616 U 0.01
+expand: main@.lr.ph190 (14, 0) FAR  w(0) 181616. F 0.04
+expand: main@.lr.ph190 (15, 0) FAR  w(0) 182917. F 0.05
+expand: main@.lr.ph (16, 0) FAR  w(0) 182908.
+	create_child: main@.lr.ph (15, 24) FAR 238237 U 0.00
+expand: main@.lr.ph (15, 0) FAR  w(0) 238237.
+	create_child: main@.lr.ph190 (14, 24) FAR 236619 U 0.00
+expand: main@.lr.ph190 (14, 0) FAR  w(0) 236619.
+	create_child: main@.lr.ph190 (13, 24) FAR 237840 U 0.01
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 237840.
+	create_child: main@.lr.ph190 (12, 24) FAR 238353 U 0.00
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 238353.
+	create_child: main@.lr.ph190 (11, 24) FAR 238350 U 0.00
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 238350. F 0.04
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 238353. F 0.04
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 237840. F 0.04
+expand: main@.lr.ph190 (14, 0) FAR  w(0) 236619. F 0.04
+expand: main@.lr.ph (15, 0) FAR  w(0) 238237. F 0.01
+expand: main@.lr.ph (16, 0) FAR  w(0) 182908. F 0.01
+expand: main@.lr.ph (17, 0) FAR  w(0) 93549. F 0.01
+expand: main@.lr.ph (18, 0) FAR  w(0) 35545. F 0.01
+expand: main@.lr.ph (19, 0) FAR  w(0) 34158. F 0.01
+expand: main@_3 (20, 0) FAR  w(0) 33635. F 0.00
+expand: main@empty.loop (21, 0) FAR  w(0) 33191. F 0.00
+expand: main@entry (22, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (23, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (24, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 1.20 :before-memory 66.22 :after-memory 69.82)
+Propagating: 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24  ! 25 
+(spacer::context::propagate :time 0.26 :before-memory 69.82 :after-memory 70.10)
+Entering level 25
+expand: query!0 (25, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (24, 25) FAR 1 U 0.00
+expand: main@entry!_BAD (24, 0) FAR  w(0) 1.
+	create_child: main@entry (23, 25) FAR 1 U 0.00
+expand: main@entry (23, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (22, 25) FAR 33191 U 0.00
+expand: main@empty.loop (22, 0) FAR  w(0) 33191.
+	create_child: main@_3 (21, 25) FAR 33635 U 0.00
+expand: main@_3 (21, 0) FAR  w(0) 33635.
+	create_child: main@.lr.ph (20, 25) FAR 34158 U 0.00
+expand: main@.lr.ph (20, 0) FAR  w(0) 34158.
+	create_child: main@.lr.ph (19, 25) FAR 35545 U 0.00
+expand: main@.lr.ph (19, 0) FAR  w(0) 35545.
+	create_child: main@.lr.ph190 (18, 25) FAR 35618 U 0.00
+expand: main@.lr.ph190 (18, 0) FAR  w(0) 35618.
+	create_child: main@.lr.ph190 (17, 25) FAR 61231 U 0.01
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 61231.
+	create_child: main@_3 (16, 25) FAR 75713 U 0.01
+expand: main@_3 (16, 0) FAR  w(0) 75713.
+	create_child: main@.lr.ph (15, 25) FAR 75681 U 0.00
+expand: main@.lr.ph (15, 0) FAR  w(0) 75681.
+	create_child: main@.lr.ph (14, 25) FAR 75104 U 0.00
+expand: main@.lr.ph (14, 0) FAR  w(0) 75104.
+	create_child: main@.lr.ph (13, 25) FAR 108668 U 0.00
+expand: main@.lr.ph (13, 0) FAR  w(0) 108668.
+	create_child: main@.lr.ph (12, 25) FAR 170047 U 0.00
+expand: main@.lr.ph (12, 0) FAR  w(0) 170047.
+	create_child: main@.lr.ph (11, 25) FAR 196850 U 0.00
+expand: main@.lr.ph (11, 0) FAR  w(0) 196850.
+	create_child: main@.lr.ph190 (10, 25) FAR 196877 U 0.00
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 196877. F 0.04
+expand: main@.lr.ph (11, 0) FAR  w(0) 196850. F 0.01
+expand: main@.lr.ph (12, 0) FAR  w(0) 170047. F 0.01
+expand: main@.lr.ph (13, 0) FAR  w(0) 108668. F 0.01
+expand: main@.lr.ph (14, 0) FAR  w(0) 75104. F 0.01
+expand: main@.lr.ph (15, 0) FAR  w(0) 75681. F 0.01
+expand: main@_3 (16, 0) FAR  w(0) 75713. F 0.00
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 61231. F 0.08
+expand: main@.lr.ph190 (18, 0) FAR  w(0) 35618. F 0.05
+expand: main@.lr.ph (19, 0) FAR  w(0) 35545.
+	create_child: main@.lr.ph (18, 25) FAR 93549 U 0.00
+expand: main@.lr.ph (18, 0) FAR  w(0) 93549.
+	create_child: main@.lr.ph190 (17, 25) FAR 93607 U 0.00
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 93607.
+	create_child: main@.lr.ph190 (16, 25) FAR 93648 U 0.01
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 93648.
+	create_child: main@.lr.ph190 (15, 25) FAR 93745 U 0.00
+expand: main@.lr.ph190 (15, 0) FAR  w(0) 93745.
+	create_child: main@_3 (14, 25) FAR 134453 UNDEF 0.01
+expand: main@_3 (14, 0) FAR  w(0) 134453.
+	create_child: main@.lr.ph (13, 25) FAR 135016 U 0.00
+expand: main@.lr.ph (13, 0) FAR  w(0) 135016.
+	create_child: main@.lr.ph (12, 25) FAR 134458 U 0.00
+expand: main@.lr.ph (12, 0) FAR  w(0) 134458.
+	create_child: main@.lr.ph190 (11, 25) FAR 135265 U 0.00
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 135265. F 0.05
+expand: main@.lr.ph (12, 0) FAR  w(0) 134458.
+	create_child: main@.lr.ph (11, 25) FAR 249566 U 0.00
+expand: main@.lr.ph (11, 0) FAR  w(0) 249566.
+	create_child: main@.lr.ph (10, 25) FAR 249125 U 0.00
+expand: main@.lr.ph (10, 0) FAR  w(0) 249125.
+	create_child: main@.lr.ph190 (9, 25) FAR 248957 U 0.00
+expand: main@.lr.ph190 (9, 0) FAR  w(0) 248957.
+	create_child: main@.lr.ph190 (8, 25) FAR 243734 U 0.01
+expand: main@.lr.ph190 (8, 0) FAR  w(0) 243734.
+	create_child: main@.lr.ph190 (7, 25) FAR 249420 U 0.00
+expand: main@.lr.ph190 (7, 0) FAR  w(0) 249420.
+	create_child: main@.lr.ph190 (6, 25) FAR 192744 U 0.00
+expand: main@.lr.ph190 (6, 0) FAR  w(0) 192744. F 0.07
+expand: main@.lr.ph190 (7, 0) FAR  w(0) 249420. F 0.03
+expand: main@.lr.ph190 (8, 0) FAR  w(0) 243734. F 0.04
+expand: main@.lr.ph190 (9, 0) FAR  w(0) 248957. F 0.04
+expand: main@.lr.ph (10, 0) FAR  w(0) 249125. F 0.01
+expand: main@.lr.ph (11, 0) FAR  w(0) 249566. F 0.01
+expand: main@.lr.ph (12, 0) FAR  w(0) 134458. F 0.01
+expand: main@.lr.ph (13, 0) FAR  w(0) 135016. F 0.01
+expand: main@_3 (14, 0) FAR  w(0) 134453. F 0.00
+expand: main@.lr.ph190 (15, 0) FAR  w(0) 93745. F 0.09
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 93648. F 0.05
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 93607. F 0.05
+expand: main@.lr.ph (18, 0) FAR  w(0) 93549.
+	create_child: main@.lr.ph (17, 25) FAR 182908 U 0.00
+expand: main@.lr.ph (17, 0) FAR  w(0) 182908.
+	create_child: main@.lr.ph190 (16, 25) FAR 182917 U 0.00
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 182917.
+	create_child: main@.lr.ph190 (15, 25) FAR 181616 U 0.01
+expand: main@.lr.ph190 (15, 0) FAR  w(0) 181616.
+	create_child: main@.lr.ph190 (14, 25) FAR 182341 U 0.00
+expand: main@.lr.ph190 (14, 0) FAR  w(0) 182341. F 0.05
+expand: main@.lr.ph190 (15, 0) FAR  w(0) 181616. F 0.05
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 182917. F 0.05
+expand: main@.lr.ph (17, 0) FAR  w(0) 182908.
+	create_child: main@.lr.ph (16, 25) FAR 238237 U 0.00
+expand: main@.lr.ph (16, 0) FAR  w(0) 238237.
+	create_child: main@.lr.ph190 (15, 25) FAR 236619 U 0.00
+expand: main@.lr.ph190 (15, 0) FAR  w(0) 236619.
+	create_child: main@.lr.ph190 (14, 25) FAR 237840 U 0.01
+expand: main@.lr.ph190 (14, 0) FAR  w(0) 237840.
+	create_child: main@.lr.ph190 (13, 25) FAR 238353 U 0.00
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 238353.
+	create_child: main@.lr.ph190 (12, 25) FAR 238350 U 0.00
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 238350.
+	create_child: main@.lr.ph190 (11, 25) FAR 260308 U 0.00
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 260308.
+	create_child: main@_3 (10, 25) FAR 261629 UNDEF 0.01
+expand: main@_3 (10, 0) FAR  w(0) 261629.
+	create_child: main@.lr.ph (9, 25) FAR 255312 U 0.00
+expand: main@.lr.ph (9, 0) FAR  w(0) 255312.
+	create_child: main@.lr.ph (8, 25) FAR 261518 U 0.00
+expand: main@.lr.ph (8, 0) FAR  w(0) 261518. F 0.01
+expand: main@.lr.ph (9, 0) FAR  w(0) 255312. F 0.01
+expand: main@_3 (10, 0) FAR  w(0) 261629. F 0.00
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 260308. F 0.08
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 238350. F 0.04
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 238353. F 0.04
+expand: main@.lr.ph190 (14, 0) FAR  w(0) 237840. F 0.05
+expand: main@.lr.ph190 (15, 0) FAR  w(0) 236619. F 0.05
+expand: main@.lr.ph (16, 0) FAR  w(0) 238237. F 0.01
+expand: main@.lr.ph (17, 0) FAR  w(0) 182908. F 0.02
+expand: main@.lr.ph (18, 0) FAR  w(0) 93549. F 0.01
+expand: main@.lr.ph (19, 0) FAR  w(0) 35545. F 0.01
+expand: main@.lr.ph (20, 0) FAR  w(0) 34158. F 0.01
+expand: main@_3 (21, 0) FAR  w(0) 33635. F 0.00
+expand: main@empty.loop (22, 0) FAR  w(0) 33191. F 0.00
+expand: main@entry (23, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (24, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (25, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 1.36 :before-memory 70.10 :after-memory 74.47)
+Propagating: 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25  ! 26 
+(spacer::context::propagate :time 0.31 :before-memory 74.47 :after-memory 74.78)
+Entering level 26
+expand: query!0 (26, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (25, 26) FAR 1 U 0.00
+expand: main@entry!_BAD (25, 0) FAR  w(0) 1.
+	create_child: main@entry (24, 26) FAR 1 U 0.00
+expand: main@entry (24, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (23, 26) FAR 33191 U 0.00
+expand: main@empty.loop (23, 0) FAR  w(0) 33191.
+	create_child: main@_3 (22, 26) FAR 33635 U 0.00
+expand: main@_3 (22, 0) FAR  w(0) 33635.
+	create_child: main@.lr.ph (21, 26) FAR 34158 U 0.00
+expand: main@.lr.ph (21, 0) FAR  w(0) 34158.
+	create_child: main@.lr.ph (20, 26) FAR 35545 U 0.00
+expand: main@.lr.ph (20, 0) FAR  w(0) 35545.
+	create_child: main@.lr.ph (19, 26) FAR 93549 U 0.00
+expand: main@.lr.ph (19, 0) FAR  w(0) 93549.
+	create_child: main@.lr.ph190 (18, 26) FAR 93607 U 0.00
+expand: main@.lr.ph190 (18, 0) FAR  w(0) 93607.
+	create_child: main@.lr.ph190 (17, 26) FAR 93648 U 0.01
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 93648.
+	create_child: main@.lr.ph190 (16, 26) FAR 93745 U 0.00
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 93745.
+	create_child: main@_3 (15, 26) FAR 94955 U 0.01
+expand: main@_3 (15, 0) FAR  w(0) 94955.
+	create_child: main@.lr.ph (14, 26) FAR 94999 U 0.00
+expand: main@.lr.ph (14, 0) FAR  w(0) 94999.
+	create_child: main@.lr.ph (13, 26) FAR 94906 U 0.00
+expand: main@.lr.ph (13, 0) FAR  w(0) 94906.
+	create_child: main@.lr.ph (12, 26) FAR 177540 U 0.00
+expand: main@.lr.ph (12, 0) FAR  w(0) 177540.
+	create_child: main@.lr.ph190 (11, 26) FAR 275166 U 0.00
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 275166.
+	create_child: main@.lr.ph190 (10, 26) FAR 274067 U 0.01
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 274067. F 0.04
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 275166. F 0.07
+expand: main@.lr.ph (12, 0) FAR  w(0) 177540.
+	create_child: main@.lr.ph (11, 26) FAR 276184 U 0.00
+expand: main@.lr.ph (11, 0) FAR  w(0) 276184.
+	create_child: main@.lr.ph (10, 26) FAR 276181 U 0.00
+expand: main@.lr.ph (10, 0) FAR  w(0) 276181.
+	create_child: main@.lr.ph190 (9, 26) FAR 276151 U 0.00
+expand: main@.lr.ph190 (9, 0) FAR  w(0) 276151.
+	create_child: main@.lr.ph190 (8, 26) FAR 276289 U 0.01
+expand: main@.lr.ph190 (8, 0) FAR  w(0) 276289.
+	create_child: main@.lr.ph190 (7, 26) FAR 276288 U 0.01
+expand: main@.lr.ph190 (7, 0) FAR  w(0) 276288.
+	create_child: main@.lr.ph190 (6, 26) FAR 276263 U 0.01
+expand: main@.lr.ph190 (6, 0) FAR  w(0) 276263.
+	create_child: main@.lr.ph190 (5, 26) FAR 276304 U 0.01
+expand: main@.lr.ph190 (5, 0) FAR  w(0) 276304. F 0.07
+expand: main@.lr.ph190 (6, 0) FAR  w(0) 276263. F 0.06
+expand: main@.lr.ph190 (7, 0) FAR  w(0) 276288. F 0.04
+expand: main@.lr.ph190 (8, 0) FAR  w(0) 276289. F 0.04
+expand: main@.lr.ph190 (9, 0) FAR  w(0) 276151. F 0.04
+expand: main@.lr.ph (10, 0) FAR  w(0) 276181. F 0.02
+expand: main@.lr.ph (11, 0) FAR  w(0) 276184. F 0.02
+expand: main@.lr.ph (12, 0) FAR  w(0) 177540. F 0.02
+expand: main@.lr.ph (13, 0) FAR  w(0) 94906. F 0.02
+expand: main@.lr.ph (14, 0) FAR  w(0) 94999. F 0.02
+expand: main@_3 (15, 0) FAR  w(0) 94955. F 0.01
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 93745. F 0.09
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 93648. F 0.05
+expand: main@.lr.ph190 (18, 0) FAR  w(0) 93607. F 0.05
+expand: main@.lr.ph (19, 0) FAR  w(0) 93549.
+	create_child: main@.lr.ph (18, 26) FAR 182908 U 0.00
+expand: main@.lr.ph (18, 0) FAR  w(0) 182908.
+	create_child: main@.lr.ph190 (17, 26) FAR 182917 U 0.00
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 182917.
+	create_child: main@.lr.ph190 (16, 26) FAR 181616 U 0.01
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 181616.
+	create_child: main@.lr.ph190 (15, 26) FAR 182341 U 0.01
+expand: main@.lr.ph190 (15, 0) FAR  w(0) 182341.
+	create_child: main@.lr.ph190 (14, 26) FAR 182801 U 0.01
+expand: main@.lr.ph190 (14, 0) FAR  w(0) 182801.
+	create_child: main@_3 (13, 26) FAR 183759 U 0.01
+expand: main@_3 (13, 0) FAR  w(0) 183759.
+	create_child: main@.lr.ph (12, 26) FAR 180598 U 0.00
+expand: main@.lr.ph (12, 0) FAR  w(0) 180598.
+	create_child: main@.lr.ph (11, 26) FAR 183924 U 0.00
+expand: main@.lr.ph (11, 0) FAR  w(0) 183924.
+	create_child: main@.lr.ph190 (10, 26) FAR 287795 U 0.00
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 287795. F 0.04
+expand: main@.lr.ph (11, 0) FAR  w(0) 183924. F 0.01
+expand: main@.lr.ph (12, 0) FAR  w(0) 180598. F 0.01
+expand: main@_3 (13, 0) FAR  w(0) 183759. F 0.00
+expand: main@.lr.ph190 (14, 0) FAR  w(0) 182801. F 0.07
+expand: main@.lr.ph190 (15, 0) FAR  w(0) 182341. F 0.06
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 181616. F 0.05
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 182917. F 0.06
+expand: main@.lr.ph (18, 0) FAR  w(0) 182908.
+	create_child: main@.lr.ph (17, 26) FAR 238237 U 0.00
+expand: main@.lr.ph (17, 0) FAR  w(0) 238237.
+	create_child: main@.lr.ph190 (16, 26) FAR 236619 U 0.00
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 236619.
+	create_child: main@.lr.ph190 (15, 26) FAR 237840 U 0.01
+expand: main@.lr.ph190 (15, 0) FAR  w(0) 237840.
+	create_child: main@.lr.ph190 (14, 26) FAR 238353 U 0.01
+expand: main@.lr.ph190 (14, 0) FAR  w(0) 238353.
+	create_child: main@.lr.ph190 (13, 26) FAR 238350 U 0.01
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 238350.
+	create_child: main@.lr.ph190 (12, 26) FAR 260308 U 0.01
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 260308.
+	create_child: main@_3 (11, 26) FAR 261629 UNDEF 0.01
+expand: main@_3 (11, 0) FAR  w(0) 261629.
+	create_child: main@.lr.ph (10, 26) FAR 255312 U 0.00
+expand: main@.lr.ph (10, 0) FAR  w(0) 255312.
+	create_child: main@.lr.ph (9, 26) FAR 261518 U 0.00
+expand: main@.lr.ph (9, 0) FAR  w(0) 261518.
+	create_child: main@.lr.ph (8, 26) FAR 289535 U 0.00
+expand: main@.lr.ph (8, 0) FAR  w(0) 289535.
+	create_child: main@.lr.ph190 (7, 26) FAR 292097 U 0.00
+expand: main@.lr.ph190 (7, 0) FAR  w(0) 292097.
+	create_child: main@.lr.ph190 (6, 26) FAR 291468 U 0.01
+expand: main@.lr.ph190 (6, 0) FAR  w(0) 291468.
+	create_child: main@.lr.ph190 (5, 26) FAR 291497 U 0.01
+expand: main@.lr.ph190 (5, 0) FAR  w(0) 291497. F 0.06
+expand: main@.lr.ph190 (6, 0) FAR  w(0) 291468. F 0.05
+expand: main@.lr.ph190 (7, 0) FAR  w(0) 292097. F 0.04
+expand: main@.lr.ph (8, 0) FAR  w(0) 289535. F 0.02
+expand: main@.lr.ph (9, 0) FAR  w(0) 261518. F 0.02
+expand: main@.lr.ph (10, 0) FAR  w(0) 255312. F 0.02
+expand: main@_3 (11, 0) FAR  w(0) 261629. F 0.00
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 260308. F 0.10
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 238350. F 0.06
+expand: main@.lr.ph190 (14, 0) FAR  w(0) 238353. F 0.06
+expand: main@.lr.ph190 (15, 0) FAR  w(0) 237840. F 0.06
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 236619. F 0.08
+expand: main@.lr.ph (17, 0) FAR  w(0) 238237. F 0.03
+expand: main@.lr.ph (18, 0) FAR  w(0) 182908. F 0.03
+expand: main@.lr.ph (19, 0) FAR  w(0) 93549. F 0.03
+expand: main@.lr.ph (20, 0) FAR  w(0) 35545. F 0.02
+expand: main@.lr.ph (21, 0) FAR  w(0) 34158. F 0.02
+expand: main@_3 (22, 0) FAR  w(0) 33635. F 0.01
+expand: main@empty.loop (23, 0) FAR  w(0) 33191. F 0.01
+expand: main@entry (24, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (25, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (26, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 1.82 :before-memory 74.78 :after-memory 78.04)
+Propagating: 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26  ! 27 
+(spacer::context::propagate :time 0.41 :before-memory 78.04 :after-memory 78.68)
+Entering level 27
+expand: query!0 (27, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (26, 27) FAR 1 U 0.00
+expand: main@entry!_BAD (26, 0) FAR  w(0) 1.
+	create_child: main@entry (25, 27) FAR 1 U 0.00
+expand: main@entry (25, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (24, 27) FAR 33191 U 0.00
+expand: main@empty.loop (24, 0) FAR  w(0) 33191.
+	create_child: main@_3 (23, 27) FAR 33635 U 0.00
+expand: main@_3 (23, 0) FAR  w(0) 33635.
+	create_child: main@.lr.ph (22, 27) FAR 34158 U 0.00
+expand: main@.lr.ph (22, 0) FAR  w(0) 34158.
+	create_child: main@.lr.ph (21, 27) FAR 35545 U 0.00
+expand: main@.lr.ph (21, 0) FAR  w(0) 35545.
+	create_child: main@.lr.ph (20, 27) FAR 93549 U 0.00
+expand: main@.lr.ph (20, 0) FAR  w(0) 93549.
+	create_child: main@.lr.ph190 (19, 27) FAR 93607 U 0.00
+expand: main@.lr.ph190 (19, 0) FAR  w(0) 93607.
+	create_child: main@.lr.ph190 (18, 27) FAR 93648 U 0.01
+expand: main@.lr.ph190 (18, 0) FAR  w(0) 93648.
+	create_child: main@.lr.ph190 (17, 27) FAR 93745 U 0.01
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 93745.
+	create_child: main@_3 (16, 27) FAR 94955 U 0.01
+expand: main@_3 (16, 0) FAR  w(0) 94955.
+	create_child: main@.lr.ph (15, 27) FAR 94999 U 0.00
+expand: main@.lr.ph (15, 0) FAR  w(0) 94999.
+	create_child: main@.lr.ph (14, 27) FAR 94906 U 0.00
+expand: main@.lr.ph (14, 0) FAR  w(0) 94906.
+	create_child: main@.lr.ph190 (13, 27) FAR 95178 U 0.00
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 95178.
+	create_child: main@.lr.ph190 (12, 27) FAR 94207 U 0.01
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 94207.
+	create_child: main@_3 (11, 27) FAR 309521 UNDEF 0.01
+expand: main@_3 (11, 0) FAR  w(0) 309521.
+	create_child: main@.lr.ph (10, 27) FAR 309558 U 0.00
+expand: main@.lr.ph (10, 0) FAR  w(0) 309558.
+	create_child: main@.lr.ph (9, 27) FAR 309345 U 0.00
+expand: main@.lr.ph (9, 0) FAR  w(0) 309345.
+	create_child: main@.lr.ph (8, 27) FAR 310195 U 0.00
+expand: main@.lr.ph (8, 0) FAR  w(0) 310195. F 0.02
+expand: main@.lr.ph (9, 0) FAR  w(0) 309345. F 0.02
+expand: main@.lr.ph (10, 0) FAR  w(0) 309558. F 0.02
+expand: main@_3 (11, 0) FAR  w(0) 309521. F 0.01
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 94207. F 0.07
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 95178. F 0.05
+expand: main@.lr.ph (14, 0) FAR  w(0) 94906.
+	create_child: main@.lr.ph (13, 27) FAR 177540 U 0.00
+expand: main@.lr.ph (13, 0) FAR  w(0) 177540.
+	create_child: main@.lr.ph190 (12, 27) FAR 275166 U 0.00
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 275166.
+	create_child: main@.lr.ph190 (11, 27) FAR 274067 U 0.01
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 274067.
+	create_child: main@.lr.ph190 (10, 27) FAR 314063 U 0.01
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 314063. F 0.07
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 274067. F 0.05
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 275166. F 0.05
+expand: main@.lr.ph (13, 0) FAR  w(0) 177540.
+	create_child: main@.lr.ph (12, 27) FAR 276184 U 0.00
+expand: main@.lr.ph (12, 0) FAR  w(0) 276184.
+	create_child: main@.lr.ph190 (11, 27) FAR 312157 U 0.00
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 312157. F 0.07
+expand: main@.lr.ph (12, 0) FAR  w(0) 276184.
+	create_child: main@.lr.ph (11, 27) FAR 276181 U 0.00
+expand: main@.lr.ph (11, 0) FAR  w(0) 276181.
+	create_child: main@.lr.ph190 (10, 27) FAR 276151 U 0.00
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 276151. F 0.06
+expand: main@.lr.ph (11, 0) FAR  w(0) 276181. F 0.02
+expand: main@.lr.ph (12, 0) FAR  w(0) 276184. F 0.02
+expand: main@.lr.ph (13, 0) FAR  w(0) 177540. F 0.02
+expand: main@.lr.ph (14, 0) FAR  w(0) 94906. F 0.02
+expand: main@.lr.ph (15, 0) FAR  w(0) 94999. F 0.02
+expand: main@_3 (16, 0) FAR  w(0) 94955. F 0.01
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 93745. F 0.09
+expand: main@.lr.ph190 (18, 0) FAR  w(0) 93648. F 0.05
+expand: main@.lr.ph190 (19, 0) FAR  w(0) 93607. F 0.05
+expand: main@.lr.ph (20, 0) FAR  w(0) 93549.
+	create_child: main@.lr.ph (19, 27) FAR 182908 U 0.00
+expand: main@.lr.ph (19, 0) FAR  w(0) 182908.
+	create_child: main@.lr.ph190 (18, 27) FAR 182917 U 0.00
+expand: main@.lr.ph190 (18, 0) FAR  w(0) 182917.
+	create_child: main@.lr.ph190 (17, 27) FAR 181616 U 0.01
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 181616.
+	create_child: main@.lr.ph190 (16, 27) FAR 182341 U 0.01
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 182341.
+	create_child: main@.lr.ph190 (15, 27) FAR 182801 U 0.01
+expand: main@.lr.ph190 (15, 0) FAR  w(0) 182801.
+	create_child: main@_3 (14, 27) FAR 183759 U 0.01
+expand: main@_3 (14, 0) FAR  w(0) 183759.
+	create_child: main@.lr.ph (13, 27) FAR 180598 U 0.00
+expand: main@.lr.ph (13, 0) FAR  w(0) 180598.
+	create_child: main@.lr.ph (12, 27) FAR 183924 U 0.00
+expand: main@.lr.ph (12, 0) FAR  w(0) 183924. F 0.01
+expand: main@.lr.ph (13, 0) FAR  w(0) 180598. F 0.01
+expand: main@_3 (14, 0) FAR  w(0) 183759. F 0.00
+expand: main@.lr.ph190 (15, 0) FAR  w(0) 182801. F 0.08
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 182341. F 0.06
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 181616. F 0.05
+expand: main@.lr.ph190 (18, 0) FAR  w(0) 182917. F 0.06
+expand: main@.lr.ph (19, 0) FAR  w(0) 182908.
+	create_child: main@.lr.ph (18, 27) FAR 238237 U 0.00
+expand: main@.lr.ph (18, 0) FAR  w(0) 238237.
+	create_child: main@.lr.ph190 (17, 27) FAR 236619 U 0.00
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 236619.
+	create_child: main@.lr.ph190 (16, 27) FAR 237840 U 0.01
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 237840.
+	create_child: main@.lr.ph190 (15, 27) FAR 238353 U 0.01
+expand: main@.lr.ph190 (15, 0) FAR  w(0) 238353.
+	create_child: main@.lr.ph190 (14, 27) FAR 238350 U 0.01
+expand: main@.lr.ph190 (14, 0) FAR  w(0) 238350.
+	create_child: main@.lr.ph190 (13, 27) FAR 260308 U 0.01
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 260308.
+	create_child: main@_3 (12, 27) FAR 261629 UNDEF 0.01
+expand: main@_3 (12, 0) FAR  w(0) 261629.
+	create_child: main@.lr.ph (11, 27) FAR 255312 U 0.00
+expand: main@.lr.ph (11, 0) FAR  w(0) 255312. F 0.02
+expand: main@_3 (12, 0) FAR  w(0) 261629. F 0.00
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 260308. F 0.11
+expand: main@.lr.ph190 (14, 0) FAR  w(0) 238350. F 0.07
+expand: main@.lr.ph190 (15, 0) FAR  w(0) 238353. F 0.07
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 237840. F 0.06
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 236619. F 0.08
+expand: main@.lr.ph (18, 0) FAR  w(0) 238237. F 0.03
+expand: main@.lr.ph (19, 0) FAR  w(0) 182908. F 0.03
+expand: main@.lr.ph (20, 0) FAR  w(0) 93549. F 0.03
+expand: main@.lr.ph (21, 0) FAR  w(0) 35545. F 0.02
+expand: main@.lr.ph (22, 0) FAR  w(0) 34158. F 0.02
+expand: main@_3 (23, 0) FAR  w(0) 33635. F 0.01
+expand: main@empty.loop (24, 0) FAR  w(0) 33191. F 0.01
+expand: main@entry (25, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (26, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (27, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 1.79 :before-memory 78.68 :after-memory 84.65)
+Propagating: 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27  ! 28 
+(spacer::context::propagate :time 0.41 :before-memory 84.65 :after-memory 85.89)
+Entering level 28
+expand: query!0 (28, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (27, 28) FAR 1 U 0.00
+expand: main@entry!_BAD (27, 0) FAR  w(0) 1.
+	create_child: main@entry (26, 28) FAR 1 U 0.00
+expand: main@entry (26, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (25, 28) FAR 33191 U 0.00
+expand: main@empty.loop (25, 0) FAR  w(0) 33191.
+	create_child: main@_3 (24, 28) FAR 33635 U 0.00
+expand: main@_3 (24, 0) FAR  w(0) 33635.
+	create_child: main@.lr.ph (23, 28) FAR 34158 U 0.00
+expand: main@.lr.ph (23, 0) FAR  w(0) 34158.
+	create_child: main@.lr.ph (22, 28) FAR 35545 U 0.00
+expand: main@.lr.ph (22, 0) FAR  w(0) 35545.
+	create_child: main@.lr.ph (21, 28) FAR 93549 U 0.00
+expand: main@.lr.ph (21, 0) FAR  w(0) 93549.
+	create_child: main@.lr.ph190 (20, 28) FAR 93607 U 0.00
+expand: main@.lr.ph190 (20, 0) FAR  w(0) 93607.
+	create_child: main@.lr.ph190 (19, 28) FAR 93648 U 0.01
+expand: main@.lr.ph190 (19, 0) FAR  w(0) 93648.
+	create_child: main@.lr.ph190 (18, 28) FAR 93745 U 0.01
+expand: main@.lr.ph190 (18, 0) FAR  w(0) 93745.
+	create_child: main@_3 (17, 28) FAR 94955 U 0.01
+expand: main@_3 (17, 0) FAR  w(0) 94955.
+	create_child: main@.lr.ph (16, 28) FAR 94999 U 0.00
+expand: main@.lr.ph (16, 0) FAR  w(0) 94999.
+	create_child: main@.lr.ph (15, 28) FAR 94906 U 0.00
+expand: main@.lr.ph (15, 0) FAR  w(0) 94906.
+	create_child: main@.lr.ph190 (14, 28) FAR 95178 U 0.00
+expand: main@.lr.ph190 (14, 0) FAR  w(0) 95178.
+	create_child: main@.lr.ph190 (13, 28) FAR 94207 U 0.01
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 94207.
+	create_child: main@_3 (12, 28) FAR 309521 UNDEF 0.01
+expand: main@_3 (12, 0) FAR  w(0) 309521.
+	create_child: main@.lr.ph (11, 28) FAR 309558 U 0.00
+expand: main@.lr.ph (11, 0) FAR  w(0) 309558.
+	create_child: main@.lr.ph (10, 28) FAR 309345 U 0.00
+expand: main@.lr.ph (10, 0) FAR  w(0) 309345.
+	create_child: main@.lr.ph (9, 28) FAR 310195 U 0.00
+expand: main@.lr.ph (9, 0) FAR  w(0) 310195.
+	create_child: main@.lr.ph (8, 28) FAR 339354 U 0.00
+expand: main@.lr.ph (8, 0) FAR  w(0) 339354. F 0.02
+expand: main@.lr.ph (9, 0) FAR  w(0) 310195. F 0.03
+expand: main@.lr.ph (10, 0) FAR  w(0) 309345. F 0.02
+expand: main@.lr.ph (11, 0) FAR  w(0) 309558. F 0.03
+expand: main@_3 (12, 0) FAR  w(0) 309521. F 0.01
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 94207. F 0.13
+expand: main@.lr.ph190 (14, 0) FAR  w(0) 95178. F 0.09
+expand: main@.lr.ph (15, 0) FAR  w(0) 94906.
+	create_child: main@.lr.ph (14, 28) FAR 177540 U 0.00
+expand: main@.lr.ph (14, 0) FAR  w(0) 177540.
+	create_child: main@.lr.ph190 (13, 28) FAR 275166 U 0.00
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 275166. F 0.06
+expand: main@.lr.ph (14, 0) FAR  w(0) 177540.
+	create_child: main@.lr.ph (13, 28) FAR 276184 U 0.00
+expand: main@.lr.ph (13, 0) FAR  w(0) 276184.
+	create_child: main@.lr.ph190 (12, 28) FAR 312157 U 0.00
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 312157.
+	create_child: main@.lr.ph190 (11, 28) FAR 347959 U 0.01
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 347959.
+	create_child: main@.lr.ph190 (10, 28) FAR 306276 U 0.01
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 306276. F 0.05
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 347959. F 0.05
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 312157. F 0.07
+expand: main@.lr.ph (13, 0) FAR  w(0) 276184.
+	create_child: main@.lr.ph (12, 28) FAR 276181 U 0.00
+expand: main@.lr.ph (12, 0) FAR  w(0) 276181.
+	create_child: main@.lr.ph190 (11, 28) FAR 276151 U 0.00
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 276151.
+	create_child: main@.lr.ph190 (10, 28) FAR 276289 U 0.01
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 276289. F 0.06
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 276151. F 0.06
+expand: main@.lr.ph (12, 0) FAR  w(0) 276181. F 0.02
+expand: main@.lr.ph (13, 0) FAR  w(0) 276184. F 0.02
+expand: main@.lr.ph (14, 0) FAR  w(0) 177540. F 0.02
+expand: main@.lr.ph (15, 0) FAR  w(0) 94906. F 0.03
+expand: main@.lr.ph (16, 0) FAR  w(0) 94999. F 0.03
+expand: main@_3 (17, 0) FAR  w(0) 94955. F 0.01
+expand: main@.lr.ph190 (18, 0) FAR  w(0) 93745. F 0.09
+expand: main@.lr.ph190 (19, 0) FAR  w(0) 93648. F 0.06
+expand: main@.lr.ph190 (20, 0) FAR  w(0) 93607. F 0.06
+expand: main@.lr.ph (21, 0) FAR  w(0) 93549.
+	create_child: main@.lr.ph (20, 28) FAR 182908 U 0.00
+expand: main@.lr.ph (20, 0) FAR  w(0) 182908.
+	create_child: main@.lr.ph190 (19, 28) FAR 182917 U 0.00
+expand: main@.lr.ph190 (19, 0) FAR  w(0) 182917.
+	create_child: main@.lr.ph190 (18, 28) FAR 181616 U 0.01
+expand: main@.lr.ph190 (18, 0) FAR  w(0) 181616.
+	create_child: main@.lr.ph190 (17, 28) FAR 182341 U 0.01
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 182341.
+	create_child: main@.lr.ph190 (16, 28) FAR 182801 U 0.01
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 182801.
+	create_child: main@_3 (15, 28) FAR 183759 U 0.01
+expand: main@_3 (15, 0) FAR  w(0) 183759.
+	create_child: main@.lr.ph (14, 28) FAR 180598 U 0.00
+expand: main@.lr.ph (14, 0) FAR  w(0) 180598.
+	create_child: main@.lr.ph (13, 28) FAR 183924 U 0.00
+expand: main@.lr.ph (13, 0) FAR  w(0) 183924.
+	create_child: main@.lr.ph (12, 28) FAR 357660 U 0.00
+expand: main@.lr.ph (12, 0) FAR  w(0) 357660.
+	create_child: main@.lr.ph (11, 28) FAR 357665 U 0.00
+expand: main@.lr.ph (11, 0) FAR  w(0) 357665.
+	create_child: main@.lr.ph (10, 28) FAR 357655 U 0.00
+expand: main@.lr.ph (10, 0) FAR  w(0) 357655.
+	create_child: main@.lr.ph190 (9, 28) FAR 353192 U 0.00
+expand: main@.lr.ph190 (9, 0) FAR  w(0) 353192.
+	create_child: main@.lr.ph190 (8, 28) FAR 356372 U 0.01
+expand: main@.lr.ph190 (8, 0) FAR  w(0) 356372.
+	create_child: main@.lr.ph190 (7, 28) FAR 356443 U 0.01
+expand: main@.lr.ph190 (7, 0) FAR  w(0) 356443.
+	create_child: main@.lr.ph190 (6, 28) FAR 356656 U 0.01
+expand: main@.lr.ph190 (6, 0) FAR  w(0) 356656.
+	create_child: main@.lr.ph190 (5, 28) FAR 356337 U 0.01
+expand: main@.lr.ph190 (5, 0) FAR  w(0) 356337. F 0.08
+expand: main@.lr.ph190 (6, 0) FAR  w(0) 356656. F 0.06
+expand: main@.lr.ph190 (7, 0) FAR  w(0) 356443. F 0.06
+expand: main@.lr.ph190 (8, 0) FAR  w(0) 356372. F 0.05
+expand: main@.lr.ph190 (9, 0) FAR  w(0) 353192. F 0.05
+expand: main@.lr.ph (10, 0) FAR  w(0) 357655. F 0.02
+expand: main@.lr.ph (11, 0) FAR  w(0) 357665. F 0.02
+expand: main@.lr.ph (12, 0) FAR  w(0) 357660. F 0.02
+expand: main@.lr.ph (13, 0) FAR  w(0) 183924. F 0.02
+expand: main@.lr.ph (14, 0) FAR  w(0) 180598. F 0.02
+expand: main@_3 (15, 0) FAR  w(0) 183759. F 0.01
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 182801. F 0.08
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 182341. F 0.06
+expand: main@.lr.ph190 (18, 0) FAR  w(0) 181616. F 0.06
+expand: main@.lr.ph190 (19, 0) FAR  w(0) 182917. F 0.06
+expand: main@.lr.ph (20, 0) FAR  w(0) 182908.
+	create_child: main@.lr.ph (19, 28) FAR 238237 U 0.00
+expand: main@.lr.ph (19, 0) FAR  w(0) 238237.
+	create_child: main@.lr.ph190 (18, 28) FAR 236619 U 0.00
+expand: main@.lr.ph190 (18, 0) FAR  w(0) 236619.
+	create_child: main@.lr.ph190 (17, 28) FAR 237840 U 0.01
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 237840.
+	create_child: main@.lr.ph190 (16, 28) FAR 238353 U 0.01
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 238353. F 0.08
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 237840. F 0.07
+expand: main@.lr.ph190 (18, 0) FAR  w(0) 236619. F 0.09
+expand: main@.lr.ph (19, 0) FAR  w(0) 238237. F 0.03
+expand: main@.lr.ph (20, 0) FAR  w(0) 182908. F 0.03
+expand: main@.lr.ph (21, 0) FAR  w(0) 93549. F 0.04
+expand: main@.lr.ph (22, 0) FAR  w(0) 35545. F 0.04
+expand: main@.lr.ph (23, 0) FAR  w(0) 34158. F 0.04
+expand: main@_3 (24, 0) FAR  w(0) 33635. F 0.01
+expand: main@empty.loop (25, 0) FAR  w(0) 33191. F 0.01
+expand: main@entry (26, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (27, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (28, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 2.35 :before-memory 85.89 :after-memory 91.00)
+Propagating: 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28  ! 29 
+(spacer::context::propagate :time 0.56 :before-memory 91.00 :after-memory 91.82)
+Entering level 29
+expand: query!0 (29, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (28, 29) FAR 1 U 0.00
+expand: main@entry!_BAD (28, 0) FAR  w(0) 1.
+	create_child: main@entry (27, 29) FAR 1 U 0.00
+expand: main@entry (27, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (26, 29) FAR 33191 U 0.00
+expand: main@empty.loop (26, 0) FAR  w(0) 33191.
+	create_child: main@_3 (25, 29) FAR 33635 U 0.00
+expand: main@_3 (25, 0) FAR  w(0) 33635.
+	create_child: main@.lr.ph (24, 29) FAR 34158 U 0.00
+expand: main@.lr.ph (24, 0) FAR  w(0) 34158.
+	create_child: main@.lr.ph (23, 29) FAR 35545 U 0.00
+expand: main@.lr.ph (23, 0) FAR  w(0) 35545.
+	create_child: main@.lr.ph190 (22, 29) FAR 35618 U 0.00
+expand: main@.lr.ph190 (22, 0) FAR  w(0) 35618.
+	create_child: main@.lr.ph190 (21, 29) FAR 61231 U 0.01
+expand: main@.lr.ph190 (21, 0) FAR  w(0) 61231.
+	create_child: main@_3 (20, 29) FAR 75713 U 0.01
+expand: main@_3 (20, 0) FAR  w(0) 75713.
+	create_child: main@.lr.ph (19, 29) FAR 75681 U 0.00
+expand: main@.lr.ph (19, 0) FAR  w(0) 75681.
+	create_child: main@.lr.ph (18, 29) FAR 75104 U 0.00
+expand: main@.lr.ph (18, 0) FAR  w(0) 75104.
+	create_child: main@.lr.ph190 (17, 29) FAR 75111 U 0.00
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 75111.
+	create_child: main@.lr.ph190 (16, 29) FAR 74716 U 0.01
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 74716.
+	create_child: main@_3 (15, 29) FAR 380810 UNDEF 0.01
+expand: main@_3 (15, 0) FAR  w(0) 380810.
+	create_child: main@.lr.ph (14, 29) FAR 380857 U 0.00
+expand: main@.lr.ph (14, 0) FAR  w(0) 380857.
+	create_child: main@.lr.ph (13, 29) FAR 381524 U 0.00
+expand: main@.lr.ph (13, 0) FAR  w(0) 381524.
+	create_child: main@.lr.ph (12, 29) FAR 381257 U 0.00
+expand: main@.lr.ph (12, 0) FAR  w(0) 381257.
+	create_child: main@.lr.ph (11, 29) FAR 380821 U 0.00
+expand: main@.lr.ph (11, 0) FAR  w(0) 380821.
+	create_child: main@.lr.ph (10, 29) FAR 380811 U 0.00
+expand: main@.lr.ph (10, 0) FAR  w(0) 380811.
+	create_child: main@.lr.ph190 (9, 29) FAR 380831 U 0.00
+expand: main@.lr.ph190 (9, 0) FAR  w(0) 380831.
+	create_child: main@.lr.ph190 (8, 29) FAR 380243 U 0.01
+expand: main@.lr.ph190 (8, 0) FAR  w(0) 380243.
+	create_child: main@.lr.ph190 (7, 29) FAR 378069 U 0.01
+expand: main@.lr.ph190 (7, 0) FAR  w(0) 378069.
+	create_child: main@.lr.ph190 (6, 29) FAR 380255 U 0.01
+expand: main@.lr.ph190 (6, 0) FAR  w(0) 380255.
+	create_child: main@.lr.ph190 (5, 29) FAR 380116 U 0.01
+expand: main@.lr.ph190 (5, 0) FAR  w(0) 380116.
+	create_child: main@_3 (4, 29) FAR 381529 UNDEF 0.01
+expand: main@_3 (4, 0) FAR  w(0) 381529.
+	create_child: main@.lr.ph (3, 29) FAR 381492 U 0.00
+expand: main@.lr.ph (3, 0) FAR  w(0) 381492.
+	create_child: main@.lr.ph (2, 29) FAR 381402 U 0.00
+expand: main@.lr.ph (2, 0) FAR  w(0) 381402.
+	create_child: main@.lr.ph190 (1, 29) FAR 381381 U 0.00
+expand: main@.lr.ph190 (1, 0) FAR  w(0) 381381.
+	create_child: main@.lr.ph190 (0, 29) FAR 380504 U 0.01
+expand: main@.lr.ph190 (0, 0) FAR  w(0) 380504. F 0.02
+expand: main@.lr.ph190 (1, 0) FAR  w(0) 381381. F 0.01
+expand: main@.lr.ph (2, 0) FAR  w(0) 381402. F 0.01
+expand: main@.lr.ph (3, 0) FAR  w(0) 381492. F 0.01
+expand: main@_3 (4, 0) FAR  w(0) 381529. F 0.00
+expand: main@.lr.ph190 (5, 0) FAR  w(0) 380116. F 0.06
+expand: main@.lr.ph190 (6, 0) FAR  w(0) 380255. F 0.05
+expand: main@.lr.ph190 (7, 0) FAR  w(0) 378069. F 0.05
+expand: main@.lr.ph190 (8, 0) FAR  w(0) 380243. F 0.04
+expand: main@.lr.ph190 (9, 0) FAR  w(0) 380831. F 0.05
+expand: main@.lr.ph (10, 0) FAR  w(0) 380811. F 0.02
+expand: main@.lr.ph (11, 0) FAR  w(0) 380821. F 0.03
+expand: main@.lr.ph (12, 0) FAR  w(0) 381257. F 0.03
+expand: main@.lr.ph (13, 0) FAR  w(0) 381524. F 0.03
+expand: main@.lr.ph (14, 0) FAR  w(0) 380857. F 0.03
+expand: main@_3 (15, 0) FAR  w(0) 380810. F 0.01
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 74716. F 0.12
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 75111. F 0.06
+expand: main@.lr.ph (18, 0) FAR  w(0) 75104. F 0.02
+expand: main@.lr.ph (19, 0) FAR  w(0) 75681. F 0.02
+expand: main@_3 (20, 0) FAR  w(0) 75713. F 0.01
+expand: main@.lr.ph190 (21, 0) FAR  w(0) 61231. F 0.10
+expand: main@.lr.ph190 (22, 0) FAR  w(0) 35618. F 0.06
+expand: main@.lr.ph (23, 0) FAR  w(0) 35545.
+	create_child: main@.lr.ph (22, 29) FAR 93549 U 0.00
+expand: main@.lr.ph (22, 0) FAR  w(0) 93549.
+	create_child: main@.lr.ph190 (21, 29) FAR 93607 U 0.00
+expand: main@.lr.ph190 (21, 0) FAR  w(0) 93607.
+	create_child: main@.lr.ph190 (20, 29) FAR 93648 U 0.01
+expand: main@.lr.ph190 (20, 0) FAR  w(0) 93648.
+	create_child: main@.lr.ph190 (19, 29) FAR 93745 U 0.01
+expand: main@.lr.ph190 (19, 0) FAR  w(0) 93745.
+	create_child: main@_3 (18, 29) FAR 94955 U 0.01
+expand: main@_3 (18, 0) FAR  w(0) 94955.
+	create_child: main@.lr.ph (17, 29) FAR 94999 U 0.00
+expand: main@.lr.ph (17, 0) FAR  w(0) 94999.
+	create_child: main@.lr.ph (16, 29) FAR 94906 U 0.00
+expand: main@.lr.ph (16, 0) FAR  w(0) 94906.
+	create_child: main@.lr.ph190 (15, 29) FAR 95178 U 0.00
+expand: main@.lr.ph190 (15, 0) FAR  w(0) 95178.
+	create_child: main@.lr.ph190 (14, 29) FAR 94207 U 0.01
+expand: main@.lr.ph190 (14, 0) FAR  w(0) 94207.
+	create_child: main@_3 (13, 29) FAR 309521 UNDEF 0.01
+expand: main@_3 (13, 0) FAR  w(0) 309521.
+	create_child: main@.lr.ph (12, 29) FAR 309558 U 0.00
+expand: main@.lr.ph (12, 0) FAR  w(0) 309558.
+	create_child: main@.lr.ph (11, 29) FAR 309345 U 0.00
+expand: main@.lr.ph (11, 0) FAR  w(0) 309345.
+	create_child: main@.lr.ph190 (10, 29) FAR 399461 U 0.00
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 399461. F 0.06
+expand: main@.lr.ph (11, 0) FAR  w(0) 309345.
+	create_child: main@.lr.ph (10, 29) FAR 310195 U 0.00
+expand: main@.lr.ph (10, 0) FAR  w(0) 310195.
+	create_child: main@.lr.ph (9, 29) FAR 339354 U 0.00
+expand: main@.lr.ph (9, 0) FAR  w(0) 339354.
+	create_child: main@.lr.ph (8, 29) FAR 399610 U 0.00
+expand: main@.lr.ph (8, 0) FAR  w(0) 399610.
+	create_child: main@.lr.ph190 (7, 29) FAR 398404 U 0.00
+expand: main@.lr.ph190 (7, 0) FAR  w(0) 398404.
+	create_child: main@.lr.ph190 (6, 29) FAR 365530 U 0.01
+expand: main@.lr.ph190 (6, 0) FAR  w(0) 365530.
+	create_child: main@.lr.ph190 (5, 29) FAR 336283 U 0.01
+expand: main@.lr.ph190 (5, 0) FAR  w(0) 336283. F 0.05
+expand: main@.lr.ph190 (6, 0) FAR  w(0) 365530. F 0.05
+expand: main@.lr.ph190 (7, 0) FAR  w(0) 398404. F 0.04
+expand: main@.lr.ph (8, 0) FAR  w(0) 399610. F 0.02
+expand: main@.lr.ph (9, 0) FAR  w(0) 339354. F 0.03
+expand: main@.lr.ph (10, 0) FAR  w(0) 310195. F 0.03
+expand: main@.lr.ph (11, 0) FAR  w(0) 309345. F 0.03
+expand: main@.lr.ph (12, 0) FAR  w(0) 309558. F 0.03
+expand: main@_3 (13, 0) FAR  w(0) 309521. F 0.01
+expand: main@.lr.ph190 (14, 0) FAR  w(0) 94207. F 0.16
+expand: main@.lr.ph190 (15, 0) FAR  w(0) 95178. F 0.10
+expand: main@.lr.ph (16, 0) FAR  w(0) 94906.
+	create_child: main@.lr.ph (15, 29) FAR 177540 U 0.00
+expand: main@.lr.ph (15, 0) FAR  w(0) 177540.
+	create_child: main@.lr.ph190 (14, 29) FAR 275166 U 0.00
+expand: main@.lr.ph190 (14, 0) FAR  w(0) 275166. F 0.06
+expand: main@.lr.ph (15, 0) FAR  w(0) 177540.
+	create_child: main@.lr.ph (14, 29) FAR 276184 U 0.00
+expand: main@.lr.ph (14, 0) FAR  w(0) 276184.
+	create_child: main@.lr.ph190 (13, 29) FAR 312157 U 0.00
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 312157.
+	create_child: main@.lr.ph190 (12, 29) FAR 347959 U 0.01
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 347959.
+	create_child: main@.lr.ph190 (11, 29) FAR 306276 U 0.01
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 306276.
+	create_child: main@.lr.ph190 (10, 29) FAR 406907 U 0.01
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 406907. F 0.07
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 306276. F 0.08
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 347959. F 0.06
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 312157. F 0.06
+expand: main@.lr.ph (14, 0) FAR  w(0) 276184.
+	create_child: main@.lr.ph (13, 29) FAR 276181 U 0.00
+expand: main@.lr.ph (13, 0) FAR  w(0) 276181.
+	create_child: main@.lr.ph190 (12, 29) FAR 276151 U 0.00
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 276151.
+	create_child: main@.lr.ph190 (11, 29) FAR 276289 U 0.01
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 276289.
+	create_child: main@.lr.ph190 (10, 29) FAR 276288 U 0.01
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 276288. F 0.06
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 276289. F 0.06
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 276151. F 0.07
+expand: main@.lr.ph (13, 0) FAR  w(0) 276181. F 0.02
+expand: main@.lr.ph (14, 0) FAR  w(0) 276184. F 0.03
+expand: main@.lr.ph (15, 0) FAR  w(0) 177540. F 0.02
+expand: main@.lr.ph (16, 0) FAR  w(0) 94906. F 0.03
+expand: main@.lr.ph (17, 0) FAR  w(0) 94999. F 0.03
+expand: main@_3 (18, 0) FAR  w(0) 94955. F 0.01
+expand: main@.lr.ph190 (19, 0) FAR  w(0) 93745. F 0.10
+expand: main@.lr.ph190 (20, 0) FAR  w(0) 93648. F 0.07
+expand: main@.lr.ph190 (21, 0) FAR  w(0) 93607. F 0.07
+expand: main@.lr.ph (22, 0) FAR  w(0) 93549.
+	create_child: main@.lr.ph (21, 29) FAR 182908 U 0.00
+expand: main@.lr.ph (21, 0) FAR  w(0) 182908.
+	create_child: main@.lr.ph190 (20, 29) FAR 182917 U 0.00
+expand: main@.lr.ph190 (20, 0) FAR  w(0) 182917.
+	create_child: main@.lr.ph190 (19, 29) FAR 181616 U 0.01
+expand: main@.lr.ph190 (19, 0) FAR  w(0) 181616.
+	create_child: main@.lr.ph190 (18, 29) FAR 182341 U 0.01
+expand: main@.lr.ph190 (18, 0) FAR  w(0) 182341.
+	create_child: main@.lr.ph190 (17, 29) FAR 182801 U 0.01
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 182801.
+	create_child: main@_3 (16, 29) FAR 183759 U 0.01
+expand: main@_3 (16, 0) FAR  w(0) 183759.
+	create_child: main@.lr.ph (15, 29) FAR 180598 U 0.00
+expand: main@.lr.ph (15, 0) FAR  w(0) 180598.
+	create_child: main@.lr.ph (14, 29) FAR 183924 U 0.00
+expand: main@.lr.ph (14, 0) FAR  w(0) 183924.
+	create_child: main@.lr.ph (13, 29) FAR 357660 U 0.00
+expand: main@.lr.ph (13, 0) FAR  w(0) 357660.
+	create_child: main@.lr.ph (12, 29) FAR 357665 U 0.00
+expand: main@.lr.ph (12, 0) FAR  w(0) 357665.
+	create_child: main@.lr.ph (11, 29) FAR 357655 U 0.00
+expand: main@.lr.ph (11, 0) FAR  w(0) 357655.
+	create_child: main@.lr.ph190 (10, 29) FAR 353192 U 0.00
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 353192. F 0.07
+expand: main@.lr.ph (11, 0) FAR  w(0) 357655. F 0.03
+expand: main@.lr.ph (12, 0) FAR  w(0) 357665. F 0.03
+expand: main@.lr.ph (13, 0) FAR  w(0) 357660. F 0.03
+expand: main@.lr.ph (14, 0) FAR  w(0) 183924. F 0.03
+expand: main@.lr.ph (15, 0) FAR  w(0) 180598. F 0.03
+expand: main@_3 (16, 0) FAR  w(0) 183759. F 0.01
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 182801. F 0.13
+expand: main@.lr.ph190 (18, 0) FAR  w(0) 182341. F 0.10
+expand: main@.lr.ph190 (19, 0) FAR  w(0) 181616. F 0.07
+expand: main@.lr.ph190 (20, 0) FAR  w(0) 182917. F 0.09
+expand: main@.lr.ph (21, 0) FAR  w(0) 182908.
+	create_child: main@.lr.ph (20, 29) FAR 238237 U 0.00
+expand: main@.lr.ph (20, 0) FAR  w(0) 238237. F 0.03
+expand: main@.lr.ph (21, 0) FAR  w(0) 182908. F 0.03
+expand: main@.lr.ph (22, 0) FAR  w(0) 93549. F 0.04
+expand: main@.lr.ph (23, 0) FAR  w(0) 35545. F 0.04
+expand: main@.lr.ph (24, 0) FAR  w(0) 34158. F 0.04
+expand: main@_3 (25, 0) FAR  w(0) 33635. F 0.01
+expand: main@empty.loop (26, 0) FAR  w(0) 33191. F 0.01
+expand: main@entry (27, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (28, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (29, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 3.45 :before-memory 91.82 :after-memory 109.87)
+Propagating: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29  ! 30 
+(spacer::context::propagate :time 0.93 :before-memory 109.87 :after-memory 112.21)
+Entering level 30
+expand: query!0 (30, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (29, 30) FAR 1 U 0.00
+expand: main@entry!_BAD (29, 0) FAR  w(0) 1.
+	create_child: main@entry (28, 30) FAR 1 U 0.00
+expand: main@entry (28, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (27, 30) FAR 33191 U 0.00
+expand: main@empty.loop (27, 0) FAR  w(0) 33191.
+	create_child: main@_3 (26, 30) FAR 33635 U 0.00
+expand: main@_3 (26, 0) FAR  w(0) 33635.
+	create_child: main@.lr.ph (25, 30) FAR 34158 U 0.00
+expand: main@.lr.ph (25, 0) FAR  w(0) 34158.
+	create_child: main@.lr.ph (24, 30) FAR 35545 U 0.00
+expand: main@.lr.ph (24, 0) FAR  w(0) 35545.
+	create_child: main@.lr.ph190 (23, 30) FAR 35618 U 0.00
+expand: main@.lr.ph190 (23, 0) FAR  w(0) 35618.
+	create_child: main@.lr.ph190 (22, 30) FAR 61231 U 0.01
+expand: main@.lr.ph190 (22, 0) FAR  w(0) 61231.
+	create_child: main@_3 (21, 30) FAR 75713 U 0.01
+expand: main@_3 (21, 0) FAR  w(0) 75713.
+	create_child: main@.lr.ph (20, 30) FAR 75681 U 0.00
+expand: main@.lr.ph (20, 0) FAR  w(0) 75681.
+	create_child: main@.lr.ph (19, 30) FAR 75104 U 0.00
+expand: main@.lr.ph (19, 0) FAR  w(0) 75104.
+	create_child: main@.lr.ph190 (18, 30) FAR 75111 U 0.00
+expand: main@.lr.ph190 (18, 0) FAR  w(0) 75111.
+	create_child: main@.lr.ph190 (17, 30) FAR 74716 U 0.01
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 74716.
+	create_child: main@_3 (16, 30) FAR 380810 UNDEF 0.01
+expand: main@_3 (16, 0) FAR  w(0) 380810.
+	create_child: main@.lr.ph (15, 30) FAR 380857 U 0.00
+expand: main@.lr.ph (15, 0) FAR  w(0) 380857.
+	create_child: main@.lr.ph (14, 30) FAR 381524 U 0.00
+expand: main@.lr.ph (14, 0) FAR  w(0) 381524.
+	create_child: main@.lr.ph (13, 30) FAR 381257 U 0.00
+expand: main@.lr.ph (13, 0) FAR  w(0) 381257.
+	create_child: main@.lr.ph (12, 30) FAR 380821 U 0.00
+expand: main@.lr.ph (12, 0) FAR  w(0) 380821.
+	create_child: main@.lr.ph (11, 30) FAR 380811 U 0.00
+expand: main@.lr.ph (11, 0) FAR  w(0) 380811.
+	create_child: main@.lr.ph190 (10, 30) FAR 380831 U 0.00
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 380831. F 0.07
+expand: main@.lr.ph (11, 0) FAR  w(0) 380811. F 0.02
+expand: main@.lr.ph (12, 0) FAR  w(0) 380821. F 0.03
+expand: main@.lr.ph (13, 0) FAR  w(0) 381257. F 0.03
+expand: main@.lr.ph (14, 0) FAR  w(0) 381524. F 0.03
+expand: main@.lr.ph (15, 0) FAR  w(0) 380857. F 0.03
+expand: main@_3 (16, 0) FAR  w(0) 380810. F 0.01
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 74716. F 0.10
+expand: main@.lr.ph190 (18, 0) FAR  w(0) 75111. F 0.06
+expand: main@.lr.ph (19, 0) FAR  w(0) 75104. F 0.02
+expand: main@.lr.ph (20, 0) FAR  w(0) 75681. F 0.03
+expand: main@_3 (21, 0) FAR  w(0) 75713. F 0.01
+expand: main@.lr.ph190 (22, 0) FAR  w(0) 61231. F 0.10
+expand: main@.lr.ph190 (23, 0) FAR  w(0) 35618. F 0.08
+expand: main@.lr.ph (24, 0) FAR  w(0) 35545.
+	create_child: main@.lr.ph (23, 30) FAR 93549 U 0.00
+expand: main@.lr.ph (23, 0) FAR  w(0) 93549.
+	create_child: main@.lr.ph190 (22, 30) FAR 93607 U 0.00
+expand: main@.lr.ph190 (22, 0) FAR  w(0) 93607.
+	create_child: main@.lr.ph190 (21, 30) FAR 93648 U 0.01
+expand: main@.lr.ph190 (21, 0) FAR  w(0) 93648.
+	create_child: main@.lr.ph190 (20, 30) FAR 93745 U 0.01
+expand: main@.lr.ph190 (20, 0) FAR  w(0) 93745.
+	create_child: main@_3 (19, 30) FAR 94955 U 0.01
+expand: main@_3 (19, 0) FAR  w(0) 94955.
+	create_child: main@.lr.ph (18, 30) FAR 94999 U 0.00
+expand: main@.lr.ph (18, 0) FAR  w(0) 94999.
+	create_child: main@.lr.ph (17, 30) FAR 94906 U 0.00
+expand: main@.lr.ph (17, 0) FAR  w(0) 94906.
+	create_child: main@.lr.ph190 (16, 30) FAR 95178 U 0.00
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 95178.
+	create_child: main@.lr.ph190 (15, 30) FAR 94207 U 0.01
+expand: main@.lr.ph190 (15, 0) FAR  w(0) 94207.
+	create_child: main@_3 (14, 30) FAR 309521 UNDEF 0.01
+expand: main@_3 (14, 0) FAR  w(0) 309521.
+	create_child: main@.lr.ph (13, 30) FAR 309558 U 0.00
+expand: main@.lr.ph (13, 0) FAR  w(0) 309558.
+	create_child: main@.lr.ph (12, 30) FAR 309345 U 0.00
+expand: main@.lr.ph (12, 0) FAR  w(0) 309345.
+	create_child: main@.lr.ph190 (11, 30) FAR 399461 U 0.00
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 399461.
+	create_child: main@.lr.ph190 (10, 30) FAR 453068 U 0.01
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 453068.
+	create_child: main@_3 (9, 30) FAR 452354 UNDEF 0.01
+expand: main@_3 (9, 0) FAR  w(0) 452354.
+	create_child: main@.lr.ph (8, 30) FAR 453566 U 0.00
+expand: main@.lr.ph (8, 0) FAR  w(0) 453566.
+	create_child: main@.lr.ph (7, 30) FAR 454284 U 0.00
+expand: main@.lr.ph (7, 0) FAR  w(0) 454284.
+	create_child: main@.lr.ph190 (6, 30) FAR 452529 U 0.00
+expand: main@.lr.ph190 (6, 0) FAR  w(0) 452529.
+	create_child: main@.lr.ph190 (5, 30) FAR 432791 U 0.01
+expand: main@.lr.ph190 (5, 0) FAR  w(0) 432791. F 0.07
+expand: main@.lr.ph190 (6, 0) FAR  w(0) 452529. F 0.06
+expand: main@.lr.ph (7, 0) FAR  w(0) 454284.
+	create_child: main@.lr.ph (6, 30) FAR 455474 U 0.00
+expand: main@.lr.ph (6, 0) FAR  w(0) 455474.
+	create_child: main@.lr.ph (5, 30) FAR 455473 U 0.00
+expand: main@.lr.ph (5, 0) FAR  w(0) 455473.
+	create_child: main@.lr.ph (4, 30) FAR 455496 U 0.00
+expand: main@.lr.ph (4, 0) FAR  w(0) 455496.
+	create_child: main@.lr.ph (3, 30) FAR 455503 U 0.00
+expand: main@.lr.ph (3, 0) FAR  w(0) 455503. F 0.03
+expand: main@.lr.ph (4, 0) FAR  w(0) 455496. F 0.04
+expand: main@.lr.ph (5, 0) FAR  w(0) 455473. F 0.03
+expand: main@.lr.ph (6, 0) FAR  w(0) 455474. F 0.03
+expand: main@.lr.ph (7, 0) FAR  w(0) 454284. F 0.03
+expand: main@.lr.ph (8, 0) FAR  w(0) 453566. F 0.03
+expand: main@_3 (9, 0) FAR  w(0) 452354. F 0.01
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 453068. F 0.10
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 399461. F 0.09
+expand: main@.lr.ph (12, 0) FAR  w(0) 309345.
+	create_child: main@.lr.ph (11, 30) FAR 310195 U 0.00
+expand: main@.lr.ph (11, 0) FAR  w(0) 310195.
+	create_child: main@.lr.ph (10, 30) FAR 339354 U 0.00
+expand: main@.lr.ph (10, 0) FAR  w(0) 339354.
+	create_child: main@.lr.ph (9, 30) FAR 399610 U 0.00
+expand: main@.lr.ph (9, 0) FAR  w(0) 399610.
+	create_child: main@.lr.ph190 (8, 30) FAR 398404 U 0.00
+expand: main@.lr.ph190 (8, 0) FAR  w(0) 398404.
+	create_child: main@.lr.ph190 (7, 30) FAR 365530 U 0.01
+expand: main@.lr.ph190 (7, 0) FAR  w(0) 365530.
+	create_child: main@.lr.ph190 (6, 30) FAR 336283 U 0.01
+expand: main@.lr.ph190 (6, 0) FAR  w(0) 336283.
+	create_child: main@.lr.ph190 (5, 30) FAR 461114 U 0.01
+expand: main@.lr.ph190 (5, 0) FAR  w(0) 461114. F 0.05
+expand: main@.lr.ph190 (6, 0) FAR  w(0) 336283. F 0.06
+expand: main@.lr.ph190 (7, 0) FAR  w(0) 365530. F 0.05
+expand: main@.lr.ph190 (8, 0) FAR  w(0) 398404. F 0.05
+expand: main@.lr.ph (9, 0) FAR  w(0) 399610. F 0.03
+expand: main@.lr.ph (10, 0) FAR  w(0) 339354. F 0.03
+expand: main@.lr.ph (11, 0) FAR  w(0) 310195. F 0.03
+expand: main@.lr.ph (12, 0) FAR  w(0) 309345. F 0.04
+expand: main@.lr.ph (13, 0) FAR  w(0) 309558. F 0.04
+expand: main@_3 (14, 0) FAR  w(0) 309521. F 0.01
+expand: main@.lr.ph190 (15, 0) FAR  w(0) 94207. F 0.12
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 95178. F 0.11
+expand: main@.lr.ph (17, 0) FAR  w(0) 94906.
+	create_child: main@.lr.ph (16, 30) FAR 177540 U 0.00
+expand: main@.lr.ph (16, 0) FAR  w(0) 177540.
+	create_child: main@.lr.ph190 (15, 30) FAR 275166 U 0.00
+expand: main@.lr.ph190 (15, 0) FAR  w(0) 275166. F 0.07
+expand: main@.lr.ph (16, 0) FAR  w(0) 177540.
+	create_child: main@.lr.ph (15, 30) FAR 276184 U 0.00
+expand: main@.lr.ph (15, 0) FAR  w(0) 276184.
+	create_child: main@.lr.ph (14, 30) FAR 276181 U 0.00
+expand: main@.lr.ph (14, 0) FAR  w(0) 276181.
+	create_child: main@.lr.ph190 (13, 30) FAR 276151 U 0.00
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 276151.
+	create_child: main@.lr.ph190 (12, 30) FAR 276289 U 0.01
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 276289.
+	create_child: main@.lr.ph190 (11, 30) FAR 276288 U 0.01
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 276288.
+	create_child: main@.lr.ph190 (10, 30) FAR 276263 U 0.01
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 276263. F 0.07
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 276288. F 0.06
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 276289. F 0.07
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 276151. F 0.07
+expand: main@.lr.ph (14, 0) FAR  w(0) 276181. F 0.03
+expand: main@.lr.ph (15, 0) FAR  w(0) 276184. F 0.03
+expand: main@.lr.ph (16, 0) FAR  w(0) 177540. F 0.03
+expand: main@.lr.ph (17, 0) FAR  w(0) 94906. F 0.04
+expand: main@.lr.ph (18, 0) FAR  w(0) 94999. F 0.04
+expand: main@_3 (19, 0) FAR  w(0) 94955. F 0.01
+expand: main@.lr.ph190 (20, 0) FAR  w(0) 93745. F 0.13
+expand: main@.lr.ph190 (21, 0) FAR  w(0) 93648. F 0.08
+expand: main@.lr.ph190 (22, 0) FAR  w(0) 93607. F 0.10
+expand: main@.lr.ph (23, 0) FAR  w(0) 93549. F 0.04
+expand: main@.lr.ph (24, 0) FAR  w(0) 35545. F 0.04
+expand: main@.lr.ph (25, 0) FAR  w(0) 34158. F 0.03
+expand: main@_3 (26, 0) FAR  w(0) 33635. F 0.01
+expand: main@empty.loop (27, 0) FAR  w(0) 33191. F 0.01
+expand: main@entry (28, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (29, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (30, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 2.98 :before-memory 112.21 :after-memory 126.21)
+Propagating: 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30  ! 31 
+(spacer::context::propagate :time 0.91 :before-memory 126.21 :after-memory 128.08)
+Entering level 31
+expand: query!0 (31, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (30, 31) FAR 1 U 0.00
+expand: main@entry!_BAD (30, 0) FAR  w(0) 1.
+	create_child: main@entry (29, 31) FAR 1 U 0.00
+expand: main@entry (29, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (28, 31) FAR 33191 U 0.00
+expand: main@empty.loop (28, 0) FAR  w(0) 33191.
+	create_child: main@_3 (27, 31) FAR 33635 U 0.00
+expand: main@_3 (27, 0) FAR  w(0) 33635.
+	create_child: main@.lr.ph (26, 31) FAR 34158 U 0.00
+expand: main@.lr.ph (26, 0) FAR  w(0) 34158.
+	create_child: main@.lr.ph (25, 31) FAR 35545 U 0.00
+expand: main@.lr.ph (25, 0) FAR  w(0) 35545.
+	create_child: main@.lr.ph190 (24, 31) FAR 35618 U 0.00
+expand: main@.lr.ph190 (24, 0) FAR  w(0) 35618.
+	create_child: main@.lr.ph190 (23, 31) FAR 61231 U 0.01
+expand: main@.lr.ph190 (23, 0) FAR  w(0) 61231.
+	create_child: main@_3 (22, 31) FAR 75713 U 0.01
+expand: main@_3 (22, 0) FAR  w(0) 75713.
+	create_child: main@.lr.ph (21, 31) FAR 75681 U 0.00
+expand: main@.lr.ph (21, 0) FAR  w(0) 75681.
+	create_child: main@.lr.ph (20, 31) FAR 75104 U 0.00
+expand: main@.lr.ph (20, 0) FAR  w(0) 75104.
+	create_child: main@.lr.ph190 (19, 31) FAR 75111 U 0.00
+expand: main@.lr.ph190 (19, 0) FAR  w(0) 75111.
+	create_child: main@.lr.ph190 (18, 31) FAR 74716 U 0.01
+expand: main@.lr.ph190 (18, 0) FAR  w(0) 74716.
+	create_child: main@_3 (17, 31) FAR 380810 UNDEF 0.01
+expand: main@_3 (17, 0) FAR  w(0) 380810.
+	create_child: main@.lr.ph (16, 31) FAR 380857 U 0.00
+expand: main@.lr.ph (16, 0) FAR  w(0) 380857.
+	create_child: main@.lr.ph (15, 31) FAR 381524 U 0.00
+expand: main@.lr.ph (15, 0) FAR  w(0) 381524.
+	create_child: main@.lr.ph (14, 31) FAR 381257 U 0.00
+expand: main@.lr.ph (14, 0) FAR  w(0) 381257.
+	create_child: main@.lr.ph (13, 31) FAR 380821 U 0.00
+expand: main@.lr.ph (13, 0) FAR  w(0) 380821.
+	create_child: main@.lr.ph (12, 31) FAR 380811 U 0.00
+expand: main@.lr.ph (12, 0) FAR  w(0) 380811.
+	create_child: main@.lr.ph190 (11, 31) FAR 380831 U 0.00
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 380831.
+	create_child: main@.lr.ph190 (10, 31) FAR 380243 U 0.01
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 380243. F 0.07
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 380831. F 0.08
+expand: main@.lr.ph (12, 0) FAR  w(0) 380811. F 0.03
+expand: main@.lr.ph (13, 0) FAR  w(0) 380821. F 0.03
+expand: main@.lr.ph (14, 0) FAR  w(0) 381257. F 0.03
+expand: main@.lr.ph (15, 0) FAR  w(0) 381524. F 0.03
+expand: main@.lr.ph (16, 0) FAR  w(0) 380857. F 0.03
+expand: main@_3 (17, 0) FAR  w(0) 380810. F 0.01
+expand: main@.lr.ph190 (18, 0) FAR  w(0) 74716. F 0.09
+expand: main@.lr.ph190 (19, 0) FAR  w(0) 75111. F 0.06
+expand: main@.lr.ph (20, 0) FAR  w(0) 75104.
+	create_child: main@.lr.ph (19, 31) FAR 108668 U 0.00
+expand: main@.lr.ph (19, 0) FAR  w(0) 108668.
+	create_child: main@.lr.ph190 (18, 31) FAR 108674 U 0.00
+expand: main@.lr.ph190 (18, 0) FAR  w(0) 108674.
+	create_child: main@.lr.ph190 (17, 31) FAR 112823 U 0.01
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 112823.
+	create_child: main@.lr.ph190 (16, 31) FAR 119997 U 0.01
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 119997.
+	create_child: main@_3 (15, 31) FAR 122015 UNDEF 0.01
+expand: main@_3 (15, 0) FAR  w(0) 122015.
+	create_child: main@.lr.ph (14, 31) FAR 122009 U 0.00
+expand: main@.lr.ph (14, 0) FAR  w(0) 122009.
+	create_child: main@.lr.ph (13, 31) FAR 122035 U 0.00
+expand: main@.lr.ph (13, 0) FAR  w(0) 122035.
+	create_child: main@.lr.ph (12, 31) FAR 121999 U 0.00
+expand: main@.lr.ph (12, 0) FAR  w(0) 121999.
+	create_child: main@.lr.ph (11, 31) FAR 489267 U 0.00
+expand: main@.lr.ph (11, 0) FAR  w(0) 489267.
+	create_child: main@.lr.ph (10, 31) FAR 490847 U 0.00
+expand: main@.lr.ph (10, 0) FAR  w(0) 490847.
+	create_child: main@.lr.ph190 (9, 31) FAR 488381 U 0.00
+expand: main@.lr.ph190 (9, 0) FAR  w(0) 488381.
+	create_child: main@.lr.ph190 (8, 31) FAR 489537 U 0.01
+expand: main@.lr.ph190 (8, 0) FAR  w(0) 489537.
+	create_child: main@.lr.ph190 (7, 31) FAR 488787 U 0.01
+expand: main@.lr.ph190 (7, 0) FAR  w(0) 488787.
+	create_child: main@.lr.ph190 (6, 31) FAR 490291 U 0.01
+expand: main@.lr.ph190 (6, 0) FAR  w(0) 490291.
+	create_child: main@.lr.ph190 (5, 31) FAR 482712 U 0.01
+expand: main@.lr.ph190 (5, 0) FAR  w(0) 482712. F 0.08
+expand: main@.lr.ph190 (6, 0) FAR  w(0) 490291. F 0.05
+expand: main@.lr.ph190 (7, 0) FAR  w(0) 488787. F 0.06
+expand: main@.lr.ph190 (8, 0) FAR  w(0) 489537. F 0.04
+expand: main@.lr.ph190 (9, 0) FAR  w(0) 488381. F 0.05
+expand: main@.lr.ph (10, 0) FAR  w(0) 490847. F 0.02
+expand: main@.lr.ph (11, 0) FAR  w(0) 489267. F 0.03
+expand: main@.lr.ph (12, 0) FAR  w(0) 121999. F 0.03
+expand: main@.lr.ph (13, 0) FAR  w(0) 122035. F 0.03
+expand: main@.lr.ph (14, 0) FAR  w(0) 122009. F 0.03
+expand: main@_3 (15, 0) FAR  w(0) 122015. F 0.01
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 119997. F 0.12
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 112823. F 0.08
+expand: main@.lr.ph190 (18, 0) FAR  w(0) 108674. F 0.09
+expand: main@.lr.ph (19, 0) FAR  w(0) 108668.
+	create_child: main@.lr.ph (18, 31) FAR 170047 U 0.01
+expand: main@.lr.ph (18, 0) FAR  w(0) 170047.
+	create_child: main@.lr.ph (17, 31) FAR 196850 U 0.00
+expand: main@.lr.ph (17, 0) FAR  w(0) 196850. F 0.04
+expand: main@.lr.ph (18, 0) FAR  w(0) 170047. F 0.03
+expand: main@.lr.ph (19, 0) FAR  w(0) 108668. F 0.05
+expand: main@.lr.ph (20, 0) FAR  w(0) 75104. F 0.04
+expand: main@.lr.ph (21, 0) FAR  w(0) 75681. F 0.04
+expand: main@_3 (22, 0) FAR  w(0) 75713. F 0.01
+expand: main@.lr.ph190 (23, 0) FAR  w(0) 61231. F 0.20
+expand: main@.lr.ph190 (24, 0) FAR  w(0) 35618. F 0.11
+expand: main@.lr.ph (25, 0) FAR  w(0) 35545.
+	create_child: main@.lr.ph (24, 31) FAR 93549 U 0.01
+expand: main@.lr.ph (24, 0) FAR  w(0) 93549.
+	create_child: main@.lr.ph190 (23, 31) FAR 93607 U 0.00
+expand: main@.lr.ph190 (23, 0) FAR  w(0) 93607.
+	create_child: main@.lr.ph190 (22, 31) FAR 93648 U 0.01
+expand: main@.lr.ph190 (22, 0) FAR  w(0) 93648.
+	create_child: main@.lr.ph190 (21, 31) FAR 93745 U 0.01
+expand: main@.lr.ph190 (21, 0) FAR  w(0) 93745.
+	create_child: main@_3 (20, 31) FAR 94955 U 0.01
+expand: main@_3 (20, 0) FAR  w(0) 94955.
+	create_child: main@.lr.ph (19, 31) FAR 94999 U 0.00
+expand: main@.lr.ph (19, 0) FAR  w(0) 94999.
+	create_child: main@.lr.ph (18, 31) FAR 94906 U 0.00
+expand: main@.lr.ph (18, 0) FAR  w(0) 94906.
+	create_child: main@.lr.ph190 (17, 31) FAR 95178 U 0.00
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 95178.
+	create_child: main@.lr.ph190 (16, 31) FAR 94207 U 0.01
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 94207.
+	create_child: main@_3 (15, 31) FAR 309521 UNDEF 0.01
+expand: main@_3 (15, 0) FAR  w(0) 309521.
+	create_child: main@.lr.ph (14, 31) FAR 309558 U 0.00
+expand: main@.lr.ph (14, 0) FAR  w(0) 309558.
+	create_child: main@.lr.ph (13, 31) FAR 309345 U 0.00
+expand: main@.lr.ph (13, 0) FAR  w(0) 309345.
+	create_child: main@.lr.ph (12, 31) FAR 310195 U 0.00
+expand: main@.lr.ph (12, 0) FAR  w(0) 310195.
+	create_child: main@.lr.ph190 (11, 31) FAR 512577 U 0.00
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 512577.
+	create_child: main@.lr.ph190 (10, 31) FAR 483178 U 0.01
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 483178.
+	create_child: main@.lr.ph190 (9, 31) FAR 512372 U 0.01
+expand: main@.lr.ph190 (9, 0) FAR  w(0) 512372. F 0.09
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 483178. F 0.07
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 512577. F 0.07
+expand: main@.lr.ph (12, 0) FAR  w(0) 310195.
+	create_child: main@.lr.ph (11, 31) FAR 339354 U 0.01
+expand: main@.lr.ph (11, 0) FAR  w(0) 339354.
+	create_child: main@.lr.ph (10, 31) FAR 399610 U 0.00
+expand: main@.lr.ph (10, 0) FAR  w(0) 399610.
+	create_child: main@.lr.ph190 (9, 31) FAR 398404 U 0.00
+expand: main@.lr.ph190 (9, 0) FAR  w(0) 398404.
+	create_child: main@.lr.ph190 (8, 31) FAR 365530 U 0.01
+expand: main@.lr.ph190 (8, 0) FAR  w(0) 365530.
+	create_child: main@.lr.ph190 (7, 31) FAR 336283 U 0.01
+expand: main@.lr.ph190 (7, 0) FAR  w(0) 336283.
+	create_child: main@.lr.ph190 (6, 31) FAR 461114 U 0.01
+expand: main@.lr.ph190 (6, 0) FAR  w(0) 461114.
+	create_child: main@.lr.ph190 (5, 31) FAR 515141 U 0.01
+expand: main@.lr.ph190 (5, 0) FAR  w(0) 515141.
+	create_child: main@_3 (4, 31) FAR 517196 UNDEF 0.01
+expand: main@_3 (4, 0) FAR  w(0) 517196.
+	create_child: main@.lr.ph (3, 31) FAR 516600 U 0.00
+expand: main@.lr.ph (3, 0) FAR  w(0) 516600.
+	create_child: main@.lr.ph (2, 31) FAR 516602 U 0.00
+expand: main@.lr.ph (2, 0) FAR  w(0) 516602.
+	create_child: main@.lr.ph190 (1, 31) FAR 515963 U 0.00
+expand: main@.lr.ph190 (1, 0) FAR  w(0) 515963. T 0.01
+is-reachable: main@.lr.ph (2, 0) FAR 516602 T 0.00
+is-reachable: main@.lr.ph (3, 0) FAR 516600 T 0.00
+is-reachable: main@_3 (4, 0) FAR 517196 T 0.00
+is-reachable: main@.lr.ph190 (5, 0) FAR 515141 F 0.01
+Deleting closed node: main@.lr.ph(2, 31) 516602
+Deleting closed node: main@.lr.ph(3, 31) 516600
+Deleting closed node: main@_3(4, 31) 517196
+expand: main@.lr.ph190 (5, 0) FAR  w(1) 515141.
+	create_child: main@_3 (4, 31) FAR 518118 U 0.01
+expand: main@_3 (4, 0) FAR  w(0) 518118.
+	create_child: main@.lr.ph (3, 31) FAR 518125 U 0.00
+expand: main@.lr.ph (3, 0) FAR  w(0) 518125.
+	create_child: main@.lr.ph (2, 31) FAR 518260 U 0.01
+expand: main@.lr.ph (2, 0) FAR  w(0) 518260.
+	create_child: main@.lr.ph190 (1, 31) FAR 518002 U 0.00
+expand: main@.lr.ph190 (1, 0) FAR  w(0) 518002.
+	create_child: main@.lr.ph190 (0, 31) FAR 515032 U 0.01
+expand: main@.lr.ph190 (0, 0) FAR  w(0) 515032. F 0.02
+expand: main@.lr.ph190 (1, 0) FAR  w(0) 518002. F 0.02
+expand: main@.lr.ph (2, 0) FAR  w(0) 518260. F 0.01
+expand: main@.lr.ph (3, 0) FAR  w(0) 518125. F 0.01
+expand: main@_3 (4, 0) FAR  w(0) 518118. F 0.00
+expand: main@.lr.ph190 (5, 0) FAR  w(1) 515141.
+	create_child: main@_3 (4, 31) FAR 523163 U 0.11
+expand: main@_3 (4, 0) FAR  w(0) 523163.
+	create_child: main@.lr.ph (3, 31) FAR 523197 U 0.00
+expand: main@.lr.ph (3, 0) FAR  w(0) 523197.
+	create_child: main@.lr.ph (2, 31) FAR 523333 U 0.00
+expand: main@.lr.ph (2, 0) FAR  w(0) 523333.
+	create_child: main@.lr.ph190 (1, 31) FAR 523317 U 0.00
+expand: main@.lr.ph190 (1, 0) FAR  w(0) 523317.
+	create_child: main@.lr.ph190 (0, 31) FAR 521898 U 0.01
+expand: main@.lr.ph190 (0, 0) FAR  w(0) 521898. F 0.02
+expand: main@.lr.ph190 (1, 0) FAR  w(0) 523317. F 0.02
+expand: main@.lr.ph (2, 0) FAR  w(0) 523333. F 0.01
+expand: main@.lr.ph (3, 0) FAR  w(0) 523197. F 0.01
+expand: main@_3 (4, 0) FAR  w(0) 523163. F 0.00
+expand: main@.lr.ph190 (5, 0) FAR  w(1) 515141.
+	create_child: main@_3 (4, 31) FAR 527688 U 0.07
+expand: main@_3 (4, 0) FAR  w(0) 527688.
+	create_child: main@.lr.ph (3, 31) FAR 523426 U 0.00
+expand: main@.lr.ph (3, 0) FAR  w(0) 523426.
+	create_child: main@.lr.ph (2, 31) FAR 527866 U 0.00
+expand: main@.lr.ph (2, 0) FAR  w(0) 527866.
+	create_child: main@.lr.ph190 (1, 31) FAR 527858 U 0.00
+expand: main@.lr.ph190 (1, 0) FAR  w(0) 527858.
+	create_child: main@.lr.ph190 (0, 31) FAR 521949 U 0.01
+expand: main@.lr.ph190 (0, 0) FAR  w(0) 521949. F 0.02
+expand: main@.lr.ph190 (1, 0) FAR  w(0) 527858. F 0.02
+expand: main@.lr.ph (2, 0) FAR  w(0) 527866. F 0.01
+expand: main@.lr.ph (3, 0) FAR  w(0) 523426. F 0.01
+expand: main@_3 (4, 0) FAR  w(0) 527688. F 0.00
+expand: main@.lr.ph190 (5, 0) FAR  w(1) 515141.
+	create_child: main@_3 (4, 31) FAR 529879 U 0.02
+expand: main@_3 (4, 0) FAR  w(0) 529879.
+	create_child: main@.lr.ph (3, 31) FAR 528163 U 0.00
+expand: main@.lr.ph (3, 0) FAR  w(0) 528163.
+	create_child: main@.lr.ph (2, 31) FAR 528095 U 0.00
+expand: main@.lr.ph (2, 0) FAR  w(0) 528095.
+	create_child: main@.lr.ph190 (1, 31) FAR 527976 U 0.00
+expand: main@.lr.ph190 (1, 0) FAR  w(0) 527976.
+	create_child: main@.lr.ph190 (0, 31) FAR 528800 U 0.01
+expand: main@.lr.ph190 (0, 0) FAR  w(0) 528800. F 0.02
+expand: main@.lr.ph190 (1, 0) FAR  w(0) 527976. F 0.02
+expand: main@.lr.ph (2, 0) FAR  w(0) 528095. F 0.01
+expand: main@.lr.ph (3, 0) FAR  w(0) 528163. F 0.01
+expand: main@_3 (4, 0) FAR  w(0) 529879. F 0.00
+expand: main@.lr.ph190 (5, 0) FAR  w(1) 515141.
+	create_child: main@_3 (4, 31) FAR 532503 U 0.03
+expand: main@_3 (4, 0) FAR  w(0) 532503.
+	create_child: main@.lr.ph (3, 31) FAR 529316 U 0.00
+expand: main@.lr.ph (3, 0) FAR  w(0) 529316.
+	create_child: main@.lr.ph (2, 31) FAR 532680 U 0.00
+expand: main@.lr.ph (2, 0) FAR  w(0) 532680.
+	create_child: main@.lr.ph190 (1, 31) FAR 532487 U 0.00
+expand: main@.lr.ph190 (1, 0) FAR  w(0) 532487.
+	create_child: main@.lr.ph190 (0, 31) FAR 521973 U 0.01
+expand: main@.lr.ph190 (0, 0) FAR  w(0) 521973. F 0.02
+expand: main@.lr.ph190 (1, 0) FAR  w(0) 532487. F 0.02
+expand: main@.lr.ph (2, 0) FAR  w(0) 532680. F 0.01
+expand: main@.lr.ph (3, 0) FAR  w(0) 529316. F 0.01
+expand: main@_3 (4, 0) FAR  w(0) 532503. F 0.00
+expand: main@.lr.ph190 (5, 0) FAR  w(1) 515141.
+	create_child: main@_3 (4, 31) FAR 535655 U 0.04
+expand: main@_3 (4, 0) FAR  w(0) 535655.
+	create_child: main@.lr.ph (3, 31) FAR 532830 U 0.00
+expand: main@.lr.ph (3, 0) FAR  w(0) 532830.
+	create_child: main@.lr.ph (2, 31) FAR 535486 U 0.00
+expand: main@.lr.ph (2, 0) FAR  w(0) 535486.
+	create_child: main@.lr.ph190 (1, 31) FAR 531933 U 0.00
+expand: main@.lr.ph190 (1, 0) FAR  w(0) 531933.
+	create_child: main@.lr.ph190 (0, 31) FAR 526507 U 0.01
+expand: main@.lr.ph190 (0, 0) FAR  w(0) 526507. F 0.02
+expand: main@.lr.ph190 (1, 0) FAR  w(0) 531933. F 0.02
+expand: main@.lr.ph (2, 0) FAR  w(0) 535486. F 0.01
+expand: main@.lr.ph (3, 0) FAR  w(0) 532830. F 0.01
+expand: main@_3 (4, 0) FAR  w(0) 535655. F 0.00
+expand: main@.lr.ph190 (5, 0) FAR  w(1) 515141.
+	create_child: main@_3 (4, 31) FAR 537621 U 0.03
+expand: main@_3 (4, 0) FAR  w(0) 537621.
+	create_child: main@.lr.ph (3, 31) FAR 535940 U 0.00
+expand: main@.lr.ph (3, 0) FAR  w(0) 535940.
+	create_child: main@.lr.ph (2, 31) FAR 537799 U 0.00
+expand: main@.lr.ph (2, 0) FAR  w(0) 537799.
+	create_child: main@.lr.ph190 (1, 31) FAR 535130 U 0.00
+expand: main@.lr.ph190 (1, 0) FAR  w(0) 535130.
+	create_child: main@.lr.ph190 (0, 31) FAR 536514 U 0.01
+expand: main@.lr.ph190 (0, 0) FAR  w(0) 536514. F 0.02
+expand: main@.lr.ph190 (1, 0) FAR  w(0) 535130. F 0.02
+expand: main@.lr.ph (2, 0) FAR  w(0) 537799. F 0.01
+expand: main@.lr.ph (3, 0) FAR  w(0) 535940. F 0.01
+expand: main@_3 (4, 0) FAR  w(0) 537621. F 0.00
+expand: main@.lr.ph190 (5, 0) FAR  w(1) 515141.
+	create_child: main@_3 (4, 31) FAR 539974 U 0.04
+expand: main@_3 (4, 0) FAR  w(0) 539974.
+	create_child: main@.lr.ph (3, 31) FAR 538076 U 0.00
+expand: main@.lr.ph (3, 0) FAR  w(0) 538076.
+	create_child: main@.lr.ph (2, 31) FAR 539922 U 0.00
+expand: main@.lr.ph (2, 0) FAR  w(0) 539922.
+	create_child: main@.lr.ph190 (1, 31) FAR 540155 U 0.00
+expand: main@.lr.ph190 (1, 0) FAR  w(0) 540155.
+	create_child: main@.lr.ph190 (0, 31) FAR 538139 U 0.01
+expand: main@.lr.ph190 (0, 0) FAR  w(0) 538139. F 0.02
+expand: main@.lr.ph190 (1, 0) FAR  w(0) 540155. F 0.02
+expand: main@.lr.ph (2, 0) FAR  w(0) 539922. F 0.01
+expand: main@.lr.ph (3, 0) FAR  w(0) 538076. F 0.01
+expand: main@_3 (4, 0) FAR  w(0) 539974. F 0.00
+expand: main@.lr.ph190 (5, 0) FAR  w(1) 515141.
+	create_child: main@_3 (4, 31) FAR 542719 U 0.02
+expand: main@_3 (4, 0) FAR  w(0) 542719.
+	create_child: main@.lr.ph (3, 31) FAR 540514 U 0.00
+expand: main@.lr.ph (3, 0) FAR  w(0) 540514.
+	create_child: main@.lr.ph (2, 31) FAR 542550 U 0.00
+expand: main@.lr.ph (2, 0) FAR  w(0) 542550.
+	create_child: main@.lr.ph190 (1, 31) FAR 539591 U 0.00
+expand: main@.lr.ph190 (1, 0) FAR  w(0) 539591.
+	create_child: main@.lr.ph190 (0, 31) FAR 531323 U 0.01
+expand: main@.lr.ph190 (0, 0) FAR  w(0) 531323. F 0.02
+expand: main@.lr.ph190 (1, 0) FAR  w(0) 539591. F 0.02
+expand: main@.lr.ph (2, 0) FAR  w(0) 542550. F 0.01
+expand: main@.lr.ph (3, 0) FAR  w(0) 540514. F 0.01
+expand: main@_3 (4, 0) FAR  w(0) 542719. F 0.00
+expand: main@.lr.ph190 (5, 0) FAR  w(1) 515141.
+	create_child: main@_3 (4, 31) FAR 544725 U 0.02
+expand: main@_3 (4, 0) FAR  w(0) 544725.
+	create_child: main@.lr.ph (3, 31) FAR 543068 U 0.00
+expand: main@.lr.ph (3, 0) FAR  w(0) 543068.
+	create_child: main@.lr.ph (2, 31) FAR 544556 U 0.00
+expand: main@.lr.ph (2, 0) FAR  w(0) 544556.
+	create_child: main@.lr.ph190 (1, 31) FAR 542997 U 0.00
+expand: main@.lr.ph190 (1, 0) FAR  w(0) 542997.
+	create_child: main@.lr.ph190 (0, 31) FAR 543151 U 0.01
+expand: main@.lr.ph190 (0, 0) FAR  w(0) 543151. F 0.02
+expand: main@.lr.ph190 (1, 0) FAR  w(0) 542997. F 0.02
+expand: main@.lr.ph (2, 0) FAR  w(0) 544556. F 0.01
+expand: main@.lr.ph (3, 0) FAR  w(0) 543068. F 0.01
+expand: main@_3 (4, 0) FAR  w(0) 544725. F 0.00
+expand: main@.lr.ph190 (5, 0) FAR  w(1) 515141.
+	create_child: main@_3 (4, 31) FAR 546562 U 0.03
+expand: main@_3 (4, 0) FAR  w(0) 546562.
+	create_child: main@.lr.ph (3, 31) FAR 544248 U 0.00
+expand: main@.lr.ph (3, 0) FAR  w(0) 544248.
+	create_child: main@.lr.ph (2, 31) FAR 544317 U 0.00
+expand: main@.lr.ph (2, 0) FAR  w(0) 544317.
+	create_child: main@.lr.ph190 (1, 31) FAR 544906 U 0.00
+expand: main@.lr.ph190 (1, 0) FAR  w(0) 544906.
+	create_child: main@.lr.ph190 (0, 31) FAR 545412 U 0.01
+expand: main@.lr.ph190 (0, 0) FAR  w(0) 545412. F 0.02
+expand: main@.lr.ph190 (1, 0) FAR  w(0) 544906. F 0.02
+expand: main@.lr.ph (2, 0) FAR  w(0) 544317. F 0.01
+expand: main@.lr.ph (3, 0) FAR  w(0) 544248. F 0.02
+expand: main@_3 (4, 0) FAR  w(0) 546562. F 0.00
+expand: main@.lr.ph190 (5, 0) FAR  w(1) 515141.
+	create_child: main@_3 (4, 31) FAR 548396 U 0.02
+expand: main@_3 (4, 0) FAR  w(0) 548396.
+	create_child: main@.lr.ph (3, 31) FAR 545982 U 0.00
+expand: main@.lr.ph (3, 0) FAR  w(0) 545982.
+	create_child: main@.lr.ph (2, 31) FAR 548574 U 0.00
+expand: main@.lr.ph (2, 0) FAR  w(0) 548574.
+	create_child: main@.lr.ph190 (1, 31) FAR 546074 U 0.00
+expand: main@.lr.ph190 (1, 0) FAR  w(0) 546074.
+	create_child: main@.lr.ph190 (0, 31) FAR 547492 U 0.01
+expand: main@.lr.ph190 (0, 0) FAR  w(0) 547492. F 0.02
+expand: main@.lr.ph190 (1, 0) FAR  w(0) 546074. F 0.02
+expand: main@.lr.ph (2, 0) FAR  w(0) 548574. F 0.01
+expand: main@.lr.ph (3, 0) FAR  w(0) 545982. F 0.02
+expand: main@_3 (4, 0) FAR  w(0) 548396. F 0.00
+expand: main@.lr.ph190 (5, 0) FAR  w(1) 515141.
+	create_child: main@_3 (4, 31) FAR 550110 U 0.02
+expand: main@_3 (4, 0) FAR  w(0) 550110.
+	create_child: main@.lr.ph (3, 31) FAR 548678 U 0.00
+expand: main@.lr.ph (3, 0) FAR  w(0) 548678.
+	create_child: main@.lr.ph (2, 31) FAR 549941 U 0.00
+expand: main@.lr.ph (2, 0) FAR  w(0) 549941.
+	create_child: main@.lr.ph190 (1, 31) FAR 548305 U 0.00
+expand: main@.lr.ph190 (1, 0) FAR  w(0) 548305.
+	create_child: main@.lr.ph190 (0, 31) FAR 548735 U 0.01
+expand: main@.lr.ph190 (0, 0) FAR  w(0) 548735. F 0.02
+expand: main@.lr.ph190 (1, 0) FAR  w(0) 548305. F 0.02
+expand: main@.lr.ph (2, 0) FAR  w(0) 549941. F 0.01
+expand: main@.lr.ph (3, 0) FAR  w(0) 548678. F 0.02
+expand: main@_3 (4, 0) FAR  w(0) 550110. F 0.00
+expand: main@.lr.ph190 (5, 0) FAR  w(1) 515141.
+	create_child: main@_3 (4, 31) FAR 552384 U 0.03
+expand: main@_3 (4, 0) FAR  w(0) 552384.
+	create_child: main@.lr.ph (3, 31) FAR 551849 U 0.00
+expand: main@.lr.ph (3, 0) FAR  w(0) 551849.
+	create_child: main@.lr.ph (2, 31) FAR 550455 U 0.00
+expand: main@.lr.ph (2, 0) FAR  w(0) 550455.
+	create_child: main@.lr.ph190 (1, 31) FAR 549857 U 0.00
+expand: main@.lr.ph190 (1, 0) FAR  w(0) 549857.
+	create_child: main@.lr.ph190 (0, 31) FAR 551407 U 0.01
+expand: main@.lr.ph190 (0, 0) FAR  w(0) 551407. F 0.02
+expand: main@.lr.ph190 (1, 0) FAR  w(0) 549857. F 0.02
+expand: main@.lr.ph (2, 0) FAR  w(0) 550455. F 0.01
+expand: main@.lr.ph (3, 0) FAR  w(0) 551849. F 0.02
+expand: main@_3 (4, 0) FAR  w(0) 552384. F 0.00
+expand: main@.lr.ph190 (5, 0) FAR  w(1) 515141.
+	create_child: main@_3 (4, 31) FAR 556913 U 0.11
+expand: main@_3 (4, 0) FAR  w(0) 556913.
+	create_child: main@.lr.ph (3, 31) FAR 556378 U 0.00
+expand: main@.lr.ph (3, 0) FAR  w(0) 556378.
+	create_child: main@.lr.ph (2, 31) FAR 551893 U 0.00
+expand: main@.lr.ph (2, 0) FAR  w(0) 551893.
+	create_child: main@.lr.ph190 (1, 31) FAR 551888 U 0.00
+expand: main@.lr.ph190 (1, 0) FAR  w(0) 551888.
+	create_child: main@.lr.ph190 (0, 31) FAR 555948 U 0.01
+expand: main@.lr.ph190 (0, 0) FAR  w(0) 555948. F 0.02
+expand: main@.lr.ph190 (1, 0) FAR  w(0) 551888. F 0.02
+expand: main@.lr.ph (2, 0) FAR  w(0) 551893. F 0.01
+expand: main@.lr.ph (3, 0) FAR  w(0) 556378. F 0.02
+expand: main@_3 (4, 0) FAR  w(0) 556913. F 0.00
+expand: main@.lr.ph190 (5, 0) FAR  w(1) 515141.
+	create_child: main@_3 (4, 31) FAR 559661 U 0.04
+expand: main@_3 (4, 0) FAR  w(0) 559661.
+	create_child: main@.lr.ph (3, 31) FAR 557419 U 0.00
+expand: main@.lr.ph (3, 0) FAR  w(0) 557419.
+	create_child: main@.lr.ph (2, 31) FAR 557321 U 0.01
+expand: main@.lr.ph (2, 0) FAR  w(0) 557321.
+	create_child: main@.lr.ph190 (1, 31) FAR 557330 U 0.00
+expand: main@.lr.ph190 (1, 0) FAR  w(0) 557330.
+	create_child: main@.lr.ph190 (0, 31) FAR 558887 U 0.01
+expand: main@.lr.ph190 (0, 0) FAR  w(0) 558887. F 0.02
+expand: main@.lr.ph190 (1, 0) FAR  w(0) 557330. F 0.02
+expand: main@.lr.ph (2, 0) FAR  w(0) 557321. F 0.01
+expand: main@.lr.ph (3, 0) FAR  w(0) 557419. F 0.02
+expand: main@_3 (4, 0) FAR  w(0) 559661. F 0.00
+expand: main@.lr.ph190 (5, 0) FAR  w(1) 515141. F 0.09
+expand: main@.lr.ph190 (6, 0) FAR  w(0) 461114. F 0.07
+expand: main@.lr.ph190 (7, 0) FAR  w(0) 336283. F 0.07
+expand: main@.lr.ph190 (8, 0) FAR  w(0) 365530. F 0.07
+expand: main@.lr.ph190 (9, 0) FAR  w(0) 398404. F 0.07
+expand: main@.lr.ph (10, 0) FAR  w(0) 399610. F 0.04
+expand: main@.lr.ph (11, 0) FAR  w(0) 339354. F 0.04
+expand: main@.lr.ph (12, 0) FAR  w(0) 310195. F 0.05
+expand: main@.lr.ph (13, 0) FAR  w(0) 309345. F 0.05
+expand: main@.lr.ph (14, 0) FAR  w(0) 309558. F 0.04
+expand: main@_3 (15, 0) FAR  w(0) 309521. F 0.01
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 94207. F 0.12
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 95178. F 0.12
+expand: main@.lr.ph (18, 0) FAR  w(0) 94906.
+	create_child: main@.lr.ph (17, 31) FAR 177540 U 0.01
+expand: main@.lr.ph (17, 0) FAR  w(0) 177540.
+	create_child: main@.lr.ph190 (16, 31) FAR 275166 U 0.00
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 275166.
+	create_child: main@.lr.ph190 (15, 31) FAR 274067 U 0.01
+expand: main@.lr.ph190 (15, 0) FAR  w(0) 274067. F 0.09
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 275166. F 0.10
+expand: main@.lr.ph (17, 0) FAR  w(0) 177540.
+	create_child: main@.lr.ph (16, 31) FAR 276184 U 0.01
+expand: main@.lr.ph (16, 0) FAR  w(0) 276184.
+	create_child: main@.lr.ph190 (15, 31) FAR 312157 U 0.00
+expand: main@.lr.ph190 (15, 0) FAR  w(0) 312157. F 0.07
+expand: main@.lr.ph (16, 0) FAR  w(0) 276184.
+	create_child: main@.lr.ph (15, 31) FAR 276181 U 0.01
+expand: main@.lr.ph (15, 0) FAR  w(0) 276181.
+	create_child: main@.lr.ph190 (14, 31) FAR 276151 U 0.00
+expand: main@.lr.ph190 (14, 0) FAR  w(0) 276151.
+	create_child: main@.lr.ph190 (13, 31) FAR 276289 U 0.01
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 276289.
+	create_child: main@.lr.ph190 (12, 31) FAR 276288 U 0.01
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 276288.
+	create_child: main@.lr.ph190 (11, 31) FAR 276263 U 0.01
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 276263.
+	create_child: main@.lr.ph190 (10, 31) FAR 276304 U 0.01
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 276304.
+	create_child: main@_3 (9, 31) FAR 579003 U 0.01
+expand: main@_3 (9, 0) FAR  w(0) 579003. F 0.01
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 276304. F 0.10
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 276263. F 0.09
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 276288. F 0.11
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 276289. F 0.10
+expand: main@.lr.ph190 (14, 0) FAR  w(0) 276151. F 0.10
+expand: main@.lr.ph (15, 0) FAR  w(0) 276181. F 0.04
+expand: main@.lr.ph (16, 0) FAR  w(0) 276184. F 0.04
+expand: main@.lr.ph (17, 0) FAR  w(0) 177540. F 0.05
+expand: main@.lr.ph (18, 0) FAR  w(0) 94906. F 0.06
+expand: main@.lr.ph (19, 0) FAR  w(0) 94999. F 0.06
+expand: main@_3 (20, 0) FAR  w(0) 94955. F 0.01
+expand: main@.lr.ph190 (21, 0) FAR  w(0) 93745. F 0.16
+expand: main@.lr.ph190 (22, 0) FAR  w(0) 93648. F 0.12
+expand: main@.lr.ph190 (23, 0) FAR  w(0) 93607. F 0.13
+expand: main@.lr.ph (24, 0) FAR  w(0) 93549. F 0.05
+expand: main@.lr.ph (25, 0) FAR  w(0) 35545. F 0.06
+expand: main@.lr.ph (26, 0) FAR  w(0) 34158. F 0.06
+expand: main@_3 (27, 0) FAR  w(0) 33635. F 0.01
+expand: main@empty.loop (28, 0) FAR  w(0) 33191. F 0.01
+expand: main@entry (29, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (30, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (31, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 6.94 :before-memory 128.08 :after-memory 143.18)
+Propagating: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31  ! 32 
+(spacer::context::propagate :time 1.69 :before-memory 143.18 :after-memory 146.51)
+Entering level 32
+expand: query!0 (32, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (31, 32) FAR 1 U 0.00
+expand: main@entry!_BAD (31, 0) FAR  w(0) 1.
+	create_child: main@entry (30, 32) FAR 1 U 0.00
+expand: main@entry (30, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (29, 32) FAR 33191 U 0.00
+expand: main@empty.loop (29, 0) FAR  w(0) 33191.
+	create_child: main@_3 (28, 32) FAR 33635 U 0.00
+expand: main@_3 (28, 0) FAR  w(0) 33635.
+	create_child: main@.lr.ph (27, 32) FAR 34158 U 0.00
+expand: main@.lr.ph (27, 0) FAR  w(0) 34158.
+	create_child: main@.lr.ph (26, 32) FAR 35545 U 0.00
+expand: main@.lr.ph (26, 0) FAR  w(0) 35545.
+	create_child: main@.lr.ph190 (25, 32) FAR 35618 U 0.00
+expand: main@.lr.ph190 (25, 0) FAR  w(0) 35618.
+	create_child: main@.lr.ph190 (24, 32) FAR 61231 U 0.01
+expand: main@.lr.ph190 (24, 0) FAR  w(0) 61231.
+	create_child: main@_3 (23, 32) FAR 75713 U 0.01
+expand: main@_3 (23, 0) FAR  w(0) 75713.
+	create_child: main@.lr.ph (22, 32) FAR 75681 U 0.00
+expand: main@.lr.ph (22, 0) FAR  w(0) 75681.
+	create_child: main@.lr.ph (21, 32) FAR 75104 U 0.01
+expand: main@.lr.ph (21, 0) FAR  w(0) 75104.
+	create_child: main@.lr.ph190 (20, 32) FAR 75111 U 0.00
+expand: main@.lr.ph190 (20, 0) FAR  w(0) 75111.
+	create_child: main@.lr.ph190 (19, 32) FAR 74716 U 0.01
+expand: main@.lr.ph190 (19, 0) FAR  w(0) 74716.
+	create_child: main@_3 (18, 32) FAR 380810 UNDEF 0.01
+expand: main@_3 (18, 0) FAR  w(0) 380810.
+	create_child: main@.lr.ph (17, 32) FAR 380857 U 0.00
+expand: main@.lr.ph (17, 0) FAR  w(0) 380857.
+	create_child: main@.lr.ph (16, 32) FAR 381524 U 0.01
+expand: main@.lr.ph (16, 0) FAR  w(0) 381524.
+	create_child: main@.lr.ph (15, 32) FAR 381257 U 0.00
+expand: main@.lr.ph (15, 0) FAR  w(0) 381257.
+	create_child: main@.lr.ph (14, 32) FAR 380821 U 0.00
+expand: main@.lr.ph (14, 0) FAR  w(0) 380821.
+	create_child: main@.lr.ph (13, 32) FAR 380811 U 0.00
+expand: main@.lr.ph (13, 0) FAR  w(0) 380811.
+	create_child: main@.lr.ph190 (12, 32) FAR 380831 U 0.00
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 380831.
+	create_child: main@.lr.ph190 (11, 32) FAR 380243 U 0.01
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 380243.
+	create_child: main@.lr.ph190 (10, 32) FAR 378069 U 0.01
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 378069. F 0.08
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 380243. F 0.08
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 380831. F 0.08
+expand: main@.lr.ph (13, 0) FAR  w(0) 380811. F 0.04
+expand: main@.lr.ph (14, 0) FAR  w(0) 380821. F 0.04
+expand: main@.lr.ph (15, 0) FAR  w(0) 381257. F 0.04
+expand: main@.lr.ph (16, 0) FAR  w(0) 381524. F 0.04
+expand: main@.lr.ph (17, 0) FAR  w(0) 380857. F 0.04
+expand: main@_3 (18, 0) FAR  w(0) 380810. F 0.01
+expand: main@.lr.ph190 (19, 0) FAR  w(0) 74716. F 0.12
+expand: main@.lr.ph190 (20, 0) FAR  w(0) 75111. F 0.07
+expand: main@.lr.ph (21, 0) FAR  w(0) 75104.
+	create_child: main@.lr.ph (20, 32) FAR 108668 U 0.01
+expand: main@.lr.ph (20, 0) FAR  w(0) 108668.
+	create_child: main@.lr.ph190 (19, 32) FAR 108674 U 0.00
+expand: main@.lr.ph190 (19, 0) FAR  w(0) 108674.
+	create_child: main@.lr.ph190 (18, 32) FAR 112823 U 0.01
+expand: main@.lr.ph190 (18, 0) FAR  w(0) 112823.
+	create_child: main@.lr.ph190 (17, 32) FAR 119997 U 0.01
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 119997.
+	create_child: main@_3 (16, 32) FAR 122015 UNDEF 0.01
+expand: main@_3 (16, 0) FAR  w(0) 122015.
+	create_child: main@.lr.ph (15, 32) FAR 122009 U 0.00
+expand: main@.lr.ph (15, 0) FAR  w(0) 122009.
+	create_child: main@.lr.ph (14, 32) FAR 122035 U 0.01
+expand: main@.lr.ph (14, 0) FAR  w(0) 122035.
+	create_child: main@.lr.ph (13, 32) FAR 121999 U 0.00
+expand: main@.lr.ph (13, 0) FAR  w(0) 121999.
+	create_child: main@.lr.ph (12, 32) FAR 489267 U 0.00
+expand: main@.lr.ph (12, 0) FAR  w(0) 489267.
+	create_child: main@.lr.ph (11, 32) FAR 490847 U 0.00
+expand: main@.lr.ph (11, 0) FAR  w(0) 490847.
+	create_child: main@.lr.ph190 (10, 32) FAR 488381 U 0.00
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 488381.
+	create_child: main@.lr.ph190 (9, 32) FAR 489537 U 0.01
+expand: main@.lr.ph190 (9, 0) FAR  w(0) 489537.
+	create_child: main@.lr.ph190 (8, 32) FAR 488787 U 0.01
+expand: main@.lr.ph190 (8, 0) FAR  w(0) 488787.
+	create_child: main@.lr.ph190 (7, 32) FAR 490291 U 0.01
+expand: main@.lr.ph190 (7, 0) FAR  w(0) 490291.
+	create_child: main@.lr.ph190 (6, 32) FAR 482712 U 0.01
+expand: main@.lr.ph190 (6, 0) FAR  w(0) 482712. F 0.09
+expand: main@.lr.ph190 (7, 0) FAR  w(0) 490291. F 0.08
+expand: main@.lr.ph190 (8, 0) FAR  w(0) 488787. F 0.08
+expand: main@.lr.ph190 (9, 0) FAR  w(0) 489537. F 0.07
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 488381. F 0.07
+expand: main@.lr.ph (11, 0) FAR  w(0) 490847. F 0.03
+expand: main@.lr.ph (12, 0) FAR  w(0) 489267. F 0.04
+expand: main@.lr.ph (13, 0) FAR  w(0) 121999. F 0.04
+expand: main@.lr.ph (14, 0) FAR  w(0) 122035. F 0.04
+expand: main@.lr.ph (15, 0) FAR  w(0) 122009. F 0.04
+expand: main@_3 (16, 0) FAR  w(0) 122015. F 0.01
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 119997. F 0.13
+expand: main@.lr.ph190 (18, 0) FAR  w(0) 112823. F 0.09
+expand: main@.lr.ph190 (19, 0) FAR  w(0) 108674. F 0.09
+expand: main@.lr.ph (20, 0) FAR  w(0) 108668. F 0.05
+expand: main@.lr.ph (21, 0) FAR  w(0) 75104. F 0.05
+expand: main@.lr.ph (22, 0) FAR  w(0) 75681. F 0.05
+expand: main@_3 (23, 0) FAR  w(0) 75713. F 0.01
+expand: main@.lr.ph190 (24, 0) FAR  w(0) 61231. F 0.18
+expand: main@.lr.ph190 (25, 0) FAR  w(0) 35618. F 0.13
+expand: main@.lr.ph (26, 0) FAR  w(0) 35545.
+	create_child: main@.lr.ph (25, 32) FAR 93549 U 0.01
+expand: main@.lr.ph (25, 0) FAR  w(0) 93549.
+	create_child: main@.lr.ph190 (24, 32) FAR 93607 U 0.00
+expand: main@.lr.ph190 (24, 0) FAR  w(0) 93607.
+	create_child: main@.lr.ph190 (23, 32) FAR 93648 U 0.01
+expand: main@.lr.ph190 (23, 0) FAR  w(0) 93648.
+	create_child: main@.lr.ph190 (22, 32) FAR 93745 U 0.01
+expand: main@.lr.ph190 (22, 0) FAR  w(0) 93745.
+	create_child: main@_3 (21, 32) FAR 94955 U 0.01
+expand: main@_3 (21, 0) FAR  w(0) 94955.
+	create_child: main@.lr.ph (20, 32) FAR 94999 U 0.00
+expand: main@.lr.ph (20, 0) FAR  w(0) 94999.
+	create_child: main@.lr.ph (19, 32) FAR 94906 U 0.01
+expand: main@.lr.ph (19, 0) FAR  w(0) 94906.
+	create_child: main@.lr.ph190 (18, 32) FAR 95178 U 0.00
+expand: main@.lr.ph190 (18, 0) FAR  w(0) 95178.
+	create_child: main@.lr.ph190 (17, 32) FAR 94207 U 0.01
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 94207.
+	create_child: main@_3 (16, 32) FAR 309521 UNDEF 0.02
+expand: main@_3 (16, 0) FAR  w(0) 309521.
+	create_child: main@.lr.ph (15, 32) FAR 309558 U 0.00
+expand: main@.lr.ph (15, 0) FAR  w(0) 309558.
+	create_child: main@.lr.ph (14, 32) FAR 309345 U 0.01
+expand: main@.lr.ph (14, 0) FAR  w(0) 309345.
+	create_child: main@.lr.ph (13, 32) FAR 310195 U 0.00
+expand: main@.lr.ph (13, 0) FAR  w(0) 310195.
+	create_child: main@.lr.ph190 (12, 32) FAR 512577 U 0.00
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 512577.
+	create_child: main@.lr.ph190 (11, 32) FAR 483178 U 0.01
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 483178.
+	create_child: main@.lr.ph190 (10, 32) FAR 512372 U 0.01
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 512372.
+	create_child: main@_3 (9, 32) FAR 641652 UNDEF 0.02
+expand: main@_3 (9, 0) FAR  w(0) 641652.
+	create_child: main@.lr.ph (8, 32) FAR 640859 U 0.00
+expand: main@.lr.ph (8, 0) FAR  w(0) 640859.
+	create_child: main@.lr.ph (7, 32) FAR 640282 U 0.01
+expand: main@.lr.ph (7, 0) FAR  w(0) 640282. F 0.01
+expand: main@.lr.ph (8, 0) FAR  w(0) 640859. F 0.02
+expand: main@_3 (9, 0) FAR  w(0) 641652. F 0.00
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 512372. F 0.13
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 483178. F 0.09
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 512577. F 0.09
+expand: main@.lr.ph (13, 0) FAR  w(0) 310195.
+	create_child: main@.lr.ph (12, 32) FAR 339354 U 0.01
+expand: main@.lr.ph (12, 0) FAR  w(0) 339354.
+	create_child: main@.lr.ph (11, 32) FAR 399610 U 0.00
+expand: main@.lr.ph (11, 0) FAR  w(0) 399610.
+	create_child: main@.lr.ph190 (10, 32) FAR 398404 U 0.00
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 398404.
+	create_child: main@.lr.ph190 (9, 32) FAR 365530 U 0.01
+expand: main@.lr.ph190 (9, 0) FAR  w(0) 365530. F 0.07
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 398404. F 0.07
+expand: main@.lr.ph (11, 0) FAR  w(0) 399610. F 0.04
+expand: main@.lr.ph (12, 0) FAR  w(0) 339354. F 0.05
+expand: main@.lr.ph (13, 0) FAR  w(0) 310195. F 0.05
+expand: main@.lr.ph (14, 0) FAR  w(0) 309345. F 0.07
+expand: main@.lr.ph (15, 0) FAR  w(0) 309558. F 0.05
+expand: main@_3 (16, 0) FAR  w(0) 309521. F 0.01
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 94207. F 0.14
+expand: main@.lr.ph190 (18, 0) FAR  w(0) 95178. F 0.12
+expand: main@.lr.ph (19, 0) FAR  w(0) 94906.
+	create_child: main@.lr.ph (18, 32) FAR 177540 U 0.01
+expand: main@.lr.ph (18, 0) FAR  w(0) 177540.
+	create_child: main@.lr.ph190 (17, 32) FAR 275166 U 0.00
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 275166.
+	create_child: main@.lr.ph190 (16, 32) FAR 274067 U 0.01
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 274067. F 0.11
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 275166. F 0.17
+expand: main@.lr.ph (18, 0) FAR  w(0) 177540.
+	create_child: main@.lr.ph (17, 32) FAR 276184 U 0.01
+expand: main@.lr.ph (17, 0) FAR  w(0) 276184.
+	create_child: main@.lr.ph190 (16, 32) FAR 312157 U 0.00
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 312157.
+	create_child: main@.lr.ph190 (15, 32) FAR 347959 U 0.01
+expand: main@.lr.ph190 (15, 0) FAR  w(0) 347959. F 0.10
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 312157. F 0.11
+expand: main@.lr.ph (17, 0) FAR  w(0) 276184.
+	create_child: main@.lr.ph (16, 32) FAR 276181 U 0.01
+expand: main@.lr.ph (16, 0) FAR  w(0) 276181.
+	create_child: main@.lr.ph190 (15, 32) FAR 276151 U 0.00
+expand: main@.lr.ph190 (15, 0) FAR  w(0) 276151.
+	create_child: main@.lr.ph190 (14, 32) FAR 276289 U 0.01
+expand: main@.lr.ph190 (14, 0) FAR  w(0) 276289.
+	create_child: main@.lr.ph190 (13, 32) FAR 276288 U 0.01
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 276288. F 0.12
+expand: main@.lr.ph190 (14, 0) FAR  w(0) 276289. F 0.11
+expand: main@.lr.ph190 (15, 0) FAR  w(0) 276151. F 0.11
+expand: main@.lr.ph (16, 0) FAR  w(0) 276181. F 0.04
+expand: main@.lr.ph (17, 0) FAR  w(0) 276184. F 0.08
+expand: main@.lr.ph (18, 0) FAR  w(0) 177540. F 0.06
+expand: main@.lr.ph (19, 0) FAR  w(0) 94906. F 0.07
+expand: main@.lr.ph (20, 0) FAR  w(0) 94999. F 0.07
+expand: main@_3 (21, 0) FAR  w(0) 94955. F 0.01
+expand: main@.lr.ph190 (22, 0) FAR  w(0) 93745. F 0.17
+expand: main@.lr.ph190 (23, 0) FAR  w(0) 93648. F 0.13
+expand: main@.lr.ph190 (24, 0) FAR  w(0) 93607. F 0.14
+expand: main@.lr.ph (25, 0) FAR  w(0) 93549.
+	create_child: main@.lr.ph (24, 32) FAR 182908 U 0.01
+expand: main@.lr.ph (24, 0) FAR  w(0) 182908.
+	create_child: main@.lr.ph190 (23, 32) FAR 182917 U 0.00
+expand: main@.lr.ph190 (23, 0) FAR  w(0) 182917.
+	create_child: main@.lr.ph190 (22, 32) FAR 181616 U 0.01
+expand: main@.lr.ph190 (22, 0) FAR  w(0) 181616.
+	create_child: main@.lr.ph190 (21, 32) FAR 182341 U 0.01
+expand: main@.lr.ph190 (21, 0) FAR  w(0) 182341. F 0.13
+expand: main@.lr.ph190 (22, 0) FAR  w(0) 181616. F 0.11
+expand: main@.lr.ph190 (23, 0) FAR  w(0) 182917. F 0.13
+expand: main@.lr.ph (24, 0) FAR  w(0) 182908. F 0.06
+expand: main@.lr.ph (25, 0) FAR  w(0) 93549. F 0.06
+expand: main@.lr.ph (26, 0) FAR  w(0) 35545. F 0.07
+expand: main@.lr.ph (27, 0) FAR  w(0) 34158. F 0.07
+expand: main@_3 (28, 0) FAR  w(0) 33635. F 0.01
+expand: main@empty.loop (29, 0) FAR  w(0) 33191. F 0.01
+expand: main@entry (30, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (31, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (32, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 5.77 :before-memory 146.51 :after-memory 151.75)
+Propagating: 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32  ! 33 
+(spacer::context::propagate :time 1.47 :before-memory 151.75 :after-memory 153.63)
+Entering level 33
+expand: query!0 (33, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (32, 33) FAR 1 U 0.00
+expand: main@entry!_BAD (32, 0) FAR  w(0) 1.
+	create_child: main@entry (31, 33) FAR 1 U 0.00
+expand: main@entry (31, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (30, 33) FAR 33191 U 0.00
+expand: main@empty.loop (30, 0) FAR  w(0) 33191.
+	create_child: main@_3 (29, 33) FAR 33635 U 0.00
+expand: main@_3 (29, 0) FAR  w(0) 33635.
+	create_child: main@.lr.ph (28, 33) FAR 34158 U 0.00
+expand: main@.lr.ph (28, 0) FAR  w(0) 34158.
+	create_child: main@.lr.ph (27, 33) FAR 35545 U 0.01
+expand: main@.lr.ph (27, 0) FAR  w(0) 35545.
+	create_child: main@.lr.ph190 (26, 33) FAR 35618 U 0.00
+expand: main@.lr.ph190 (26, 0) FAR  w(0) 35618.
+	create_child: main@.lr.ph190 (25, 33) FAR 61231 U 0.01
+expand: main@.lr.ph190 (25, 0) FAR  w(0) 61231.
+	create_child: main@_3 (24, 33) FAR 75713 U 0.01
+expand: main@_3 (24, 0) FAR  w(0) 75713.
+	create_child: main@.lr.ph (23, 33) FAR 75681 U 0.00
+expand: main@.lr.ph (23, 0) FAR  w(0) 75681.
+	create_child: main@.lr.ph (22, 33) FAR 75104 U 0.01
+expand: main@.lr.ph (22, 0) FAR  w(0) 75104.
+	create_child: main@.lr.ph190 (21, 33) FAR 75111 U 0.00
+expand: main@.lr.ph190 (21, 0) FAR  w(0) 75111.
+	create_child: main@.lr.ph190 (20, 33) FAR 74716 U 0.01
+expand: main@.lr.ph190 (20, 0) FAR  w(0) 74716.
+	create_child: main@_3 (19, 33) FAR 380810 UNDEF 0.01
+expand: main@_3 (19, 0) FAR  w(0) 380810.
+	create_child: main@.lr.ph (18, 33) FAR 380857 U 0.00
+expand: main@.lr.ph (18, 0) FAR  w(0) 380857.
+	create_child: main@.lr.ph (17, 33) FAR 381524 U 0.01
+expand: main@.lr.ph (17, 0) FAR  w(0) 381524.
+	create_child: main@.lr.ph190 (16, 33) FAR 665798 U 0.00
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 665798. F 0.12
+expand: main@.lr.ph (17, 0) FAR  w(0) 381524.
+	create_child: main@.lr.ph (16, 33) FAR 381257 U 0.01
+expand: main@.lr.ph (16, 0) FAR  w(0) 381257.
+	create_child: main@.lr.ph (15, 33) FAR 380821 U 0.00
+expand: main@.lr.ph (15, 0) FAR  w(0) 380821.
+	create_child: main@.lr.ph (14, 33) FAR 380811 U 0.00
+expand: main@.lr.ph (14, 0) FAR  w(0) 380811.
+	create_child: main@.lr.ph190 (13, 33) FAR 380831 U 0.00
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 380831.
+	create_child: main@.lr.ph190 (12, 33) FAR 380243 U 0.01
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 380243.
+	create_child: main@.lr.ph190 (11, 33) FAR 378069 U 0.01
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 378069.
+	create_child: main@.lr.ph190 (10, 33) FAR 380255 U 0.01
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 380255.
+	create_child: main@.lr.ph190 (9, 33) FAR 380116 U 0.01
+expand: main@.lr.ph190 (9, 0) FAR  w(0) 380116.
+	create_child: main@_3 (8, 33) FAR 381529 UNDEF 0.02
+expand: main@_3 (8, 0) FAR  w(0) 381529.
+	create_child: main@.lr.ph (7, 33) FAR 381492 U 0.00
+expand: main@.lr.ph (7, 0) FAR  w(0) 381492.
+	create_child: main@.lr.ph (6, 33) FAR 381402 U 0.01
+expand: main@.lr.ph (6, 0) FAR  w(0) 381402.
+	create_child: main@.lr.ph190 (5, 33) FAR 381381 U 0.00
+expand: main@.lr.ph190 (5, 0) FAR  w(0) 381381. F 0.05
+expand: main@.lr.ph (6, 0) FAR  w(0) 381402. F 0.02
+expand: main@.lr.ph (7, 0) FAR  w(0) 381492. F 0.02
+expand: main@_3 (8, 0) FAR  w(0) 381529. F 0.00
+expand: main@.lr.ph190 (9, 0) FAR  w(0) 380116. F 0.08
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 380255. F 0.09
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 378069. F 0.09
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 380243. F 0.09
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 380831. F 0.10
+expand: main@.lr.ph (14, 0) FAR  w(0) 380811. F 0.04
+expand: main@.lr.ph (15, 0) FAR  w(0) 380821. F 0.04
+expand: main@.lr.ph (16, 0) FAR  w(0) 381257. F 0.04
+expand: main@.lr.ph (17, 0) FAR  w(0) 381524. F 0.06
+expand: main@.lr.ph (18, 0) FAR  w(0) 380857. F 0.06
+expand: main@_3 (19, 0) FAR  w(0) 380810. F 0.01
+expand: main@.lr.ph190 (20, 0) FAR  w(0) 74716. F 0.15
+expand: main@.lr.ph190 (21, 0) FAR  w(0) 75111. F 0.12
+expand: main@.lr.ph (22, 0) FAR  w(0) 75104.
+	create_child: main@.lr.ph (21, 33) FAR 108668 U 0.01
+expand: main@.lr.ph (21, 0) FAR  w(0) 108668.
+	create_child: main@.lr.ph190 (20, 33) FAR 108674 U 0.00
+expand: main@.lr.ph190 (20, 0) FAR  w(0) 108674.
+	create_child: main@.lr.ph190 (19, 33) FAR 112823 U 0.01
+expand: main@.lr.ph190 (19, 0) FAR  w(0) 112823.
+	create_child: main@.lr.ph190 (18, 33) FAR 119997 U 0.01
+expand: main@.lr.ph190 (18, 0) FAR  w(0) 119997.
+	create_child: main@_3 (17, 33) FAR 122015 UNDEF 0.01
+expand: main@_3 (17, 0) FAR  w(0) 122015.
+	create_child: main@.lr.ph (16, 33) FAR 122009 U 0.00
+expand: main@.lr.ph (16, 0) FAR  w(0) 122009.
+	create_child: main@.lr.ph (15, 33) FAR 122035 U 0.01
+expand: main@.lr.ph (15, 0) FAR  w(0) 122035.
+	create_child: main@.lr.ph (14, 33) FAR 121999 U 0.00
+expand: main@.lr.ph (14, 0) FAR  w(0) 121999.
+	create_child: main@.lr.ph (13, 33) FAR 489267 U 0.00
+expand: main@.lr.ph (13, 0) FAR  w(0) 489267.
+	create_child: main@.lr.ph (12, 33) FAR 490847 U 0.00
+expand: main@.lr.ph (12, 0) FAR  w(0) 490847.
+	create_child: main@.lr.ph190 (11, 33) FAR 488381 U 0.00
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 488381.
+	create_child: main@.lr.ph190 (10, 33) FAR 489537 U 0.01
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 489537.
+	create_child: main@.lr.ph190 (9, 33) FAR 488787 U 0.01
+expand: main@.lr.ph190 (9, 0) FAR  w(0) 488787. F 0.08
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 489537. F 0.07
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 488381. F 0.07
+expand: main@.lr.ph (12, 0) FAR  w(0) 490847.
+	create_child: main@.lr.ph (11, 33) FAR 682082 U 0.01
+expand: main@.lr.ph (11, 0) FAR  w(0) 682082.
+	create_child: main@.lr.ph190 (10, 33) FAR 681269 U 0.00
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 681269.
+	create_child: main@.lr.ph190 (9, 33) FAR 682114 U 0.01
+expand: main@.lr.ph190 (9, 0) FAR  w(0) 682114.
+	create_child: main@.lr.ph190 (8, 33) FAR 682220 U 0.01
+expand: main@.lr.ph190 (8, 0) FAR  w(0) 682220.
+	create_child: main@.lr.ph190 (7, 33) FAR 682197 U 0.01
+expand: main@.lr.ph190 (7, 0) FAR  w(0) 682197.
+	create_child: main@.lr.ph190 (6, 33) FAR 682120 U 0.01
+expand: main@.lr.ph190 (6, 0) FAR  w(0) 682120.
+	create_child: main@.lr.ph190 (5, 33) FAR 681494 U 0.01
+expand: main@.lr.ph190 (5, 0) FAR  w(0) 681494. T 0.01
+is-reachable: main@.lr.ph190 (6, 0) FAR 682120 F 0.01
+expand: main@.lr.ph190 (6, 0) FAR  w(1) 682120. T 0.01
+is-reachable: main@.lr.ph190 (7, 0) FAR 682197 T 0.01
+is-reachable: main@.lr.ph190 (8, 0) FAR 682220 T 0.01
+is-reachable: main@.lr.ph190 (9, 0) FAR 682114 T 0.01
+is-reachable: main@.lr.ph190 (10, 0) FAR 681269 T 0.01
+is-reachable: main@.lr.ph (11, 0) FAR 682082 T 0.01
+is-reachable: main@.lr.ph (12, 0) FAR 490847 T 0.00
+is-reachable: main@.lr.ph (13, 0) FAR 489267 T 0.00
+is-reachable: main@.lr.ph (14, 0) FAR 121999 T 0.00
+is-reachable: main@.lr.ph (15, 0) FAR 122035 T 0.00
+is-reachable: main@.lr.ph (16, 0) FAR 122009 T 0.00
+is-reachable: main@_3 (17, 0) FAR 122015 T 0.00
+is-reachable: main@.lr.ph190 (18, 0) FAR 119997 F 0.01
+Deleting closed node: main@.lr.ph190(7, 33) 682197
+Deleting closed node: main@.lr.ph190(8, 33) 682220
+Deleting closed node: main@.lr.ph190(9, 33) 682114
+Deleting closed node: main@.lr.ph190(10, 33) 681269
+Deleting closed node: main@.lr.ph(11, 33) 682082
+Deleting closed node: main@.lr.ph(12, 33) 490847
+Deleting closed node: main@.lr.ph(13, 33) 489267
+Deleting closed node: main@.lr.ph(14, 33) 121999
+Deleting closed node: main@.lr.ph(15, 33) 122035
+Deleting closed node: main@.lr.ph(16, 33) 122009
+Deleting closed node: main@_3(17, 33) 122015
+expand: main@.lr.ph190 (18, 0) FAR  w(1) 119997.
+	create_child: main@_3 (17, 33) FAR 688216 U 0.16
+expand: main@_3 (17, 0) FAR  w(0) 688216.
+	create_child: main@.lr.ph (16, 33) FAR 688395 U 0.00
+expand: main@.lr.ph (16, 0) FAR  w(0) 688395.
+	create_child: main@.lr.ph (15, 33) FAR 688106 U 0.01
+expand: main@.lr.ph (15, 0) FAR  w(0) 688106.
+	create_child: main@.lr.ph (14, 33) FAR 688040 U 0.00
+expand: main@.lr.ph (14, 0) FAR  w(0) 688040.
+	create_child: main@.lr.ph (13, 33) FAR 688010 U 0.00
+expand: main@.lr.ph (13, 0) FAR  w(0) 688010.
+	create_child: main@.lr.ph (12, 33) FAR 687976 U 0.00
+expand: main@.lr.ph (12, 0) FAR  w(0) 687976.
+	create_child: main@.lr.ph (11, 33) FAR 687878 U 0.00
+expand: main@.lr.ph (11, 0) FAR  w(0) 687878.
+	create_child: main@.lr.ph190 (10, 33) FAR 687994 U 0.00
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 687994.
+	create_child: main@.lr.ph190 (9, 33) FAR 686702 U 0.01
+expand: main@.lr.ph190 (9, 0) FAR  w(0) 686702.
+	create_child: main@.lr.ph190 (8, 33) FAR 687024 U 0.01
+expand: main@.lr.ph190 (8, 0) FAR  w(0) 687024.
+	create_child: main@.lr.ph190 (7, 33) FAR 687382 U 0.01
+expand: main@.lr.ph190 (7, 0) FAR  w(0) 687382.
+	create_child: main@.lr.ph190 (6, 33) FAR 687455 U 0.01
+expand: main@.lr.ph190 (6, 0) FAR  w(0) 687455.
+	create_child: main@.lr.ph190 (5, 33) FAR 687256 U 0.01
+expand: main@.lr.ph190 (5, 0) FAR  w(0) 687256. F 0.08
+expand: main@.lr.ph190 (6, 0) FAR  w(0) 687455. F 0.08
+expand: main@.lr.ph190 (7, 0) FAR  w(0) 687382. F 0.09
+expand: main@.lr.ph190 (8, 0) FAR  w(0) 687024. F 0.07
+expand: main@.lr.ph190 (9, 0) FAR  w(0) 686702. F 0.07
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 687994. F 0.08
+expand: main@.lr.ph (11, 0) FAR  w(0) 687878. F 0.04
+expand: main@.lr.ph (12, 0) FAR  w(0) 687976. F 0.05
+expand: main@.lr.ph (13, 0) FAR  w(0) 688010. F 0.05
+expand: main@.lr.ph (14, 0) FAR  w(0) 688040. F 0.05
+expand: main@.lr.ph (15, 0) FAR  w(0) 688106. F 0.05
+expand: main@.lr.ph (16, 0) FAR  w(0) 688395. F 0.05
+expand: main@_3 (17, 0) FAR  w(0) 688216. F 0.01
+expand: main@.lr.ph190 (18, 0) FAR  w(1) 119997. F 0.33
+expand: main@.lr.ph190 (19, 0) FAR  w(0) 112823. F 0.12
+expand: main@.lr.ph190 (20, 0) FAR  w(0) 108674. F 0.13
+expand: main@.lr.ph (21, 0) FAR  w(0) 108668.
+	create_child: main@.lr.ph (20, 33) FAR 170047 U 0.01
+expand: main@.lr.ph (20, 0) FAR  w(0) 170047.
+	create_child: main@.lr.ph190 (19, 33) FAR 169068 U 0.00
+expand: main@.lr.ph190 (19, 0) FAR  w(0) 169068.
+	create_child: main@.lr.ph190 (18, 33) FAR 170185 U 0.01
+expand: main@.lr.ph190 (18, 0) FAR  w(0) 170185.
+	create_child: main@.lr.ph190 (17, 33) FAR 170206 U 0.01
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 170206.
+	create_child: main@.lr.ph190 (16, 33) FAR 170193 U 0.01
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 170193. F 0.11
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 170206. F 0.10
+expand: main@.lr.ph190 (18, 0) FAR  w(0) 170185. F 0.09
+expand: main@.lr.ph190 (19, 0) FAR  w(0) 169068. F 0.09
+expand: main@.lr.ph (20, 0) FAR  w(0) 170047. F 0.06
+expand: main@.lr.ph (21, 0) FAR  w(0) 108668. F 0.06
+expand: main@.lr.ph (22, 0) FAR  w(0) 75104. F 0.08
+expand: main@.lr.ph (23, 0) FAR  w(0) 75681. F 0.09
+expand: main@_3 (24, 0) FAR  w(0) 75713. F 0.01
+expand: main@.lr.ph190 (25, 0) FAR  w(0) 61231. F 0.18
+expand: main@.lr.ph190 (26, 0) FAR  w(0) 35618. F 0.14
+expand: main@.lr.ph (27, 0) FAR  w(0) 35545.
+	create_child: main@.lr.ph (26, 33) FAR 93549 U 0.01
+expand: main@.lr.ph (26, 0) FAR  w(0) 93549.
+	create_child: main@.lr.ph190 (25, 33) FAR 93607 U 0.00
+expand: main@.lr.ph190 (25, 0) FAR  w(0) 93607.
+	create_child: main@.lr.ph190 (24, 33) FAR 93648 U 0.01
+expand: main@.lr.ph190 (24, 0) FAR  w(0) 93648.
+	create_child: main@.lr.ph190 (23, 33) FAR 93745 U 0.01
+expand: main@.lr.ph190 (23, 0) FAR  w(0) 93745.
+	create_child: main@_3 (22, 33) FAR 94955 U 0.02
+expand: main@_3 (22, 0) FAR  w(0) 94955.
+	create_child: main@.lr.ph (21, 33) FAR 94999 U 0.00
+expand: main@.lr.ph (21, 0) FAR  w(0) 94999.
+	create_child: main@.lr.ph (20, 33) FAR 94906 U 0.01
+expand: main@.lr.ph (20, 0) FAR  w(0) 94906.
+	create_child: main@.lr.ph190 (19, 33) FAR 95178 U 0.00
+expand: main@.lr.ph190 (19, 0) FAR  w(0) 95178.
+	create_child: main@.lr.ph190 (18, 33) FAR 94207 U 0.01
+expand: main@.lr.ph190 (18, 0) FAR  w(0) 94207.
+	create_child: main@_3 (17, 33) FAR 309521 UNDEF 0.02
+expand: main@_3 (17, 0) FAR  w(0) 309521.
+	create_child: main@.lr.ph (16, 33) FAR 309558 U 0.00
+expand: main@.lr.ph (16, 0) FAR  w(0) 309558.
+	create_child: main@.lr.ph (15, 33) FAR 309345 U 0.01
+expand: main@.lr.ph (15, 0) FAR  w(0) 309345.
+	create_child: main@.lr.ph (14, 33) FAR 310195 U 0.00
+expand: main@.lr.ph (14, 0) FAR  w(0) 310195.
+	create_child: main@.lr.ph190 (13, 33) FAR 512577 U 0.00
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 512577.
+	create_child: main@.lr.ph190 (12, 33) FAR 483178 U 0.01
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 483178.
+	create_child: main@.lr.ph190 (11, 33) FAR 512372 U 0.01
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 512372.
+	create_child: main@_3 (10, 33) FAR 641652 UNDEF 0.01
+expand: main@_3 (10, 0) FAR  w(0) 641652.
+	create_child: main@.lr.ph (9, 33) FAR 640859 U 0.00
+expand: main@.lr.ph (9, 0) FAR  w(0) 640859. F 0.02
+expand: main@_3 (10, 0) FAR  w(0) 641652. F 0.00
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 512372. F 0.21
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 483178. F 0.10
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 512577. F 0.10
+expand: main@.lr.ph (14, 0) FAR  w(0) 310195.
+	create_child: main@.lr.ph (13, 33) FAR 339354 U 0.01
+expand: main@.lr.ph (13, 0) FAR  w(0) 339354.
+	create_child: main@.lr.ph190 (12, 33) FAR 718953 U 0.01
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 718953. F 0.12
+expand: main@.lr.ph (13, 0) FAR  w(0) 339354.
+	create_child: main@.lr.ph (12, 33) FAR 399610 U 0.01
+expand: main@.lr.ph (12, 0) FAR  w(0) 399610.
+	create_child: main@.lr.ph190 (11, 33) FAR 398404 U 0.00
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 398404.
+	create_child: main@.lr.ph190 (10, 33) FAR 365530 U 0.01
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 365530.
+	create_child: main@.lr.ph190 (9, 33) FAR 336283 U 0.01
+expand: main@.lr.ph190 (9, 0) FAR  w(0) 336283. F 0.08
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 365530. F 0.09
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 398404. F 0.09
+expand: main@.lr.ph (12, 0) FAR  w(0) 399610. F 0.05
+expand: main@.lr.ph (13, 0) FAR  w(0) 339354. F 0.06
+expand: main@.lr.ph (14, 0) FAR  w(0) 310195. F 0.06
+expand: main@.lr.ph (15, 0) FAR  w(0) 309345. F 0.08
+expand: main@.lr.ph (16, 0) FAR  w(0) 309558. F 0.06
+expand: main@_3 (17, 0) FAR  w(0) 309521. F 0.01
+expand: main@.lr.ph190 (18, 0) FAR  w(0) 94207. F 0.16
+expand: main@.lr.ph190 (19, 0) FAR  w(0) 95178. F 0.14
+expand: main@.lr.ph (20, 0) FAR  w(0) 94906.
+	create_child: main@.lr.ph (19, 33) FAR 177540 U 0.01
+expand: main@.lr.ph (19, 0) FAR  w(0) 177540.
+	create_child: main@.lr.ph190 (18, 33) FAR 275166 U 0.00
+expand: main@.lr.ph190 (18, 0) FAR  w(0) 275166.
+	create_child: main@.lr.ph190 (17, 33) FAR 274067 U 0.01
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 274067.
+	create_child: main@.lr.ph190 (16, 33) FAR 314063 U 0.01
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 314063. F 0.15
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 274067. F 0.15
+expand: main@.lr.ph190 (18, 0) FAR  w(0) 275166. F 0.17
+expand: main@.lr.ph (19, 0) FAR  w(0) 177540.
+	create_child: main@.lr.ph (18, 33) FAR 276184 U 0.01
+expand: main@.lr.ph (18, 0) FAR  w(0) 276184.
+	create_child: main@.lr.ph190 (17, 33) FAR 312157 U 0.00
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 312157.
+	create_child: main@.lr.ph190 (16, 33) FAR 347959 U 0.01
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 347959. F 0.12
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 312157. F 0.13
+expand: main@.lr.ph (18, 0) FAR  w(0) 276184.
+	create_child: main@.lr.ph (17, 33) FAR 276181 U 0.01
+expand: main@.lr.ph (17, 0) FAR  w(0) 276181.
+	create_child: main@.lr.ph190 (16, 33) FAR 276151 U 0.00
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 276151.
+	create_child: main@.lr.ph190 (15, 33) FAR 276289 U 0.01
+expand: main@.lr.ph190 (15, 0) FAR  w(0) 276289.
+	create_child: main@.lr.ph190 (14, 33) FAR 276288 U 0.01
+expand: main@.lr.ph190 (14, 0) FAR  w(0) 276288.
+	create_child: main@.lr.ph190 (13, 33) FAR 276263 U 0.01
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 276263. F 0.12
+expand: main@.lr.ph190 (14, 0) FAR  w(0) 276288. F 0.14
+expand: main@.lr.ph190 (15, 0) FAR  w(0) 276289. F 0.15
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 276151. F 0.15
+expand: main@.lr.ph (17, 0) FAR  w(0) 276181. F 0.06
+expand: main@.lr.ph (18, 0) FAR  w(0) 276184. F 0.06
+expand: main@.lr.ph (19, 0) FAR  w(0) 177540. F 0.07
+expand: main@.lr.ph (20, 0) FAR  w(0) 94906. F 0.08
+expand: main@.lr.ph (21, 0) FAR  w(0) 94999. F 0.10
+expand: main@_3 (22, 0) FAR  w(0) 94955. F 0.01
+expand: main@.lr.ph190 (23, 0) FAR  w(0) 93745. F 0.16
+expand: main@.lr.ph190 (24, 0) FAR  w(0) 93648. F 0.13
+expand: main@.lr.ph190 (25, 0) FAR  w(0) 93607. F 0.15
+expand: main@.lr.ph (26, 0) FAR  w(0) 93549.
+	create_child: main@.lr.ph (25, 33) FAR 182908 U 0.01
+expand: main@.lr.ph (25, 0) FAR  w(0) 182908.
+	create_child: main@.lr.ph190 (24, 33) FAR 182917 U 0.00
+expand: main@.lr.ph190 (24, 0) FAR  w(0) 182917.
+	create_child: main@.lr.ph190 (23, 33) FAR 181616 U 0.01
+expand: main@.lr.ph190 (23, 0) FAR  w(0) 181616.
+	create_child: main@.lr.ph190 (22, 33) FAR 182341 U 0.01
+expand: main@.lr.ph190 (22, 0) FAR  w(0) 182341.
+	create_child: main@.lr.ph190 (21, 33) FAR 182801 U 0.01
+expand: main@.lr.ph190 (21, 0) FAR  w(0) 182801. F 0.12
+expand: main@.lr.ph190 (22, 0) FAR  w(0) 182341. F 0.18
+expand: main@.lr.ph190 (23, 0) FAR  w(0) 181616. F 0.17
+expand: main@.lr.ph190 (24, 0) FAR  w(0) 182917. F 0.16
+expand: main@.lr.ph (25, 0) FAR  w(0) 182908. F 0.07
+expand: main@.lr.ph (26, 0) FAR  w(0) 93549. F 0.06
+expand: main@.lr.ph (27, 0) FAR  w(0) 35545. F 0.07
+expand: main@.lr.ph (28, 0) FAR  w(0) 34158. F 0.08
+expand: main@_3 (29, 0) FAR  w(0) 33635. F 0.01
+expand: main@empty.loop (30, 0) FAR  w(0) 33191. F 0.01
+expand: main@entry (31, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (32, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (33, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 9.40 :before-memory 153.63 :after-memory 172.28)
+Propagating: 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33  ! 34 
+(spacer::context::propagate :time 2.28 :before-memory 172.28 :after-memory 180.14)
+Entering level 34
+expand: query!0 (34, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (33, 34) FAR 1 U 0.00
+expand: main@entry!_BAD (33, 0) FAR  w(0) 1.
+	create_child: main@entry (32, 34) FAR 1 U 0.00
+expand: main@entry (32, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (31, 34) FAR 33191 U 0.00
+expand: main@empty.loop (31, 0) FAR  w(0) 33191.
+	create_child: main@_3 (30, 34) FAR 33635 U 0.00
+expand: main@_3 (30, 0) FAR  w(0) 33635.
+	create_child: main@.lr.ph (29, 34) FAR 34158 U 0.00
+expand: main@.lr.ph (29, 0) FAR  w(0) 34158.
+	create_child: main@.lr.ph (28, 34) FAR 35545 U 0.01
+expand: main@.lr.ph (28, 0) FAR  w(0) 35545.
+	create_child: main@.lr.ph190 (27, 34) FAR 35618 U 0.00
+expand: main@.lr.ph190 (27, 0) FAR  w(0) 35618.
+	create_child: main@.lr.ph190 (26, 34) FAR 61231 U 0.01
+expand: main@.lr.ph190 (26, 0) FAR  w(0) 61231.
+	create_child: main@_3 (25, 34) FAR 75713 U 0.01
+expand: main@_3 (25, 0) FAR  w(0) 75713.
+	create_child: main@.lr.ph (24, 34) FAR 75681 U 0.00
+expand: main@.lr.ph (24, 0) FAR  w(0) 75681.
+	create_child: main@.lr.ph (23, 34) FAR 75104 U 0.01
+expand: main@.lr.ph (23, 0) FAR  w(0) 75104.
+	create_child: main@.lr.ph190 (22, 34) FAR 75111 U 0.00
+expand: main@.lr.ph190 (22, 0) FAR  w(0) 75111.
+	create_child: main@.lr.ph190 (21, 34) FAR 74716 U 0.01
+expand: main@.lr.ph190 (21, 0) FAR  w(0) 74716.
+	create_child: main@_3 (20, 34) FAR 380810 UNDEF 0.02
+expand: main@_3 (20, 0) FAR  w(0) 380810.
+	create_child: main@.lr.ph (19, 34) FAR 380857 U 0.00
+expand: main@.lr.ph (19, 0) FAR  w(0) 380857.
+	create_child: main@.lr.ph (18, 34) FAR 381524 U 0.01
+expand: main@.lr.ph (18, 0) FAR  w(0) 381524.
+	create_child: main@.lr.ph190 (17, 34) FAR 665798 U 0.00
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 665798.
+	create_child: main@.lr.ph190 (16, 34) FAR 758948 U 0.01
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 758948. F 0.17
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 665798. F 0.12
+expand: main@.lr.ph (18, 0) FAR  w(0) 381524.
+	create_child: main@.lr.ph (17, 34) FAR 381257 U 0.01
+expand: main@.lr.ph (17, 0) FAR  w(0) 381257.
+	create_child: main@.lr.ph (16, 34) FAR 380821 U 0.00
+expand: main@.lr.ph (16, 0) FAR  w(0) 380821.
+	create_child: main@.lr.ph (15, 34) FAR 380811 U 0.00
+expand: main@.lr.ph (15, 0) FAR  w(0) 380811.
+	create_child: main@.lr.ph190 (14, 34) FAR 380831 U 0.00
+expand: main@.lr.ph190 (14, 0) FAR  w(0) 380831.
+	create_child: main@.lr.ph190 (13, 34) FAR 380243 U 0.01
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 380243.
+	create_child: main@.lr.ph190 (12, 34) FAR 378069 U 0.01
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 378069.
+	create_child: main@.lr.ph190 (11, 34) FAR 380255 U 0.01
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 380255.
+	create_child: main@.lr.ph190 (10, 34) FAR 380116 U 0.01
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 380116.
+	create_child: main@_3 (9, 34) FAR 381529 UNDEF 0.02
+expand: main@_3 (9, 0) FAR  w(0) 381529.
+	create_child: main@.lr.ph (8, 34) FAR 381492 U 0.00
+expand: main@.lr.ph (8, 0) FAR  w(0) 381492.
+	create_child: main@.lr.ph (7, 34) FAR 381402 U 0.01
+expand: main@.lr.ph (7, 0) FAR  w(0) 381402.
+	create_child: main@.lr.ph190 (6, 34) FAR 381381 U 0.00
+expand: main@.lr.ph190 (6, 0) FAR  w(0) 381381.
+	create_child: main@.lr.ph190 (5, 34) FAR 380504 U 0.01
+expand: main@.lr.ph190 (5, 0) FAR  w(0) 380504. F 0.14
+expand: main@.lr.ph190 (6, 0) FAR  w(0) 381381. F 0.08
+expand: main@.lr.ph (7, 0) FAR  w(0) 381402. F 0.04
+expand: main@.lr.ph (8, 0) FAR  w(0) 381492. F 0.05
+expand: main@_3 (9, 0) FAR  w(0) 381529. F 0.01
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 380116. F 0.13
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 380255. F 0.13
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 378069. F 0.13
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 380243. F 0.13
+expand: main@.lr.ph190 (14, 0) FAR  w(0) 380831. F 0.13
+expand: main@.lr.ph (15, 0) FAR  w(0) 380811. F 0.06
+expand: main@.lr.ph (16, 0) FAR  w(0) 380821. F 0.06
+expand: main@.lr.ph (17, 0) FAR  w(0) 381257. F 0.06
+expand: main@.lr.ph (18, 0) FAR  w(0) 381524. F 0.07
+expand: main@.lr.ph (19, 0) FAR  w(0) 380857. F 0.06
+expand: main@_3 (20, 0) FAR  w(0) 380810. F 0.01
+expand: main@.lr.ph190 (21, 0) FAR  w(0) 74716. F 0.16
+expand: main@.lr.ph190 (22, 0) FAR  w(0) 75111. F 0.15
+expand: main@.lr.ph (23, 0) FAR  w(0) 75104.
+	create_child: main@.lr.ph (22, 34) FAR 108668 U 0.01
+expand: main@.lr.ph (22, 0) FAR  w(0) 108668.
+	create_child: main@.lr.ph190 (21, 34) FAR 108674 U 0.00
+expand: main@.lr.ph190 (21, 0) FAR  w(0) 108674.
+	create_child: main@.lr.ph190 (20, 34) FAR 112823 U 0.01
+expand: main@.lr.ph190 (20, 0) FAR  w(0) 112823.
+	create_child: main@.lr.ph190 (19, 34) FAR 119997 U 0.01
+expand: main@.lr.ph190 (19, 0) FAR  w(0) 119997.
+	create_child: main@_3 (18, 34) FAR 122015 UNDEF 0.02
+expand: main@_3 (18, 0) FAR  w(0) 122015. T 0.00
+is-reachable: main@.lr.ph190 (19, 0) FAR 119997 F 0.01
+expand: main@.lr.ph190 (19, 0) FAR  w(1) 119997.
+	create_child: main@_3 (18, 34) FAR 688216 U 0.16
+expand: main@_3 (18, 0) FAR  w(0) 688216.
+	create_child: main@.lr.ph (17, 34) FAR 688395 U 0.00
+expand: main@.lr.ph (17, 0) FAR  w(0) 688395.
+	create_child: main@.lr.ph (16, 34) FAR 688106 U 0.01
+expand: main@.lr.ph (16, 0) FAR  w(0) 688106.
+	create_child: main@.lr.ph (15, 34) FAR 688040 U 0.00
+expand: main@.lr.ph (15, 0) FAR  w(0) 688040.
+	create_child: main@.lr.ph (14, 34) FAR 688010 U 0.00
+expand: main@.lr.ph (14, 0) FAR  w(0) 688010.
+	create_child: main@.lr.ph (13, 34) FAR 687976 U 0.00
+expand: main@.lr.ph (13, 0) FAR  w(0) 687976.
+	create_child: main@.lr.ph190 (12, 34) FAR 777059 U 0.00
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 777059.
+	create_child: main@.lr.ph190 (11, 34) FAR 779581 U 0.01
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 779581.
+	create_child: main@.lr.ph190 (10, 34) FAR 779459 U 0.01
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 779459.
+	create_child: main@.lr.ph190 (9, 34) FAR 779444 U 0.01
+expand: main@.lr.ph190 (9, 0) FAR  w(0) 779444. F 0.09
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 779459. F 0.09
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 779581. F 0.08
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 777059. F 0.10
+expand: main@.lr.ph (13, 0) FAR  w(0) 687976.
+	create_child: main@.lr.ph (12, 34) FAR 687878 U 0.01
+expand: main@.lr.ph (12, 0) FAR  w(0) 687878.
+	create_child: main@.lr.ph190 (11, 34) FAR 687994 U 0.00
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 687994.
+	create_child: main@.lr.ph190 (10, 34) FAR 686702 U 0.01
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 686702.
+	create_child: main@.lr.ph190 (9, 34) FAR 687024 U 0.01
+expand: main@.lr.ph190 (9, 0) FAR  w(0) 687024. F 0.09
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 686702. F 0.08
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 687994. F 0.08
+expand: main@.lr.ph (12, 0) FAR  w(0) 687878. F 0.05
+expand: main@.lr.ph (13, 0) FAR  w(0) 687976. F 0.05
+expand: main@.lr.ph (14, 0) FAR  w(0) 688010. F 0.05
+expand: main@.lr.ph (15, 0) FAR  w(0) 688040. F 0.05
+expand: main@.lr.ph (16, 0) FAR  w(0) 688106. F 0.05
+expand: main@.lr.ph (17, 0) FAR  w(0) 688395. F 0.06
+expand: main@_3 (18, 0) FAR  w(0) 688216. F 0.01
+expand: main@.lr.ph190 (19, 0) FAR  w(1) 119997. F 0.20
+expand: main@.lr.ph190 (20, 0) FAR  w(0) 112823. F 0.16
+expand: main@.lr.ph190 (21, 0) FAR  w(0) 108674. F 0.17
+expand: main@.lr.ph (22, 0) FAR  w(0) 108668.
+	create_child: main@.lr.ph (21, 34) FAR 170047 U 0.01
+expand: main@.lr.ph (21, 0) FAR  w(0) 170047.
+	create_child: main@.lr.ph (20, 34) FAR 196850 U 0.01
+expand: main@.lr.ph (20, 0) FAR  w(0) 196850.
+	create_child: main@.lr.ph190 (19, 34) FAR 196877 U 0.00
+expand: main@.lr.ph190 (19, 0) FAR  w(0) 196877.
+	create_child: main@.lr.ph190 (18, 34) FAR 197013 U 0.01
+expand: main@.lr.ph190 (18, 0) FAR  w(0) 197013.
+	create_child: main@.lr.ph190 (17, 34) FAR 197026 U 0.01
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 197026.
+	create_child: main@.lr.ph190 (16, 34) FAR 196172 U 0.01
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 196172. F 0.14
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 197026. F 0.14
+expand: main@.lr.ph190 (18, 0) FAR  w(0) 197013. F 0.12
+expand: main@.lr.ph190 (19, 0) FAR  w(0) 196877. F 0.16
+expand: main@.lr.ph (20, 0) FAR  w(0) 196850. F 0.06
+expand: main@.lr.ph (21, 0) FAR  w(0) 170047. F 0.07
+expand: main@.lr.ph (22, 0) FAR  w(0) 108668. F 0.07
+expand: main@.lr.ph (23, 0) FAR  w(0) 75104. F 0.09
+expand: main@.lr.ph (24, 0) FAR  w(0) 75681. F 0.09
+expand: main@_3 (25, 0) FAR  w(0) 75713. F 0.01
+expand: main@.lr.ph190 (26, 0) FAR  w(0) 61231. F 0.25
+expand: main@.lr.ph190 (27, 0) FAR  w(0) 35618. F 0.16
+expand: main@.lr.ph (28, 0) FAR  w(0) 35545.
+	create_child: main@.lr.ph (27, 34) FAR 93549 U 0.01
+expand: main@.lr.ph (27, 0) FAR  w(0) 93549.
+	create_child: main@.lr.ph190 (26, 34) FAR 93607 U 0.00
+expand: main@.lr.ph190 (26, 0) FAR  w(0) 93607.
+	create_child: main@.lr.ph190 (25, 34) FAR 93648 U 0.01
+expand: main@.lr.ph190 (25, 0) FAR  w(0) 93648.
+	create_child: main@.lr.ph190 (24, 34) FAR 93745 U 0.01
+expand: main@.lr.ph190 (24, 0) FAR  w(0) 93745.
+	create_child: main@_3 (23, 34) FAR 94955 U 0.02
+expand: main@_3 (23, 0) FAR  w(0) 94955.
+	create_child: main@.lr.ph (22, 34) FAR 94999 U 0.00
+expand: main@.lr.ph (22, 0) FAR  w(0) 94999.
+	create_child: main@.lr.ph (21, 34) FAR 94906 U 0.01
+expand: main@.lr.ph (21, 0) FAR  w(0) 94906.
+	create_child: main@.lr.ph190 (20, 34) FAR 95178 U 0.00
+expand: main@.lr.ph190 (20, 0) FAR  w(0) 95178.
+	create_child: main@.lr.ph190 (19, 34) FAR 94207 U 0.01
+expand: main@.lr.ph190 (19, 0) FAR  w(0) 94207.
+	create_child: main@_3 (18, 34) FAR 309521 UNDEF 0.02
+expand: main@_3 (18, 0) FAR  w(0) 309521.
+	create_child: main@.lr.ph (17, 34) FAR 309558 U 0.00
+expand: main@.lr.ph (17, 0) FAR  w(0) 309558.
+	create_child: main@.lr.ph (16, 34) FAR 309345 U 0.01
+expand: main@.lr.ph (16, 0) FAR  w(0) 309345.
+	create_child: main@.lr.ph (15, 34) FAR 310195 U 0.00
+expand: main@.lr.ph (15, 0) FAR  w(0) 310195.
+	create_child: main@.lr.ph190 (14, 34) FAR 512577 U 0.01
+expand: main@.lr.ph190 (14, 0) FAR  w(0) 512577.
+	create_child: main@.lr.ph190 (13, 34) FAR 483178 U 0.01
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 483178.
+	create_child: main@.lr.ph190 (12, 34) FAR 512372 U 0.01
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 512372.
+	create_child: main@_3 (11, 34) FAR 641652 UNDEF 0.02
+expand: main@_3 (11, 0) FAR  w(0) 641652.
+	create_child: main@.lr.ph (10, 34) FAR 640859 U 0.00
+expand: main@.lr.ph (10, 0) FAR  w(0) 640859.
+	create_child: main@.lr.ph (9, 34) FAR 640282 U 0.01
+expand: main@.lr.ph (9, 0) FAR  w(0) 640282. F 0.02
+expand: main@.lr.ph (10, 0) FAR  w(0) 640859. F 0.02
+expand: main@_3 (11, 0) FAR  w(0) 641652. F 0.00
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 512372. F 0.22
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 483178. F 0.11
+expand: main@.lr.ph190 (14, 0) FAR  w(0) 512577. F 0.11
+expand: main@.lr.ph (15, 0) FAR  w(0) 310195.
+	create_child: main@.lr.ph (14, 34) FAR 339354 U 0.01
+expand: main@.lr.ph (14, 0) FAR  w(0) 339354.
+	create_child: main@.lr.ph190 (13, 34) FAR 718953 U 0.01
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 718953.
+	create_child: main@.lr.ph190 (12, 34) FAR 801132 U 0.01
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 801132. F 0.09
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 718953. F 0.09
+expand: main@.lr.ph (14, 0) FAR  w(0) 339354.
+	create_child: main@.lr.ph (13, 34) FAR 399610 U 0.01
+expand: main@.lr.ph (13, 0) FAR  w(0) 399610.
+	create_child: main@.lr.ph190 (12, 34) FAR 398404 U 0.01
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 398404.
+	create_child: main@.lr.ph190 (11, 34) FAR 365530 U 0.01
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 365530.
+	create_child: main@.lr.ph190 (10, 34) FAR 336283 U 0.01
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 336283.
+	create_child: main@.lr.ph190 (9, 34) FAR 461114 U 0.01
+expand: main@.lr.ph190 (9, 0) FAR  w(0) 461114. F 0.10
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 336283. F 0.10
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 365530. F 0.10
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 398404. F 0.10
+expand: main@.lr.ph (13, 0) FAR  w(0) 399610. F 0.06
+expand: main@.lr.ph (14, 0) FAR  w(0) 339354. F 0.06
+expand: main@.lr.ph (15, 0) FAR  w(0) 310195. F 0.07
+expand: main@.lr.ph (16, 0) FAR  w(0) 309345. F 0.09
+expand: main@.lr.ph (17, 0) FAR  w(0) 309558. F 0.10
+expand: main@_3 (18, 0) FAR  w(0) 309521. F 0.01
+expand: main@.lr.ph190 (19, 0) FAR  w(0) 94207. F 0.20
+expand: main@.lr.ph190 (20, 0) FAR  w(0) 95178. F 0.15
+expand: main@.lr.ph (21, 0) FAR  w(0) 94906.
+	create_child: main@.lr.ph (20, 34) FAR 177540 U 0.01
+expand: main@.lr.ph (20, 0) FAR  w(0) 177540.
+	create_child: main@.lr.ph190 (19, 34) FAR 275166 U 0.00
+expand: main@.lr.ph190 (19, 0) FAR  w(0) 275166. F 0.16
+expand: main@.lr.ph (20, 0) FAR  w(0) 177540.
+	create_child: main@.lr.ph (19, 34) FAR 276184 U 0.01
+expand: main@.lr.ph (19, 0) FAR  w(0) 276184.
+	create_child: main@.lr.ph190 (18, 34) FAR 312157 U 0.00
+expand: main@.lr.ph190 (18, 0) FAR  w(0) 312157.
+	create_child: main@.lr.ph190 (17, 34) FAR 347959 U 0.01
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 347959.
+	create_child: main@.lr.ph190 (16, 34) FAR 306276 U 0.01
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 306276. F 0.11
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 347959. F 0.11
+expand: main@.lr.ph190 (18, 0) FAR  w(0) 312157. F 0.11
+expand: main@.lr.ph (19, 0) FAR  w(0) 276184.
+	create_child: main@.lr.ph (18, 34) FAR 276181 U 0.01
+expand: main@.lr.ph (18, 0) FAR  w(0) 276181.
+	create_child: main@.lr.ph190 (17, 34) FAR 276151 U 0.01
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 276151.
+	create_child: main@.lr.ph190 (16, 34) FAR 276289 U 0.01
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 276289.
+	create_child: main@.lr.ph190 (15, 34) FAR 276288 U 0.01
+expand: main@.lr.ph190 (15, 0) FAR  w(0) 276288.
+	create_child: main@.lr.ph190 (14, 34) FAR 276263 U 0.01
+expand: main@.lr.ph190 (14, 0) FAR  w(0) 276263.
+	create_child: main@.lr.ph190 (13, 34) FAR 276304 U 0.01
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 276304.
+	create_child: main@_3 (12, 34) FAR 579003 U 0.02
+expand: main@_3 (12, 0) FAR  w(0) 579003.
+	create_child: main@.lr.ph (11, 34) FAR 814036 U 0.00
+expand: main@.lr.ph (11, 0) FAR  w(0) 814036. F 0.04
+expand: main@_3 (12, 0) FAR  w(0) 579003. F 0.01
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 276304. F 0.28
+expand: main@.lr.ph190 (14, 0) FAR  w(0) 276263. F 0.14
+expand: main@.lr.ph190 (15, 0) FAR  w(0) 276288. F 0.15
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 276289. F 0.16
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 276151. F 0.16
+expand: main@.lr.ph (18, 0) FAR  w(0) 276181. F 0.06
+expand: main@.lr.ph (19, 0) FAR  w(0) 276184. F 0.08
+expand: main@.lr.ph (20, 0) FAR  w(0) 177540. F 0.08
+expand: main@.lr.ph (21, 0) FAR  w(0) 94906. F 0.10
+expand: main@.lr.ph (22, 0) FAR  w(0) 94999. F 0.11
+expand: main@_3 (23, 0) FAR  w(0) 94955. F 0.01
+expand: main@.lr.ph190 (24, 0) FAR  w(0) 93745. F 0.18
+expand: main@.lr.ph190 (25, 0) FAR  w(0) 93648. F 0.16
+expand: main@.lr.ph190 (26, 0) FAR  w(0) 93607. F 0.17
+expand: main@.lr.ph (27, 0) FAR  w(0) 93549.
+	create_child: main@.lr.ph (26, 34) FAR 182908 U 0.01
+expand: main@.lr.ph (26, 0) FAR  w(0) 182908.
+	create_child: main@.lr.ph190 (25, 34) FAR 182917 U 0.00
+expand: main@.lr.ph190 (25, 0) FAR  w(0) 182917.
+	create_child: main@.lr.ph190 (24, 34) FAR 181616 U 0.01
+expand: main@.lr.ph190 (24, 0) FAR  w(0) 181616. F 0.13
+expand: main@.lr.ph190 (25, 0) FAR  w(0) 182917. F 0.17
+expand: main@.lr.ph (26, 0) FAR  w(0) 182908.
+	create_child: main@.lr.ph (25, 34) FAR 238237 U 0.01
+expand: main@.lr.ph (25, 0) FAR  w(0) 238237.
+	create_child: main@.lr.ph190 (24, 34) FAR 236619 U 0.00
+expand: main@.lr.ph190 (24, 0) FAR  w(0) 236619.
+	create_child: main@.lr.ph190 (23, 34) FAR 237840 U 0.01
+expand: main@.lr.ph190 (23, 0) FAR  w(0) 237840.
+	create_child: main@.lr.ph190 (22, 34) FAR 238353 U 0.01
+expand: main@.lr.ph190 (22, 0) FAR  w(0) 238353.
+	create_child: main@.lr.ph190 (21, 34) FAR 238350 U 0.01
+expand: main@.lr.ph190 (21, 0) FAR  w(0) 238350. F 0.15
+expand: main@.lr.ph190 (22, 0) FAR  w(0) 238353. F 0.16
+expand: main@.lr.ph190 (23, 0) FAR  w(0) 237840. F 0.14
+expand: main@.lr.ph190 (24, 0) FAR  w(0) 236619. F 0.17
+expand: main@.lr.ph (25, 0) FAR  w(0) 238237. F 0.07
+expand: main@.lr.ph (26, 0) FAR  w(0) 182908. F 0.07
+expand: main@.lr.ph (27, 0) FAR  w(0) 93549. F 0.07
+expand: main@.lr.ph (28, 0) FAR  w(0) 35545. F 0.08
+expand: main@.lr.ph (29, 0) FAR  w(0) 34158. F 0.09
+expand: main@_3 (30, 0) FAR  w(0) 33635. F 0.01
+expand: main@empty.loop (31, 0) FAR  w(0) 33191. F 0.01
+expand: main@entry (32, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (33, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (34, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 11.31 :before-memory 180.14 :after-memory 208.94)
+Propagating: 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34  ! 35 
+(spacer::context::propagate :time 2.83 :before-memory 208.94 :after-memory 211.89)
+Entering level 35
+expand: query!0 (35, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (34, 35) FAR 1 U 0.00
+expand: main@entry!_BAD (34, 0) FAR  w(0) 1.
+	create_child: main@entry (33, 35) FAR 1 U 0.00
+expand: main@entry (33, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (32, 35) FAR 33191 U 0.00
+expand: main@empty.loop (32, 0) FAR  w(0) 33191.
+	create_child: main@_3 (31, 35) FAR 33635 U 0.00
+expand: main@_3 (31, 0) FAR  w(0) 33635.
+	create_child: main@.lr.ph (30, 35) FAR 34158 U 0.00
+expand: main@.lr.ph (30, 0) FAR  w(0) 34158.
+	create_child: main@.lr.ph (29, 35) FAR 35545 U 0.01
+expand: main@.lr.ph (29, 0) FAR  w(0) 35545.
+	create_child: main@.lr.ph190 (28, 35) FAR 35618 U 0.00
+expand: main@.lr.ph190 (28, 0) FAR  w(0) 35618.
+	create_child: main@.lr.ph190 (27, 35) FAR 61231 U 0.01
+expand: main@.lr.ph190 (27, 0) FAR  w(0) 61231.
+	create_child: main@_3 (26, 35) FAR 75713 U 0.02
+expand: main@_3 (26, 0) FAR  w(0) 75713.
+	create_child: main@.lr.ph (25, 35) FAR 75681 U 0.00
+expand: main@.lr.ph (25, 0) FAR  w(0) 75681.
+	create_child: main@.lr.ph (24, 35) FAR 75104 U 0.01
+expand: main@.lr.ph (24, 0) FAR  w(0) 75104.
+	create_child: main@.lr.ph190 (23, 35) FAR 75111 U 0.00
+expand: main@.lr.ph190 (23, 0) FAR  w(0) 75111.
+	create_child: main@.lr.ph190 (22, 35) FAR 74716 U 0.01
+expand: main@.lr.ph190 (22, 0) FAR  w(0) 74716.
+	create_child: main@_3 (21, 35) FAR 380810 UNDEF 0.02
+expand: main@_3 (21, 0) FAR  w(0) 380810.
+	create_child: main@.lr.ph (20, 35) FAR 380857 U 0.00
+expand: main@.lr.ph (20, 0) FAR  w(0) 380857.
+	create_child: main@.lr.ph (19, 35) FAR 381524 U 0.01
+expand: main@.lr.ph (19, 0) FAR  w(0) 381524.
+	create_child: main@.lr.ph (18, 35) FAR 381257 U 0.01
+expand: main@.lr.ph (18, 0) FAR  w(0) 381257.
+	create_child: main@.lr.ph (17, 35) FAR 380821 U 0.01
+expand: main@.lr.ph (17, 0) FAR  w(0) 380821.
+	create_child: main@.lr.ph (16, 35) FAR 380811 U 0.01
+expand: main@.lr.ph (16, 0) FAR  w(0) 380811.
+	create_child: main@.lr.ph190 (15, 35) FAR 380831 U 0.00
+expand: main@.lr.ph190 (15, 0) FAR  w(0) 380831.
+	create_child: main@.lr.ph190 (14, 35) FAR 380243 U 0.01
+expand: main@.lr.ph190 (14, 0) FAR  w(0) 380243.
+	create_child: main@.lr.ph190 (13, 35) FAR 378069 U 0.01
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 378069.
+	create_child: main@.lr.ph190 (12, 35) FAR 380255 U 0.01
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 380255.
+	create_child: main@.lr.ph190 (11, 35) FAR 380116 U 0.01
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 380116. F 0.16
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 380255. F 0.14
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 378069. F 0.13
+expand: main@.lr.ph190 (14, 0) FAR  w(0) 380243. F 0.12
+expand: main@.lr.ph190 (15, 0) FAR  w(0) 380831. F 0.14
+expand: main@.lr.ph (16, 0) FAR  w(0) 380811. F 0.06
+expand: main@.lr.ph (17, 0) FAR  w(0) 380821. F 0.07
+expand: main@.lr.ph (18, 0) FAR  w(0) 381257. F 0.07
+expand: main@.lr.ph (19, 0) FAR  w(0) 381524. F 0.07
+expand: main@.lr.ph (20, 0) FAR  w(0) 380857. F 0.07
+expand: main@_3 (21, 0) FAR  w(0) 380810. F 0.01
+expand: main@.lr.ph190 (22, 0) FAR  w(0) 74716. F 0.18
+expand: main@.lr.ph190 (23, 0) FAR  w(0) 75111. F 0.17
+expand: main@.lr.ph (24, 0) FAR  w(0) 75104.
+	create_child: main@.lr.ph (23, 35) FAR 108668 U 0.01
+expand: main@.lr.ph (23, 0) FAR  w(0) 108668.
+	create_child: main@.lr.ph190 (22, 35) FAR 108674 U 0.00
+expand: main@.lr.ph190 (22, 0) FAR  w(0) 108674.
+	create_child: main@.lr.ph190 (21, 35) FAR 112823 U 0.01
+expand: main@.lr.ph190 (21, 0) FAR  w(0) 112823.
+	create_child: main@.lr.ph190 (20, 35) FAR 119997 U 0.01
+expand: main@.lr.ph190 (20, 0) FAR  w(0) 119997.
+	create_child: main@_3 (19, 35) FAR 122015 UNDEF 0.02
+expand: main@_3 (19, 0) FAR  w(0) 122015. T 0.00
+is-reachable: main@.lr.ph190 (20, 0) FAR 119997 F 0.01
+expand: main@.lr.ph190 (20, 0) FAR  w(1) 119997.
+	create_child: main@_3 (19, 35) FAR 688216 U 0.05
+expand: main@_3 (19, 0) FAR  w(0) 688216.
+	create_child: main@.lr.ph (18, 35) FAR 688395 U 0.00
+expand: main@.lr.ph (18, 0) FAR  w(0) 688395.
+	create_child: main@.lr.ph (17, 35) FAR 688106 U 0.01
+expand: main@.lr.ph (17, 0) FAR  w(0) 688106.
+	create_child: main@.lr.ph (16, 35) FAR 688040 U 0.01
+expand: main@.lr.ph (16, 0) FAR  w(0) 688040.
+	create_child: main@.lr.ph (15, 35) FAR 688010 U 0.01
+expand: main@.lr.ph (15, 0) FAR  w(0) 688010.
+	create_child: main@.lr.ph (14, 35) FAR 687976 U 0.01
+expand: main@.lr.ph (14, 0) FAR  w(0) 687976.
+	create_child: main@.lr.ph190 (13, 35) FAR 777059 U 0.01
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 777059.
+	create_child: main@.lr.ph190 (12, 35) FAR 779581 U 0.01
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 779581.
+	create_child: main@.lr.ph190 (11, 35) FAR 779459 U 0.01
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 779459.
+	create_child: main@.lr.ph190 (10, 35) FAR 779444 U 0.01
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 779444.
+	create_child: main@.lr.ph190 (9, 35) FAR 854112 U 0.01
+expand: main@.lr.ph190 (9, 0) FAR  w(0) 854112.
+	create_child: main@_3 (8, 35) FAR 855418 U 0.02
+expand: main@_3 (8, 0) FAR  w(0) 855418.
+	create_child: main@.lr.ph (7, 35) FAR 854627 U 0.00
+expand: main@.lr.ph (7, 0) FAR  w(0) 854627.
+	create_child: main@.lr.ph (6, 35) FAR 855175 U 0.01
+expand: main@.lr.ph (6, 0) FAR  w(0) 855175.
+	create_child: main@.lr.ph190 (5, 35) FAR 855377 U 0.01
+expand: main@.lr.ph190 (5, 0) FAR  w(0) 855377. F 0.06
+expand: main@.lr.ph (6, 0) FAR  w(0) 855175. F 0.02
+expand: main@.lr.ph (7, 0) FAR  w(0) 854627. F 0.02
+expand: main@_3 (8, 0) FAR  w(0) 855418. F 0.00
+expand: main@.lr.ph190 (9, 0) FAR  w(0) 854112. F 0.14
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 779444. F 0.12
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 779459. F 0.12
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 779581. F 0.12
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 777059. F 0.12
+expand: main@.lr.ph (14, 0) FAR  w(0) 687976.
+	create_child: main@.lr.ph (13, 35) FAR 687878 U 0.01
+expand: main@.lr.ph (13, 0) FAR  w(0) 687878. F 0.05
+expand: main@.lr.ph (14, 0) FAR  w(0) 687976. F 0.05
+expand: main@.lr.ph (15, 0) FAR  w(0) 688010. F 0.06
+expand: main@.lr.ph (16, 0) FAR  w(0) 688040. F 0.05
+expand: main@.lr.ph (17, 0) FAR  w(0) 688106. F 0.07
+expand: main@.lr.ph (18, 0) FAR  w(0) 688395. F 0.07
+expand: main@_3 (19, 0) FAR  w(0) 688216. F 0.01
+expand: main@.lr.ph190 (20, 0) FAR  w(1) 119997. F 0.42
+expand: main@.lr.ph190 (21, 0) FAR  w(0) 112823. F 0.17
+expand: main@.lr.ph190 (22, 0) FAR  w(0) 108674. F 0.18
+expand: main@.lr.ph (23, 0) FAR  w(0) 108668.
+	create_child: main@.lr.ph (22, 35) FAR 170047 U 0.01
+expand: main@.lr.ph (22, 0) FAR  w(0) 170047.
+	create_child: main@.lr.ph (21, 35) FAR 196850 U 0.01
+expand: main@.lr.ph (21, 0) FAR  w(0) 196850.
+	create_child: main@.lr.ph190 (20, 35) FAR 196877 U 0.00
+expand: main@.lr.ph190 (20, 0) FAR  w(0) 196877.
+	create_child: main@.lr.ph190 (19, 35) FAR 197013 U 0.01
+expand: main@.lr.ph190 (19, 0) FAR  w(0) 197013.
+	create_child: main@.lr.ph190 (18, 35) FAR 197026 U 0.01
+expand: main@.lr.ph190 (18, 0) FAR  w(0) 197026.
+	create_child: main@.lr.ph190 (17, 35) FAR 196172 U 0.01
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 196172.
+	create_child: main@.lr.ph190 (16, 35) FAR 220744 U 0.01
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 220744.
+	create_child: main@_3 (15, 35) FAR 874021 UNDEF 0.02
+expand: main@_3 (15, 0) FAR  w(0) 874021.
+	create_child: main@.lr.ph (14, 35) FAR 873828 U 0.00
+expand: main@.lr.ph (14, 0) FAR  w(0) 873828.
+	create_child: main@.lr.ph (13, 35) FAR 873019 U 0.01
+expand: main@.lr.ph (13, 0) FAR  w(0) 873019.
+	create_child: main@.lr.ph (12, 35) FAR 873937 U 0.01
+expand: main@.lr.ph (12, 0) FAR  w(0) 873937.
+	create_child: main@.lr.ph (11, 35) FAR 873051 U 0.01
+expand: main@.lr.ph (11, 0) FAR  w(0) 873051.
+	create_child: main@.lr.ph (10, 35) FAR 873041 U 0.01
+expand: main@.lr.ph (10, 0) FAR  w(0) 873041.
+	create_child: main@.lr.ph190 (9, 35) FAR 873081 U 0.01
+expand: main@.lr.ph190 (9, 0) FAR  w(0) 873081.
+	create_child: main@.lr.ph190 (8, 35) FAR 790065 U 0.01
+expand: main@.lr.ph190 (8, 0) FAR  w(0) 790065.
+	create_child: main@.lr.ph190 (7, 35) FAR 873313 U 0.01
+expand: main@.lr.ph190 (7, 0) FAR  w(0) 873313.
+	create_child: main@.lr.ph190 (6, 35) FAR 873421 U 0.01
+expand: main@.lr.ph190 (6, 0) FAR  w(0) 873421.
+	create_child: main@.lr.ph190 (5, 35) FAR 872510 U 0.01
+expand: main@.lr.ph190 (5, 0) FAR  w(0) 872510. F 0.09
+expand: main@.lr.ph190 (6, 0) FAR  w(0) 873421. F 0.06
+expand: main@.lr.ph190 (7, 0) FAR  w(0) 873313. F 0.05
+expand: main@.lr.ph190 (8, 0) FAR  w(0) 790065. F 0.05
+expand: main@.lr.ph190 (9, 0) FAR  w(0) 873081. F 0.07
+expand: main@.lr.ph (10, 0) FAR  w(0) 873041. F 0.03
+expand: main@.lr.ph (11, 0) FAR  w(0) 873051. F 0.04
+expand: main@.lr.ph (12, 0) FAR  w(0) 873937. F 0.05
+expand: main@.lr.ph (13, 0) FAR  w(0) 873019. F 0.05
+expand: main@.lr.ph (14, 0) FAR  w(0) 873828. F 0.05
+expand: main@_3 (15, 0) FAR  w(0) 874021. F 0.01
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 220744. F 0.15
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 196172. F 0.13
+expand: main@.lr.ph190 (18, 0) FAR  w(0) 197026. F 0.17
+expand: main@.lr.ph190 (19, 0) FAR  w(0) 197013. F 0.17
+expand: main@.lr.ph190 (20, 0) FAR  w(0) 196877. F 0.17
+expand: main@.lr.ph (21, 0) FAR  w(0) 196850. F 0.10
+expand: main@.lr.ph (22, 0) FAR  w(0) 170047. F 0.08
+expand: main@.lr.ph (23, 0) FAR  w(0) 108668. F 0.07
+expand: main@.lr.ph (24, 0) FAR  w(0) 75104. F 0.09
+expand: main@.lr.ph (25, 0) FAR  w(0) 75681. F 0.10
+expand: main@_3 (26, 0) FAR  w(0) 75713. F 0.01
+expand: main@.lr.ph190 (27, 0) FAR  w(0) 61231. F 0.22
+expand: main@.lr.ph190 (28, 0) FAR  w(0) 35618. F 0.18
+expand: main@.lr.ph (29, 0) FAR  w(0) 35545.
+	create_child: main@.lr.ph (28, 35) FAR 93549 U 0.01
+expand: main@.lr.ph (28, 0) FAR  w(0) 93549.
+	create_child: main@.lr.ph190 (27, 35) FAR 93607 U 0.00
+expand: main@.lr.ph190 (27, 0) FAR  w(0) 93607.
+	create_child: main@.lr.ph190 (26, 35) FAR 93648 U 0.01
+expand: main@.lr.ph190 (26, 0) FAR  w(0) 93648.
+	create_child: main@.lr.ph190 (25, 35) FAR 93745 U 0.01
+expand: main@.lr.ph190 (25, 0) FAR  w(0) 93745.
+	create_child: main@_3 (24, 35) FAR 94955 U 0.02
+expand: main@_3 (24, 0) FAR  w(0) 94955.
+	create_child: main@.lr.ph (23, 35) FAR 94999 U 0.00
+expand: main@.lr.ph (23, 0) FAR  w(0) 94999.
+	create_child: main@.lr.ph (22, 35) FAR 94906 U 0.01
+expand: main@.lr.ph (22, 0) FAR  w(0) 94906.
+	create_child: main@.lr.ph190 (21, 35) FAR 95178 U 0.00
+expand: main@.lr.ph190 (21, 0) FAR  w(0) 95178.
+	create_child: main@.lr.ph190 (20, 35) FAR 94207 U 0.01
+expand: main@.lr.ph190 (20, 0) FAR  w(0) 94207.
+	create_child: main@_3 (19, 35) FAR 309521 UNDEF 0.02
+expand: main@_3 (19, 0) FAR  w(0) 309521.
+	create_child: main@.lr.ph (18, 35) FAR 309558 U 0.00
+expand: main@.lr.ph (18, 0) FAR  w(0) 309558.
+	create_child: main@.lr.ph (17, 35) FAR 309345 U 0.01
+expand: main@.lr.ph (17, 0) FAR  w(0) 309345.
+	create_child: main@.lr.ph (16, 35) FAR 310195 U 0.01
+expand: main@.lr.ph (16, 0) FAR  w(0) 310195.
+	create_child: main@.lr.ph190 (15, 35) FAR 512577 U 0.01
+expand: main@.lr.ph190 (15, 0) FAR  w(0) 512577.
+	create_child: main@.lr.ph190 (14, 35) FAR 483178 U 0.01
+expand: main@.lr.ph190 (14, 0) FAR  w(0) 483178.
+	create_child: main@.lr.ph190 (13, 35) FAR 512372 U 0.01
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 512372.
+	create_child: main@_3 (12, 35) FAR 641652 UNDEF 0.02
+expand: main@_3 (12, 0) FAR  w(0) 641652.
+	create_child: main@.lr.ph (11, 35) FAR 640859 U 0.00
+expand: main@.lr.ph (11, 0) FAR  w(0) 640859.
+	create_child: main@.lr.ph (10, 35) FAR 640282 U 0.01
+expand: main@.lr.ph (10, 0) FAR  w(0) 640282.
+	create_child: main@.lr.ph (9, 35) FAR 893837 U 0.01
+expand: main@.lr.ph (9, 0) FAR  w(0) 893837. F 0.03
+expand: main@.lr.ph (10, 0) FAR  w(0) 640282. F 0.03
+expand: main@.lr.ph (11, 0) FAR  w(0) 640859. F 0.02
+expand: main@_3 (12, 0) FAR  w(0) 641652. F 0.00
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 512372. F 0.23
+expand: main@.lr.ph190 (14, 0) FAR  w(0) 483178. F 0.12
+expand: main@.lr.ph190 (15, 0) FAR  w(0) 512577. F 0.12
+expand: main@.lr.ph (16, 0) FAR  w(0) 310195.
+	create_child: main@.lr.ph (15, 35) FAR 339354 U 0.01
+expand: main@.lr.ph (15, 0) FAR  w(0) 339354.
+	create_child: main@.lr.ph190 (14, 35) FAR 718953 U 0.01
+expand: main@.lr.ph190 (14, 0) FAR  w(0) 718953.
+	create_child: main@.lr.ph190 (13, 35) FAR 801132 U 0.01
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 801132.
+	create_child: main@.lr.ph190 (12, 35) FAR 892994 U 0.01
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 892994. F 0.10
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 801132. F 0.10
+expand: main@.lr.ph190 (14, 0) FAR  w(0) 718953. F 0.10
+expand: main@.lr.ph (15, 0) FAR  w(0) 339354.
+	create_child: main@.lr.ph (14, 35) FAR 399610 U 0.01
+expand: main@.lr.ph (14, 0) FAR  w(0) 399610.
+	create_child: main@.lr.ph190 (13, 35) FAR 398404 U 0.01
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 398404.
+	create_child: main@.lr.ph190 (12, 35) FAR 365530 U 0.01
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 365530.
+	create_child: main@.lr.ph190 (11, 35) FAR 336283 U 0.01
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 336283.
+	create_child: main@.lr.ph190 (10, 35) FAR 461114 U 0.01
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 461114.
+	create_child: main@.lr.ph190 (9, 35) FAR 515141 U 0.01
+expand: main@.lr.ph190 (9, 0) FAR  w(0) 515141.
+	create_child: main@_3 (8, 35) FAR 517196 UNDEF 0.02
+expand: main@_3 (8, 0) FAR  w(0) 517196. T 0.00
+is-reachable: main@.lr.ph190 (9, 0) FAR 515141 F 0.01
+expand: main@.lr.ph190 (9, 0) FAR  w(1) 515141.
+	create_child: main@_3 (8, 35) FAR 905747 U 0.26
+expand: main@_3 (8, 0) FAR  w(0) 905747.
+	create_child: main@.lr.ph (7, 35) FAR 905816 U 0.00
+expand: main@.lr.ph (7, 0) FAR  w(0) 905816.
+	create_child: main@.lr.ph (6, 35) FAR 905948 U 0.01
+expand: main@.lr.ph (6, 0) FAR  w(0) 905948.
+	create_child: main@.lr.ph190 (5, 35) FAR 905783 U 0.01
+expand: main@.lr.ph190 (5, 0) FAR  w(0) 905783. F 0.05
+expand: main@.lr.ph (6, 0) FAR  w(0) 905948. F 0.02
+expand: main@.lr.ph (7, 0) FAR  w(0) 905816. F 0.02
+expand: main@_3 (8, 0) FAR  w(0) 905747. F 0.00
+expand: main@.lr.ph190 (9, 0) FAR  w(1) 515141.
+	create_child: main@_3 (8, 35) FAR 556913 U 0.15
+expand: main@_3 (8, 0) FAR  w(0) 556913.
+	create_child: main@.lr.ph (7, 35) FAR 556378 U 0.00
+expand: main@.lr.ph (7, 0) FAR  w(0) 556378.
+	create_child: main@.lr.ph (6, 35) FAR 551893 U 0.01
+expand: main@.lr.ph (6, 0) FAR  w(0) 551893.
+	create_child: main@.lr.ph190 (5, 35) FAR 551888 U 0.01
+expand: main@.lr.ph190 (5, 0) FAR  w(0) 551888. F 0.05
+expand: main@.lr.ph (6, 0) FAR  w(0) 551893. F 0.02
+expand: main@.lr.ph (7, 0) FAR  w(0) 556378. F 0.02
+expand: main@_3 (8, 0) FAR  w(0) 556913. F 0.00
+expand: main@.lr.ph190 (9, 0) FAR  w(1) 515141.
+	create_child: main@_3 (8, 35) FAR 559661 U 0.03
+expand: main@_3 (8, 0) FAR  w(0) 559661.
+	create_child: main@.lr.ph (7, 35) FAR 557419 U 0.00
+expand: main@.lr.ph (7, 0) FAR  w(0) 557419.
+	create_child: main@.lr.ph (6, 35) FAR 557321 U 0.01
+expand: main@.lr.ph (6, 0) FAR  w(0) 557321.
+	create_child: main@.lr.ph190 (5, 35) FAR 557330 U 0.01
+expand: main@.lr.ph190 (5, 0) FAR  w(0) 557330. F 0.05
+expand: main@.lr.ph (6, 0) FAR  w(0) 557321. F 0.02
+expand: main@.lr.ph (7, 0) FAR  w(0) 557419. F 0.02
+expand: main@_3 (8, 0) FAR  w(0) 559661. F 0.00
+expand: main@.lr.ph190 (9, 0) FAR  w(1) 515141. F 0.49
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 461114. F 0.13
+expand: main@.lr.ph190 (11, 0) FAR  w(0) 336283. F 0.14
+expand: main@.lr.ph190 (12, 0) FAR  w(0) 365530. F 0.13
+expand: main@.lr.ph190 (13, 0) FAR  w(0) 398404. F 0.14
+expand: main@.lr.ph (14, 0) FAR  w(0) 399610. F 0.05
+expand: main@.lr.ph (15, 0) FAR  w(0) 339354. F 0.07
+expand: main@.lr.ph (16, 0) FAR  w(0) 310195. F 0.07
+expand: main@.lr.ph (17, 0) FAR  w(0) 309345. F 0.09
+expand: main@.lr.ph (18, 0) FAR  w(0) 309558. F 0.11
+expand: main@_3 (19, 0) FAR  w(0) 309521. F 0.01
+expand: main@.lr.ph190 (20, 0) FAR  w(0) 94207. F 0.19
+expand: main@.lr.ph190 (21, 0) FAR  w(0) 95178. F 0.17
+expand: main@.lr.ph (22, 0) FAR  w(0) 94906.
+	create_child: main@.lr.ph (21, 35) FAR 177540 U 0.01
+expand: main@.lr.ph (21, 0) FAR  w(0) 177540.
+	create_child: main@.lr.ph190 (20, 35) FAR 275166 U 0.01
+expand: main@.lr.ph190 (20, 0) FAR  w(0) 275166. F 0.18
+expand: main@.lr.ph (21, 0) FAR  w(0) 177540.
+	create_child: main@.lr.ph (20, 35) FAR 276184 U 0.01
+expand: main@.lr.ph (20, 0) FAR  w(0) 276184.
+	create_child: main@.lr.ph190 (19, 35) FAR 312157 U 0.01
+expand: main@.lr.ph190 (19, 0) FAR  w(0) 312157.
+	create_child: main@.lr.ph190 (18, 35) FAR 347959 U 0.01
+expand: main@.lr.ph190 (18, 0) FAR  w(0) 347959.
+	create_child: main@.lr.ph190 (17, 35) FAR 306276 U 0.01
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 306276.
+	create_child: main@.lr.ph190 (16, 35) FAR 406907 U 0.01
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 406907. F 0.22
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 306276. F 0.18
+expand: main@.lr.ph190 (18, 0) FAR  w(0) 347959. F 0.23
+expand: main@.lr.ph190 (19, 0) FAR  w(0) 312157. F 0.23
+expand: main@.lr.ph (20, 0) FAR  w(0) 276184.
+	create_child: main@.lr.ph (19, 35) FAR 276181 U 0.01
+expand: main@.lr.ph (19, 0) FAR  w(0) 276181.
+	create_child: main@.lr.ph190 (18, 35) FAR 276151 U 0.01
+expand: main@.lr.ph190 (18, 0) FAR  w(0) 276151.
+	create_child: main@.lr.ph190 (17, 35) FAR 276289 U 0.01
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 276289.
+	create_child: main@.lr.ph190 (16, 35) FAR 276288 U 0.01
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 276288.
+	create_child: main@.lr.ph190 (15, 35) FAR 276263 U 0.01
+expand: main@.lr.ph190 (15, 0) FAR  w(0) 276263.
+	create_child: main@.lr.ph190 (14, 35) FAR 276304 U 0.01
+expand: main@.lr.ph190 (14, 0) FAR  w(0) 276304.
+	create_child: main@_3 (13, 35) FAR 579003 U 0.02
+expand: main@_3 (13, 0) FAR  w(0) 579003.
+	create_child: main@.lr.ph (12, 35) FAR 814036 U 0.00
+expand: main@.lr.ph (12, 0) FAR  w(0) 814036.
+	create_child: main@.lr.ph (11, 35) FAR 944711 U 0.01
+expand: main@.lr.ph (11, 0) FAR  w(0) 944711.
+	create_child: main@.lr.ph190 (10, 35) FAR 945980 U 0.01
+expand: main@.lr.ph190 (10, 0) FAR  w(0) 945980. F 0.11
+expand: main@.lr.ph (11, 0) FAR  w(0) 944711. F 0.04
+expand: main@.lr.ph (12, 0) FAR  w(0) 814036. F 0.05
+expand: main@_3 (13, 0) FAR  w(0) 579003. F 0.01
+expand: main@.lr.ph190 (14, 0) FAR  w(0) 276304. F 0.20
+expand: main@.lr.ph190 (15, 0) FAR  w(0) 276263. F 0.19
+expand: main@.lr.ph190 (16, 0) FAR  w(0) 276288. F 0.20
+expand: main@.lr.ph190 (17, 0) FAR  w(0) 276289. F 0.18
+expand: main@.lr.ph190 (18, 0) FAR  w(0) 276151. F 0.19
+expand: main@.lr.ph (19, 0) FAR  w(0) 276181. F 0.07
+expand: main@.lr.ph (20, 0) FAR  w(0) 276184. F 0.08
+expand: main@.lr.ph (21, 0) FAR  w(0) 177540. F 0.08
+expand: main@.lr.ph (22, 0) FAR  w(0) 94906. F 0.10
+expand: main@.lr.ph (23, 0) FAR  w(0) 94999. F 0.12
+expand: main@_3 (24, 0) FAR  w(0) 94955. F 0.01
+expand: main@.lr.ph190 (25, 0) FAR  w(0) 93745. F 0.19
+expand: main@.lr.ph190 (26, 0) FAR  w(0) 93648. F 0.19
+expand: main@.lr.ph190 (27, 0) FAR  w(0) 93607. F 0.20
+expand: main@.lr.ph (28, 0) FAR  w(0) 93549.
+	create_child: main@.lr.ph (27, 35) FAR 182908 U 0.01
+expand: main@.lr.ph (27, 0) FAR  w(0) 182908.
+	create_child: main@.lr.ph190 (26, 35) FAR 182917 U 0.01
+expand: main@.lr.ph190 (26, 0) FAR  w(0) 182917.
+	create_child: main@.lr.ph190 (25, 35) FAR 181616 U 0.01
+expand: main@.lr.ph190 (25, 0) FAR  w(0) 181616. F 0.19
+expand: main@.lr.ph190 (26, 0) FAR  w(0) 182917. F 0.21
+expand: main@.lr.ph (27, 0) FAR  w(0) 182908.
+	create_child: main@.lr.ph (26, 35) FAR 238237 U 0.01
+expand: main@.lr.ph (26, 0) FAR  w(0) 238237.
+	create_child: main@.lr.ph190 (25, 35) FAR 236619 U 0.01
+expand: main@.lr.ph190 (25, 0) FAR  w(0) 236619. F 0.22
+expand: main@.lr.ph (26, 0) FAR  w(0) 238237. F 0.08
+expand: main@.lr.ph (27, 0) FAR  w(0) 182908. F 0.08
+expand: main@.lr.ph (28, 0) FAR  w(0) 93549. F 0.08
+expand: main@.lr.ph (29, 0) FAR  w(0) 35545. F 0.09
+expand: main@.lr.ph (30, 0) FAR  w(0) 34158. F 0.09
+expand: main@_3 (31, 0) FAR  w(0) 33635. F 0.01
+expand: main@empty.loop (32, 0) FAR  w(0) 33191. F 0.01
+expand: main@entry (33, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (34, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (35, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 14.38 :before-memory 211.89 :after-memory 227.01)
+Propagating: 5 6 7 8 9 

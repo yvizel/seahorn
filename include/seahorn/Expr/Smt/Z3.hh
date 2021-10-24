@@ -755,6 +755,98 @@ public:
     return m_vars;
   }
 
+  std::string toForwardSyGuS(){
+	  std::stringstream sstream;
+		for (Expr decl : m_rels) {
+			sstream << "(synth-fun " << *bind::fname(decl) << " (";
+			for (unsigned i = 0; i < bind::domainSz(decl); i++) {
+				Expr ty = bind::domainTy(decl, i);
+				if (isOpX<BOOL_TY>(ty))
+					sstream << "(x" << i << " Bool) ";
+				else if (isOpX<REAL_TY>(ty))
+					sstream << "(x" << i << " Real) ";
+				else if (isOpX<INT_TY>(ty))
+					sstream << "(x" << i << " Int) ";
+				else if (isOpX<ARRAY_TY>(ty)) {
+					sstream << "(x" << i << " (Array ";
+					if (isOpX<INT_TY>(sort::arrayIndexTy(ty)))
+						sstream << "Int ";
+					else if (isOpX<BVSORT>(sort::arrayIndexTy(ty))) {
+						sstream << "(_ BitVec "
+								<< bv::width(sort::arrayIndexTy(ty)) << ") ";
+					} else {
+						sstream << "UfoUnknownSort ";
+						llvm::errs() << "u1: " << *sort::arrayIndexTy(ty)
+								<< "\n";
+					}
+					if (isOpX<INT_TY>(sort::arrayValTy(ty)))
+						sstream << "Int";
+					else if (isOpX<BVSORT>(sort::arrayValTy(ty))) {
+						sstream << "(_ BitVec "
+								<< bv::width(sort::arrayValTy(ty)) << ") ";
+					} else {
+						sstream << "UfoUnknownSort";
+						llvm::errs() << "u2: " << *sort::arrayValTy(ty) << "\n";
+					}
+					sstream << ")) ";
+				} else if (isOpX<BVSORT>(ty)) {
+					sstream << "(x" << i << " (_ BitVec " << bv::width(ty)
+							<< ") ) ";
+				} else {
+					sstream << "UfoUnknownSort ";
+					llvm::errs() << "u3: " << *ty << "\n";
+				}
+			}
+			sstream << ") Bool)\n";
+		}
+
+		for (const Expr &v : getVars()) {
+		      if (!bind::IsConst()(v)) {
+		        std::cerr << "FP var not a constant: " << *v << "\n";
+		      }
+		      assert(bind::IsConst()(v));
+		      sstream << "(declare-var " << z3.toSmtLib(v) << " ";
+		      Expr ty = bind::typeOf(v);
+		      if (isOpX<BOOL_TY>(ty))
+		        sstream << "Bool ";
+		      else if (isOpX<REAL_TY>(ty))
+		        sstream << "Real ";
+		      else if (isOpX<INT_TY>(ty))
+		        sstream << "Int ";
+		      else if (isOpX<ARRAY_TY>(ty)) {
+		        sstream << "(Array ";
+		        if (isOpX<INT_TY>(sort::arrayIndexTy(ty)))
+		          sstream << "Int ";
+		        else if (isOpX<BVSORT>(sort::arrayIndexTy(ty))) {
+		          sstream << "(_ BitVec " << bv::width(sort::arrayIndexTy(ty)) << ") ";
+		        } else
+		          sstream << "UfoUnknownSort ";
+		        if (isOpX<INT_TY>(sort::arrayValTy(ty)))
+		          sstream << "Int";
+		        else if (isOpX<BVSORT>(sort::arrayValTy(ty))) {
+		          sstream << "(_ BitVec " << bv::width(sort::arrayValTy(ty)) << ") ";
+		        } else
+		          sstream << "UfoUnknownSort";
+		        sstream << ") ";
+		      } else if (isOpX<BVSORT>(ty)) {
+		        sstream << "(_ BitVec " << bv::width(ty) << ") ";
+		      } else
+		        sstream << "UfoUnknownSort ";
+		      sstream << ")\n";
+		    }
+
+		for (Expr &rule : m_rules){
+		  sstream << "(constraint " << z3.toSmtLib(rule) << ")\n";
+		}
+
+		for (auto q : m_queries)
+		  sstream << "(constraint (=> " << z3.toSmtLib(q) << " false))\n";
+
+		sstream << "(check-synth)";
+
+	  return sstream.str();
+  }
+
   template <typename OutputStream>
   friend OutputStream &operator<<(OutputStream &out, this_type &fp) {
     for (Expr decl : fp.m_rels) {

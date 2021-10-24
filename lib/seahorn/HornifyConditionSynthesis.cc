@@ -135,6 +135,24 @@ void HornifyConditionSynthesis::reverseDB() {
   }
 }
 
+Expr HornifyConditionSynthesis::createForwardSynthPredicate(
+		const Expr name, const Expr pred) {
+	ExprVector fwdArgs;
+	ExprVector sorts;
+	for (auto it = pred->args_begin()+1; it != pred->args_end(); it++) {
+		fwdArgs.push_back(*it);
+		sorts.push_back(bind::typeOf(*it));
+	}
+	sorts.push_back(sort::boolTy(m_efac));
+	std::string tag_str = "_FwdCond";
+	Expr fwdName = variant::tag(name, tag_str);
+	Expr fwdPred = bind::fdecl(fwdName, sorts);
+	m_db.registerRelation(fwdPred);
+
+	Expr fwdPredApp = bind::fapp(fwdPred, fwdArgs);
+	return fwdPredApp;
+}
+
 Expr HornifyConditionSynthesis::createJoinPredicate(
     const Expr name, const Expr pred1, const Expr pred2) {
   expr_set args(
@@ -470,6 +488,24 @@ void HornifyConditionSynthesis::runOnFunction(Function &F) {
     m_synthDb.addRule(synth);
   }
 
+  for (auto & br : branches) {
+
+    Expr synthPred = createForwardSynthPredicate(
+		bind::fname(br._src),
+        br._ruleThen.body()->left());
+
+    HornRule thenRule(br._ruleThen.vars(),
+                      br._ruleThen.head(),
+                     boolop::land(synthPred, br._ruleThen.body()));
+
+    HornRule elseRule(br._ruleElse.vars(),
+                      br._ruleElse.head(),
+                     boolop::land(boolop::lneg(synthPred), br._ruleElse.body()));
+
+    m_db.addRule(thenRule);
+    m_db.addRule(elseRule);
+  }
+
   //m_synthDb.buildIndexes();
 
   ZFixedPoint<EZ3> fp (m_parent.getZContext ());
@@ -483,6 +519,22 @@ void HornifyConditionSynthesis::runOnFunction(Function &F) {
   reverseSmt.close();
 
   outs() << "Printed file\n";
+
+  ZFixedPoint<EZ3> fp_nonhorn (m_parent.getZContext ());
+  m_db.loadZFixedPoint (fp_nonhorn, false, false);
+  std::string fileName_nonhorn = "nonhorn.smt2";
+  std::ofstream nonhornSmt(fileName_nonhorn);
+  nonhornSmt << fp_nonhorn << "\n";
+  nonhornSmt.close();
+
+  outs() << "Printed Nonhorn file\n";
+
+  std::string fileName_sygus = "nonhorn.sl";
+  std::ofstream nonhornSygus(fileName_sygus);
+  nonhornSygus << fp_nonhorn.toForwardSyGuS() << "\n";
+  nonhornSygus.close();
+
+  outs() << "Printed SyGuS non-horn file\n";
 
   m_db.m_queries.clear();
   m_db.m_vars.clear();

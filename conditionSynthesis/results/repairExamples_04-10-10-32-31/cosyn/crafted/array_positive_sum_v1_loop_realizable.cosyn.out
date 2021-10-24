@@ -1,0 +1,2511 @@
+(transform N7datalog13mk_coi_filterE...no-op 0s)
+(transform N7datalog25mk_interp_tail_simplifierE...11 rules 0.001s)
+(transform N7datalog27mk_quantifier_instantiationE...no-op 0s)
+(transform N7datalog8mk_scaleE...no-op 0s)
+(transform N7datalog18mk_karr_invariantsE...no-op 0s)
+(transform N7datalog14mk_array_blastE...no-op 0s)
+(transform N7datalog16mk_elim_term_iteE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...9 rules 0s)
+(transform N7datalog12mk_bit_blastE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog13mk_coi_filterE...no-op 0s)
+(transform N7datalog25mk_interp_tail_simplifierE...9 rules 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog13mk_coi_filterE...no-op 0s)
+(transform N7datalog25mk_interp_tail_simplifierE...9 rules 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+expand: query!0 (0, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 12.35 :after-memory 12.45)
+Entering level 1
+expand: query!0 (1, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (0, 1) FAR 1 U 0.00
+expand: main@entry!_BAD (0, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (1, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 12.45 :after-memory 12.65)
+Propagating: 0 1  ! 2 
+(spacer::context::propagate :time 0.00 :before-memory 12.65 :after-memory 12.65)
+Entering level 2
+expand: query!0 (2, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (1, 2) FAR 1 U 0.00
+expand: main@entry!_BAD (1, 0) FAR  w(0) 1.
+	create_child: main@entry (0, 2) FAR 1 U 0.00
+expand: main@entry (0, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (1, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (2, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 12.65 :after-memory 13.00)
+Propagating: 0 1 2  ! 3 
+(spacer::context::propagate :time 0.00 :before-memory 13.00 :after-memory 13.00)
+Entering level 3
+expand: query!0 (3, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (2, 3) FAR 1 U 0.00
+expand: main@entry!_BAD (2, 0) FAR  w(0) 1.
+	create_child: main@entry (1, 3) FAR 1 U 0.00
+expand: main@entry (1, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (0, 3) FAR 2628 U 0.00
+expand: main@empty.loop (0, 0) FAR  w(0) 2628. F 0.00
+expand: main@entry (1, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (2, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (3, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 13.00 :after-memory 13.30)
+Propagating: 0 1 2 3  ! 4 
+(spacer::context::propagate :time 0.00 :before-memory 13.30 :after-memory 13.30)
+Entering level 4
+expand: query!0 (4, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (3, 4) FAR 1 U 0.00
+expand: main@entry!_BAD (3, 0) FAR  w(0) 1.
+	create_child: main@entry (2, 4) FAR 1 U 0.00
+expand: main@entry (2, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (1, 4) FAR 2628 U 0.00
+expand: main@empty.loop (1, 0) FAR  w(0) 2628.
+	create_child: main@.preheader (0, 4) FAR 3348 U 0.00
+expand: main@.preheader (0, 0) FAR  w(0) 3348. F 0.00
+expand: main@empty.loop (1, 0) FAR  w(0) 2628. F 0.00
+expand: main@entry (2, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (3, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (4, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 13.30 :after-memory 13.69)
+Propagating: 0 1 2 3 4  ! 5 
+(spacer::context::propagate :time 0.00 :before-memory 13.69 :after-memory 13.69)
+Entering level 5
+expand: query!0 (5, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (4, 5) FAR 1 U 0.00
+expand: main@entry!_BAD (4, 0) FAR  w(0) 1.
+	create_child: main@entry (3, 5) FAR 1 U 0.00
+expand: main@entry (3, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (2, 5) FAR 2628 U 0.00
+expand: main@empty.loop (2, 0) FAR  w(0) 2628.
+	create_child: main@.preheader (1, 5) FAR 3348 U 0.00
+expand: main@.preheader (1, 0) FAR  w(0) 3348.
+	create_child: main@.preheader!_Cond (0, 5) FAR 4088 U 0.00
+expand: main@.preheader!_Cond (0, 0) FAR  w(0) 4088. F 0.00
+expand: main@.preheader (1, 0) FAR  w(0) 3348. F 0.00
+expand: main@empty.loop (2, 0) FAR  w(0) 2628. F 0.00
+expand: main@entry (3, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (4, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (5, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.01 :before-memory 13.69 :after-memory 14.38)
+Propagating: 0 1 2 3 4 5  ! 6 
+(spacer::context::propagate :time 0.00 :before-memory 14.38 :after-memory 14.60)
+Entering level 6
+expand: query!0 (6, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (5, 6) FAR 1 U 0.00
+expand: main@entry!_BAD (5, 0) FAR  w(0) 1.
+	create_child: main@entry (4, 6) FAR 1 U 0.00
+expand: main@entry (4, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (3, 6) FAR 2628 U 0.00
+expand: main@empty.loop (3, 0) FAR  w(0) 2628.
+	create_child: main@.preheader (2, 6) FAR 3348 U 0.00
+expand: main@.preheader (2, 0) FAR  w(0) 3348.
+	create_child: main@.preheader!_Cond (1, 6) FAR 4088 U 0.00
+expand: main@.preheader!_Cond (1, 0) FAR  w(0) 4088.
+	create_child: main@_39 (0, 6) FAR 5694 U 0.00
+expand: main@_39 (0, 0) FAR  w(0) 5694. F 0.00
+expand: main@.preheader!_Cond (1, 0) FAR  w(0) 4088. F 0.00
+expand: main@.preheader (2, 0) FAR  w(0) 3348. F 0.00
+expand: main@empty.loop (3, 0) FAR  w(0) 2628. F 0.00
+expand: main@entry (4, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (5, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (6, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.01 :before-memory 14.60 :after-memory 15.48)
+Propagating: 0 1 2 3 4 5 6  ! 7 8 9 
+(spacer::context::propagate :time 0.00 :before-memory 15.48 :after-memory 15.67)
+Entering level 7
+expand: query!0 (7, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 15.67 :after-memory 15.67)
+Propagating: 7  ! 8 9 
+(spacer::context::propagate :time 0.00 :before-memory 15.67 :after-memory 15.67)
+Entering level 8
+expand: query!0 (8, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 15.67 :after-memory 15.67)
+Propagating: 8  ! 9 
+(spacer::context::propagate :time 0.00 :before-memory 15.67 :after-memory 15.67)
+Entering level 9
+expand: query!0 (9, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (8, 9) FAR 1 U 0.00
+expand: main@entry!_BAD (8, 0) FAR  w(0) 1.
+	create_child: main@entry (7, 9) FAR 1 U 0.00
+expand: main@entry (7, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (6, 9) FAR 2628 U 0.00
+expand: main@empty.loop (6, 0) FAR  w(0) 2628.
+	create_child: main@.preheader (5, 9) FAR 3348 U 0.00
+expand: main@.preheader (5, 0) FAR  w(0) 3348.
+	create_child: main@.preheader!_Cond (4, 9) FAR 4088 U 0.00
+expand: main@.preheader!_Cond (4, 0) FAR  w(0) 4088.
+	create_child: main@_39 (3, 9) FAR 5694 U 0.00
+expand: main@_39 (3, 0) FAR  w(0) 5694.
+	create_child: main@.preheader (2, 9) FAR 8680 U 0.00
+expand: main@.preheader (2, 0) FAR  w(0) 8680.
+	create_child: main@.preheader!_Cond (1, 9) FAR 8835 U 0.00
+expand: main@.preheader!_Cond (1, 0) FAR  w(0) 8835.
+	create_child: main@_39 (0, 9) FAR 8887 U 0.00
+expand: main@_39 (0, 0) FAR  w(0) 8887. F 0.00
+expand: main@.preheader!_Cond (1, 0) FAR  w(0) 8835. F 0.00
+expand: main@.preheader (2, 0) FAR  w(0) 8680. F 0.00
+expand: main@_39 (3, 0) FAR  w(0) 5694. F 0.00
+expand: main@.preheader!_Cond (4, 0) FAR  w(0) 4088. F 0.00
+expand: main@.preheader (5, 0) FAR  w(0) 3348. F 0.00
+expand: main@empty.loop (6, 0) FAR  w(0) 2628. F 0.00
+expand: main@entry (7, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (8, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (9, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.02 :before-memory 15.67 :after-memory 16.05)
+Propagating: 0 1 2 3 4 5 6 7 8 9  ! 10 11 12 
+(spacer::context::propagate :time 0.01 :before-memory 16.05 :after-memory 16.15)
+Entering level 10
+expand: query!0 (10, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 16.15 :after-memory 16.15)
+Propagating: 10  ! 11 12 
+(spacer::context::propagate :time 0.00 :before-memory 16.15 :after-memory 16.15)
+Entering level 11
+expand: query!0 (11, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 16.15 :after-memory 16.15)
+Propagating: 11  ! 12 
+(spacer::context::propagate :time 0.00 :before-memory 16.15 :after-memory 16.15)
+Entering level 12
+expand: query!0 (12, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (11, 12) FAR 1 U 0.00
+expand: main@entry!_BAD (11, 0) FAR  w(0) 1.
+	create_child: main@entry (10, 12) FAR 1 U 0.00
+expand: main@entry (10, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (9, 12) FAR 2628 U 0.00
+expand: main@empty.loop (9, 0) FAR  w(0) 2628.
+	create_child: main@.preheader (8, 12) FAR 3348 U 0.00
+expand: main@.preheader (8, 0) FAR  w(0) 3348.
+	create_child: main@.preheader!_Cond (7, 12) FAR 4088 U 0.00
+expand: main@.preheader!_Cond (7, 0) FAR  w(0) 4088.
+	create_child: main@_39 (6, 12) FAR 5694 U 0.00
+expand: main@_39 (6, 0) FAR  w(0) 5694.
+	create_child: main@.preheader (5, 12) FAR 8680 U 0.00
+expand: main@.preheader (5, 0) FAR  w(0) 8680.
+	create_child: main@.preheader!_Cond (4, 12) FAR 8835 U 0.00
+expand: main@.preheader!_Cond (4, 0) FAR  w(0) 8835.
+	create_child: main@_39 (3, 12) FAR 8887 U 0.00
+expand: main@_39 (3, 0) FAR  w(0) 8887.
+	create_child: main@.preheader (2, 12) FAR 10848 U 0.00
+expand: main@.preheader (2, 0) FAR  w(0) 10848.
+	create_child: main@.preheader!_Cond (1, 12) FAR 10771 U 0.00
+expand: main@.preheader!_Cond (1, 0) FAR  w(0) 10771.
+	create_child: main@_39 (0, 12) FAR 10885 U 0.00
+expand: main@_39 (0, 0) FAR  w(0) 10885. F 0.00
+expand: main@.preheader!_Cond (1, 0) FAR  w(0) 10771. F 0.00
+expand: main@.preheader (2, 0) FAR  w(0) 10848. F 0.00
+expand: main@_39 (3, 0) FAR  w(0) 8887. F 0.00
+expand: main@.preheader!_Cond (4, 0) FAR  w(0) 8835. F 0.00
+expand: main@.preheader (5, 0) FAR  w(0) 8680. F 0.00
+expand: main@_39 (6, 0) FAR  w(0) 5694. F 0.00
+expand: main@.preheader!_Cond (7, 0) FAR  w(0) 4088. F 0.00
+expand: main@.preheader (8, 0) FAR  w(0) 3348. F 0.00
+expand: main@empty.loop (9, 0) FAR  w(0) 2628. F 0.00
+expand: main@entry (10, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (11, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (12, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.03 :before-memory 16.15 :after-memory 16.24)
+Propagating: 0 1 2 3 4 5 6 7 8 9 10 11 12  ! 13 14 15 
+(spacer::context::propagate :time 0.01 :before-memory 16.24 :after-memory 16.88)
+Entering level 13
+expand: query!0 (13, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 16.88 :after-memory 16.88)
+Propagating: 13  ! 14 15 
+(spacer::context::propagate :time 0.00 :before-memory 16.88 :after-memory 16.88)
+Entering level 14
+expand: query!0 (14, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 16.88 :after-memory 16.88)
+Propagating: 14  ! 15 
+(spacer::context::propagate :time 0.00 :before-memory 16.88 :after-memory 16.88)
+Entering level 15
+expand: query!0 (15, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (14, 15) FAR 1 U 0.00
+expand: main@entry!_BAD (14, 0) FAR  w(0) 1.
+	create_child: main@entry (13, 15) FAR 1 U 0.00
+expand: main@entry (13, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (12, 15) FAR 2628 U 0.00
+expand: main@empty.loop (12, 0) FAR  w(0) 2628.
+	create_child: main@.preheader (11, 15) FAR 3348 U 0.00
+expand: main@.preheader (11, 0) FAR  w(0) 3348.
+	create_child: main@.preheader!_Cond (10, 15) FAR 4088 U 0.00
+expand: main@.preheader!_Cond (10, 0) FAR  w(0) 4088.
+	create_child: main@_39 (9, 15) FAR 5694 U 0.00
+expand: main@_39 (9, 0) FAR  w(0) 5694.
+	create_child: main@.preheader (8, 15) FAR 8680 U 0.00
+expand: main@.preheader (8, 0) FAR  w(0) 8680.
+	create_child: main@.preheader!_Cond (7, 15) FAR 8835 U 0.00
+expand: main@.preheader!_Cond (7, 0) FAR  w(0) 8835.
+	create_child: main@_39 (6, 15) FAR 8887 U 0.00
+expand: main@_39 (6, 0) FAR  w(0) 8887.
+	create_child: main@.preheader (5, 15) FAR 10848 U 0.00
+expand: main@.preheader (5, 0) FAR  w(0) 10848.
+	create_child: main@.preheader!_Cond (4, 15) FAR 10771 U 0.00
+expand: main@.preheader!_Cond (4, 0) FAR  w(0) 10771.
+	create_child: main@_39 (3, 15) FAR 10885 U 0.00
+expand: main@_39 (3, 0) FAR  w(0) 10885.
+	create_child: main@.preheader (2, 15) FAR 13444 U 0.00
+expand: main@.preheader (2, 0) FAR  w(0) 13444.
+	create_child: main@.preheader!_Cond (1, 15) FAR 13441 U 0.00
+expand: main@.preheader!_Cond (1, 0) FAR  w(0) 13441.
+	create_child: main@_39 (0, 15) FAR 13453 U 0.00
+expand: main@_39 (0, 0) FAR  w(0) 13453. F 0.00
+expand: main@.preheader!_Cond (1, 0) FAR  w(0) 13441. F 0.00
+expand: main@.preheader (2, 0) FAR  w(0) 13444. F 0.00
+expand: main@_39 (3, 0) FAR  w(0) 10885. F 0.00
+expand: main@.preheader!_Cond (4, 0) FAR  w(0) 10771. F 0.00
+expand: main@.preheader (5, 0) FAR  w(0) 10848. F 0.00
+expand: main@_39 (6, 0) FAR  w(0) 8887. F 0.00
+expand: main@.preheader!_Cond (7, 0) FAR  w(0) 8835. F 0.00
+expand: main@.preheader (8, 0) FAR  w(0) 8680. F 0.00
+expand: main@_39 (9, 0) FAR  w(0) 5694. F 0.00
+expand: main@.preheader!_Cond (10, 0) FAR  w(0) 4088. F 0.00
+expand: main@.preheader (11, 0) FAR  w(0) 3348. F 0.00
+expand: main@empty.loop (12, 0) FAR  w(0) 2628. F 0.00
+expand: main@entry (13, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (14, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (15, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.03 :before-memory 16.88 :after-memory 17.17)
+Propagating: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15  ! 16 17 18 
+(spacer::context::propagate :time 0.01 :before-memory 17.17 :after-memory 17.27)
+Entering level 16
+expand: query!0 (16, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 17.27 :after-memory 17.27)
+Propagating: 16  ! 17 18 
+(spacer::context::propagate :time 0.00 :before-memory 17.27 :after-memory 17.27)
+Entering level 17
+expand: query!0 (17, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 17.27 :after-memory 17.27)
+Propagating: 17  ! 18 
+(spacer::context::propagate :time 0.00 :before-memory 17.27 :after-memory 17.27)
+Entering level 18
+expand: query!0 (18, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (17, 18) FAR 1 U 0.00
+expand: main@entry!_BAD (17, 0) FAR  w(0) 1.
+	create_child: main@entry (16, 18) FAR 1 U 0.00
+expand: main@entry (16, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (15, 18) FAR 2628 U 0.00
+expand: main@empty.loop (15, 0) FAR  w(0) 2628.
+	create_child: main@.preheader (14, 18) FAR 3348 U 0.00
+expand: main@.preheader (14, 0) FAR  w(0) 3348.
+	create_child: main@.preheader!_Cond (13, 18) FAR 4088 U 0.00
+expand: main@.preheader!_Cond (13, 0) FAR  w(0) 4088.
+	create_child: main@_39 (12, 18) FAR 5694 U 0.00
+expand: main@_39 (12, 0) FAR  w(0) 5694.
+	create_child: main@.preheader (11, 18) FAR 8680 U 0.00
+expand: main@.preheader (11, 0) FAR  w(0) 8680.
+	create_child: main@.preheader!_Cond (10, 18) FAR 8835 U 0.00
+expand: main@.preheader!_Cond (10, 0) FAR  w(0) 8835.
+	create_child: main@_39 (9, 18) FAR 8887 U 0.00
+expand: main@_39 (9, 0) FAR  w(0) 8887.
+	create_child: main@.preheader (8, 18) FAR 10848 U 0.00
+expand: main@.preheader (8, 0) FAR  w(0) 10848.
+	create_child: main@.preheader!_Cond (7, 18) FAR 10771 U 0.00
+expand: main@.preheader!_Cond (7, 0) FAR  w(0) 10771.
+	create_child: main@_39 (6, 18) FAR 10885 U 0.00
+expand: main@_39 (6, 0) FAR  w(0) 10885.
+	create_child: main@.preheader (5, 18) FAR 13444 U 0.00
+expand: main@.preheader (5, 0) FAR  w(0) 13444.
+	create_child: main@.preheader!_Cond (4, 18) FAR 13441 U 0.00
+expand: main@.preheader!_Cond (4, 0) FAR  w(0) 13441.
+	create_child: main@_39 (3, 18) FAR 13453 U 0.00
+expand: main@_39 (3, 0) FAR  w(0) 13453.
+	create_child: main@.preheader (2, 18) FAR 16614 U 0.00
+expand: main@.preheader (2, 0) FAR  w(0) 16614.
+	create_child: main@.preheader!_Cond (1, 18) FAR 16616 U 0.00
+expand: main@.preheader!_Cond (1, 0) FAR  w(0) 16616.
+	create_child: main@_39 (0, 18) FAR 16644 U 0.00
+expand: main@_39 (0, 0) FAR  w(0) 16644. F 0.00
+expand: main@.preheader!_Cond (1, 0) FAR  w(0) 16616. F 0.00
+expand: main@.preheader (2, 0) FAR  w(0) 16614. F 0.00
+expand: main@_39 (3, 0) FAR  w(0) 13453. F 0.00
+expand: main@.preheader!_Cond (4, 0) FAR  w(0) 13441. F 0.00
+expand: main@.preheader (5, 0) FAR  w(0) 13444. F 0.00
+expand: main@_39 (6, 0) FAR  w(0) 10885. F 0.00
+expand: main@.preheader!_Cond (7, 0) FAR  w(0) 10771. F 0.00
+expand: main@.preheader (8, 0) FAR  w(0) 10848. F 0.00
+expand: main@_39 (9, 0) FAR  w(0) 8887. F 0.00
+expand: main@.preheader!_Cond (10, 0) FAR  w(0) 8835. F 0.00
+expand: main@.preheader (11, 0) FAR  w(0) 8680. F 0.00
+expand: main@_39 (12, 0) FAR  w(0) 5694. F 0.00
+expand: main@.preheader!_Cond (13, 0) FAR  w(0) 4088. F 0.00
+expand: main@.preheader (14, 0) FAR  w(0) 3348. F 0.00
+expand: main@empty.loop (15, 0) FAR  w(0) 2628. F 0.00
+expand: main@entry (16, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (17, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (18, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.04 :before-memory 17.27 :after-memory 17.46)
+Propagating: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18  ! 19 20 21 
+(spacer::context::propagate :time 0.01 :before-memory 17.46 :after-memory 17.92)
+Entering level 19
+expand: query!0 (19, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 17.92 :after-memory 17.92)
+Propagating: 19  ! 20 21 
+(spacer::context::propagate :time 0.00 :before-memory 17.92 :after-memory 17.92)
+Entering level 20
+expand: query!0 (20, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 17.92 :after-memory 17.92)
+Propagating: 20  ! 21 
+(spacer::context::propagate :time 0.00 :before-memory 17.92 :after-memory 17.92)
+Entering level 21
+expand: query!0 (21, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (20, 21) FAR 1 U 0.00
+expand: main@entry!_BAD (20, 0) FAR  w(0) 1.
+	create_child: main@entry (19, 21) FAR 1 U 0.00
+expand: main@entry (19, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (18, 21) FAR 2628 U 0.00
+expand: main@empty.loop (18, 0) FAR  w(0) 2628.
+	create_child: main@.preheader (17, 21) FAR 3348 U 0.00
+expand: main@.preheader (17, 0) FAR  w(0) 3348.
+	create_child: main@.preheader!_Cond (16, 21) FAR 4088 U 0.00
+expand: main@.preheader!_Cond (16, 0) FAR  w(0) 4088.
+	create_child: main@_39 (15, 21) FAR 5694 U 0.00
+expand: main@_39 (15, 0) FAR  w(0) 5694.
+	create_child: main@.preheader (14, 21) FAR 8680 U 0.00
+expand: main@.preheader (14, 0) FAR  w(0) 8680.
+	create_child: main@.preheader!_Cond (13, 21) FAR 8835 U 0.00
+expand: main@.preheader!_Cond (13, 0) FAR  w(0) 8835.
+	create_child: main@_39 (12, 21) FAR 8887 U 0.00
+expand: main@_39 (12, 0) FAR  w(0) 8887.
+	create_child: main@.preheader (11, 21) FAR 10848 U 0.00
+expand: main@.preheader (11, 0) FAR  w(0) 10848.
+	create_child: main@.preheader!_Cond (10, 21) FAR 10771 U 0.00
+expand: main@.preheader!_Cond (10, 0) FAR  w(0) 10771.
+	create_child: main@_39 (9, 21) FAR 10885 U 0.00
+expand: main@_39 (9, 0) FAR  w(0) 10885.
+	create_child: main@.preheader (8, 21) FAR 13444 U 0.00
+expand: main@.preheader (8, 0) FAR  w(0) 13444.
+	create_child: main@.preheader!_Cond (7, 21) FAR 13441 U 0.00
+expand: main@.preheader!_Cond (7, 0) FAR  w(0) 13441.
+	create_child: main@_39 (6, 21) FAR 13453 U 0.00
+expand: main@_39 (6, 0) FAR  w(0) 13453.
+	create_child: main@.preheader (5, 21) FAR 16614 U 0.00
+expand: main@.preheader (5, 0) FAR  w(0) 16614.
+	create_child: main@.preheader!_Cond (4, 21) FAR 16616 U 0.00
+expand: main@.preheader!_Cond (4, 0) FAR  w(0) 16616.
+	create_child: main@_39 (3, 21) FAR 16644 U 0.00
+expand: main@_39 (3, 0) FAR  w(0) 16644.
+	create_child: main@.preheader (2, 21) FAR 20344 U 0.00
+expand: main@.preheader (2, 0) FAR  w(0) 20344.
+	create_child: main@.preheader!_Cond (1, 21) FAR 20264 U 0.00
+expand: main@.preheader!_Cond (1, 0) FAR  w(0) 20264.
+	create_child: main@_39 (0, 21) FAR 20356 U 0.00
+expand: main@_39 (0, 0) FAR  w(0) 20356. F 0.00
+expand: main@.preheader!_Cond (1, 0) FAR  w(0) 20264. F 0.00
+expand: main@.preheader (2, 0) FAR  w(0) 20344. F 0.00
+expand: main@_39 (3, 0) FAR  w(0) 16644. F 0.00
+expand: main@.preheader!_Cond (4, 0) FAR  w(0) 16616. F 0.00
+expand: main@.preheader (5, 0) FAR  w(0) 16614. F 0.00
+expand: main@_39 (6, 0) FAR  w(0) 13453. F 0.00
+expand: main@.preheader!_Cond (7, 0) FAR  w(0) 13441. F 0.00
+expand: main@.preheader (8, 0) FAR  w(0) 13444. F 0.00
+expand: main@_39 (9, 0) FAR  w(0) 10885. F 0.00
+expand: main@.preheader!_Cond (10, 0) FAR  w(0) 10771. F 0.00
+expand: main@.preheader (11, 0) FAR  w(0) 10848. F 0.00
+expand: main@_39 (12, 0) FAR  w(0) 8887. F 0.00
+expand: main@.preheader!_Cond (13, 0) FAR  w(0) 8835. F 0.00
+expand: main@.preheader (14, 0) FAR  w(0) 8680. F 0.00
+expand: main@_39 (15, 0) FAR  w(0) 5694. F 0.00
+expand: main@.preheader!_Cond (16, 0) FAR  w(0) 4088. F 0.00
+expand: main@.preheader (17, 0) FAR  w(0) 3348. F 0.00
+expand: main@empty.loop (18, 0) FAR  w(0) 2628. F 0.00
+expand: main@entry (19, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (20, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (21, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.05 :before-memory 17.92 :after-memory 18.30)
+Propagating: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21  ! 22 23 24 
+(spacer::context::propagate :time 0.02 :before-memory 18.30 :after-memory 18.50)
+Entering level 22
+expand: query!0 (22, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 18.50 :after-memory 18.50)
+Propagating: 22  ! 23 24 
+(spacer::context::propagate :time 0.00 :before-memory 18.50 :after-memory 18.50)
+Entering level 23
+expand: query!0 (23, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 18.50 :after-memory 18.50)
+Propagating: 23  ! 24 
+(spacer::context::propagate :time 0.00 :before-memory 18.50 :after-memory 18.50)
+Entering level 24
+expand: query!0 (24, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (23, 24) FAR 1 U 0.00
+expand: main@entry!_BAD (23, 0) FAR  w(0) 1.
+	create_child: main@entry (22, 24) FAR 1 U 0.00
+expand: main@entry (22, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (21, 24) FAR 2628 U 0.00
+expand: main@empty.loop (21, 0) FAR  w(0) 2628.
+	create_child: main@.preheader (20, 24) FAR 3348 U 0.00
+expand: main@.preheader (20, 0) FAR  w(0) 3348.
+	create_child: main@.preheader!_Cond (19, 24) FAR 4088 U 0.00
+expand: main@.preheader!_Cond (19, 0) FAR  w(0) 4088.
+	create_child: main@_39 (18, 24) FAR 5694 U 0.00
+expand: main@_39 (18, 0) FAR  w(0) 5694.
+	create_child: main@.preheader (17, 24) FAR 8680 U 0.00
+expand: main@.preheader (17, 0) FAR  w(0) 8680.
+	create_child: main@.preheader!_Cond (16, 24) FAR 8835 U 0.00
+expand: main@.preheader!_Cond (16, 0) FAR  w(0) 8835.
+	create_child: main@_39 (15, 24) FAR 8887 U 0.00
+expand: main@_39 (15, 0) FAR  w(0) 8887.
+	create_child: main@.preheader (14, 24) FAR 10848 U 0.00
+expand: main@.preheader (14, 0) FAR  w(0) 10848.
+	create_child: main@.preheader!_Cond (13, 24) FAR 10771 U 0.00
+expand: main@.preheader!_Cond (13, 0) FAR  w(0) 10771.
+	create_child: main@_39 (12, 24) FAR 10885 U 0.00
+expand: main@_39 (12, 0) FAR  w(0) 10885.
+	create_child: main@.preheader (11, 24) FAR 13444 U 0.00
+expand: main@.preheader (11, 0) FAR  w(0) 13444.
+	create_child: main@.preheader!_Cond (10, 24) FAR 13441 U 0.00
+expand: main@.preheader!_Cond (10, 0) FAR  w(0) 13441.
+	create_child: main@_39 (9, 24) FAR 13453 U 0.00
+expand: main@_39 (9, 0) FAR  w(0) 13453.
+	create_child: main@.preheader (8, 24) FAR 16614 U 0.00
+expand: main@.preheader (8, 0) FAR  w(0) 16614.
+	create_child: main@.preheader!_Cond (7, 24) FAR 16616 U 0.00
+expand: main@.preheader!_Cond (7, 0) FAR  w(0) 16616.
+	create_child: main@_39 (6, 24) FAR 16644 U 0.00
+expand: main@_39 (6, 0) FAR  w(0) 16644.
+	create_child: main@.preheader (5, 24) FAR 20344 U 0.00
+expand: main@.preheader (5, 0) FAR  w(0) 20344.
+	create_child: main@.preheader!_Cond (4, 24) FAR 20264 U 0.00
+expand: main@.preheader!_Cond (4, 0) FAR  w(0) 20264.
+	create_child: main@_39 (3, 24) FAR 20356 U 0.00
+expand: main@_39 (3, 0) FAR  w(0) 20356.
+	create_child: main@.preheader (2, 24) FAR 24628 U 0.00
+expand: main@.preheader (2, 0) FAR  w(0) 24628.
+	create_child: main@.preheader!_Cond (1, 24) FAR 24583 U 0.00
+expand: main@.preheader!_Cond (1, 0) FAR  w(0) 24583.
+	create_child: main@_34 (0, 24) FAR 25490 U 0.00
+expand: main@_34 (0, 0) FAR  w(0) 25490. F 0.00
+expand: main@.preheader!_Cond (1, 0) FAR  w(0) 24583. F 0.00
+expand: main@.preheader (2, 0) FAR  w(0) 24628. F 0.00
+expand: main@_39 (3, 0) FAR  w(0) 20356. F 0.00
+expand: main@.preheader!_Cond (4, 0) FAR  w(0) 20264. F 0.00
+expand: main@.preheader (5, 0) FAR  w(0) 20344. F 0.00
+expand: main@_39 (6, 0) FAR  w(0) 16644. F 0.00
+expand: main@.preheader!_Cond (7, 0) FAR  w(0) 16616. F 0.00
+expand: main@.preheader (8, 0) FAR  w(0) 16614. F 0.00
+expand: main@_39 (9, 0) FAR  w(0) 13453. F 0.00
+expand: main@.preheader!_Cond (10, 0) FAR  w(0) 13441. F 0.00
+expand: main@.preheader (11, 0) FAR  w(0) 13444. F 0.00
+expand: main@_39 (12, 0) FAR  w(0) 10885. F 0.00
+expand: main@.preheader!_Cond (13, 0) FAR  w(0) 10771. F 0.00
+expand: main@.preheader (14, 0) FAR  w(0) 10848. F 0.00
+expand: main@_39 (15, 0) FAR  w(0) 8887. F 0.00
+expand: main@.preheader!_Cond (16, 0) FAR  w(0) 8835. F 0.00
+expand: main@.preheader (17, 0) FAR  w(0) 8680. F 0.00
+expand: main@_39 (18, 0) FAR  w(0) 5694. F 0.00
+expand: main@.preheader!_Cond (19, 0) FAR  w(0) 4088. F 0.00
+expand: main@.preheader (20, 0) FAR  w(0) 3348. F 0.00
+expand: main@empty.loop (21, 0) FAR  w(0) 2628. F 0.00
+expand: main@entry (22, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (23, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (24, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.06 :before-memory 18.50 :after-memory 21.02)
+Propagating: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24  ! 25 
+(spacer::context::propagate :time 0.00 :before-memory 21.02 :after-memory 21.31)
+Entering level 25
+expand: query!0 (25, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (24, 25) FAR 1 U 0.00
+expand: main@entry!_BAD (24, 0) FAR  w(0) 1.
+	create_child: main@entry (23, 25) FAR 1 U 0.00
+expand: main@entry (23, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (22, 25) FAR 2628 U 0.00
+expand: main@empty.loop (22, 0) FAR  w(0) 2628.
+	create_child: main@.preheader (21, 25) FAR 3348 U 0.00
+expand: main@.preheader (21, 0) FAR  w(0) 3348.
+	create_child: main@.preheader!_Cond (20, 25) FAR 4088 U 0.00
+expand: main@.preheader!_Cond (20, 0) FAR  w(0) 4088.
+	create_child: main@_39 (19, 25) FAR 5694 U 0.00
+expand: main@_39 (19, 0) FAR  w(0) 5694.
+	create_child: main@.preheader (18, 25) FAR 8680 U 0.00
+expand: main@.preheader (18, 0) FAR  w(0) 8680.
+	create_child: main@.preheader!_Cond (17, 25) FAR 8835 U 0.00
+expand: main@.preheader!_Cond (17, 0) FAR  w(0) 8835.
+	create_child: main@_39 (16, 25) FAR 8887 U 0.00
+expand: main@_39 (16, 0) FAR  w(0) 8887.
+	create_child: main@.preheader (15, 25) FAR 10848 U 0.00
+expand: main@.preheader (15, 0) FAR  w(0) 10848.
+	create_child: main@.preheader!_Cond (14, 25) FAR 10771 U 0.00
+expand: main@.preheader!_Cond (14, 0) FAR  w(0) 10771.
+	create_child: main@_39 (13, 25) FAR 10885 U 0.00
+expand: main@_39 (13, 0) FAR  w(0) 10885.
+	create_child: main@.preheader (12, 25) FAR 13444 U 0.00
+expand: main@.preheader (12, 0) FAR  w(0) 13444.
+	create_child: main@.preheader!_Cond (11, 25) FAR 13441 U 0.00
+expand: main@.preheader!_Cond (11, 0) FAR  w(0) 13441.
+	create_child: main@_39 (10, 25) FAR 13453 U 0.00
+expand: main@_39 (10, 0) FAR  w(0) 13453.
+	create_child: main@.preheader (9, 25) FAR 16614 U 0.00
+expand: main@.preheader (9, 0) FAR  w(0) 16614.
+	create_child: main@.preheader!_Cond (8, 25) FAR 16616 U 0.00
+expand: main@.preheader!_Cond (8, 0) FAR  w(0) 16616.
+	create_child: main@_39 (7, 25) FAR 16644 U 0.00
+expand: main@_39 (7, 0) FAR  w(0) 16644.
+	create_child: main@.preheader (6, 25) FAR 20344 U 0.00
+expand: main@.preheader (6, 0) FAR  w(0) 20344.
+	create_child: main@.preheader!_Cond (5, 25) FAR 20264 U 0.00
+expand: main@.preheader!_Cond (5, 0) FAR  w(0) 20264.
+	create_child: main@_39 (4, 25) FAR 20356 U 0.00
+expand: main@_39 (4, 0) FAR  w(0) 20356.
+	create_child: main@.preheader (3, 25) FAR 24628 U 0.00
+expand: main@.preheader (3, 0) FAR  w(0) 24628.
+	create_child: main@.preheader!_Cond (2, 25) FAR 24583 U 0.00
+expand: main@.preheader!_Cond (2, 0) FAR  w(0) 24583.
+	create_child: main@_34 (1, 25) FAR 25490 U 0.00
+expand: main@_34 (1, 0) FAR  w(0) 25490. T 0.00
+is-reachable: main@.preheader!_Cond (2, 0) FAR 24583 T 0.00
+is-reachable: main@.preheader (3, 0) FAR 24628 T 0.00
+is-reachable: main@_39 (4, 0) FAR 20356
+	create_child: main@_34 (4, 25) FAR 32781 X 0.00
+is-reachable: main@_34 (4, 0) FAR 32781 T 0.00
+is-reachable: main@.preheader!_Cond (5, 0) FAR 20264 T 0.00
+is-reachable: main@.preheader (6, 0) FAR 20344 T 0.00
+is-reachable: main@_39 (7, 0) FAR 16644
+	create_child: main@_34 (7, 25) FAR 34560 X 0.00
+is-reachable: main@_34 (7, 0) FAR 34560 T 0.00
+is-reachable: main@.preheader!_Cond (8, 0) FAR 16616 T 0.00
+is-reachable: main@.preheader (9, 0) FAR 16614 T 0.00
+is-reachable: main@_39 (10, 0) FAR 13453
+	create_child: main@_34 (10, 25) FAR 35642 X 0.00
+is-reachable: main@_34 (10, 0) FAR 35642 T 0.00
+is-reachable: main@.preheader!_Cond (11, 0) FAR 13441 T 0.00
+is-reachable: main@.preheader (12, 0) FAR 13444 T 0.00
+is-reachable: main@_39 (13, 0) FAR 10885
+	create_child: main@_34 (13, 25) FAR 37448 X 0.01
+is-reachable: main@_34 (13, 0) FAR 37448 T 0.00
+is-reachable: main@.preheader!_Cond (14, 0) FAR 10771 T 0.00
+is-reachable: main@.preheader (15, 0) FAR 10848 T 0.00
+is-reachable: main@_39 (16, 0) FAR 8887
+	create_child: main@_34 (16, 25) FAR 40000 X 0.01
+is-reachable: main@_34 (16, 0) FAR 40000 F 0.00
+Deleting closed node: main@.preheader!_Cond(2, 25) 24583
+Deleting closed node: main@.preheader(3, 25) 24628
+Deleting closed node: main@_39(4, 25) 20356
+Deleting closed node: main@_34(4, 25) 32781
+Deleting closed node: main@.preheader!_Cond(5, 25) 20264
+Deleting closed node: main@.preheader(6, 25) 20344
+Deleting closed node: main@_39(7, 25) 16644
+Deleting closed node: main@_34(7, 25) 34560
+Deleting closed node: main@.preheader!_Cond(8, 25) 16616
+Deleting closed node: main@.preheader(9, 25) 16614
+Deleting closed node: main@_39(10, 25) 13453
+Deleting closed node: main@_34(10, 25) 35642
+Deleting closed node: main@.preheader!_Cond(11, 25) 13441
+Deleting closed node: main@.preheader(12, 25) 13444
+Deleting closed node: main@_39(13, 25) 10885
+Deleting closed node: main@_34(13, 25) 37448
+Deleting closed node: main@.preheader!_Cond(14, 25) 10771
+Deleting closed node: main@.preheader(15, 25) 10848
+Deleting closed node: main@_39(16, 25) 8887
+expand: main@_34 (16, 0) FAR  w(0) 40000. F 0.01
+expand: main@.preheader!_Cond (17, 0) FAR  w(0) 8835. F 0.01
+expand: main@.preheader (18, 0) FAR  w(0) 8680. F 0.00
+expand: main@_39 (19, 0) FAR  w(0) 5694. F 0.00
+expand: main@.preheader!_Cond (20, 0) FAR  w(0) 4088. F 0.01
+expand: main@.preheader (21, 0) FAR  w(0) 3348. F 0.00
+expand: main@empty.loop (22, 0) FAR  w(0) 2628. F 0.00
+expand: main@entry (23, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (24, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (25, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.14 :before-memory 21.31 :after-memory 28.31)
+Propagating: 16 17 18 19 20 21 22 23 24 25  ! 26 
+(spacer::context::propagate :time 0.00 :before-memory 28.31 :after-memory 28.44)
+Entering level 26
+expand: query!0 (26, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (25, 26) FAR 1 U 0.00
+expand: main@entry!_BAD (25, 0) FAR  w(0) 1.
+	create_child: main@entry (24, 26) FAR 1 U 0.00
+expand: main@entry (24, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (23, 26) FAR 2628 U 0.00
+expand: main@empty.loop (23, 0) FAR  w(0) 2628.
+	create_child: main@.preheader (22, 26) FAR 3348 U 0.00
+expand: main@.preheader (22, 0) FAR  w(0) 3348.
+	create_child: main@.preheader!_Cond (21, 26) FAR 4088 U 0.00
+expand: main@.preheader!_Cond (21, 0) FAR  w(0) 4088.
+	create_child: main@_39 (20, 26) FAR 5694 U 0.00
+expand: main@_39 (20, 0) FAR  w(0) 5694.
+	create_child: main@.preheader (19, 26) FAR 8680 U 0.00
+expand: main@.preheader (19, 0) FAR  w(0) 8680.
+	create_child: main@.preheader!_Cond (18, 26) FAR 8835 U 0.00
+expand: main@.preheader!_Cond (18, 0) FAR  w(0) 8835.
+	create_child: main@_34 (17, 26) FAR 40000 U 0.00
+expand: main@_34 (17, 0) FAR  w(0) 40000.
+	create_child: main@_39 (16, 26) FAR 42777 U 0.00
+expand: main@_39 (16, 0) FAR  w(0) 42777.
+	create_child: main@.preheader (15, 26) FAR 43759 U 0.01
+expand: main@.preheader (15, 0) FAR  w(0) 43759.
+	create_child: main@.preheader!_Cond (14, 26) FAR 45177 U 0.01
+expand: main@.preheader!_Cond (14, 0) FAR  w(0) 45177.
+	create_child: main@_39 (13, 26) FAR 46539 U 0.01
+expand: main@_39 (13, 0) FAR  w(0) 46539.
+	create_child: main@.preheader (12, 26) FAR 47093 U 0.00
+expand: main@.preheader (12, 0) FAR  w(0) 47093.
+	create_child: main@.preheader!_Cond (11, 26) FAR 48016 U 0.01
+expand: main@.preheader!_Cond (11, 0) FAR  w(0) 48016.
+	create_child: main@_39 (10, 26) FAR 48580 U 0.01
+expand: main@_39 (10, 0) FAR  w(0) 48580.
+	create_child: main@.preheader (9, 26) FAR 48594 U 0.00
+expand: main@.preheader (9, 0) FAR  w(0) 48594.
+	create_child: main@.preheader!_Cond (8, 26) FAR 49384 U 0.01
+expand: main@.preheader!_Cond (8, 0) FAR  w(0) 49384.
+	create_child: main@_39 (7, 26) FAR 49673 U 0.01
+expand: main@_39 (7, 0) FAR  w(0) 49673.
+	create_child: main@.preheader (6, 26) FAR 49594 U 0.00
+expand: main@.preheader (6, 0) FAR  w(0) 49594.
+	create_child: main@.preheader!_Cond (5, 26) FAR 50254 U 0.01
+expand: main@.preheader!_Cond (5, 0) FAR  w(0) 50254.
+	create_child: main@_39 (4, 26) FAR 50316 U 0.01
+expand: main@_39 (4, 0) FAR  w(0) 50316.
+	create_child: main@.preheader (3, 26) FAR 48028 U 0.00
+expand: main@.preheader (3, 0) FAR  w(0) 48028.
+	create_child: main@.preheader!_Cond (2, 26) FAR 50935 U 0.01
+expand: main@.preheader!_Cond (2, 0) FAR  w(0) 50935.
+	create_child: main@_34 (1, 26) FAR 51751 U 0.01
+expand: main@_34 (1, 0) FAR  w(0) 51751.
+	create_child: main@_39 (0, 26) FAR 52629 U 0.01
+expand: main@_39 (0, 0) FAR  w(0) 52629.(smt.stats :restarts :decisions    :clauses/bin    :simplify   :memory)
+(smt.stats      :conflicts  :propagations   :lemmas     :deletions   )
+(smt.stats    0    351  21556  42139  1004/0   302     0    0   33.01)
+ F 0.03
+expand: main@_34 (1, 0) FAR  w(0) 51751
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.03
+expand: main@.preheader!_Cond (2, 0) FAR  w(0) 50935
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.04
+expand: main@.preheader (3, 0) FAR  w(0) 48028
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.02
+expand: main@_39 (4, 0) FAR  w(0) 50316. F 0.03
+expand: main@.preheader!_Cond (5, 0) FAR  w(0) 50254
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.04
+expand: main@.preheader (6, 0) FAR  w(0) 49594
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.03
+expand: main@_39 (7, 0) FAR  w(0) 49673. F 0.03
+expand: main@.preheader!_Cond (8, 0) FAR  w(0) 49384
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.05
+expand: main@.preheader (9, 0) FAR  w(0) 48594
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.03
+expand: main@_39 (10, 0) FAR  w(0) 48580. F 0.03
+expand: main@.preheader!_Cond (11, 0) FAR  w(0) 48016
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.05
+expand: main@.preheader (12, 0) FAR  w(0) 47093
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.03
+expand: main@_39 (13, 0) FAR  w(0) 46539. F 0.03
+expand: main@.preheader!_Cond (14, 0) FAR  w(0) 45177
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.05
+expand: main@.preheader (15, 0) FAR  w(0) 43759
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.04
+expand: main@_39 (16, 0) FAR  w(0) 42777. F 0.04
+expand: main@_34 (17, 0) FAR  w(0) 40000. F 0.03
+expand: main@.preheader!_Cond (18, 0) FAR  w(0) 8835.
+	create_child: main@_39 (17, 26) FAR 61107 U 0.01
+expand: main@_39 (17, 0) FAR  w(0) 61107.
+	create_child: main@.preheader (16, 26) FAR 61288 U 0.00
+expand: main@.preheader (16, 0) FAR  w(0) 61288.
+	create_child: main@.preheader!_Cond (15, 26) FAR 44755 U 0.00
+expand: main@.preheader!_Cond (15, 0) FAR  w(0) 44755.
+	create_child: main@_39 (14, 26) FAR 60884 U 0.01
+expand: main@_39 (14, 0) FAR  w(0) 60884.
+	create_child: main@.preheader (13, 26) FAR 48938 U 0.00
+expand: main@.preheader (13, 0) FAR  w(0) 48938.
+	create_child: main@.preheader!_Cond (12, 26) FAR 61067 U 0.00
+expand: main@.preheader!_Cond (12, 0) FAR  w(0) 61067.
+	create_child: main@_39 (11, 26) FAR 60314 U 0.01
+expand: main@_39 (11, 0) FAR  w(0) 60314.
+	create_child: main@.preheader (10, 26) FAR 60908 U 0.00
+expand: main@.preheader (10, 0) FAR  w(0) 60908.
+	create_child: main@.preheader!_Cond (9, 26) FAR 60866 U 0.00
+expand: main@.preheader!_Cond (9, 0) FAR  w(0) 60866.
+	create_child: main@_39 (8, 26) FAR 61433 U 0.00
+expand: main@_39 (8, 0) FAR  w(0) 61433.
+	create_child: main@.preheader (7, 26) FAR 61399 U 0.00
+expand: main@.preheader (7, 0) FAR  w(0) 61399.
+	create_child: main@.preheader!_Cond (6, 26) FAR 61413 U 0.00
+expand: main@.preheader!_Cond (6, 0) FAR  w(0) 61413.
+	create_child: main@_39 (5, 26) FAR 61445 U 0.00
+expand: main@_39 (5, 0) FAR  w(0) 61445.
+	create_child: main@.preheader (4, 26) FAR 61423 U 0.00
+expand: main@.preheader (4, 0) FAR  w(0) 61423. T 0.00
+is-reachable: main@_39 (5, 0) FAR 61445
+	create_child: main@_34 (5, 26) FAR 61656 X 0.00
+is-reachable: main@_34 (5, 0) FAR 61656 T 0.00
+is-reachable: main@.preheader!_Cond (6, 0) FAR 61413 T 0.00
+is-reachable: main@.preheader (7, 0) FAR 61399 T 0.00
+is-reachable: main@_39 (8, 0) FAR 61433
+	create_child: main@_34 (8, 26) FAR 62438 X 0.01
+is-reachable: main@_34 (8, 0) FAR 62438 T 0.00
+is-reachable: main@.preheader!_Cond (9, 0) FAR 60866 T 0.00
+is-reachable: main@.preheader (10, 0) FAR 60908 T 0.00
+is-reachable: main@_39 (11, 0) FAR 60314
+	create_child: main@_34 (11, 26) FAR 63416 X 0.01
+is-reachable: main@_34 (11, 0) FAR 63416 T 0.00
+is-reachable: main@.preheader!_Cond (12, 0) FAR 61067 T 0.01
+is-reachable: main@.preheader (13, 0) FAR 48938 T 0.00
+is-reachable: main@_39 (14, 0) FAR 60884
+	create_child: main@_34 (14, 26) FAR 64974 X 0.01
+is-reachable: main@_34 (14, 0) FAR 64974 T 0.01
+is-reachable: main@.preheader!_Cond (15, 0) FAR 44755 T 0.01
+is-reachable: main@.preheader (16, 0) FAR 61288 T 0.01
+is-reachable: main@_39 (17, 0) FAR 61107
+	create_child: main@_34 (17, 26) FAR 67361 X 0.01
+is-reachable: main@_34 (17, 0) FAR 67361 F 0.01
+Deleting closed node: main@_34(5, 26) 61656
+Deleting closed node: main@.preheader!_Cond(6, 26) 61413
+Deleting closed node: main@.preheader(7, 26) 61399
+Deleting closed node: main@_39(8, 26) 61433
+Deleting closed node: main@_34(8, 26) 62438
+Deleting closed node: main@.preheader!_Cond(9, 26) 60866
+Deleting closed node: main@.preheader(10, 26) 60908
+Deleting closed node: main@_39(11, 26) 60314
+Deleting closed node: main@_34(11, 26) 63416
+Deleting closed node: main@.preheader!_Cond(12, 26) 61067
+Deleting closed node: main@.preheader(13, 26) 48938
+Deleting closed node: main@_39(14, 26) 60884
+Deleting closed node: main@_34(14, 26) 64974
+Deleting closed node: main@.preheader!_Cond(15, 26) 44755
+Deleting closed node: main@.preheader(16, 26) 61288
+Deleting closed node: main@_39(17, 26) 61107
+expand: main@_34 (17, 0) FAR  w(0) 67361.
+	create_child: main@_39 (16, 26) FAR 68018 U 0.00
+expand: main@_39 (16, 0) FAR  w(0) 68018.
+	create_child: main@.preheader (15, 26) FAR 69113 U 0.01
+expand: main@.preheader (15, 0) FAR  w(0) 69113.
+	create_child: main@.preheader!_Cond (14, 26) FAR 70734 U 0.01
+expand: main@.preheader!_Cond (14, 0) FAR  w(0) 70734.
+	create_child: main@_39 (13, 26) FAR 71560 U 0.02
+expand: main@_39 (13, 0) FAR  w(0) 71560.
+	create_child: main@.preheader (12, 26) FAR 72320 U 0.01
+expand: main@.preheader (12, 0) FAR  w(0) 72320.
+	create_child: main@.preheader!_Cond (11, 26) FAR 73294 U 0.01
+expand: main@.preheader!_Cond (11, 0) FAR  w(0) 73294.
+	create_child: main@_39 (10, 26) FAR 73704 U 0.01
+expand: main@_39 (10, 0) FAR  w(0) 73704.
+	create_child: main@.preheader (9, 26) FAR 73931 U 0.01
+expand: main@.preheader (9, 0) FAR  w(0) 73931.
+	create_child: main@.preheader!_Cond (8, 26) FAR 74699 U 0.01
+expand: main@.preheader!_Cond (8, 0) FAR  w(0) 74699.
+	create_child: main@_39 (7, 26) FAR 74785 U 0.01
+expand: main@_39 (7, 0) FAR  w(0) 74785.
+	create_child: main@.preheader (6, 26) FAR 74507 U 0.01
+expand: main@.preheader (6, 0) FAR  w(0) 74507.
+	create_child: main@.preheader!_Cond (5, 26) FAR 75465 U 0.01
+expand: main@.preheader!_Cond (5, 0) FAR  w(0) 75465.
+	create_child: main@_34 (4, 26) FAR 75261 U 0.01
+expand: main@_34 (4, 0) FAR  w(0) 75261
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.04
+expand: main@.preheader!_Cond (5, 0) FAR  w(0) 75465
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.03
+expand: main@.preheader (6, 0) FAR  w(0) 74507
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.02
+expand: main@_39 (7, 0) FAR  w(0) 74785. F 0.02
+expand: main@.preheader!_Cond (8, 0) FAR  w(0) 74699
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.03
+expand: main@.preheader (9, 0) FAR  w(0) 73931
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.02
+expand: main@_39 (10, 0) FAR  w(0) 73704. F 0.02
+expand: main@.preheader!_Cond (11, 0) FAR  w(0) 73294
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.03
+expand: main@.preheader (12, 0) FAR  w(0) 72320
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.02
+expand: main@_39 (13, 0) FAR  w(0) 71560. F 0.02
+expand: main@.preheader!_Cond (14, 0) FAR  w(0) 70734
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.04
+expand: main@.preheader (15, 0) FAR  w(0) 69113
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.02
+expand: main@_39 (16, 0) FAR  w(0) 68018. F 0.02
+expand: main@_34 (17, 0) FAR  w(0) 67361. F 0.03
+expand: main@.preheader!_Cond (18, 0) FAR  w(0) 8835.
+	create_child: main@_39 (17, 26) FAR 78215 U 0.01
+expand: main@_39 (17, 0) FAR  w(0) 78215.
+	create_child: main@.preheader (16, 26) FAR 77848 U 0.01
+expand: main@.preheader (16, 0) FAR  w(0) 77848.
+	create_child: main@.preheader!_Cond (15, 26) FAR 74267 U 0.01
+expand: main@.preheader!_Cond (15, 0) FAR  w(0) 74267.
+	create_child: main@_39 (14, 26) FAR 78121 U 0.01
+expand: main@_39 (14, 0) FAR  w(0) 78121.
+	create_child: main@.preheader (13, 26) FAR 78143 U 0.00
+expand: main@.preheader (13, 0) FAR  w(0) 78143.
+	create_child: main@.preheader!_Cond (12, 26) FAR 77690 U 0.01
+expand: main@.preheader!_Cond (12, 0) FAR  w(0) 77690.
+	create_child: main@_39 (11, 26) FAR 78246 U 0.01
+expand: main@_39 (11, 0) FAR  w(0) 78246.
+	create_child: main@.preheader (10, 26) FAR 78311 U 0.00
+expand: main@.preheader (10, 0) FAR  w(0) 78311.
+	create_child: main@.preheader!_Cond (9, 26) FAR 77474 U 0.00
+expand: main@.preheader!_Cond (9, 0) FAR  w(0) 77474.
+	create_child: main@_39 (8, 26) FAR 78069 U 0.01
+expand: main@_39 (8, 0) FAR  w(0) 78069.
+	create_child: main@.preheader (7, 26) FAR 78335 U 0.01
+expand: main@.preheader (7, 0) FAR  w(0) 78335.
+	create_child: main@.preheader!_Cond (6, 26) FAR 78353 U 0.00
+expand: main@.preheader!_Cond (6, 0) FAR  w(0) 78353.
+	create_child: main@_39 (5, 26) FAR 60916 U 0.01
+expand: main@_39 (5, 0) FAR  w(0) 60916.
+	create_child: main@.preheader (4, 26) FAR 78385 U 0.00
+expand: main@.preheader (4, 0) FAR  w(0) 78385. T 0.00
+is-reachable: main@_39 (5, 0) FAR 60916
+	create_child: main@_34 (5, 26) FAR 78605 X 0.01
+is-reachable: main@_34 (5, 0) FAR 78605 T 0.00
+is-reachable: main@.preheader!_Cond (6, 0) FAR 78353 T 0.01
+is-reachable: main@.preheader (7, 0) FAR 78335 T 0.00
+is-reachable: main@_39 (8, 0) FAR 78069
+	create_child: main@_34 (8, 26) FAR 79414 X 0.01
+is-reachable: main@_34 (8, 0) FAR 79414 T 0.00
+is-reachable: main@.preheader!_Cond (9, 0) FAR 77474 T 0.01
+is-reachable: main@.preheader (10, 0) FAR 78311 T 0.00
+is-reachable: main@_39 (11, 0) FAR 78246
+	create_child: main@_34 (11, 26) FAR 80478 X 0.01
+is-reachable: main@_34 (11, 0) FAR 80478 T 0.00
+is-reachable: main@.preheader!_Cond (12, 0) FAR 77690 T 0.01
+is-reachable: main@.preheader (13, 0) FAR 78143 T 0.00
+is-reachable: main@_39 (14, 0) FAR 78121
+	create_child: main@_34 (14, 26) FAR 82016 X 0.01
+is-reachable: main@_34 (14, 0) FAR 82016 T 0.01
+is-reachable: main@.preheader!_Cond (15, 0) FAR 74267 T 0.01
+is-reachable: main@.preheader (16, 0) FAR 77848 T 0.01
+is-reachable: main@_39 (17, 0) FAR 78215
+	create_child: main@_34 (17, 26) FAR 84372 X 0.01
+is-reachable: main@_34 (17, 0) FAR 84372 T 0.01
+is-reachable: main@.preheader!_Cond (18, 0) FAR 8835 T 0.01
+is-reachable: main@.preheader (19, 0) FAR 8680 T 0.01
+is-reachable: main@_39 (20, 0) FAR 5694
+	create_child: main@_34 (20, 26) FAR 85739 X 0.01
+is-reachable: main@_34 (20, 0) FAR 85739 F 0.01
+Deleting closed node: main@_34(5, 26) 78605
+Deleting closed node: main@.preheader!_Cond(6, 26) 78353
+Deleting closed node: main@.preheader(7, 26) 78335
+Deleting closed node: main@_39(8, 26) 78069
+Deleting closed node: main@_34(8, 26) 79414
+Deleting closed node: main@.preheader!_Cond(9, 26) 77474
+Deleting closed node: main@.preheader(10, 26) 78311
+Deleting closed node: main@_39(11, 26) 78246
+Deleting closed node: main@_34(11, 26) 80478
+Deleting closed node: main@.preheader!_Cond(12, 26) 77690
+Deleting closed node: main@.preheader(13, 26) 78143
+Deleting closed node: main@_39(14, 26) 78121
+Deleting closed node: main@_34(14, 26) 82016
+Deleting closed node: main@.preheader!_Cond(15, 26) 74267
+Deleting closed node: main@.preheader(16, 26) 77848
+Deleting closed node: main@_39(17, 26) 78215
+Deleting closed node: main@_34(17, 26) 84372
+Deleting closed node: main@.preheader!_Cond(18, 26) 8835
+Deleting closed node: main@.preheader(19, 26) 8680
+Deleting closed node: main@_39(20, 26) 5694
+expand: main@_34 (20, 0) FAR  w(0) 85739. F 0.02
+expand: main@.preheader!_Cond (21, 0) FAR  w(0) 4088. F 0.02
+expand: main@.preheader (22, 0) FAR  w(0) 3348. F 0.01
+expand: main@empty.loop (23, 0) FAR  w(0) 2628. F 0.01
+expand: main@entry (24, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (25, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (26, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 1.74 :before-memory 28.44 :after-memory 51.11)
+Propagating: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26  ! 27 
+(spacer::context::propagate :time 0.26 :before-memory 51.11 :after-memory 56.90)
+Entering level 27
+expand: query!0 (27, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (26, 27) FAR 1 U 0.00
+expand: main@entry!_BAD (26, 0) FAR  w(0) 1.
+	create_child: main@entry (25, 27) FAR 1 U 0.00
+expand: main@entry (25, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (24, 27) FAR 2628 U 0.00
+expand: main@empty.loop (24, 0) FAR  w(0) 2628.
+	create_child: main@.preheader (23, 27) FAR 3348 U 0.00
+expand: main@.preheader (23, 0) FAR  w(0) 3348.
+	create_child: main@.preheader!_Cond (22, 27) FAR 4088 U 0.01
+expand: main@.preheader!_Cond (22, 0) FAR  w(0) 4088.
+	create_child: main@_34 (21, 27) FAR 85739 U 0.01
+expand: main@_34 (21, 0) FAR  w(0) 85739.
+	create_child: main@_39 (20, 27) FAR 95044 U 0.01
+expand: main@_39 (20, 0) FAR  w(0) 95044.
+	create_child: main@.preheader (19, 27) FAR 96525 U 0.02
+expand: main@.preheader (19, 0) FAR  w(0) 96525.
+	create_child: main@.preheader!_Cond (18, 27) FAR 99581 U 0.02
+expand: main@.preheader!_Cond (18, 0) FAR  w(0) 99581.
+	create_child: main@_34 (17, 27) FAR 101146 U 0.04
+expand: main@_34 (17, 0) FAR  w(0) 101146.
+	create_child: main@_39 (16, 27) FAR 102290 U 0.01
+expand: main@_39 (16, 0) FAR  w(0) 102290.
+	create_child: main@.preheader (15, 27) FAR 103208 U 0.01
+expand: main@.preheader (15, 0) FAR  w(0) 103208.
+	create_child: main@.preheader!_Cond (14, 27) FAR 105569 U 0.01
+expand: main@.preheader!_Cond (14, 0) FAR  w(0) 105569.
+	create_child: main@_39 (13, 27) FAR 105949 U 0.02
+expand: main@_39 (13, 0) FAR  w(0) 105949.
+	create_child: main@.preheader (12, 27) FAR 106385 U 0.01
+expand: main@.preheader (12, 0) FAR  w(0) 106385.
+	create_child: main@.preheader!_Cond (11, 27) FAR 108056 U 0.01
+expand: main@.preheader!_Cond (11, 0) FAR  w(0) 108056.
+	create_child: main@_39 (10, 27) FAR 107787 U 0.01
+expand: main@_39 (10, 0) FAR  w(0) 107787.
+	create_child: main@.preheader (9, 27) FAR 107537 U 0.01
+expand: main@.preheader (9, 0) FAR  w(0) 107537.
+	create_child: main@.preheader!_Cond (8, 27) FAR 109273 U 0.01
+expand: main@.preheader!_Cond (8, 0) FAR  w(0) 109273.
+	create_child: main@_39 (7, 27) FAR 108694 U 0.01
+expand: main@_39 (7, 0) FAR  w(0) 108694.
+	create_child: main@.preheader (6, 27) FAR 108524 U 0.01
+expand: main@.preheader (6, 0) FAR  w(0) 108524.
+	create_child: main@.preheader!_Cond (5, 27) FAR 110083 U 0.01
+expand: main@.preheader!_Cond (5, 0) FAR  w(0) 110083.
+	create_child: main@_39 (4, 27) FAR 108373 U 0.01
+expand: main@_39 (4, 0) FAR  w(0) 108373.
+	create_child: main@.preheader (3, 27) FAR 108850 U 0.01
+expand: main@.preheader (3, 0) FAR  w(0) 108850.
+	create_child: main@.preheader!_Cond (2, 27) FAR 110464 U 0.01
+expand: main@.preheader!_Cond (2, 0) FAR  w(0) 110464.
+	create_child: main@_39 (1, 27) FAR 110203 U 0.01
+expand: main@_39 (1, 0) FAR  w(0) 110203. F 0.06
+expand: main@.preheader!_Cond (2, 0) FAR  w(0) 110464. F 0.09
+expand: main@.preheader (3, 0) FAR  w(0) 108850. F 0.05
+expand: main@_39 (4, 0) FAR  w(0) 108373. F 0.05
+expand: main@.preheader!_Cond (5, 0) FAR  w(0) 110083. F 0.07
+expand: main@.preheader (6, 0) FAR  w(0) 108524
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.05
+expand: main@_39 (7, 0) FAR  w(0) 108694
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.05
+expand: main@.preheader!_Cond (8, 0) FAR  w(0) 109273
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.07
+expand: main@.preheader (9, 0) FAR  w(0) 107537
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.06
+expand: main@_39 (10, 0) FAR  w(0) 107787
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.06
+expand: main@.preheader!_Cond (11, 0) FAR  w(0) 108056
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.07
+expand: main@.preheader (12, 0) FAR  w(0) 106385
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.05
+expand: main@_39 (13, 0) FAR  w(0) 105949
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.06
+expand: main@.preheader!_Cond (14, 0) FAR  w(0) 105569. F 0.08
+expand: main@.preheader (15, 0) FAR  w(0) 103208. F 0.04
+expand: main@_39 (16, 0) FAR  w(0) 102290
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.05
+expand: main@_34 (17, 0) FAR  w(0) 101146
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.08
+expand: main@.preheader!_Cond (18, 0) FAR  w(0) 99581
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.10
+expand: main@.preheader (19, 0) FAR  w(0) 96525
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.09
+expand: main@_39 (20, 0) FAR  w(0) 95044. F 0.08
+expand: main@_34 (21, 0) FAR  w(0) 85739
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.07
+expand: main@.preheader!_Cond (22, 0) FAR  w(0) 4088.
+	create_child: main@_39 (21, 27) FAR 107097 U 0.02
+expand: main@_39 (21, 0) FAR  w(0) 107097.
+	create_child: main@.preheader (20, 27) FAR 114726 U 0.01
+expand: main@.preheader (20, 0) FAR  w(0) 114726.
+	create_child: main@.preheader!_Cond (19, 27) FAR 106616 U 0.01
+expand: main@.preheader!_Cond (19, 0) FAR  w(0) 106616.
+	create_child: main@_34 (18, 27) FAR 114701 U 0.02
+expand: main@_34 (18, 0) FAR  w(0) 114701.
+	create_child: main@_39 (17, 27) FAR 68018 U 0.01
+expand: main@_39 (17, 0) FAR  w(0) 68018.
+	create_child: main@.preheader (16, 27) FAR 69113 U 0.01
+expand: main@.preheader (16, 0) FAR  w(0) 69113.
+	create_child: main@.preheader!_Cond (15, 27) FAR 70734 U 0.01
+expand: main@.preheader!_Cond (15, 0) FAR  w(0) 70734.
+	create_child: main@_39 (14, 27) FAR 71560 U 0.02
+expand: main@_39 (14, 0) FAR  w(0) 71560.
+	create_child: main@.preheader (13, 27) FAR 72320 U 0.01
+expand: main@.preheader (13, 0) FAR  w(0) 72320.
+	create_child: main@.preheader!_Cond (12, 27) FAR 73294 U 0.01
+expand: main@.preheader!_Cond (12, 0) FAR  w(0) 73294.
+	create_child: main@_39 (11, 27) FAR 73704 U 0.01
+expand: main@_39 (11, 0) FAR  w(0) 73704.
+	create_child: main@.preheader (10, 27) FAR 73931 U 0.01
+expand: main@.preheader (10, 0) FAR  w(0) 73931.
+	create_child: main@.preheader!_Cond (9, 27) FAR 74699 U 0.01
+expand: main@.preheader!_Cond (9, 0) FAR  w(0) 74699.
+	create_child: main@_39 (8, 27) FAR 74785 U 0.01
+expand: main@_39 (8, 0) FAR  w(0) 74785.
+	create_child: main@.preheader (7, 27) FAR 74507 U 0.01
+expand: main@.preheader (7, 0) FAR  w(0) 74507.
+	create_child: main@.preheader!_Cond (6, 27) FAR 75465 U 0.01
+expand: main@.preheader!_Cond (6, 0) FAR  w(0) 75465.
+	create_child: main@_34 (5, 27) FAR 75261 U 0.01
+expand: main@_34 (5, 0) FAR  w(0) 75261.
+	create_child: main@_39 (4, 27) FAR 116859 U 0.01
+expand: main@_39 (4, 0) FAR  w(0) 116859.
+	create_child: main@.preheader (3, 27) FAR 117802 U 0.01
+expand: main@.preheader (3, 0) FAR  w(0) 117802.
+	create_child: main@.preheader!_Cond (2, 27) FAR 119504 U 0.01
+expand: main@.preheader!_Cond (2, 0) FAR  w(0) 119504.
+	create_child: main@_39 (1, 27) FAR 120128 U 0.01
+expand: main@_39 (1, 0) FAR  w(0) 120128. F 0.08
+expand: main@.preheader!_Cond (2, 0) FAR  w(0) 119504. F 0.10
+expand: main@.preheader (3, 0) FAR  w(0) 117802. F 0.04
+expand: main@_39 (4, 0) FAR  w(0) 116859. F 0.06
+expand: main@_34 (5, 0) FAR  w(0) 75261
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.06
+expand: main@.preheader!_Cond (6, 0) FAR  w(0) 75465
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.15
+expand: main@.preheader (7, 0) FAR  w(0) 74507
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.07
+expand: main@_39 (8, 0) FAR  w(0) 74785. F 0.07
+expand: main@.preheader!_Cond (9, 0) FAR  w(0) 74699
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.12
+expand: main@.preheader (10, 0) FAR  w(0) 73931
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.08
+expand: main@_39 (11, 0) FAR  w(0) 73704. F 0.07
+expand: main@.preheader!_Cond (12, 0) FAR  w(0) 73294
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.12
+expand: main@.preheader (13, 0) FAR  w(0) 72320
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.07
+expand: main@_39 (14, 0) FAR  w(0) 71560. F 0.08
+expand: main@.preheader!_Cond (15, 0) FAR  w(0) 70734
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.14
+expand: main@.preheader (16, 0) FAR  w(0) 69113
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.11
+expand: main@_39 (17, 0) FAR  w(0) 68018. F 0.09
+expand: main@_34 (18, 0) FAR  w(0) 114701
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.09
+expand: main@.preheader!_Cond (19, 0) FAR  w(0) 106616.
+	create_child: main@_39 (18, 27) FAR 124901 U 0.03
+expand: main@_39 (18, 0) FAR  w(0) 124901.
+	create_child: main@.preheader (17, 27) FAR 124753 U 0.01
+expand: main@.preheader (17, 0) FAR  w(0) 124753.
+	create_child: main@.preheader!_Cond (16, 27) FAR 124968 U 0.01
+expand: main@.preheader!_Cond (16, 0) FAR  w(0) 124968.
+	create_child: main@_39 (15, 27) FAR 123357 U 0.01
+expand: main@_39 (15, 0) FAR  w(0) 123357.
+	create_child: main@.preheader (14, 27) FAR 124615 U 0.01
+expand: main@.preheader (14, 0) FAR  w(0) 124615.
+	create_child: main@.preheader!_Cond (13, 27) FAR 124620 U 0.01
+expand: main@.preheader!_Cond (13, 0) FAR  w(0) 124620.
+	create_child: main@_39 (12, 27) FAR 124870 U 0.02
+expand: main@_39 (12, 0) FAR  w(0) 124870.
+	create_child: main@.preheader (11, 27) FAR 125031 U 0.01
+expand: main@.preheader (11, 0) FAR  w(0) 125031.
+	create_child: main@.preheader!_Cond (10, 27) FAR 124846 U 0.01
+expand: main@.preheader!_Cond (10, 0) FAR  w(0) 124846.
+	create_child: main@_39 (9, 27) FAR 124807 U 0.01
+expand: main@_39 (9, 0) FAR  w(0) 124807.
+	create_child: main@.preheader (8, 27) FAR 116519 U 0.01
+expand: main@.preheader (8, 0) FAR  w(0) 116519.
+	create_child: main@.preheader!_Cond (7, 27) FAR 124681 U 0.01
+expand: main@.preheader!_Cond (7, 0) FAR  w(0) 124681.
+	create_child: main@_39 (6, 27) FAR 124533 U 0.01
+expand: main@_39 (6, 0) FAR  w(0) 124533.
+	create_child: main@.preheader (5, 27) FAR 124740 U 0.01
+expand: main@.preheader (5, 0) FAR  w(0) 124740. T 0.01
+is-reachable: main@_39 (6, 0) FAR 124533
+	create_child: main@_34 (6, 27) FAR 125326 X 0.01
+is-reachable: main@_34 (6, 0) FAR 125326 F 0.01
+expand: main@_34 (6, 0) FAR  w(0) 125326. T 0.01
+is-reachable: main@.preheader!_Cond (7, 0) FAR 124681 T 0.01
+is-reachable: main@.preheader (8, 0) FAR 116519 T 0.01
+is-reachable: main@_39 (9, 0) FAR 124807
+	create_child: main@_34 (9, 27) FAR 124713 X 0.01
+is-reachable: main@_34 (9, 0) FAR 124713 T 0.01
+is-reachable: main@.preheader!_Cond (10, 0) FAR 124846 T 0.01
+is-reachable: main@.preheader (11, 0) FAR 125031 T 0.01
+is-reachable: main@_39 (12, 0) FAR 124870
+	create_child: main@_34 (12, 27) FAR 127039 X 0.01
+is-reachable: main@_34 (12, 0) FAR 127039 T 0.01
+is-reachable: main@.preheader!_Cond (13, 0) FAR 124620 T 0.01
+is-reachable: main@.preheader (14, 0) FAR 124615 T 0.01
+is-reachable: main@_39 (15, 0) FAR 123357
+	create_child: main@_34 (15, 27) FAR 128741 X 0.01
+is-reachable: main@_34 (15, 0) FAR 128741 T 0.01
+is-reachable: main@.preheader!_Cond (16, 0) FAR 124968 T 0.02
+is-reachable: main@.preheader (17, 0) FAR 124753 T 0.01
+is-reachable: main@_39 (18, 0) FAR 124901
+	create_child: main@_34 (18, 27) FAR 130884 X 0.01
+is-reachable: main@_34 (18, 0) FAR 130884 T 0.01
+is-reachable: main@.preheader!_Cond (19, 0) FAR 106616 T 0.02
+is-reachable: main@.preheader (20, 0) FAR 114726 T 0.02
+is-reachable: main@_39 (21, 0) FAR 107097
+	create_child: main@_34 (21, 27) FAR 133460 X 0.02
+is-reachable: main@_34 (21, 0) FAR 133460 F 0.02
+Deleting closed node: main@.preheader!_Cond(7, 27) 124681
+Deleting closed node: main@.preheader(8, 27) 116519
+Deleting closed node: main@_39(9, 27) 124807
+Deleting closed node: main@_34(9, 27) 124713
+Deleting closed node: main@.preheader!_Cond(10, 27) 124846
+Deleting closed node: main@.preheader(11, 27) 125031
+Deleting closed node: main@_39(12, 27) 124870
+Deleting closed node: main@_34(12, 27) 127039
+Deleting closed node: main@.preheader!_Cond(13, 27) 124620
+Deleting closed node: main@.preheader(14, 27) 124615
+Deleting closed node: main@_39(15, 27) 123357
+Deleting closed node: main@_34(15, 27) 128741
+Deleting closed node: main@.preheader!_Cond(16, 27) 124968
+Deleting closed node: main@.preheader(17, 27) 124753
+Deleting closed node: main@_39(18, 27) 124901
+Deleting closed node: main@_34(18, 27) 130884
+Deleting closed node: main@.preheader!_Cond(19, 27) 106616
+Deleting closed node: main@.preheader(20, 27) 114726
+Deleting closed node: main@_39(21, 27) 107097
+expand: main@_34 (21, 0) FAR  w(0) 133460.
+	create_child: main@_39 (20, 27) FAR 134347 U 0.01
+expand: main@_39 (20, 0) FAR  w(0) 134347.
+	create_child: main@.preheader (19, 27) FAR 136891 U 0.01
+expand: main@.preheader (19, 0) FAR  w(0) 136891.
+	create_child: main@.preheader!_Cond (18, 27) FAR 140197 U 0.06
+expand: main@.preheader!_Cond (18, 0) FAR  w(0) 140197
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.16
+expand: main@.preheader (19, 0) FAR  w(0) 136891
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.09
+expand: main@_39 (20, 0) FAR  w(0) 134347. F 0.10
+expand: main@_34 (21, 0) FAR  w(0) 133460
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.14
+expand: main@.preheader!_Cond (22, 0) FAR  w(0) 4088.
+	create_child: main@_39 (21, 27) FAR 141509 U 0.03
+expand: main@_39 (21, 0) FAR  w(0) 141509.
+	create_child: main@.preheader (20, 27) FAR 142205 U 0.02
+expand: main@.preheader (20, 0) FAR  w(0) 142205.
+	create_child: main@.preheader!_Cond (19, 27) FAR 142010 U 0.02
+expand: main@.preheader!_Cond (19, 0) FAR  w(0) 142010.
+	create_child: main@_39 (18, 27) FAR 141523 U 0.02
+expand: main@_39 (18, 0) FAR  w(0) 141523.
+	create_child: main@.preheader (17, 27) FAR 142431 U 0.01
+expand: main@.preheader (17, 0) FAR  w(0) 142431.
+	create_child: main@.preheader!_Cond (16, 27) FAR 136407 U 0.02
+expand: main@.preheader!_Cond (16, 0) FAR  w(0) 136407.
+	create_child: main@_39 (15, 27) FAR 138938 U 0.01
+expand: main@_39 (15, 0) FAR  w(0) 138938.
+	create_child: main@.preheader (14, 27) FAR 141955 U 0.01
+expand: main@.preheader (14, 0) FAR  w(0) 141955.
+	create_child: main@.preheader!_Cond (13, 27) FAR 142565 U 0.01
+expand: main@.preheader!_Cond (13, 0) FAR  w(0) 142565.
+	create_child: main@_39 (12, 27) FAR 141887 U 0.01
+expand: main@_39 (12, 0) FAR  w(0) 141887.
+	create_child: main@.preheader (11, 27) FAR 142402 U 0.01
+expand: main@.preheader (11, 0) FAR  w(0) 142402.
+	create_child: main@.preheader!_Cond (10, 27) FAR 141729 U 0.01
+expand: main@.preheader!_Cond (10, 0) FAR  w(0) 141729.
+	create_child: main@_39 (9, 27) FAR 142029 U 0.01
+expand: main@_39 (9, 0) FAR  w(0) 142029.
+	create_child: main@.preheader (8, 27) FAR 142649 U 0.01
+expand: main@.preheader (8, 0) FAR  w(0) 142649.
+	create_child: main@.preheader!_Cond (7, 27) FAR 142677 U 0.01
+expand: main@.preheader!_Cond (7, 0) FAR  w(0) 142677.
+	create_child: main@_39 (6, 27) FAR 142761 U 0.01
+expand: main@_39 (6, 0) FAR  w(0) 142761.
+	create_child: main@.preheader (5, 27) FAR 138954 U 0.01
+expand: main@.preheader (5, 0) FAR  w(0) 138954. T 0.01
+is-reachable: main@_39 (6, 0) FAR 142761
+	create_child: main@_34 (6, 27) FAR 143005 X 0.01
+is-reachable: main@_34 (6, 0) FAR 143005 T 0.01
+is-reachable: main@.preheader!_Cond (7, 0) FAR 142677 T 0.01
+is-reachable: main@.preheader (8, 0) FAR 142649 T 0.01
+is-reachable: main@_39 (9, 0) FAR 142029
+	create_child: main@_34 (9, 27) FAR 143804 X 0.01
+is-reachable: main@_34 (9, 0) FAR 143804 T 0.01
+is-reachable: main@.preheader!_Cond (10, 0) FAR 141729 T 0.01
+is-reachable: main@.preheader (11, 0) FAR 142402 T 0.01
+is-reachable: main@_39 (12, 0) FAR 141887
+	create_child: main@_34 (12, 27) FAR 144871 X 0.01
+is-reachable: main@_34 (12, 0) FAR 144871 T 0.01
+is-reachable: main@.preheader!_Cond (13, 0) FAR 142565 T 0.01
+is-reachable: main@.preheader (14, 0) FAR 141955 T 0.02
+is-reachable: main@_39 (15, 0) FAR 138938
+	create_child: main@_34 (15, 27) FAR 146360 X 0.01
+is-reachable: main@_34 (15, 0) FAR 146360 T 0.01
+is-reachable: main@.preheader!_Cond (16, 0) FAR 136407 T 0.01
+is-reachable: main@.preheader (17, 0) FAR 142431 T 0.01
+is-reachable: main@_39 (18, 0) FAR 141523
+	create_child: main@_34 (18, 27) FAR 148666 X 0.02
+is-reachable: main@_34 (18, 0) FAR 148666 F 0.01
+Deleting closed node: main@_34(6, 27) 143005
+Deleting closed node: main@.preheader!_Cond(7, 27) 142677
+Deleting closed node: main@.preheader(8, 27) 142649
+Deleting closed node: main@_39(9, 27) 142029
+Deleting closed node: main@_34(9, 27) 143804
+Deleting closed node: main@.preheader!_Cond(10, 27) 141729
+Deleting closed node: main@.preheader(11, 27) 142402
+Deleting closed node: main@_39(12, 27) 141887
+Deleting closed node: main@_34(12, 27) 144871
+Deleting closed node: main@.preheader!_Cond(13, 27) 142565
+Deleting closed node: main@.preheader(14, 27) 141955
+Deleting closed node: main@_39(15, 27) 138938
+Deleting closed node: main@_34(15, 27) 146360
+Deleting closed node: main@.preheader!_Cond(16, 27) 136407
+Deleting closed node: main@.preheader(17, 27) 142431
+Deleting closed node: main@_39(18, 27) 141523
+expand: main@_34 (18, 0) FAR  w(0) 148666.
+	create_child: main@_39 (17, 27) FAR 149311 U 0.01
+expand: main@_39 (17, 0) FAR  w(0) 149311.
+	create_child: main@.preheader (16, 27) FAR 150368 U 0.03
+expand: main@.preheader (16, 0) FAR  w(0) 150368.
+	create_child: main@.preheader!_Cond (15, 27) FAR 152139 U 0.04
+expand: main@.preheader!_Cond (15, 0) FAR  w(0) 152139.
+	create_child: main@_34 (14, 27) FAR 153443 U 0.05
+expand: main@_34 (14, 0) FAR  w(0) 153443
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.18
+expand: main@.preheader!_Cond (15, 0) FAR  w(0) 152139
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.21
+expand: main@.preheader (16, 0) FAR  w(0) 150368
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.15
+expand: main@_39 (17, 0) FAR  w(0) 149311. F 0.17
+expand: main@_34 (18, 0) FAR  w(0) 148666
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.13
+expand: main@.preheader!_Cond (19, 0) FAR  w(0) 142010.
+	create_child: main@_39 (18, 27) FAR 155417 U 0.04
+expand: main@_39 (18, 0) FAR  w(0) 155417.
+	create_child: main@.preheader (17, 27) FAR 155330 U 0.02
+expand: main@.preheader (17, 0) FAR  w(0) 155330.
+	create_child: main@.preheader!_Cond (16, 27) FAR 154648 U 0.03
+expand: main@.preheader!_Cond (16, 0) FAR  w(0) 154648.
+	create_child: main@_39 (15, 27) FAR 154686 U 0.02
+expand: main@_39 (15, 0) FAR  w(0) 154686.
+	create_child: main@.preheader (14, 27) FAR 150284 U 0.01
+expand: main@.preheader (14, 0) FAR  w(0) 150284.
+	create_child: main@.preheader!_Cond (13, 27) FAR 155319 U 0.01
+expand: main@.preheader!_Cond (13, 0) FAR  w(0) 155319.
+	create_child: main@_39 (12, 27) FAR 155025 U 0.03
+expand: main@_39 (12, 0) FAR  w(0) 155025.
+	create_child: main@.preheader (11, 27) FAR 153697 U 0.01
+expand: main@.preheader (11, 0) FAR  w(0) 153697.
+	create_child: main@.preheader!_Cond (10, 27) FAR 155202 U 0.01
+expand: main@.preheader!_Cond (10, 0) FAR  w(0) 155202.
+	create_child: main@_39 (9, 27) FAR 153624 U 0.03
+expand: main@_39 (9, 0) FAR  w(0) 153624.
+	create_child: main@.preheader (8, 27) FAR 154850 U 0.01
+expand: main@.preheader (8, 0) FAR  w(0) 154850.
+	create_child: main@.preheader!_Cond (7, 27) FAR 155048 U 0.01
+expand: main@.preheader!_Cond (7, 0) FAR  w(0) 155048.
+	create_child: main@_39 (6, 27) FAR 155247 U 0.03
+expand: main@_39 (6, 0) FAR  w(0) 155247.
+	create_child: main@.preheader (5, 27) FAR 154564 U 0.01
+expand: main@.preheader (5, 0) FAR  w(0) 154564. T 0.01
+is-reachable: main@_39 (6, 0) FAR 155247
+	create_child: main@_34 (6, 27) FAR 155599 X 0.03
+is-reachable: main@_34 (6, 0) FAR 155599 T 0.01
+is-reachable: main@.preheader!_Cond (7, 0) FAR 155048 T 0.01
+is-reachable: main@.preheader (8, 0) FAR 154850 T 0.01
+is-reachable: main@_39 (9, 0) FAR 153624
+	create_child: main@_34 (9, 27) FAR 156223 X 0.01
+is-reachable: main@_34 (9, 0) FAR 156223 T 0.01
+is-reachable: main@.preheader!_Cond (10, 0) FAR 155202 T 0.01
+is-reachable: main@.preheader (11, 0) FAR 153697 T 0.01
+is-reachable: main@_39 (12, 0) FAR 155025
+	create_child: main@_34 (12, 27) FAR 157110 X 0.01
+is-reachable: main@_34 (12, 0) FAR 157110 T 0.01
+is-reachable: main@.preheader!_Cond (13, 0) FAR 155319 T 0.02
+is-reachable: main@.preheader (14, 0) FAR 150284 T 0.01
+is-reachable: main@_39 (15, 0) FAR 154686
+	create_child: main@_34 (15, 27) FAR 158568 X 0.02
+is-reachable: main@_34 (15, 0) FAR 158568 F 0.03
+Deleting closed node: main@_34(6, 27) 155599
+Deleting closed node: main@.preheader!_Cond(7, 27) 155048
+Deleting closed node: main@.preheader(8, 27) 154850
+Deleting closed node: main@_39(9, 27) 153624
+Deleting closed node: main@_34(9, 27) 156223
+Deleting closed node: main@.preheader!_Cond(10, 27) 155202
+Deleting closed node: main@.preheader(11, 27) 153697
+Deleting closed node: main@_39(12, 27) 155025
+Deleting closed node: main@_34(12, 27) 157110
+Deleting closed node: main@.preheader!_Cond(13, 27) 155319
+Deleting closed node: main@.preheader(14, 27) 150284
+Deleting closed node: main@_39(15, 27) 154686
+expand: main@_34 (15, 0) FAR  w(0) 158568.
+	create_child: main@_39 (14, 27) FAR 159319 U 0.01
+expand: main@_39 (14, 0) FAR  w(0) 159319.
+	create_child: main@.preheader (13, 27) FAR 159937 U 0.03
+expand: main@.preheader (13, 0) FAR  w(0) 159937.
+	create_child: main@.preheader!_Cond (12, 27) FAR 160635 U 0.01
+expand: main@.preheader!_Cond (12, 0) FAR  w(0) 160635.
+	create_child: main@_39 (11, 27) FAR 161283 U 0.05
+expand: main@_39 (11, 0) FAR  w(0) 161283.
+	create_child: main@.preheader (10, 27) FAR 161612 U 0.01
+expand: main@.preheader (10, 0) FAR  w(0) 161612.
+	create_child: main@.preheader!_Cond (9, 27) FAR 162014 U 0.01
+expand: main@.preheader!_Cond (9, 0) FAR  w(0) 162014.
+	create_child: main@_39 (8, 27) FAR 162463 U 0.03
+expand: main@_39 (8, 0) FAR  w(0) 162463.
+	create_child: main@.preheader (7, 27) FAR 162437 U 0.01
+expand: main@.preheader (7, 0) FAR  w(0) 162437.
+	create_child: main@.preheader!_Cond (6, 27) FAR 162831 U 0.01
+expand: main@.preheader!_Cond (6, 0) FAR  w(0) 162831.
+	create_child: main@_39 (5, 27) FAR 162609 U 0.03
+expand: main@_39 (5, 0) FAR  w(0) 162609.
+	create_child: main@.preheader (4, 27) FAR 161442 U 0.01
+expand: main@.preheader (4, 0) FAR  w(0) 161442.
+	create_child: main@.preheader!_Cond (3, 27) FAR 162872 U 0.01
+expand: main@.preheader!_Cond (3, 0) FAR  w(0) 162872.
+	create_child: main@_39 (2, 27) FAR 163209 U 0.04
+expand: main@_39 (2, 0) FAR  w(0) 163209. F 0.11
+expand: main@.preheader!_Cond (3, 0) FAR  w(0) 162872. F 0.14
+expand: main@.preheader (4, 0) FAR  w(0) 161442. F 0.07
+expand: main@_39 (5, 0) FAR  w(0) 162609. F 0.09
+expand: main@.preheader!_Cond (6, 0) FAR  w(0) 162831. F 0.15
+expand: main@.preheader (7, 0) FAR  w(0) 162437
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.11
+expand: main@_39 (8, 0) FAR  w(0) 162463.

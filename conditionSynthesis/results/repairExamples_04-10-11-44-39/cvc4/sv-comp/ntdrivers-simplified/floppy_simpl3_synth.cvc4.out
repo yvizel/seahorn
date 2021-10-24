@@ -1,0 +1,4 @@
+./repairExamples_04-10-11-44-39/forwardSl/sv-comp/ntdrivers-simplified/floppy_simpl3_synth.cil-2_unknown.c.fwd.sl:1.9: No set-logic command was given before this point.
+./repairExamples_04-10-11-44-39/forwardSl/sv-comp/ntdrivers-simplified/floppy_simpl3_synth.cil-2_unknown.c.fwd.sl:1.9: CVC4 will make all theories available.
+./repairExamples_04-10-11-44-39/forwardSl/sv-comp/ntdrivers-simplified/floppy_simpl3_synth.cil-2_unknown.c.fwd.sl:1.9: Consider setting a stricter logic for (likely) better performance.
+./repairExamples_04-10-11-44-39/forwardSl/sv-comp/ntdrivers-simplified/floppy_simpl3_synth.cil-2_unknown.c.fwd.sl:1.9: To suppress this warning in the future use (set-logic ALL).

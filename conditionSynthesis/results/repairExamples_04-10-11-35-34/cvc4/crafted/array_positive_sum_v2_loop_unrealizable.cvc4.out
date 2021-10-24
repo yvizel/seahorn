@@ -1,0 +1,16 @@
+./repairExamples_04-10-11-35-34/forwardSl/crafted/array_positive_sum_v2_loop_unrealizable.c.fwd.sl:1.9: No set-logic command was given before this point.
+./repairExamples_04-10-11-35-34/forwardSl/crafted/array_positive_sum_v2_loop_unrealizable.c.fwd.sl:1.9: CVC4 will make all theories available.
+./repairExamples_04-10-11-35-34/forwardSl/crafted/array_positive_sum_v2_loop_unrealizable.c.fwd.sl:1.9: Consider setting a stricter logic for (likely) better performance.
+./repairExamples_04-10-11-35-34/forwardSl/crafted/array_positive_sum_v2_loop_unrealizable.c.fwd.sl:1.9: To suppress this warning in the future use (set-logic ALL).
+./repairExamples_04-10-11-35-34/forwardSl/crafted/array_positive_sum_v2_loop_unrealizable.c.fwd.sl:3.157: No implementation for default Sygus grammar of type (Array Int Int)
+
+./repairExamples_04-10-11-35-34/forwardSl/crafted/array_positive_sum_v2_loop_unrealizable.c.fwd.sl:4.177: No implementation for default Sygus grammar of type (Array Int Int)
+
+./repairExamples_04-10-11-35-34/forwardSl/crafted/array_positive_sum_v2_loop_unrealizable.c.fwd.sl:5.170: No implementation for default Sygus grammar of type (Array Int Int)
+
+./repairExamples_04-10-11-35-34/forwardSl/crafted/array_positive_sum_v2_loop_unrealizable.c.fwd.sl:6.170: No implementation for default Sygus grammar of type (Array Int Int)
+
+./repairExamples_04-10-11-35-34/forwardSl/crafted/array_positive_sum_v2_loop_unrealizable.c.fwd.sl:9.193: No implementation for default Sygus grammar of type (Array Int Int)
+
+./repairExamples_04-10-11-35-34/forwardSl/crafted/array_positive_sum_v2_loop_unrealizable.c.fwd.sl:10.186: No implementation for default Sygus grammar of type (Array Int Int)
+
