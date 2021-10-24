@@ -7,8 +7,25 @@ import pathlib
 
 
 def run_sketch(f):
-    print(f)
-    return subprocess.check_output(['sketch', f, '--fe-output-code'], timeout=600)
+    try:
+        print(f)
+        start = time.time()
+        end = time.time()
+        p = subprocess.run(['timeout', '600', 'sketch', f, '--fe-output-code', '--bnd-inbits', '10'], capture_output=True)
+        print(p)
+        o = p.stdout.decode('utf8')
+        print(f"{f} out: {o}")
+        print(f"{f} out: {o}")
+        print(f"{f} err: {p.stderr.decode('utf8')}")
+        with open('./' + str(f.with_suffix('.out')), 'w') as out:
+            out.write(f"error code: {p.returncode}\n")
+            out.write(o)
+            out.write('\n')
+            out.write(str(end - start))
+        return o
+    except:
+        with open('./' + str(f.with_suffix('.out')), 'w') as out:
+            out.write("Error")
 
 
 if __name__ == "__main__":
@@ -16,13 +33,6 @@ if __name__ == "__main__":
     parser.add_argument('dir')
     args = parser.parse_args()
     dir = pathlib.Path(args.dir)
-    start = time.time()
     fs = [f for f in dir.iterdir() if f.suffix == '.sk']
-    pool = Pool(8)
+    pool = Pool(10)
     outs = pool.map(run_sketch, fs)
-    for (f, o) in zip(fs, outs):
-        with open(f.with_suffix('.out')) as out:
-            out.write(o)
-            out.write('\n')
-            end = time.time()
-            out.write(str(end - start))
