@@ -2,6 +2,7 @@
 
 extern int nd();
 extern bool find_condition();
+extern bool g();
 
 int main() {
   int x = nd();
@@ -11,6 +12,7 @@ int main() {
 
   while (x > y) {
 	if (find_condition()){
+		g();
 		x -= z;
 	} else {
 		x -= 3;
