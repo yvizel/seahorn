@@ -5,7 +5,7 @@ extern int find_condition();
 #define N 7
 
 int FindC(char s[], char c, int k){
-  for(int i=0; i <= k; i++){
+  for(int i=0; i < k; i++){
     if (find_condition()){
       return 1;
 	}

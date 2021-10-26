@@ -3,13 +3,14 @@
 
 extern int nd();
 extern bool find_condition();
-
+extern bool g();
 
 int main() {
   int x = nd();
   int y = nd();
   int z = nd();
   if (find_condition()) {
+          g();
 	  z = x+y;
   }
   else {

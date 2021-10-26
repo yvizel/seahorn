@@ -45,7 +45,7 @@ for file in "$2"/**/*.c; do
     if [ -d "$obj" ] && [ "$toolname" != "reverseSmt2" ] && [ "$toolname" != "forwardSl" ]; then
       { [ -f "$obj/${file_without_prefix%%.*}.$toolname.res" ] && cat "$obj/${file_without_prefix%%.*}.$toolname.res" | head -n 1 | tr -d '\n' || echo -n "error"; } >> "$csv"
       echo -n "," >> $csv
-      { [ -f "$obj/${file_without_prefix%%.*}.$toolname.time" ] && cat "$obj/${file_without_prefix%%.*}.$toolname.time" | head -n 2 | tail -n 1 | tr -d '\n' || echo -n "error"; } >> "$csv"
+      { [ -f "$obj/${file_without_prefix%%.*}.$toolname.time" ] && grep real "$obj/${file_without_prefix%%.*}.$toolname.time" | tr -d '\n' | tr -d real'\t' || echo -n "error"; } >> "$csv"
       echo -n "," >> $csv
     fi
   done
