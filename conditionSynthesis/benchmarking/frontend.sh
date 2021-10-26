@@ -12,12 +12,12 @@ echo "frontend command: sea pf <file> --inline  --keep-temp --temp-dir=/tmp/repa
 echo -n "git head position: " >> "$2"
 git rev-parse HEAD >> "$2"
 for file in "$1"/**/*.c; do
-    if time sea pf "$file" --inline  --keep-temp --temp-dir=/tmp/repair/ --step=large --horn-cond-synthesis --horn-synth-cps=h1 --horn-read-file --horn-avoid-synthesis ; then
-        file_without_prefix="${file#$1}"
+    file_without_prefix="${file#$1}"
+    if docker run --rm -v "$(realpath $1)":/host seahorn/seahorn-builder:bionic-llvm10 /bin/bash -c "time sea pf "/host/$file_without_prefix" --inline  --keep-temp --temp-dir=/tmp/repair/ --step=large --horn-cond-synthesis --horn-synth-cps=h1 --horn-read-file --horn-avoid-synthesis && cp reverse.smt2 nonhorn.sl /host/" ; then
         echo "making directory $3/${file_without_prefix%/*}"
         mkdir -p "$3/${file_without_prefix%/*}"
-        mv reverse.smt2 "$3/$file_without_prefix.reverse.smt2"
+        mv "$1/reverse.smt2" "$3/$file_without_prefix.reverse.smt2"
         mkdir -p "$4/${file_without_prefix%/*}"
-        mv nonhorn.sl "$4/$file_without_prefix.fwd.sl"
+        mv "$1/nonhorn.sl" "$4/$file_without_prefix.fwd.sl"
     fi
 done

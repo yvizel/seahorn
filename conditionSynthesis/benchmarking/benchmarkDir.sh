@@ -19,5 +19,5 @@ fi
 new_dir_name="$2/${1##*/}_$(date '+%d-%m-%H-%M-%S')"
 if mkdir "$new_dir_name" && ./frontend.sh "$1" "$new_dir_name/settings.out" "$new_dir_name/reverseSmt2" "$new_dir_name/forwardSl"; then
   { [[ "$3" == "cosyn" ]] || [[ "$3" == "all" ]] ;} && ./runCosyn.sh "$new_dir_name/reverseSmt2" "$new_dir_name/settings.out" "$new_dir_name/cosyn" "$4"
-  { [[ "$3" == "cvc5" ]] || [[ "$3" == "all" ]] ;} &&  ./runCVC5.sh "$new_dir_name/forwardSl" "$new_dir_name/settings.out" "$new_dir_name/cvc5" "$(( 1000*$4 ))"
+  { [[ "$3" == "cvc5" ]] || [[ "$3" == "all" ]] ;} &&  ./runCVC5.sh "$new_dir_name/forwardSl" "$new_dir_name/settings.out" "$new_dir_name/cvc5" "$4"
 fi
