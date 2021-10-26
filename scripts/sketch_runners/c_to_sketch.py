@@ -103,16 +103,22 @@ class SketchVisitor(pycparser.c_ast.NodeVisitor):
 if __name__ == '__main__':
     arg_parser = ArgumentParser()
     arg_parser.add_argument('input')
+    arg_parser.add_argument('--out', default=None)
     args = arg_parser.parse_args()
+
 
     pycparser_util_loc = os.path.dirname(__file__) + '/'
 
     with open(args.input, 'r') as f:
         text = f.read()
-    with open(args.input + ".c", 'w') as f:
+    new_in_path = args.input
+    if args.out is not None:
+        new_in_path = os.path.join(args.out, os.path.basename(args.input))
+    in_file = new_in_path + ".c"
+    with open(in_file, 'w') as f:
         f.write(text.replace("sassert", "assert"))
 
-    in_file = args.input + ".c"
+    
     ast = pycparser.parse_file(in_file, use_cpp=True,
             cpp_path='gcc',
             cpp_args=['-E', r'-Iinclude', r'-I{}utils/fake_libc_include'.format(pycparser_util_loc)])
@@ -221,8 +227,8 @@ int getND(){
     //it produces a new non-deterministic value.
     return getND_private(NDCNT++);
 }"""
-
-    with open(in_file + '.sk', 'w') as f:
+    out_path = in_file + '.sk'
+    with open(out_path, 'w') as f:
         for coord in coords:
             new_text = text + '\n' + '\n'.join([g for gs in generators for g in gs])
             new_text += '\n' + int_generator_template.format(coord, types_coord_to_params[(coord, 'int')], types_coord_to_params[(coord, 'int')].replace("int ", ""))
