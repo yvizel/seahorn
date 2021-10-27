@@ -10,7 +10,7 @@
 
 echo "running frontend (translation) on file: $1"
 file_without_prefix="${1#$4}"
-if docker run --rm -v "$(realpath $4)":/host seahorn/seahorn-builder:bionic-llvm10 /bin/bash -c "time sea pf "/host/$file_without_prefix" --inline  --keep-temp --temp-dir=/tmp/repair/ --step=large --horn-cond-synthesis --horn-synth-cps=h1 --horn-read-file --horn-avoid-synthesis && cp reverse.smt2 '/host/$(basename -- $1).reverse.smt2' && cp nonhorn.sl '/host/$(basename -- $1).fwd.sl'"; then
+if docker run --rm -v "$(realpath $4)":/host seahorn/seahorn-builder:bionic-llvm10 /bin/bash -c "time sea pf "/host/$file_without_prefix" --inline -o0 --keep-temp --temp-dir=/tmp/repair/ --step=large --horn-cond-synthesis --horn-synth-cps=h1 --horn-read-file --horn-avoid-synthesis && cp reverse.smt2 '/host/$(basename -- $1).reverse.smt2' && cp nonhorn.sl '/host/$(basename -- $1).fwd.sl'"; then
     mkdir -p "$2/${file_without_prefix%/*}"
     mv "$4/$(basename -- $1).reverse.smt2" "$2/${file_without_prefix%%.*}.reverse.smt2"
     mkdir -p "$3/${file_without_prefix%/*}"

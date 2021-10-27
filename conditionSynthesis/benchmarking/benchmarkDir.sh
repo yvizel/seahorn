@@ -25,7 +25,7 @@ mkdir "$new_dir_name" || exit 1
 settings_file="$new_dir_name/settings.out"
 echo -n "git head position: " > "$settings_file"
 git rev-parse HEAD >> "$settings_file"
-echo "frontend command: sea pf <file> --inline  --keep-temp --temp-dir=/tmp/repair/ --step=large --horn-cond-synthesis --horn-synth-cps=h1 --horn-read-file --horn-avoid-synthesis" >> "$settings_file"
+echo "frontend command: sea pf <file> --inline -o0 --keep-temp --temp-dir=/tmp/repair/ --step=large --horn-cond-synthesis --horn-synth-cps=h1 --horn-read-file --horn-avoid-synthesis" >> "$settings_file"
 echo "backend command: z3 <reversefile.smt2> -T:$4 -v:1 fp.xform.slice=false fp.xform.inline_linear=false fp.xform.inline_eager=false" >> "$settings_file"
 echo "cvc5 command: timeout "$4"s cvc5 <fwdfile.sl>" >> "$settings_file"
 
