@@ -164,7 +164,6 @@ bool HornSolver::runOnModule(Module &M, HornifyModule &hm) {
 
   // Load the Horn clause database
   auto &db = hm.getHornClauseDB();
-  outs() << "load DB to Z3\n";
   db.loadZFixedPoint(fp, SkipConstraints);
 
   if (UseInvariant == solver_detail::INACTIVE) {
@@ -203,10 +202,10 @@ bool HornSolver::runOnModule(Module &M, HornifyModule &hm) {
     if (!fences.empty()) {
       std::string name = fences.back();
       fences.pop_back();
+      outs() << "insert fence at " << name << '\n';
 //      Function *fence = M.getFunction(name);
 //      if (fence) {
 //        fence->print(outs());
-//        outs() << "insert fence at " << name << '\n';
 //        fence->deleteBody();
 //        fence->setLinkage(llvm::GlobalValue::InternalLinkage);
 //        LLVMContext &ctx = M.getContext();

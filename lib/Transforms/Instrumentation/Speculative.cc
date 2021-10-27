@@ -105,6 +105,7 @@ bool Speculative::insertSpeculation(IRBuilder<> &B, BranchInst &BI) {
     if (!fence) {
       fence = Function::Create(fenceType, Function::ExternalLinkage, fenceName, M);
       fence->addFnAttr(Attribute::NoInline);
+      fence->addFnAttr(Attribute::NoUnwind);
       BasicBlock *bb = BasicBlock::Create(ctx, "entry", fence);
       B.SetInsertPoint(bb);
       Value *nd = B.CreateCall(m_ndBoolFn);
@@ -112,15 +113,6 @@ bool Speculative::insertSpeculation(IRBuilder<> &B, BranchInst &BI) {
     }
     fences[i] = fence;
   }
-
-//  AttrBuilder AttrB;
-//  AttrB.addAttribute(Attribute::NoInline);
-//  AttrB.addAttribute(Attribute::NoUnwind);
-//  AttributeList as = AttributeList::get(ctx, AttributeList::FunctionIndex, AttrB);
-//  Function *thenFence = dyn_cast<Function>(
-//      M->getOrInsertFunction("fence_" + std::to_string(m_numOfFences++), as, m_BoolTy).getCallee());
-//  Function *elseFence = dyn_cast<Function>(
-//      M->getOrInsertFunction("fence_" + std::to_string(m_numOfFences++), as, m_BoolTy).getCallee());
 
   outs() << "Here...\n";
 
@@ -338,7 +330,7 @@ void Speculative::getSpecForInst_rec(Instruction *I, std::set<Value*> & spec, st
 	if (BranchInst *BI = dyn_cast<BranchInst>(Pred->getTerminator())) {
 		if (m_bb2spec.find(BI) != m_bb2spec.end())
 			spec.insert(m_bb2spec[BI]);
-		getSpecForInst_rec(BI, spec, processed);
+                getSpecForInst_rec(BI, spec, processed);
 	}
   }
 }
@@ -361,8 +353,8 @@ void Speculative::addAssertions(Function &F, IRBuilder<> &B , std::vector<Instru
 	  std::set<Value*> S;
 	  for (Value *coi : COI) {
 		  getSpecForInst(cast<Instruction>(coi), S);
-	  }
-	  outs() << "COI size: " << COI.size() << " and SPEC size: " << S.size() << "\n";
+          }
+          outs() << "COI size: " << COI.size() << " and SPEC size: " << S.size() << "\n";
 	  if (S.size() > 0)
 	      insertSpecCheck(F, B, *I, S);
 	}
