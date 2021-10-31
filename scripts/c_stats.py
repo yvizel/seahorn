@@ -56,7 +56,7 @@ if __name__ == '__main__':
     stater.visit(ast)
     outjson = stater.dump()
     if args.out is None:
-        print(json.dumps(outjson))
+        print(json.dumps(outjson, sort_keys=True, indent=4))
     else:
         with open(args.out, 'w') as f:
-            json.dump(outjson, f)
+            json.dump(outjson, f, sort_keys=True, indent=4)
