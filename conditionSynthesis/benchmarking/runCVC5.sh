@@ -12,7 +12,7 @@ echo "running cvc5 on file: $1"
 sed -i 's/@/v/g' "$1" # sygus format does not allow variable names begining with @
 file_without_prefix="${1#$4}"
 mkdir -p "$2/${file_without_prefix%/*}"
-{ time timeout "$3"s cvc5 "$1" >"$2/${file_without_prefix%%.*}.cvc5.out" 2>&1; } 2>"$2/${file_without_prefix%%.*}.cvc5.time"
+{ time timeout "$3"s cvc5 "$1" --sygus-add-const-grammar >"$2/${file_without_prefix%%.*}.cvc5.out" 2>&1; } 2>"$2/${file_without_prefix%%.*}.cvc5.time"
 { if [ "$(grep -c "define-fun" "$2/${file_without_prefix%%.*}.cvc5.out")" -gt 0 ]; then
   echo "realizable"
 elif [ "$(grep -c "conjecture may be infeasible" "$2/${file_without_prefix%%.*}.cvc5.out")" -gt 0 ]; then

@@ -185,29 +185,30 @@ Expr HornifyConditionSynthesis::createJoinPredicate(
   bind::fname(bind::fname(pred2))->dump();
   errs() << "===========\n";
 
-  std::ofstream myfile ("names.txt");
-    if (myfile.is_open())
-    {
-      myfile << joinName;
-      for (auto & arg : joinArgs){
-    	  myfile << " " << *(bind::fname(bind::fname(arg)));
-      }
-      myfile << "\n";
-      myfile << bind::fname(bind::fname(pred1));
-      for (auto it = pred1->args_begin()+1 ; it != pred1->args_end() ; it++){
-    	  Expr arg = *it;
-    	  myfile << " " << *(bind::fname(bind::fname(arg)));
-      }
-      myfile << "\n";
-      myfile << bind::fname(bind::fname(pred2));
-      for (auto it = pred2->args_begin()+1 ; it != pred2->args_end() ; it++){
-    	  Expr arg = *it;
-    	  myfile << " " << *(bind::fname(bind::fname(arg)));
-      }
-      myfile << "\n";
-      myfile.close();
+  std::ofstream myfile("names.txt", std::ofstream::app);
+  if (myfile.is_open())
+  {
+    myfile << "condition location:\n";
+    myfile << joinName;
+    for (auto & arg : joinArgs){
+      myfile << " " << *(bind::fname(bind::fname(arg)));
     }
-    else errs() << "Unable to write to names file";
+    myfile << "\n";
+    myfile << bind::fname(bind::fname(pred1));
+    for (auto it = pred1->args_begin()+1 ; it != pred1->args_end() ; it++){
+      Expr arg = *it;
+      myfile << " " << *(bind::fname(bind::fname(arg)));
+    }
+    myfile << "\n";
+    myfile << bind::fname(bind::fname(pred2));
+    for (auto it = pred2->args_begin()+1 ; it != pred2->args_end() ; it++){
+      Expr arg = *it;
+      myfile << " " << *(bind::fname(bind::fname(arg)));
+    }
+    myfile << "\n";
+    myfile.close();
+  }
+  else errs() << "Unable to write to names file";
 
   return joinPost;
 }
@@ -462,6 +463,7 @@ void HornifyConditionSynthesis::runOnFunction(Function &F) {
   //m_db.buildIndexes();
   reverseDB();
 
+  std::ofstream myfile("names.txt"); //clear names file if exists
   for (auto & br : branches) {
     Expr tr1 = extractTransitionRelation(br._ruleThen, m_db)->last();
     Expr tr2 = extractTransitionRelation(br._ruleElse, m_db)->last();

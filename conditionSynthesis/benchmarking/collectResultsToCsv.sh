@@ -18,10 +18,10 @@ if [ ! -d "$2" ]; then
 fi
 
 csv="$1/results_$(basename -- "$1").csv"
-echo -n "filename,expected_result,backward_exists,forward_exists" > "$csv"
+echo -n "filename,expected_result,backward_exists,forward_exists,num_conditions" > "$csv"
 for obj in "$1"/*; do
   toolname="$(basename -- "$obj")"
-  if [ -d "$obj" ] && [ "$toolname" != "reverseSmt2" ] && [ "$toolname" != "forwardSl" ]; then
+  if [ -d "$obj" ] && [ "$toolname" != "reverseSmt2" ] && [ "$toolname" != "forwardSl" ] && [ "$toolname" != "names" ]; then
     echo -n ",$toolname"_res >>"$csv"
     echo -n ",$toolname"_time >>"$csv"
   fi
@@ -37,13 +37,15 @@ for file in "$2"/**/*.c; do
   echo -n "$expected_result," >>"$csv" # expected_result
   [ -f "$1/reverseSmt2/${file_without_prefix%%.*}.reverse.smt2" ] && echo -n "yes," >>"$csv" || echo -n "no," >>"$csv" # backward_exists
   [ -f "$1/forwardSl/${file_without_prefix%%.*}.fwd.sl" ] && echo -n "yes," >>"$csv" || echo -n "no," >>"$csv"         # forward_exists
+  [ -f "$1/names/${file_without_prefix%%.*}.names.txt" ] && grep "condition location:" "$1/names/${file_without_prefix%%.*}.names.txt" | wc -l | tr -d '\n' >>"$csv" || echo -n "error" >>"$csv"         # #conditions (after inlining)
+  echo -n "," >> "$csv"
   for obj in "$1"/*; do
     toolname="$(basename -- "$obj")"
-    if [ -d "$obj" ] && [ "$toolname" != "reverseSmt2" ] && [ "$toolname" != "forwardSl" ]; then
+    if [ -d "$obj" ] && [ "$toolname" != "reverseSmt2" ] && [ "$toolname" != "forwardSl" ] && [ "$toolname" != "names" ]; then
       { [ -f "$obj/${file_without_prefix%%.*}.$toolname.res" ] && cat "$obj/${file_without_prefix%%.*}.$toolname.res" | head -n 1 | tr -d '\n' || echo -n "error"; } >> "$csv"
-      echo -n "," >> $csv
+      echo -n "," >> "$csv"
       { [ -f "$obj/${file_without_prefix%%.*}.$toolname.time" ] && grep real "$obj/${file_without_prefix%%.*}.$toolname.time" | tr -d '\n' | tr -d real'\t' || echo -n "error"; } >> "$csv"
-      echo -n "," >> $csv
+      echo -n "," >> "$csv"
     fi
   done
   echo "" >>"$csv"
