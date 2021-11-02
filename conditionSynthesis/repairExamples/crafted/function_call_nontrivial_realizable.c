@@ -1,7 +1,8 @@
 #include <seahorn/seahorn.h>
 
 extern int nd();
-extern void g();
+extern void g1();
+extern void g2();
 extern bool find_condition();
 int f(int x);
 
@@ -19,10 +20,10 @@ int main() {
 
 int f(int x) {
   if (find_condition()){
-	g();
+	g1();
 	return x-3;
   } else {
-	g();
+	g2();
 	return x+7;
   }
 }
