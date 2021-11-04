@@ -143,10 +143,10 @@ def bool_generator_template(base_bool):
         if(t2 == 1) {{return y == z;}}
         if(t2 == 2) {{return y <= z;}}
     }}
-    bit x = {{| ??(1) """ + base_gen_temp + """|}};
+    bool x = {{| ??(1) """ + base_gen_temp + """|}};
     if(t == 3){{return x;}}
     if(t == 4){{return !x;}}
-    bit y = {{| ??(1) """ + base_gen_temp + """|}};
+    bool y = {{| ??(1) """ + base_gen_temp + """|}};
     if(t == 5){{return x&&y;}}
     if(t == 6){{return x||y;}}
 }}"""
@@ -193,7 +193,7 @@ if __name__ == '__main__':
     args = arg_parser.parse_args()
 
 
-    pycparser_util_loc = Path(__file__).parent.name + '/'
+    pycparser_util_loc = str(Path(__file__).parent.absolute()) + '/'
 
     with open(args.input, 'r') as f:
         text = f.read().replace("sassert", "assert")
@@ -283,9 +283,9 @@ if __name__ == '__main__':
         
         int_params, bool_params, full_params = get_params(types_coord_to_params, coord, prefix='sk_')
         if typ == 'int':
-            return int_generator_template((coord, 'int') in types_coord_to_params).format(coord, int_params, int_params.replace("int", ""))
+            return int_generator_template(types_coord_to_params[(coord, 'int')]).format(coord, int_params, int_params.replace("int", ""))
         elif typ == 'bool':
-            return bool_generator_template((coord, 'bool') in types_coord_to_params).format(coord, full_params, int_params.replace("int", ""), bool_params.replace("bool", ""))
+            return bool_generator_template(types_coord_to_params[(coord, 'bool')]).format(coord, full_params, int_params.replace("int", ""), bool_params.replace("bool", ""))
         else:
             raise Exception("Unknown type: " + typ)
 
