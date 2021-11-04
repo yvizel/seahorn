@@ -488,21 +488,15 @@ void HornifyConditionSynthesis::runOnFunction(Function &F) {
         boolop::land(br._ruleThen.head(), br._ruleElse.head()));
 
     m_synthDb.addRule(synth);
-  }
 
-  for (auto & br : branches) {
-
-    Expr synthPred = createForwardSynthPredicate(
-		bind::fname(br._src),
-        br._ruleThen.body()->left());
-
+    // add rules for forward non-horn translation
     HornRule thenRule(br._ruleThen.vars(),
                       br._ruleThen.head(),
-                     boolop::land(synthPred, br._ruleThen.body()));
+                     boolop::land(join, br._ruleThen.body()));
 
     HornRule elseRule(br._ruleElse.vars(),
                       br._ruleElse.head(),
-                     boolop::land(boolop::lneg(synthPred), br._ruleElse.body()));
+                     boolop::land(boolop::lneg(join), br._ruleElse.body()));
 
     m_db.addRule(thenRule);
     m_db.addRule(elseRule);
