@@ -15,7 +15,6 @@ def run_sketch(f):
         print(p)
         o = p.stdout.decode('utf8')
         print(f"{f} out: {o}")
-        print(f"{f} out: {o}")
         print(f"{f} err: {p.stderr.decode('utf8')}")
         with open('./' + str(f.with_suffix('.out')), 'w') as out:
             out.write(f"error code: {p.returncode}\n")
