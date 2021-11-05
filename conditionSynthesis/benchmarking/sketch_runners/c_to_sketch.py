@@ -192,7 +192,7 @@ if __name__ == '__main__':
     arg_parser.add_argument('--out', default=None)
     args = arg_parser.parse_args()
 
-
+    root_path = str(Path(__file__).parent.parent.parent.parent.absolute()) + '/'
     pycparser_util_loc = str(Path(__file__).parent.absolute()) + '/'
 
     with open(args.input, 'r') as f:
@@ -207,7 +207,7 @@ if __name__ == '__main__':
         # parse the file
         ast = pycparser.parse_file(f.name, use_cpp=True,
             cpp_path='gcc',
-            cpp_args=['-E', r'-Iinclude', r'-I{}utils/fake_libc_include'.format(pycparser_util_loc)])
+            cpp_args=['-E', r'-I{}include'.format(root_path), r'-I{}utils/fake_libc_include'.format(pycparser_util_loc)])
         cleaner = CleanerVisitor(ast)
         cleaner.visit(ast)
         for r in cleaner.to_remove:
