@@ -1,5 +1,6 @@
 #include "seahorn/seahorn.h"
 extern bool find_condition();
+extern void g();
 extern void __VERIFIER_error() __attribute__ ((__noreturn__));
 
 extern char __VERIFIER_nondet_char(void);
@@ -424,10 +425,11 @@ int ssl3_accept(int initial_state )
                                                                             s__init_num = 0;
                                                                             goto switch_1_break;
                                                                             switch_1_8448: 
-                                                                            if (num1 > 0L) {
+                                                                            if (find_condition()) {
+                                                                              g();
                                                                               s__rwstate = 2;
                                                                               num1 = tmp___8;
-                                                                              if (find_condition()) {
+                                                                              if (num1 <= 0L) {
                                                                                 ret = -1;
                                                                                 goto end;
                                                                               }

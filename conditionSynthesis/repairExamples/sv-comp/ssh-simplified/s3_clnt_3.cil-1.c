@@ -1,5 +1,6 @@
 #include "seahorn/seahorn.h"
 extern bool find_condition();
+extern void g();
 extern void __VERIFIER_error() __attribute__ ((__noreturn__));
 
 extern int __VERIFIER_nondet_int();
@@ -219,7 +220,7 @@ int ssl3_connect(int initial_state )
 
                                                                         }
                                                                         s__type = 4096;
-                                                                        if ((unsigned long )s__init_buf___0 == (unsigned long )((void *)0)) {
+                                                                        if (find_condition()) {
                                                                           buf = __VERIFIER_nondet_int();
                                                                           if ((unsigned long )buf == (unsigned long )((void *)0)) {
                                                                             ret = -1;
@@ -227,7 +228,7 @@ int ssl3_connect(int initial_state )
                                                                           } else {
 
                                                                           }
-                                                                          if (find_condition()) {
+                                                                          if (! tmp___3) {
                                                                             ret = -1;
                                                                             goto end;
                                                                           } else {

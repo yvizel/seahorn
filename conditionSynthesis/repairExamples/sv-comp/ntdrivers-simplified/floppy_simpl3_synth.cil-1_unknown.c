@@ -1,5 +1,6 @@
 #include "seahorn/seahorn.h"
 extern bool find_condition();
+extern void g();
 extern void __VERIFIER_error() __attribute__ ((__noreturn__));
 
 extern char __VERIFIER_nondet_char(void);
@@ -497,6 +498,7 @@ int FloppyStartDevice(int DeviceObject , int Irp )
     }
   } else {
     if (find_condition()) { //    if (compRegistered != 0) {
+      g();
       {
       errorFn();
       }

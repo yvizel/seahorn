@@ -242,7 +242,7 @@ int ssl3_accept(int initial_state )
                                                                             }
                                                                             s__init_num = 0;
                                                                             if (s__state != 12292) {
-                                                                              if (find_condition()) {
+                                                                              if (! tmp___5) {
                                                                                 ret = -1;
                                                                                 goto end;
                                                                               }
@@ -594,7 +594,7 @@ int ssl3_accept(int initial_state )
         }
       }
     }
-    if (! s__s3__tmp__reuse_message) {
+    if (find_condition()) {
       if (! skip) {
         if (s__debug) {
           ret = __VERIFIER_nondet_int();

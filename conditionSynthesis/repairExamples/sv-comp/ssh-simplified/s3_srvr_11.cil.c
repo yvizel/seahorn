@@ -1,5 +1,6 @@
 #include "seahorn/seahorn.h"
 extern bool find_condition();
+extern void g();
 extern void __VERIFIER_error() __attribute__ ((__noreturn__));
 
 extern char __VERIFIER_nondet_char(void);
@@ -89,6 +90,7 @@ int ssl3_accept(int initial_state )
   }
   s__in_handshake ++;
   if (find_condition()) {
+    g();
     if (tmp___2 + 16384) {
 
     }

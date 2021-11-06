@@ -1,5 +1,6 @@
 #include "seahorn/seahorn.h"
 extern bool find_condition();
+extern void g();
 extern void __VERIFIER_error() __attribute__ ((__noreturn__));
 
 extern char __VERIFIER_nondet_char(void);
@@ -381,12 +382,13 @@ int ssl3_connect(int initial_state )
                                                                         s__state = 4528;
                                                                         s__init_num = 0;
                                                                         s__session__cipher = s__s3__tmp__new_cipher;
-                                                                        if (s__s3__tmp__new_compression == 0) {
+                                                                        if (find_condition()) {
+                                                                          g();
                                                                           s__session__compress_meth = 0;
                                                                         } else {
                                                                           s__session__compress_meth = s__s3__tmp__new_compression__id;
                                                                         }
-                                                                        if (find_condition()) {
+                                                                        if (! tmp___7) {
                                                                           ret = -1;
                                                                           goto end;
                                                                         }

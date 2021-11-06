@@ -1,5 +1,6 @@
 #include "seahorn/seahorn.h"
 extern bool find_condition();
+extern void g();
 extern void __VERIFIER_error() __attribute__ ((__noreturn__));
 
 extern char __VERIFIER_nondet_char(void);
@@ -81,6 +82,7 @@ int ssl3_accept(int initial_state )
   skip = 0;
   got_new_session = 0;
   if (find_condition()) {
+    g();
     cb = s__info_callback;
   } else {
     if (s__ctx__info_callback != 0) {

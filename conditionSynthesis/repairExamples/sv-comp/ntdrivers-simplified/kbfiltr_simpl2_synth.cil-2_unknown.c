@@ -1,5 +1,6 @@
 #include "seahorn/seahorn.h"
 extern bool find_condition();
+extern void g();
 extern void __VERIFIER_error() __attribute__ ((__noreturn__));
 
 extern char __VERIFIER_nondet_char(void);
@@ -713,6 +714,7 @@ int KbFilter_Power(int DeviceObject , int Irp )
           if (0) {
             switch_5_2: ;
             if (find_condition()) { //            if (powerType == DevicePowerState) {
+              g();
               devExt__DeviceState = powerState__DeviceState;
             }
             switch_5_1: ;
