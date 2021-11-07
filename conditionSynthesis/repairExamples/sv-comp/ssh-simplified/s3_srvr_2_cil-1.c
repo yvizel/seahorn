@@ -1,6 +1,5 @@
 #include "seahorn/seahorn.h"
 extern bool find_condition();
-extern void g();
 extern void __VERIFIER_error() __attribute__ ((__noreturn__));
 
 extern char __VERIFIER_nondet_char(void);
@@ -288,6 +287,10 @@ int ssl3_accept(int initial_state )
                                                                             ret = __VERIFIER_nondet_int();
                                                                             if (blastFlag == 1) {
                                                                               blastFlag = 2;
+                                                                            } else {
+                                                                              if (find_condition()) {
+                                                                                blastFlag = 4;
+                                                                              }
                                                                             }
                                                                             if (ret <= 0) {
                                                                               goto end;
@@ -442,8 +445,7 @@ int ssl3_accept(int initial_state )
                                                                             if (ret <= 0) {
                                                                               goto end;
                                                                             }
-                                                                            if (find_condition()) {
-                                                                              g();
+                                                                            if (ret == 2) {
                                                                               s__state = 8466;
                                                                             } else {
                                                                               ret = __VERIFIER_nondet_int();
@@ -495,10 +497,6 @@ int ssl3_accept(int initial_state )
                                                                             ret = __VERIFIER_nondet_int();
                                                                             if (blastFlag == 2) {
                                                                               blastFlag = 3;
-                                                                            } else {
-                                                                              if (blastFlag == 3) {
-                                                                                blastFlag = 4;
-                                                                              }
                                                                             }
                                                                             if (ret <= 0) {
                                                                               goto end;

@@ -1,6 +1,5 @@
 #include "seahorn/seahorn.h"
 extern bool find_condition();
-extern void g();
 extern void __VERIFIER_error() __attribute__ ((__noreturn__));
 
 extern char __VERIFIER_nondet_char(void);
@@ -307,6 +306,9 @@ int ssl3_accept(int initial_state )
                                                                               skip = 1;
                                                                             } else {
                                                                               ret = __VERIFIER_nondet_int();
+                                                                              if (blastFlag == 2) {
+                                                                                blastFlag = 3;
+                                                                              }
                                                                               if (ret <= 0) {
                                                                                 goto end;
                                                                               }
@@ -341,7 +343,7 @@ int ssl3_accept(int initial_state )
                                                                                     if (__cil_tmp58 + 2UL) {
                                                                                       {
                                                                                       __cil_tmp59 = (unsigned long )s__s3__tmp__new_cipher__algo_strength;
-                                                                                      if (__cil_tmp59 + 4UL) {
+                                                                                      if (find_condition()) {
                                                                                         tmp___7 = 512;
                                                                                       } else {
                                                                                         tmp___7 = 1024;
@@ -352,6 +354,9 @@ int ssl3_accept(int initial_state )
                                                                                       if (__cil_tmp60 > tmp___7) {
                                                                                         _L___0: 
                                                                                         ret = __VERIFIER_nondet_int();
+                                                                                        if (blastFlag == 3) {
+                                                                                          blastFlag = 4;
+                                                                                        }
                                                                                         if (ret <= 0) {
                                                                                           goto end;
                                                                                         }
@@ -399,6 +404,9 @@ int ssl3_accept(int initial_state )
                                                                                   _L___1: 
                                                                                   s__s3__tmp__cert_request = 1;
                                                                                   ret = __VERIFIER_nondet_int();
+                                                                                  if (blastFlag == 4) {
+                                                                                    blastFlag = 5;
+                                                                                  }
                                                                                   if (ret <= 0) {
                                                                                     goto end;
                                                                                   }
@@ -439,14 +447,19 @@ int ssl3_accept(int initial_state )
                                                                             switch_1_8576: ;
                                                                             switch_1_8577: 
                                                                             ret = __VERIFIER_nondet_int();
+                                                                            if (blastFlag == 5) {
+                                                                              blastFlag = 6;
+                                                                            }
                                                                             if (ret <= 0) {
                                                                               goto end;
                                                                             }
-                                                                            if (find_condition()) {
-                                                                              g();
+                                                                            if (ret == 2) {
                                                                               s__state = 8466;
                                                                             } else {
                                                                               ret = __VERIFIER_nondet_int();
+                                                                              if (blastFlag == 6) {
+                                                                                blastFlag = 7;
+                                                                              }
                                                                               if (ret <= 0) {
                                                                                 goto end;
                                                                               }
@@ -457,6 +470,9 @@ int ssl3_accept(int initial_state )
                                                                             switch_1_8592: ;
                                                                             switch_1_8593: 
                                                                             ret = __VERIFIER_nondet_int();
+                                                                            if (blastFlag == 7) {
+                                                                              blastFlag = 8;
+                                                                            }
                                                                             if (ret <= 0) {
                                                                               goto end;
                                                                             }
@@ -466,6 +482,9 @@ int ssl3_accept(int initial_state )
                                                                             switch_1_8608: ;
                                                                             switch_1_8609: 
                                                                             ret = __VERIFIER_nondet_int();
+                                                                            if (blastFlag == 8) {
+                                                                              blastFlag = 9;
+                                                                            }
                                                                             if (ret <= 0) {
                                                                               goto end;
                                                                             }
@@ -475,6 +494,25 @@ int ssl3_accept(int initial_state )
                                                                             switch_1_8640: ;
                                                                             switch_1_8641: 
                                                                             ret = __VERIFIER_nondet_int();
+                                                                            if (blastFlag == 9) {
+                                                                              blastFlag = 10;
+                                                                            } else {
+                                                                              if (blastFlag == 12) {
+                                                                                blastFlag = 13;
+                                                                              } else {
+                                                                                if (blastFlag == 15) {
+                                                                                  blastFlag = 16;
+                                                                                } else {
+                                                                                  if (blastFlag == 18) {
+                                                                                    blastFlag = 19;
+                                                                                  } else {
+                                                                                    if (blastFlag == 21) {
+                                                                                      goto ERROR;
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                              }
+                                                                            }
                                                                             if (ret <= 0) {
                                                                               goto end;
                                                                             }
@@ -493,11 +531,19 @@ int ssl3_accept(int initial_state )
                                                                               goto end;
                                                                             }
                                                                             ret = __VERIFIER_nondet_int();
-                                                                            if (blastFlag == 2) {
-                                                                              blastFlag = 3;
+                                                                            if (blastFlag == 10) {
+                                                                              blastFlag = 11;
                                                                             } else {
-                                                                              if (blastFlag == 3) {
-                                                                                blastFlag = 4;
+                                                                              if (blastFlag == 13) {
+                                                                                blastFlag = 14;
+                                                                              } else {
+                                                                                if (blastFlag == 16) {
+                                                                                  blastFlag = 17;
+                                                                                } else {
+                                                                                  if (blastFlag == 19) {
+                                                                                    blastFlag = 20;
+                                                                                  }
+                                                                                }
                                                                               }
                                                                             }
                                                                             if (ret <= 0) {
@@ -513,8 +559,20 @@ int ssl3_accept(int initial_state )
                                                                             switch_1_8672: ;
                                                                             switch_1_8673: 
                                                                             ret = __VERIFIER_nondet_int();
-                                                                            if (blastFlag == 4) {
-                                                                              goto ERROR;
+                                                                            if (blastFlag == 11) {
+                                                                              blastFlag = 12;
+                                                                            } else {
+                                                                              if (blastFlag == 14) {
+                                                                                blastFlag = 15;
+                                                                              } else {
+                                                                                if (blastFlag == 17) {
+                                                                                  blastFlag = 18;
+                                                                                } else {
+                                                                                  if (blastFlag == 20) {
+                                                                                    blastFlag = 21;
+                                                                                  }
+                                                                                }
+                                                                              }
                                                                             }
                                                                             if (ret <= 0) {
                                                                               goto end;

@@ -1,6 +1,5 @@
 #include "seahorn/seahorn.h"
 extern bool find_condition();
-extern void g();
 extern void __VERIFIER_error() __attribute__ ((__noreturn__));
 
 extern char __VERIFIER_nondet_char(void);
@@ -32,6 +31,12 @@ int ObReferenceObjectByHandle(int Handle , int DesiredAccess , int ObjectType , 
 int PsCreateSystemThread(int ThreadHandle , int DesiredAccess , int ObjectAttributes ,
                          int ProcessHandle , int ClientId , int StartRoutine , int StartContext );
 int ZwClose(int Handle );
+int FloppyCreateClose(int DeviceObject , int Irp );
+int FloppyQueueRequest(int DisketteExtension , int Irp ) ;
+int FloppyDeviceControl(int DeviceObject , int Irp );
+int FlCheckFormatParameters(int DisketteExtension , int FormatParameters );
+int FloppyQueueRequest(int DisketteExtension , int Irp );
+void errorFn(void) ;
 void IofCompleteRequest(int Irp , int PriorityBoost );
 extern int __VERIFIER_nondet_int();
 int FloppyThread  ;
@@ -58,15 +63,6 @@ int compRegistered  ;
 int lowerDriverReturn  ;
 int setEventCalled  ;
 int customIrp  ;
-
-void errorFn(void) 
-{ 
-
-  {
-  ERROR: __VERIFIER_error();
-  return;
-}
-}
 
 void _BLAST_init(void) 
 { 
@@ -150,7 +146,7 @@ int FlQueueIrpToThread(int Irp , int DisketteExtension )
     }
     }
   }
- // Irp__Tail__Overlay__CurrentStackLocation__Control |= 1;
+  //Irp__Tail__Overlay__CurrentStackLocation__Control |= 1;
   if (pended == 0) {
     pended = 1;
   } else {
@@ -398,7 +394,7 @@ int FloppyPnp(int DeviceObject , int Irp )
                                               0);
                     }
                   }
-                  if (disketteExtension__ArcName__Length != 0) {
+                  if (find_condition()) { //                  if (disketteExtension__ArcName__Length != 0) {
                     {
                     IoDeleteSymbolicLink(disketteExtension__ArcName);
                     }
@@ -479,7 +475,7 @@ int FloppyStartDevice(int DeviceObject , int Irp )
   int __cil_tmp43 ;
   int __cil_tmp44 ;
   int __cil_tmp45 ;
-  int __cil_tmp46 ;
+  int __cil_tmp46 = __VERIFIER_nondet_int() ;
   int __cil_tmp47 ;
   int __cil_tmp48 ;
   int __cil_tmp49 ;
@@ -497,8 +493,7 @@ int FloppyStartDevice(int DeviceObject , int Irp )
     errorFn();
     }
   } else {
-    if (find_condition()) { //    if (compRegistered != 0) {
-      g();
+    if (compRegistered != 0) {
       {
       errorFn();
       }
@@ -524,10 +519,10 @@ int FloppyStartDevice(int DeviceObject , int Irp )
   {
   fdcInfo__BufferCount = 0;
   fdcInfo__BufferSize = 0;
-  __cil_tmp43 = 3080;
-  __cil_tmp44 = 458752;
-  __cil_tmp45 = 461832;
-  __cil_tmp46 = 461835;
+  //__cil_tmp43 = 770 << 2;
+  //__cil_tmp44 = 7 << 16;
+  //__cil_tmp45 = __cil_tmp44 | __cil_tmp43;
+  //__cil_tmp46 = __cil_tmp45 | 3;
   ntStatus = FlFdcDeviceIo(disketteExtension__TargetObject, __cil_tmp46, fdcInfo);
   }
   if (ntStatus >= 0) {
@@ -538,7 +533,7 @@ int FloppyStartDevice(int DeviceObject , int Irp )
         ntStatus = FlAcpiConfigureFloppy(disketteExtension, fdcInfo);
         }
         if (disketteExtension__DriveType == 4) {
-          //__cil_tmp47 = uninf1();
+         // __cil_tmp47 = 1 << fdcInfo__PeripheralNumber;
           //disketteExtension__PerpendicularMode |= __cil_tmp47;
         }
       } else {
@@ -547,7 +542,7 @@ int FloppyStartDevice(int DeviceObject , int Irp )
     } else {
       _L: 
       if (disketteExtension__DriveType == 4) {
-        //__cil_tmp48 = uninf1();
+       // __cil_tmp48 = 1 << fdcInfo__PeripheralNumber;
         //disketteExtension__PerpendicularMode |= __cil_tmp48;
       }
       InterfaceType = 0;
@@ -576,7 +571,7 @@ int FloppyStartDevice(int DeviceObject , int Irp )
     if (ntStatus >= 0) {
       if (KUSER_SHARED_DATA__AlternativeArchitecture_NEC98x86 != 0) {
         disketteExtension__DeviceUnit = fdcInfo__UnitNumber;
-        //disketteExtension__DriveOnValue = fdcInfo__UnitNumber;
+        disketteExtension__DriveOnValue = fdcInfo__UnitNumber;
       } else {
         disketteExtension__DeviceUnit = fdcInfo__PeripheralNumber;
         //__cil_tmp49 = 16 << fdcInfo__PeripheralNumber;
@@ -693,7 +688,7 @@ int main(void)
  NP  = 0;
  DC  = 0;
  SKIP1  = 0;
- SKIP2  = 0;
+ SKIP2 = 0 ;
  MPR1  = 0;
  MPR3  = 0;
  IPC  = 0;
@@ -732,20 +727,53 @@ int main(void)
     }
     int tmp_ndt_1;
     tmp_ndt_1 = __VERIFIER_nondet_int();
-    if (tmp_ndt_1 == 3) {
-      goto switch_2_3;
+    if (tmp_ndt_1 == 0) {
+      goto switch_2_0;
     } else {
-      goto switch_2_default;
-      if (0) {
-        switch_2_3: 
-        {
-        status = FloppyPnp(devobj, pirp);
-        }
-        goto switch_2_break;
-        switch_2_default: ;
-        return (-1);
+      int tmp_ndt_2;
+      tmp_ndt_2 = __VERIFIER_nondet_int();
+      if (tmp_ndt_2 == 1) {
+        goto switch_2_1;
       } else {
-        switch_2_break: ;
+        int tmp_ndt_3;
+        tmp_ndt_3 = __VERIFIER_nondet_int();
+        if (tmp_ndt_3 == 2) {
+          goto switch_2_2;
+        } else {
+          int tmp_ndt_4;
+          tmp_ndt_4 = __VERIFIER_nondet_int();
+          if (tmp_ndt_4 == 3) {
+            goto switch_2_3;
+          } else {
+            goto switch_2_default;
+            if (0) {
+              switch_2_0: 
+              {
+              status = FloppyCreateClose(devobj, pirp);
+              }
+              goto switch_2_break;
+              switch_2_1: 
+              {
+              status = FloppyCreateClose(devobj, pirp);
+              }
+              goto switch_2_break;
+              switch_2_2: 
+              {
+              status = FloppyDeviceControl(devobj, pirp);
+              }
+              goto switch_2_break;
+              switch_2_3: 
+              {
+              status = FloppyPnp(devobj, pirp);
+              }
+              goto switch_2_break;
+              switch_2_default: ;
+              return (-1);
+            } else {
+              switch_2_break: ;
+            }
+          }
+        }
       }
     }
   }
@@ -783,7 +811,7 @@ int main(void)
             _L___0: 
             if (pended == 1) {
               if (status != 259) {
-                errorFn();
+                status = 0;
               }
             } else {
               if (s == DC) {
@@ -817,9 +845,9 @@ int IoBuildDeviceIoControlRequest(int IoControlCode , int DeviceObject , int Inp
 
   {
   customIrp = 1;
-  int tmp_ndt_2;
-  tmp_ndt_2 = __VERIFIER_nondet_int();
-  if (tmp_ndt_2 == 0) {
+  int tmp_ndt_5;
+  tmp_ndt_5 = __VERIFIER_nondet_int();
+  if (tmp_ndt_5 == 0) {
     goto switch_3_0;
   } else {
     goto switch_3_default;
@@ -838,9 +866,9 @@ int IoDeleteSymbolicLink(int SymbolicLinkName )
 {
 
   {
-  int tmp_ndt_3;
-  tmp_ndt_3 = __VERIFIER_nondet_int();
-  if (tmp_ndt_3 == 0) {
+  int tmp_ndt_6;
+  tmp_ndt_6 = __VERIFIER_nondet_int();
+  if (tmp_ndt_6 == 0) {
     goto switch_4_0;
   } else {
     goto switch_4_default;
@@ -861,9 +889,9 @@ int IoQueryDeviceDescription(int BusType , int BusNumber , int ControllerType , 
 {
 
   {
-  int tmp_ndt_4;
-  tmp_ndt_4 = __VERIFIER_nondet_int();
-  if (tmp_ndt_4 == 0) {
+  int tmp_ndt_7;
+  tmp_ndt_7 = __VERIFIER_nondet_int();
+  if (tmp_ndt_7 == 0) {
     goto switch_5_0;
   } else {
     goto switch_5_default;
@@ -883,9 +911,9 @@ int IoRegisterDeviceInterface(int PhysicalDeviceObject , int InterfaceClassGuid 
 {
 
   {
-  int tmp_ndt_5;
-  tmp_ndt_5 = __VERIFIER_nondet_int();
-  if (tmp_ndt_5 == 0) {
+  int tmp_ndt_8;
+  tmp_ndt_8 = __VERIFIER_nondet_int();
+  if (tmp_ndt_8 == 0) {
     goto switch_6_0;
   } else {
     goto switch_6_default;
@@ -904,9 +932,9 @@ int IoSetDeviceInterfaceState(int SymbolicLinkName , int Enable )
 {
 
   {
-  int tmp_ndt_6;
-  tmp_ndt_6 = __VERIFIER_nondet_int();
-  if (tmp_ndt_6 == 0) {
+  int tmp_ndt_9;
+  tmp_ndt_9 = __VERIFIER_nondet_int();
+  if (tmp_ndt_9 == 0) {
     goto switch_7_0;
   } else {
     goto switch_7_default;
@@ -956,14 +984,14 @@ int IofCallDriver(int DeviceObject , int Irp )
     }
     }
   }
-  int tmp_ndt_12;
-  tmp_ndt_12 = __VERIFIER_nondet_int();
-  if (tmp_ndt_12 == 0) {
+  int tmp_ndt_10;
+  tmp_ndt_10 = __VERIFIER_nondet_int();
+  if (tmp_ndt_10 == 0) {
     goto switch_8_0;
   } else {
-    int tmp_ndt_7;
-    tmp_ndt_7 = __VERIFIER_nondet_int();
-    if (tmp_ndt_7 == 1) {
+    int tmp_ndt_11;
+    tmp_ndt_11 = __VERIFIER_nondet_int();
+    if (tmp_ndt_11 == 1) {
       goto switch_8_1;
     } else {
       goto switch_8_default;
@@ -1055,9 +1083,9 @@ int KeWaitForSingleObject(int Object , int WaitReason , int WaitMode , int Alert
       }
     }
   }
-  int tmp_ndt_8;
-  tmp_ndt_8 = __VERIFIER_nondet_int();
-  if (tmp_ndt_8 == 0) {
+  int tmp_ndt_12;
+  tmp_ndt_12 = __VERIFIER_nondet_int();
+  if (tmp_ndt_12 == 0) {
     goto switch_9_0;
   } else {
     goto switch_9_default;
@@ -1077,9 +1105,9 @@ int ObReferenceObjectByHandle(int Handle , int DesiredAccess , int ObjectType , 
 {
 
   {
-  int tmp_ndt_9;
-  tmp_ndt_9 = __VERIFIER_nondet_int();
-  if (tmp_ndt_9 == 0) {
+  int tmp_ndt_13;
+  tmp_ndt_13 = __VERIFIER_nondet_int();
+  if (tmp_ndt_13 == 0) {
     goto switch_10_0;
   } else {
     goto switch_10_default;
@@ -1099,9 +1127,9 @@ int PsCreateSystemThread(int ThreadHandle , int DesiredAccess , int ObjectAttrib
 {
 
   {
-  int tmp_ndt_10;
-  tmp_ndt_10 = __VERIFIER_nondet_int();
-  if (tmp_ndt_10 == 0) {
+  int tmp_ndt_14;
+  tmp_ndt_14 = __VERIFIER_nondet_int();
+  if (tmp_ndt_14 == 0) {
     goto switch_11_0;
   } else {
     goto switch_11_default;
@@ -1120,9 +1148,9 @@ int ZwClose(int Handle )
 {
 
   {
-  int tmp_ndt_11;
-  tmp_ndt_11 = __VERIFIER_nondet_int();
-  if (tmp_ndt_11 == 0) {
+  int tmp_ndt_15;
+  tmp_ndt_15 = __VERIFIER_nondet_int();
+  if (tmp_ndt_15 == 0) {
     goto switch_12_0;
   } else {
     goto switch_12_default;
@@ -1135,5 +1163,468 @@ int ZwClose(int Handle )
 
     }
   }
+}
+}
+int FloppyCreateClose(int DeviceObject , int Irp ) 
+{ int Irp__IoStatus__Status ;
+  int Irp__IoStatus__Information ;
+
+  {
+  {
+  myStatus = 0;
+  Irp__IoStatus__Status = 0;
+  Irp__IoStatus__Information = 1;
+  IofCompleteRequest(Irp, 0);
+  }
+  return (0);
+}
+}
+int FloppyQueueRequest(int DisketteExtension , int Irp ) ;
+int FloppyDeviceControl(int DeviceObject , int Irp ) 
+{ int disketteExtension__HoldNewRequests = __VERIFIER_nondet_int() ;
+  int disketteExtension__IsRemoved = __VERIFIER_nondet_int() ;
+  int Irp__IoStatus__Information ;
+  int disketteExtension__IsStarted = __VERIFIER_nondet_int() ;
+  int Irp__CurrentLocation = __VERIFIER_nondet_int() ;
+  int Irp__Tail__Overlay__CurrentStackLocation = __VERIFIER_nondet_int() ;
+  int disketteExtension__TargetObject = __VERIFIER_nondet_int() ;
+  int irpSp__Parameters__DeviceIoControl__OutputBufferLength = __VERIFIER_nondet_int() ;
+  int sizeof__MOUNTDEV_NAME = __VERIFIER_nondet_int() ;
+  int Irp__AssociatedIrp__SystemBuffer = __VERIFIER_nondet_int() ;
+  int mountName__NameLength ;
+  int disketteExtension__DeviceName__Length = __VERIFIER_nondet_int() ;
+  int sizeof__USHORT = __VERIFIER_nondet_int() ;
+  int disketteExtension__InterfaceString__Buffer = __VERIFIER_nondet_int() ;
+  int uniqueId__UniqueIdLength ;
+  int disketteExtension__InterfaceString__Length = __VERIFIER_nondet_int() ;
+  int sizeof__MOUNTDEV_UNIQUE_ID = __VERIFIER_nondet_int() ;
+  int irpSp__Parameters__DeviceIoControl__InputBufferLength = __VERIFIER_nondet_int() ;
+  int sizeof__FORMAT_PARAMETERS = __VERIFIER_nondet_int() ;
+  int irpSp__Parameters__DeviceIoControl__IoControlCode___1 = __VERIFIER_nondet_int() ;
+  int sizeof__FORMAT_EX_PARAMETERS = __VERIFIER_nondet_int() ;
+  int formatExParameters__FormatGapLength = __VERIFIER_nondet_int() ;
+  int formatExParameters__SectorsPerTrack = __VERIFIER_nondet_int() ;
+  int sizeof__DISK_GEOMETRY = __VERIFIER_nondet_int() ;
+  int Irp__IoStatus__Status___0 ;
+  int disketteExtension = __VERIFIER_nondet_int() ;
+  int ntStatus ;
+  int outputBufferLength ;
+  int lowestDriveMediaType = __VERIFIER_nondet_int() ;
+  int highestDriveMediaType = __VERIFIER_nondet_int() ;
+  int formatExParametersSize = __VERIFIER_nondet_int() ;
+  int formatExParameters ;
+  int tmp ;
+  int mountName ;
+  int uniqueId ;
+  int tmp___0 ;
+  int __cil_tmp39 ;
+  int __cil_tmp40 ;
+  int __cil_tmp41 = __VERIFIER_nondet_int() ;
+  int __cil_tmp42 ;
+  int __cil_tmp43 ;
+  int __cil_tmp44 = __VERIFIER_nondet_int() ;
+  int __cil_tmp45 = __VERIFIER_nondet_int() ;
+  int __cil_tmp46 ;
+  int __cil_tmp47 ;
+  int __cil_tmp48 ;
+  int __cil_tmp49 ;
+  int __cil_tmp50 = __VERIFIER_nondet_int() ;
+  int __cil_tmp51 ;
+  int __cil_tmp52 ;
+  int __cil_tmp53 ;
+  int __cil_tmp54 ;
+  int __cil_tmp55 = __VERIFIER_nondet_int() ;
+  int __cil_tmp56 ;
+  int __cil_tmp57 ;
+  int __cil_tmp58 ;
+  int __cil_tmp59 ;
+  int __cil_tmp60 = __VERIFIER_nondet_int() ;
+  int __cil_tmp61 ;
+  int __cil_tmp62 ;
+  int __cil_tmp63 ;
+  int __cil_tmp64 ;
+  int __cil_tmp65 = __VERIFIER_nondet_int() ;
+  int __cil_tmp66 = __VERIFIER_nondet_int() ;
+  int __cil_tmp67 ;
+  int __cil_tmp68 ;
+  int __cil_tmp69 = __VERIFIER_nondet_int() ;
+  int __cil_tmp70 ;
+  int __cil_tmp71 ;
+  int __cil_tmp72 = __VERIFIER_nondet_int() ;
+  int __cil_tmp73 ;
+  int __cil_tmp74 ;
+  int __cil_tmp75 = __VERIFIER_nondet_int() ;
+  int __cil_tmp76 ;
+  int __cil_tmp77 ;
+  int __cil_tmp78 = __VERIFIER_nondet_int() ;
+  int __cil_tmp79 ;
+  int __cil_tmp80 ;
+  int __cil_tmp81 = __VERIFIER_nondet_int() ;
+  int __cil_tmp82 ;
+  int __cil_tmp83 ;
+  int __cil_tmp84 ;
+  int __cil_tmp85 ;
+  int __cil_tmp86 ;
+  int __cil_tmp87 ;
+  int __cil_tmp88 = __VERIFIER_nondet_int() ;
+  int __cil_tmp89 ;
+  int __cil_tmp90 ;
+  long __cil_tmp91 ;
+
+  {
+  if (disketteExtension__HoldNewRequests) {
+    {
+    //__cil_tmp39 = 3 << 14;
+    //__cil_tmp40 = 50 << 16;
+    //__cil_tmp41 = __cil_tmp40 | __cil_tmp39;
+    if (irpSp__Parameters__DeviceIoControl__IoControlCode___1 != __cil_tmp41) {
+      {
+      ntStatus = FloppyQueueRequest(disketteExtension, Irp);
+      }
+      return (ntStatus);
+    }
+    }
+  }
+  if (disketteExtension__IsRemoved) {
+    {
+    Irp__IoStatus__Information = 0;
+    Irp__IoStatus__Status___0 = -1073741738;
+    myStatus = -1073741738;
+    IofCompleteRequest(Irp, 0);
+    }
+    return (-1073741738);
+  }
+  if (! disketteExtension__IsStarted) {
+    if (s == NP) {
+      s = SKIP1;
+    } else {
+      {
+      errorFn();
+      }
+    }
+    {
+    Irp__CurrentLocation ++;
+    Irp__Tail__Overlay__CurrentStackLocation ++;
+    tmp = IofCallDriver(disketteExtension__TargetObject, Irp);
+    }
+    return (tmp);
+  }
+  {
+  //__cil_tmp42 = 2 << 2;
+  //__cil_tmp43 = 77 << 16;
+  //__cil_tmp44 = __cil_tmp43 | __cil_tmp42;
+  if (irpSp__Parameters__DeviceIoControl__IoControlCode___1 == __cil_tmp44) {
+    goto switch_13_exp_0;
+  } else {
+    {
+    //__cil_tmp45 = 77 << 16;
+    if (irpSp__Parameters__DeviceIoControl__IoControlCode___1 == __cil_tmp45) {
+      goto switch_13_exp_1;
+    } else {
+      {
+      //__cil_tmp46 = 6 << 2;
+      //__cil_tmp47 = 3 << 14;
+      //__cil_tmp48 = 7 << 16;
+      //__cil_tmp49 = __cil_tmp48 | __cil_tmp47;
+      //__cil_tmp50 = __cil_tmp49 | __cil_tmp46;
+      if (irpSp__Parameters__DeviceIoControl__IoControlCode___1 == __cil_tmp50) {
+        goto switch_13_exp_2;
+      } else {
+        {
+       // __cil_tmp51 = 11 << 2;
+        //__cil_tmp52 = 3 << 14;
+        //__cil_tmp53 = 7 << 16;
+       // __cil_tmp54 = __cil_tmp53 | __cil_tmp52;
+        //__cil_tmp55 = __cil_tmp54 | __cil_tmp51;
+        if (irpSp__Parameters__DeviceIoControl__IoControlCode___1 == __cil_tmp55) {
+          goto switch_13_exp_3;
+        } else {
+          {
+         // __cil_tmp56 = 512 << 2;
+         // __cil_tmp57 = 1 << 14;
+         // __cil_tmp58 = 7 << 16;
+          //__cil_tmp59 = __cil_tmp58 | __cil_tmp57;
+         // __cil_tmp60 = __cil_tmp59 | __cil_tmp56;
+          if (irpSp__Parameters__DeviceIoControl__IoControlCode___1 == __cil_tmp60) {
+            goto switch_13_exp_4;
+          } else {
+            {
+            //__cil_tmp61 = 512 << 2;
+            //__cil_tmp62 = 1 << 14;
+           // __cil_tmp63 = 45 << 16;
+            //__cil_tmp64 = __cil_tmp63 | __cil_tmp62;
+            //__cil_tmp65 = __cil_tmp64 | __cil_tmp61;
+            if (irpSp__Parameters__DeviceIoControl__IoControlCode___1 == __cil_tmp65) {
+              goto switch_13_exp_5;
+            } else {
+              {
+              //__cil_tmp66 = 7 << 16;
+              if (irpSp__Parameters__DeviceIoControl__IoControlCode___1 == __cil_tmp66) {
+                goto switch_13_exp_6;
+              } else {
+                {
+                //__cil_tmp67 = 9 << 2;
+                //__cil_tmp68 = 7 << 16;
+                //__cil_tmp69 = __cil_tmp68 | __cil_tmp67;
+                if (irpSp__Parameters__DeviceIoControl__IoControlCode___1 == __cil_tmp69) {
+                  goto switch_13_exp_7;
+                } else {
+                  {
+                  //__cil_tmp70 = 768 << 2;
+                  //__cil_tmp71 = 7 << 16;
+                  //__cil_tmp72 = __cil_tmp71 | __cil_tmp70;
+                  if (irpSp__Parameters__DeviceIoControl__IoControlCode___1 == __cil_tmp72) {
+                    goto switch_13_exp_8;
+                  } else {
+                    {
+                    //__cil_tmp73 = 768 << 2;
+                   // __cil_tmp74 = 45 << 16;
+                    //__cil_tmp75 = __cil_tmp74 | __cil_tmp73;
+                    if (irpSp__Parameters__DeviceIoControl__IoControlCode___1 == __cil_tmp75) {
+                      goto switch_13_exp_9;
+                    } else {
+                      {
+                      //__cil_tmp76 = 3 << 2;
+                      //__cil_tmp77 = 77 << 16;
+                      //__cil_tmp78 = __cil_tmp77 | __cil_tmp76;
+                      if (irpSp__Parameters__DeviceIoControl__IoControlCode___1 == __cil_tmp78) {
+                        goto switch_13_exp_10;
+                      } else {
+                        {
+                        //__cil_tmp79 = 248 << 2;
+                        //__cil_tmp80 = 7 << 16;
+                        //__cil_tmp81 = __cil_tmp80 | __cil_tmp79;
+                        if (irpSp__Parameters__DeviceIoControl__IoControlCode___1 == __cil_tmp81) {
+                          goto switch_13_exp_11;
+                        } else {
+                          goto switch_13_default;
+                          if (0) {
+                            switch_13_exp_0: ;
+                            if (irpSp__Parameters__DeviceIoControl__OutputBufferLength < sizeof__MOUNTDEV_NAME) {
+                              ntStatus = -1073741811;
+                              goto switch_13_break;
+                            }
+                            mountName = Irp__AssociatedIrp__SystemBuffer;
+                            mountName__NameLength = disketteExtension__DeviceName__Length;
+                            {
+                            __cil_tmp82 = sizeof__USHORT + mountName__NameLength;
+                            if (irpSp__Parameters__DeviceIoControl__OutputBufferLength < __cil_tmp82) {
+                              ntStatus = -2147483643;
+                              Irp__IoStatus__Information = sizeof__MOUNTDEV_NAME;
+                              goto switch_13_break;
+                            }
+                            }
+                            ntStatus = 0;
+                            Irp__IoStatus__Information = sizeof__USHORT + mountName__NameLength;
+                            goto switch_13_break;
+                            switch_13_exp_1: ;
+                            if (! disketteExtension__InterfaceString__Buffer) {
+                              ntStatus = -1073741811;
+                              goto switch_13_break;
+                            } else {
+                              if (irpSp__Parameters__DeviceIoControl__OutputBufferLength < sizeof__MOUNTDEV_UNIQUE_ID) {
+                                ntStatus = -1073741811;
+                                goto switch_13_break;
+                              }
+                            }
+                            uniqueId = Irp__AssociatedIrp__SystemBuffer;
+                            uniqueId__UniqueIdLength = disketteExtension__InterfaceString__Length;
+                            {
+                            __cil_tmp83 = sizeof__USHORT + uniqueId__UniqueIdLength;
+                            if (irpSp__Parameters__DeviceIoControl__OutputBufferLength < __cil_tmp83) {
+                              ntStatus = -2147483643;
+                              Irp__IoStatus__Information = sizeof__MOUNTDEV_UNIQUE_ID;
+                              goto switch_13_break;
+                            }
+                            }
+                            ntStatus = 0;
+                            Irp__IoStatus__Information = sizeof__USHORT + uniqueId__UniqueIdLength;
+                            goto switch_13_break;
+                            switch_13_exp_2: ;
+                            switch_13_exp_3: ;
+                            if (irpSp__Parameters__DeviceIoControl__InputBufferLength < sizeof__FORMAT_PARAMETERS) {
+                              ntStatus = -1073741811;
+                              goto switch_13_break;
+                            }
+                            {
+                            tmp___0 = FlCheckFormatParameters(disketteExtension, Irp__AssociatedIrp__SystemBuffer);
+                            }
+                            if (! tmp___0) {
+                              ntStatus = -1073741811;
+                              goto switch_13_break;
+                            }
+                            {
+                            //__cil_tmp84 = 11 << 2;
+                            //__cil_tmp85 = 3 << 14;
+                            //__cil_tmp86 = 7 << 16;
+                            //__cil_tmp87 = __cil_tmp86 | __cil_tmp85;
+                            //__cil_tmp88 = __cil_tmp87 | __cil_tmp84;
+                            if (irpSp__Parameters__DeviceIoControl__IoControlCode___1 == __cil_tmp88) {
+                              if (irpSp__Parameters__DeviceIoControl__InputBufferLength < sizeof__FORMAT_EX_PARAMETERS) {
+                                ntStatus = -1073741811;
+                                goto switch_13_break;
+                              }
+                              formatExParameters = Irp__AssociatedIrp__SystemBuffer;
+                              if (irpSp__Parameters__DeviceIoControl__InputBufferLength < formatExParametersSize) {
+                                ntStatus = -1073741811;
+                                goto switch_13_break;
+                              } else {
+                                if (formatExParameters__FormatGapLength >= 256) {
+                                  ntStatus = -1073741811;
+                                  goto switch_13_break;
+                                } else {
+                                  if (formatExParameters__SectorsPerTrack >= 256) {
+                                    ntStatus = -1073741811;
+                                    goto switch_13_break;
+                                  }
+                                }
+                              }
+                            }
+                            }
+                            switch_13_exp_4: ;
+                            switch_13_exp_5: ;
+                            switch_13_exp_6: ;
+                            switch_13_exp_7: 
+                            {
+                            ntStatus = FlQueueIrpToThread(Irp, disketteExtension);
+                            }
+                            goto switch_13_break;
+                            switch_13_exp_8: ;
+                            switch_13_exp_9: 
+                            outputBufferLength = irpSp__Parameters__DeviceIoControl__OutputBufferLength;
+                            if (outputBufferLength < sizeof__DISK_GEOMETRY) {
+                              ntStatus = -1073741789;
+                              goto switch_13_break;
+                            }
+                            ntStatus = 0;
+                            {
+                            __cil_tmp89 = highestDriveMediaType - lowestDriveMediaType;
+                            __cil_tmp90 = __cil_tmp89 + 1;
+                            if (outputBufferLength < __cil_tmp90) {
+                              ntStatus = -2147483643;
+                            }
+                            }
+                            goto switch_13_break;
+                            switch_13_exp_10: ;
+                            switch_13_exp_11: ;
+                            switch_13_default: ;
+                            if (s == NP) {
+                              s = SKIP1;
+                            } else {
+                              {
+                              errorFn();
+                              }
+                            }
+                            {
+                            Irp__CurrentLocation ++;
+                            Irp__Tail__Overlay__CurrentStackLocation ++;
+                            ntStatus = IofCallDriver(disketteExtension__TargetObject,
+                                                     Irp);
+                            }
+                            return (ntStatus);
+                          } else {
+                            switch_13_break: ;
+                          }
+                        }
+                        }
+                      }
+                      }
+                    }
+                    }
+                  }
+                  }
+                }
+                }
+              }
+              }
+            }
+            }
+          }
+          }
+        }
+        }
+      }
+      }
+    }
+    }
+  }
+  }
+  {
+  __cil_tmp91 = (long )ntStatus;
+  if (__cil_tmp91 != 259L) {
+    {
+    Irp__IoStatus__Status___0 = ntStatus;
+    myStatus = ntStatus;
+    IofCompleteRequest(Irp, 0);
+    }
+  }
+  }
+  return (ntStatus);
+}
+}
+int FlCheckFormatParameters(int DisketteExtension , int FormatParameters ) 
+{ int DriveMediaConstants__driveMediaType__MediaType = __VERIFIER_nondet_int() ;
+  int FormatParameters__MediaType = __VERIFIER_nondet_int() ;
+  int FAKE_CONDITION = __VERIFIER_nondet_int() ;
+
+  {
+  if (DriveMediaConstants__driveMediaType__MediaType != FormatParameters__MediaType) {
+    return (0);
+  } else {
+    if (FAKE_CONDITION) {
+      return (0);
+    } else {
+      return (1);
+    }
+  }
+}
+}
+int FloppyQueueRequest(int DisketteExtension , int Irp ) 
+{ int Irp__IoStatus__Status ;
+  int Irp__IoStatus__Information ;
+  int Irp__Tail__Overlay__CurrentStackLocation__Control ;
+  int ntStatus ;
+  int FAKE_CONDITION = __VERIFIER_nondet_int() ;
+
+  {
+  PagingReferenceCount ++;
+  if (PagingReferenceCount == 1) {
+
+  }
+  if (FAKE_CONDITION) {
+    {
+    Irp__IoStatus__Status = -1073741536;
+    myStatus = -1073741536;
+    Irp__IoStatus__Information = 0;
+    IofCompleteRequest(Irp, 0);
+    PagingReferenceCount --;
+    }
+    if (PagingReferenceCount == 0) {
+
+    }
+    ntStatus = -1073741536;
+  } else {
+    Irp__IoStatus__Status = 259;
+    myStatus = 259;
+    //Irp__Tail__Overlay__CurrentStackLocation__Control |= 1;
+    if (pended == 0) {
+      pended = 1;
+    } else {
+      {
+      errorFn();
+      }
+    }
+    ntStatus = 259;
+  }
+  return (ntStatus);
+}
+}
+
+void errorFn(void) 
+{ 
+
+  {
+  ERROR: __VERIFIER_error();
+  return;
 }
 }
