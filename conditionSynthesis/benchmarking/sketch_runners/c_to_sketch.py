@@ -192,8 +192,8 @@ if __name__ == '__main__':
     arg_parser.add_argument('--out', default=None)
     args = arg_parser.parse_args()
 
-    root_path = str(Path(__file__).parent.parent.parent.parent.absolute()) + '/'
-    pycparser_util_loc = str(Path(__file__).parent.absolute()) + '/'
+    root_path = str(Path(__file__).absolute().parent.parent.parent.parent) + '/'
+    pycparser_util_loc = str(Path(__file__).absolute().parent) + '/'
 
     with open(args.input, 'r') as f:
         text = f.read().replace("sassert", "assert")
