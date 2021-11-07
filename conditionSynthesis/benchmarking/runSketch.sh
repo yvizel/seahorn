@@ -29,7 +29,10 @@ outfile="$without_suffix.out"
 timefile="$without_suffix.time"
 
 docker run --rm -v "$(realpath $out_dir)":/host poware/sketch:1.7.6 /bin/bash -c \
- "{ time timout $3s sketch '/host/$skfile' --fe-output-code --fe-output-prog-name sketch_$without_suffix --bnd-inbits 10 > '/host/$resfile' 2> '/host/$outfile' ; } 2> '/host/$timefile'"
+ "{ time timout $3s sketch '/host/$skfile' --fe-output-code --fe-output-prog-name sketch_$without_suffix --bnd-inbits 10 > '/host/$resfile.tmp' 2> '/host/$outfile.tmp' ; } 2> '/host/$timefile.tmp'"
+cp "$out_dir/$resfile.tmp" "$out_dir/$resfile"
+cp "$out_dir/$outfile.tmp" "$out_dir/$outfile"
+cp "$out_dir/$timefile.tmp" "$out_dir/$timefile"
 
 if ls $out_dir/sketch*.c* 1> /dev/null 2>&1; then
   echo "realizable" > "$out_dir/$resfile"
