@@ -14,22 +14,26 @@ if [ ! -z "$4" ] && [[ ! "$4" =~ */ ]] ; then
   basedir="$basedir"/
 fi
 
+echo "Basedir: $basedir"
+echo "File: $1"
+
 echo "running sketch on file: $1"
-c_file_without_prefix="${1#$4}"
+c_file_without_prefix="${1#$basedir}"
 out_dir="$2/${c_file_without_prefix%/*}"
 mkdir -p "$out_dir"
 
 # this will create the out file at the same location as the input
 python3 sketch_runners/c_to_sketch.py "$1" --out "$out_dir"
-without_suffix=$(basename c_file_without_prefix)
+without_suffix=$(basename $c_file_without_prefix)
 without_suffix=${without_suffix%.*}
 skfile="$without_suffix.sk"
 resfile="$without_suffix.res"
 outfile="$without_suffix.out"
 timefile="$without_suffix.time"
 
+echo "Outdir: $out_dir"
 docker run --rm -v "$(realpath $out_dir)":/host poware/sketch:1.7.6 /bin/bash -c \
- "{ time timout $3s sketch '/host/$skfile' --fe-output-code --fe-output-prog-name sketch_$without_suffix --bnd-inbits 10 > '/host/$resfile.tmp' 2> '/host/$outfile.tmp' ; } 2> '/host/$timefile.tmp'"
+ "{ time timeout $3s sketch '/host/$skfile' --fe-output-code --fe-output-prog-name sketch_$without_suffix --bnd-inbits 10 > '/host/$resfile.tmp' 2> '/host/$outfile.tmp' ; } 2> '/host/$timefile.tmp'"
 cp "$out_dir/$resfile.tmp" "$out_dir/$resfile"
 cp "$out_dir/$outfile.tmp" "$out_dir/$outfile"
 cp "$out_dir/$timefile.tmp" "$out_dir/$timefile"
