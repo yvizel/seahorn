@@ -25,3 +25,5 @@
 /.cache/
 .ccls
 .ccls-root
+
+conditionSynthesis/benchmarking/sketch_res

@@ -8,24 +8,35 @@
 # time (secs) in file.sketch.time, and complete output in file.sketch.out. 
 # All files are saved in $2, under the same directory structure as in $4.
 
+# add trailing / to $4 if missing
+basedir="$4"
+if [ ! -z "$4" ] && [ "$4" != */ ] ; then
+  basedir="$basedir"/
+fi
+
 echo "running sketch on file: $1"
 c_file_without_prefix="${1#$4}"
-file_without_prefix="${c_file_without_prefix%.c}.sk"
-mkdir -p "$2/${file_without_prefix%/*}"
+out_dir="$2/${c_file_without_prefix%/*}"
+mkdir -p "$out_dir"
+
 # this will create the out file at the same location as the input
-python3 conditionSynthesis/benchmarking/sketch_runners/c_to_sketch.py "$c_file_without_prefix"
-docker run --rm -v "$(realpath $4)":/host poware/sketch:1.7.6 \
-/bin/bash -c "{ time timout $3s sketch '/host/$file_without_prefix' --fe-output-code --fe-output-dir $2/ --fe-output-prog-name sketch_$(basename -- $file_without_prefix) --bnd-inbits 10 > '/host/${file_without_prefix%%.*}.sketch.res' 2> '/host/${file_without_prefix%%.*}.sketch.out' ; } 2> '/host/${file_without_prefix%%.*}.sketch.time' && \
-chmod a+w '/host/${file_without_prefix%%.*}.sketch.time' '/host/${file_without_prefix%%.*}.sketch.res' '/host/${file_without_prefix%%.*}.sketch.out'"
-mv $4/${file_without_prefix%%.*}.sketch.res $2/${file_without_prefix%%.*}.sketch.res #2>/dev/null
-mv $4/${file_without_prefix%%.*}.sketch.out $2/${file_without_prefix%%.*}.sketch.out #2>/dev/null
-mv $4/${file_without_prefix%%.*}.sketch.time $2/${file_without_prefix%%.*}.sketch.time #2>/dev/null
-if ls $2/sketch*.c 1> /dev/null 2>&1; then; then
-  echo "realizable" > "$2/${file_without_prefix%%.*}.sketch.res"
+python3 sketch_runners/c_to_sketch.py "$1" --out "$out_dir"
+without_suffix=$(basenaem c_file_without_prefix)
+without_suffix=${without_suffix%.*}
+skfile="$without_suffix.sk"
+resfile="$without_suffix.res"
+outfile="$without_suffix.out"
+timefile="$without_suffix.time"
+
+docker run --rm -v "$(realpath $out_dir)":/host poware/sketch:1.7.6 /bin/bash -c \
+ "{ time timout $3s sketch '/host/$skfile' --fe-output-code --fe-output-prog-name sketch_$without_suffix --bnd-inbits 10 > '/host/$resfile' 2> '/host/$outfile' ; } 2> '/host/$timefile'"
+
+if ls $out_dir/sketch*.c* 1> /dev/null 2>&1; then; then
+  echo "realizable" > "$out_dir/$resfile"
 # elif grep -q "sat" "$2/${file_without_prefix%%.*}.sketch.res"; then
 #   echo "unrealizable" > "$2/${file_without_prefix%%.*}.sketch.res"
 else
-  cat "$2/${file_without_prefix%%.*}.sketch.res" >>  "$2/${file_without_prefix%%.*}.sketch.out"
-  echo "unknown" > "$2/${file_without_prefix%%.*}.sketch.res"
+  cat "$out_dir/$resfile" >>  "$out_dir/$outfile"
+  echo "unknown" > "$out_dir/$resfile"
 fi
 
