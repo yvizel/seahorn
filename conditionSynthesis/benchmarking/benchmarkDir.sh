@@ -38,7 +38,7 @@ doForFile() {
   if ./frontend.sh "$5" "$6/reverseSmt2" "$6/forwardSl" "$6/names" "$1"; then
     { [[ "$3" == "cosyn" ]] || [[ "$3" == "all" ]] ;} && ./runCosyn.sh "$6/reverseSmt2/$file_relative_to_dir_no_suffix.reverse.smt2" "$6/cosyn" "$4" "$6/reverseSmt2/"
     { [[ "$3" == "cvc5" ]] || [[ "$3" == "all" ]] ;} &&  ./runCVC5.sh "$6/forwardSl/$file_relative_to_dir_no_suffix.fwd.sl" "$6/cvc5" "$4" "$6/forwardSl/"
-    { [[ "$3" == "sketch" ]] || [[ "$3" == "all" ]] ;} &&  ./runSketch.sh "$5" "$6/sketch" "$4" "$6/sketch/"
+    { [[ "$3" == "sketch" ]] || [[ "$3" == "all" ]] ;} &&  ./runSketch.sh "$5" "$6/sketch" "$4" "$1"
   fi
 }
 
