@@ -1,5 +1,6 @@
 #include "seahorn/seahorn.h"
 extern bool find_condition();
+extern void g();
 extern void __VERIFIER_error() __attribute__ ((__noreturn__));
 
 extern char __VERIFIER_nondet_char(void);
@@ -226,7 +227,7 @@ int ssl3_accept(int initial_state )
                                                                             s__type = 8192;
                                                                             if (s__init_buf___0 == 0) {
                                                                               buf = __VERIFIER_nondet_int();
-                                                                              if (find_condition()) {
+                                                                              if (buf == 0) {
                                                                                 ret = -1;
                                                                                 goto end;
                                                                               }
@@ -378,7 +379,8 @@ int ssl3_accept(int initial_state )
                                                                             switch_1_8544: ;
                                                                             switch_1_8545: ;
                                                                             if (s__verify_mode + 1) {
-                                                                              if (s__session__peer != 0) {
+                                                                              if (find_condition()) {
+                                                                                g();
                                                                                 if (s__verify_mode + 4) {
                                                                                   skip = 1;
                                                                                   s__s3__tmp__cert_request = 0;
