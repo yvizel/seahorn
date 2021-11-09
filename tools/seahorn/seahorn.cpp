@@ -203,6 +203,16 @@ static llvm::cl::opt<bool> EvalBranchSentinelOpt(
     llvm::cl::desc("Evaluate intrinsics added by AddBranchSentinel pass."),
     llvm::cl::init(false));
 
+static llvm::cl::opt<bool>
+    StaticTaint("static-taint",
+                llvm::cl::desc("Static taint analysis."),
+                llvm::cl::init(false));
+
+static llvm::cl::opt<bool>
+    Speculative("speculative-exe",
+                llvm::cl::desc("Speculative execution semantics."),
+                llvm::cl::init(false));
+
 // removes extension from filename if there is one
 std::string getFileName(const std::string &str) {
   std::string filename = str;
@@ -315,6 +325,15 @@ int main(int argc, char **argv) {
         llvm::createGlobalDCEPass()); // kill unused internal global
   }
   pass_manager.add(new seahorn::RemoveUnreachableBlocksPass());
+
+  // Todo: is this a good place for taint tracking and speculative execution
+  if (StaticTaint) {
+    pass_manager.add(seahorn::createStaticTaintPass(true));
+  }
+  if (Speculative) {
+    pass_manager.add(seahorn::createSpeculativeExe());
+    outs() << "Specualtive execution added to pass manager\n";
+  }
 
   pass_manager.add(seahorn::createPromoteMallocPass());
   pass_manager.add(seahorn::createPromoteVerifierCallsPass());

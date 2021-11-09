@@ -259,15 +259,6 @@ static llvm::cl::opt<bool> VerifyAfterAll(
     llvm::cl::desc("Run the verification pass after each transformation"),
     llvm::cl::init(false));
 
-static llvm::cl::opt<bool>
-    Speculative("speculative-exe",
-                   llvm::cl::desc("Speculative execution semantics."),
-                   llvm::cl::init(false));
-static llvm::cl::opt<bool>
-    StaticTaint("static-taint",
-                   llvm::cl::desc("Static taint analysis."),
-                   llvm::cl::init(false));
-
 static llvm::cl::opt<bool> AddBranchSentinelOpt(
     "add-branch-sentinel",
     llvm::cl::desc(
@@ -486,14 +477,6 @@ int main(int argc, char **argv) {
       return GV.getName() == "main" || GV.getName() == "bcmp";
     };
     pm_wrapper.add(llvm::createInternalizePass(PreserveMain));
-
-    if (StaticTaint) {
-	  pm_wrapper.add(seahorn::createStaticTaintPass(true));
-	}
-    if (Speculative) {
-      pm_wrapper.add(seahorn::createSpeculativeExe());
-    }
-
 
     if (LowerInvoke) {
       // -- lower invoke's

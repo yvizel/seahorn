@@ -367,12 +367,6 @@ class Seapp(sea.LimitedCmd):
         ap.add_argument ('--internalize', help='Create dummy definitions for all ' +
                          'external functions', default=self._internalize,
                          action='store_true', dest='internalize')
-        ap.add_argument ('--speculative-exe', help='Create speculative execution ' +
-                         'semantics', default=False,
-                         action='store_true', dest='speculative_exe')
-        ap.add_argument ('--static-taint', help='Run static taint ' +
-                         'analysis', default=False,
-                         action='store_true', dest='static_taint')
         ap.add_argument ('--log', dest='log', default=None,
                          metavar='STR', help='Log level')
         ap.add_argument ('--sea-dsa-log', dest='dsa_log', default=None,
@@ -472,12 +466,6 @@ class Seapp(sea.LimitedCmd):
 
             if args.entry is not None:
                 argv.append ('--entry-point={0}'.format (args.entry))
-
-            if args.speculative_exe:
-                argv.append('--speculative-exe')
-
-            if args.static_taint:
-                argv.append('--static-taint')
 
             if args.kill_vaarg:
                 argv.append('--kill-vaarg=true')
@@ -1126,6 +1114,12 @@ class Seahorn(sea.LimitedCmd):
                         help='Eval branch sentinel instrinsic',
                         default=False,
                         action='store_true')
+        ap.add_argument ('--static-taint', help='Run static taint ' +
+                         'analysis', default=False,
+                         action='store_true', dest='static_taint')
+        ap.add_argument ('--speculative-exe', help='Create speculative execution ' +
+                         'semantics', default=False,
+                         action='store_true', dest='speculative_exe')
 
         return ap
 
@@ -1192,6 +1186,12 @@ class Seahorn(sea.LimitedCmd):
             if args.bv_cex:
                 argv.append ('--horn-cex-bv=true')
         if args.asm_out_file is not None: argv.extend (['-oll', args.asm_out_file])
+
+        if args.static_taint:
+            argv.append('--static-taint')
+
+        if args.speculative_exe:
+            argv.append('--speculative-exe')
 
         argv.extend (['-horn-inter-proc',
                       '-horn-sem-lvl={0}'.format (args.track),
