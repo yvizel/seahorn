@@ -60,7 +60,7 @@ class SketchVisitor(NodeVisitor):
             return
         if node.name.name == "find_condition":
             self.cond_use_locations.append((node.coord, [[x for x in l] for l in self.current_func_decl]))
-            node.name.name = "generator_for_bool_{0}".format(node.coord.line)
+            node.name.name = "main_generator_for_bool_{0}".format(node.coord.line)
             self.nodes_to_make_gen[node.coord.line] = node
         if node.name.name == "__SEA_assume":
             node.name.name = "assume"
@@ -120,7 +120,7 @@ class SketchVisitor(NodeVisitor):
 
 def int_generator_template(base_int): 
     base_gen_temp = "| base_generator_for_int_{0}({2}) " if base_int else ""
-    return """generator int generator_for_int_{0}({1}) {{
+    return """generator int main_generator_for_int_{0}({1}) {{
     int t = ??(6);
     int x = {{| 50 | 100 | 300 | 600 | ?? """ + base_gen_temp + """|}};
     if(t == 0){{return x;}}
@@ -133,7 +133,7 @@ def int_generator_template(base_int):
 
 def bool_generator_template(base_bool):
     base_gen_temp = "| base_generator_for_bool_{0}({3}) " if base_bool else ""
-    return """generator bool generator_for_bool_{0}({1}) {{
+    return """generator bool main_generator_for_bool_{0}({1}) {{
     int t = ??(6);
     if(t==0) {{
         int y = generator_for_int_{0}({2});
@@ -230,6 +230,7 @@ if __name__ == '__main__':
         ast.ext.remove(n)
     text = generator.visit(ast)
 
+    has_base_gen = defaultdict(lambda: False)
     generators = []
     coords = set()
     types_coord_to_params = defaultdict(lambda: "")
@@ -262,6 +263,9 @@ if __name__ == '__main__':
                     pass
                 else:
                     print(type(d))
+            if (not res) and not for_params:
+                continue
+            has_base_gen[(coord.line, k)] = True
             generator = "{| " + " | ".join(res+for_params) + " |}"
             as_params = ", ".join([k + " " + n for n in for_params])
             types_coord_to_params[(coord.line, k)] = for_params
@@ -275,7 +279,7 @@ if __name__ == '__main__':
         full_params = ", ".join((p for p in [int_params, bool_params] if p))
         return int_params, bool_params, full_params
 
-    def fill_generator(typ, types_coord_to_params, coord):
+    def fill_generator(typ, types_coord_to_params, base_gen, coord):
         """
         Chooses template by typ, and fills the template with the given parameters.
         Updates the parameters with their types for the first position.
@@ -283,9 +287,9 @@ if __name__ == '__main__':
         
         int_params, bool_params, full_params = get_params(types_coord_to_params, coord, prefix='sk_')
         if typ == 'int':
-            return int_generator_template(types_coord_to_params[(coord, 'int')]).format(coord, int_params, int_params.replace("int", ""))
+            return int_generator_template(base_gen[(coord, 'int')]).format(coord, int_params, int_params.replace("int", ""))
         elif typ == 'bool':
-            return bool_generator_template(types_coord_to_params[(coord, 'bool')]).format(coord, full_params, int_params.replace("int", ""), bool_params.replace("bool", ""))
+            return bool_generator_template(base_gen[(coord, 'bool')]).format(coord, full_params, int_params.replace("int", ""), bool_params.replace("bool", ""))
         else:
             raise Exception("Unknown type: " + typ)
 
@@ -298,13 +302,13 @@ if __name__ == '__main__':
         new_text = text + '\n'
         for coord in coords:
             new_text += '\n'.join([g for gs in generators for g in gs])
-            new_text += '\n' + fill_generator('int', types_coord_to_params, coord)
-            new_text += '\n' + fill_generator('bool', types_coord_to_params, coord)
+            new_text += '\n' + fill_generator('int', types_coord_to_params, has_base_gen, coord)
+            new_text += '\n' + fill_generator('bool', types_coord_to_params, has_base_gen, coord)
         new_text += '\n' + nd_func
         for coord in coords:
             int_params, bool_params, full_params = get_params(types_coord_to_params, coord)
-            new_call = "generator_for_bool_{0}({1})".format(coord, full_params.replace('int ', '').replace('bool ', ''))
-            old_call = "generator_for_bool_{0}()".format(coord)
+            new_call = "main_generator_for_bool_{0}({1})".format(coord, full_params.replace('int ', '').replace('bool ', ''))
+            old_call = "main_generator_for_bool_{0}()".format(coord)
             for p in types_coord_to_params[(coord, 'int')]:
                 p = 'int ' + p
                 if p == 'Positive_RA_Alt_Thresh' or not p.strip():
