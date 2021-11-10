@@ -23,6 +23,6 @@
          (=> (not cond_answer) (= mainv%.0.p.i_0 mainv%_5_0))
          (= mainv%.0.i_0 (+ mainv%.0.p.i_0 2))
          (= mainv%_6_0 (> mainv%.0.i_0 0))
-         (mainv%_6_0))
+         mainv%_6_0 )
 )
 (check-synth)

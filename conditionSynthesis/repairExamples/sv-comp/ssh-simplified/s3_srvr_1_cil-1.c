@@ -1,6 +1,6 @@
 #include "seahorn/seahorn.h"
 extern bool find_condition();
-extern void __VERIFIER_error() __attribute__ ((__noreturn__));
+extern void __VERIFIER_error();
 
 extern char __VERIFIER_nondet_char(void);
 extern int __VERIFIER_nondet_int(void);

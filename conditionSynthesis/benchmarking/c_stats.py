@@ -50,7 +50,7 @@ if __name__ == '__main__':
     # Might need to change sassert to assert (see `scripts/sketch_runners_c_to_sketch.py`)
     ast = pycparser.parse_file(args.input, use_cpp=True,
             cpp_path='gcc',
-            cpp_args=['-E', r'-Iinclude', r'-I{}/fake_libc_include'.format(pycparser_util_loc)])
+            cpp_args=['-E', r'-I../../include', r'-I{}/fake_libc_include'.format(pycparser_util_loc)])
     
     stater = StatsVisitor()
     stater.visit(ast)

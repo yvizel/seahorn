@@ -2,7 +2,7 @@
 extern bool find_condition();
 extern void g1();
 extern void g2();
-extern void __VERIFIER_error() __attribute__ ((__noreturn__));
+extern void __VERIFIER_error();
 
 extern char __VERIFIER_nondet_char(void);
 extern int __VERIFIER_nondet_int(void);
