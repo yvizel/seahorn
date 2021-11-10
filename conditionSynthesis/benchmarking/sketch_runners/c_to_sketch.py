@@ -28,6 +28,15 @@ class CleanerVisitor(NodeVisitor):
         else:
             self.to_remove.append(node)
 
+    def visit_FuncDef(self, node):
+        if node.decl.name == "main": 
+            # if main returns void, change it to return int
+            if node.decl.type.type.type.names[0] == "void":
+                node.decl.type.type.type.names[0] = "int"
+            # if main doesnt end in return, add return 0
+            if not isinstance(node.body.block_items[-1], pycparser.c_ast.Return):
+                node.body.block_items.append(pycparser.c_ast.Return(pycparser.c_ast.Constant('int', '0')))
+
 class SketchVisitor(NodeVisitor):
     def __init__(self, base_name):
         self.main_coord = None
@@ -42,7 +51,7 @@ class SketchVisitor(NodeVisitor):
     def visit_FuncDef(self, node):
         if os.path.basename(node.decl.coord.file) != self.base_name:
             return
-        if node.decl.name == "main":
+        if node.decl.name == "main":  
             node.decl.quals.append('harness')
         prev = self.current_func_decl 
         self.current_func_decl[-1].append(node.decl.type)
@@ -186,21 +195,15 @@ def collect_usages_by_type(decs):
         del by_type['void']
     return by_type
 
-if __name__ == '__main__':
-    arg_parser = ArgumentParser()
-    arg_parser.add_argument('input')
-    arg_parser.add_argument('--out', default=None)
-    args = arg_parser.parse_args()
+root_path = str(Path(__file__).absolute().parent.parent.parent.parent) + '/'
+pycparser_util_loc = str(Path(__file__).absolute().parent) + '/'
 
-    root_path = str(Path(__file__).absolute().parent.parent.parent.parent) + '/'
-    pycparser_util_loc = str(Path(__file__).absolute().parent) + '/'
-
-    with open(args.input, 'r') as f:
-        text = f.read().replace("sassert", "assert")
+def to_sketch(c_code):
+    c_code = c_code.replace("sassert", "assert")
 
     # put text into an in temporary file
     with tempfile.NamedTemporaryFile(mode='w+', suffix='.c') as f:
-        f.write(text)
+        f.write(c_code)
         f.flush()
         f.seek(0)
 
@@ -228,7 +231,7 @@ if __name__ == '__main__':
             break 
     if found:
         ast.ext.remove(n)
-    text = generator.visit(ast)
+    c_code = generator.visit(ast)
 
     has_base_gen = defaultdict(lambda: False)
     generators = []
@@ -293,29 +296,42 @@ if __name__ == '__main__':
         else:
             raise Exception("Unknown type: " + typ)
 
+    new_text = c_code + '\n'
+    for coord in coords:
+        new_text += '\n'.join([g for gs in generators for g in gs])
+        new_text += '\n' + fill_generator('int', types_coord_to_params, has_base_gen, coord)
+        new_text += '\n' + fill_generator('bool', types_coord_to_params, has_base_gen, coord)
+    new_text += '\n' + nd_func
+    for coord in coords:
+        int_params, bool_params, full_params = get_params(types_coord_to_params, coord)
+        new_call = "main_generator_for_bool_{0}({1})".format(coord, full_params.replace('int ', '').replace('bool ', ''))
+        old_call = "main_generator_for_bool_{0}()".format(coord)
+        for p in types_coord_to_params[(coord, 'int')]:
+            p = 'int ' + p
+            if p == 'Positive_RA_Alt_Thresh' or not p.strip():
+                continue
+            print('replacing ' + p)
+            new_text = new_text.replace(p + ';', p + ' = getND();')
+        new_text = new_text.replace(old_call, new_call)
+    new_text = new_text.replace('bool', 'bit')
+    lines = [l for l in new_text.splitlines() if (not l.strip().lower().startswith('g();')) and (not l.strip().lower().startswith('f();')) and not l.strip().lower().startswith('extern')]
+    return lines
+
+if __name__ == '__main__':
+    arg_parser = ArgumentParser()
+    arg_parser.add_argument('input')
+    arg_parser.add_argument('--out', default=None)
+    args = arg_parser.parse_args()
+
+    with open(args.input, 'r') as f:
+        text = f.read()
+
+    lines = to_sketch(text)
+
     out_path = Path(args.input)
     if args.out is not None:
         out_path = Path(args.out) / out_path.name
     # Change outpath extension to .sk
     out_path = out_path.with_suffix('.sk')
     with open(out_path, 'w') as f:
-        new_text = text + '\n'
-        for coord in coords:
-            new_text += '\n'.join([g for gs in generators for g in gs])
-            new_text += '\n' + fill_generator('int', types_coord_to_params, has_base_gen, coord)
-            new_text += '\n' + fill_generator('bool', types_coord_to_params, has_base_gen, coord)
-        new_text += '\n' + nd_func
-        for coord in coords:
-            int_params, bool_params, full_params = get_params(types_coord_to_params, coord)
-            new_call = "main_generator_for_bool_{0}({1})".format(coord, full_params.replace('int ', '').replace('bool ', ''))
-            old_call = "main_generator_for_bool_{0}()".format(coord)
-            for p in types_coord_to_params[(coord, 'int')]:
-                p = 'int ' + p
-                if p == 'Positive_RA_Alt_Thresh' or not p.strip():
-                    continue
-                print('replacing ' + p)
-                new_text = new_text.replace(p + ';', p + ' = getND();')
-            new_text = new_text.replace(old_call, new_call)
-        new_text = new_text.replace('bool', 'bit')
-        lines = [l for l in new_text.splitlines() if (not l.strip().lower().startswith('g();')) and (not l.strip().lower().startswith('f();')) and not l.strip().lower().startswith('extern')]
         f.writelines([l + '\n' for l in lines])
