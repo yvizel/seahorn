@@ -1,5 +1,6 @@
 #include "seahorn/seahorn.h"
 extern bool find_condition();
+extern void g();
 extern void __VERIFIER_error() __attribute__ ((__noreturn__));
 
 extern char __VERIFIER_nondet_char(void);
@@ -344,6 +345,7 @@ int ssl3_accept(int initial_state )
                                                                                       {
                                                                                       __cil_tmp59 = (unsigned long )s__s3__tmp__new_cipher__algo_strength;
                                                                                       if (find_condition()) {
+                                                                                        g();
                                                                                         tmp___7 = 512;
                                                                                       } else {
                                                                                         tmp___7 = 1024;
