@@ -172,6 +172,50 @@ raw_ostream &HornClauseDB::write(raw_ostream &o) const {
   return o;
 }
 
+bool HornClauseDB::changeFenceRules(std::string &name, Expr &newRule) {
+  for (HornRule &rule : m_rules) {
+    Expr head = rule.head();
+    Expr headDecl = bind::fname(head);
+    std::string headName =
+        boost::lexical_cast<std::string>(*bind::fname(headDecl));
+    if (name.compare(headName) == 0 && !isOpX<TRUE>(rule.body())) {
+      outs() << "remove rule: " << *rule.get() << '\n';
+//      outs() << "head args: ";
+//      for (auto it = head->args_begin(); it != head->args_end(); ++it) {
+//        outs() << **it << ", ";
+//      }
+//      outs() << '\n';
+//      outs() << "head decl: " << *headDecl << '\n';
+//      outs() << "old vars: ";
+//      for (Expr e : rule.vars()) {
+//        outs() << *e << ", ";
+//      }
+//      outs() << '\n';
+      ExprVector vars = rule.vars();
+      vars.pop_back();
+      removeRule(rule);
+
+      auto firstArg = ++head->args_begin();
+      auto lastArg = --head->args_end();
+      ExprVector args(firstArg, lastArg);
+      Expr trueE = mk<TRUE>(m_efac);
+      args.push_back(trueE);
+//        head->renew_args(args.begin(), args.end());
+//        newRule = head;
+      newRule = bind::fapp(headDecl, args);
+      outs() << "add rule: " << *newRule << '\n';
+//      outs() << "new vars: ";
+//      for (Expr e : vars) {
+//        outs() << *e << ", ";
+//      }
+//      outs() << '\n';
+      addRule(vars, newRule);
+      return true;
+    }
+  }
+  return false;
+}
+
 HornClauseDB::horn_set_type HornClauseDB::m_empty_set;
 HornClauseDB::expr_set_type HornClauseDBCallGraph::m_expr_empty_set;
 

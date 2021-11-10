@@ -12,7 +12,6 @@
 
 #include "seahorn/Expr/Expr.hh"
 #include "seahorn/Expr/ExprOpBinder.hh"
-//#include "seahorn/Expr/ExprLlvm.hh"
 #include "seahorn/Support/Stats.hh"
 
 #include <algorithm>
@@ -183,28 +182,7 @@ public:
     resetIndexes();
   }
 
-  bool changeFenceRules(std::string &name, Expr &newRule) {
-    for (HornRule &rule : m_rules) {
-      Expr head = rule.head();
-      Expr headDecl = bind::fname(head);
-      std::string headName =
-          boost::lexical_cast<std::string>(*bind::fname(headDecl));
-      if (!isOpX<TRUE>(rule.body()) && name.compare(headName) == 0) {
-//        outs() << "remove rule: ";
-//        outs() << *rule.get() << '\n';
-        removeRule(rule);
-
-        Expr trueE = mk<TRUE>(m_efac);
-        Expr falseE = mk<FALSE>(m_efac);
-        ExprVector args{trueE, falseE, falseE, trueE};
-        newRule = bind::fapp(headDecl, args);
-        ExprSet vars{};
-        addRule(vars, newRule);
-        return true;
-      }
-    }
-    return false;
-  }
+  bool changeFenceRules(std::string &name, Expr &newRule);
 
   const RuleVector &getRules() const { return m_rules; }
   RuleVector &getRules() { return m_rules; }
