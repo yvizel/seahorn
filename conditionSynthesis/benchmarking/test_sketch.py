@@ -1,8 +1,8 @@
-import pytest
+import unittest
 import benchmarking.sketch_runners.c_to_sketch as c_to_sketch
 import docker
 
-class TestSketch:
+class TestSketch(unittest.TestCase):
     client = docker.from_env()
 
     def run_sketch(self, sk_code):
@@ -17,14 +17,14 @@ class TestSketch:
         
         return out, err
 
-    def sketch_checker(benchmark):
+    def sketch_checker(self, benchmark):
         """
         Test the sketch benchmarking.
         """
         lines = c_to_sketch.to_sketch(benchmark)
         assert lines
         # Run sketch in a subprocess and assert no errors in output or err stream
-
+        self.run_sketch("\n".join(lines))
 
     def test_simple_ifv1(self):
         c_code = """#include <seahorn/seahorn.h>
