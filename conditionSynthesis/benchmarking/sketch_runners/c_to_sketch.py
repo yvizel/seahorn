@@ -8,7 +8,7 @@ from pathlib import Path
 from copy import deepcopy
 from argparse import ArgumentParser
 from collections import defaultdict
-from pycparser.c_ast import NodeVisitor
+from pycparser.c_ast import Compound, Decl, FuncDecl, FuncDef, NodeVisitor
 
 # TODO: Add generators for array and functions with parameters
 
@@ -20,6 +20,7 @@ class CleanerVisitor(NodeVisitor):
     def __init__(self, ast):
         self.ast = ast
         self.to_remove = []
+        self.externs = []
 
     def visit_Typedef(self, node):
         # if node has attribute parent
@@ -36,6 +37,23 @@ class CleanerVisitor(NodeVisitor):
             # if main doesnt end in return, add return 0
             if not isinstance(node.body.block_items[-1], pycparser.c_ast.Return):
                 node.body.block_items.append(pycparser.c_ast.Return(pycparser.c_ast.Constant('int', '0')))
+        # call super
+        self.visit(node.decl)
+        self.visit(node.body)
+    
+    def visit_Decl(self, node):
+        # if node is extern add it to a lits
+        if "extern" in node.storage:
+            self.externs.append(node)
+        self.visit(node.type)
+
+    # I have no way to remove a random node without a lot of work. Instead I will add empty definitions for these functions
+    # def visit_FuncCall(self, node):
+    #     # if node is a call in externs, remove it
+    #     if any((node.name.name == ext.name for ext in self.externs)) and node.name.name in ['f', 'g', 'g1', 'g2']:
+    #         self.to_remove.append(node)
+    #     if node.args:
+    #         self.visit(node.args)
 
 class SketchVisitor(NodeVisitor):
     def __init__(self, base_name):
@@ -60,6 +78,7 @@ class SketchVisitor(NodeVisitor):
         else:
             self.current_func_decl.append([])
         self.defined_fun.add(node.decl.name)
+        self.visit(node.decl)
         self.visit(node.body)
         self.current_func_decl.pop()
         
@@ -75,6 +94,8 @@ class SketchVisitor(NodeVisitor):
             node.name.name = "assume"
         if node.name.name == "nd":
             node.name.name = "getND"
+        if node.args:
+            self.visit(node.args)
 
     def visit_Decl(self, node):
         if os.path.basename(node.coord.file) != self.base_name:
@@ -87,6 +108,7 @@ class SketchVisitor(NodeVisitor):
             node.type.type.type.names[0] += "[{}]".format(node.type.dim.value)
             node.type = node.type.type
         self.declared.add(node)
+        self.visit(node.type)
 
     def visit_BinaryOp(self, node):
         if node.op in ["&&", "||"]:
@@ -145,8 +167,8 @@ def bool_generator_template(base_bool):
     return """generator bool main_generator_for_bool_{0}({1}) {{
     int t = ??(6);
     if(t==0) {{
-        int y = generator_for_int_{0}({2});
-        int z = generator_for_int_{0}({2});
+        int y = main_generator_for_int_{0}({2});
+        int z = main_generator_for_int_{0}({2});
         int t2 = ??(2);
         if(t2 == 0) {{return y < z;}}
         if(t2 == 1) {{return y == z;}}
@@ -213,25 +235,20 @@ def to_sketch(c_code):
             cpp_args=['-E', r'-I{}include'.format(root_path), r'-I{}utils/fake_libc_include'.format(pycparser_util_loc)])
         cleaner = CleanerVisitor(ast)
         cleaner.visit(ast)
-        for r in cleaner.to_remove:
+        for r in cleaner.to_remove + cleaner.externs:
             ast.ext.remove(r)
-        sketcher = SketchVisitor(Path(f.name).name)
+        # Need to add empty definitions for f, g, g1, g2
+        names = ['f', 'g', 'g1', 'g2']
+        for ext in cleaner.externs:
+            if not ext.name in names:
+                continue
+            new_dec = deepcopy(ext)
+            new_dec.storage.remove('extern')
+            ast.ext.insert(0, FuncDef(new_dec, [], Compound([])))
 
-    sketcher.visit(ast)
-    for f in sketcher.defined_fun:
-        for d in sketcher.declared:
-            if f == d.name:
-                print("removed ", d.name)
-                ast.ext.remove(d)
-    generator = pycparser.c_generator.CGenerator()
-    found = False
-    for n in ast.ext:
-        if isinstance(n, pycparser.c_ast.Decl) and n.name == 'nd':
-            found = True
-            break 
-    if found:
-        ast.ext.remove(n)
-    c_code = generator.visit(ast)
+        sketcher = SketchVisitor(Path(f.name).name)
+        sketcher.visit(ast)
+    c_code = pycparser.c_generator.CGenerator().visit(ast)
 
     has_base_gen = defaultdict(lambda: False)
     generators = []
@@ -314,8 +331,8 @@ def to_sketch(c_code):
             new_text = new_text.replace(p + ';', p + ' = getND();')
         new_text = new_text.replace(old_call, new_call)
     new_text = new_text.replace('bool', 'bit')
-    lines = [l for l in new_text.splitlines() if (not l.strip().lower().startswith('g();')) and (not l.strip().lower().startswith('f();')) and not l.strip().lower().startswith('extern')]
-    return lines
+    return new_text.splitlines()
+
 
 if __name__ == '__main__':
     arg_parser = ArgumentParser()
