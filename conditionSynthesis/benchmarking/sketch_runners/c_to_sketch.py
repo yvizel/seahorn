@@ -8,9 +8,7 @@ from pathlib import Path
 from copy import deepcopy
 from argparse import ArgumentParser
 from collections import defaultdict
-from pycparser.c_ast import Compound, Decl, FuncDecl, FuncDef, NodeVisitor
-
-# TODO: Add generators for array and functions with parameters
+from pycparser.c_ast import ArrayDecl, Compound, Decl, FuncDecl, FuncDef, IdentifierType, NodeVisitor, TypeDecl
 
 class CleanerVisitor(NodeVisitor):
     """
@@ -19,6 +17,7 @@ class CleanerVisitor(NodeVisitor):
     """
     def __init__(self, ast):
         self.ast = ast
+        self.decls = []
         self.to_remove = []
         self.externs = []
 
@@ -37,6 +36,9 @@ class CleanerVisitor(NodeVisitor):
             # if main doesnt end in return, add return 0
             if not isinstance(node.body.block_items[-1], pycparser.c_ast.Return):
                 node.body.block_items.append(pycparser.c_ast.Return(pycparser.c_ast.Constant('int', '0')))
+        # Compare d arg and name to node arg and name
+        for d in [d for d in self.decls if d.name == node.decl.name and d.type.args != node.decl.type.args]:
+            self.to_remove.append(d)
         # call super
         self.visit(node.decl)
         self.visit(node.body)
@@ -45,6 +47,9 @@ class CleanerVisitor(NodeVisitor):
         # if node is extern add it to a lits
         if "extern" in node.storage:
             self.externs.append(node)
+        # if node is a function, add it to a list
+        if isinstance(node.type, FuncDecl):
+            self.decls.append(node)
         self.visit(node.type)
 
     # I have no way to remove a random node without a lot of work. Instead I will add empty definitions for these functions
@@ -56,7 +61,8 @@ class CleanerVisitor(NodeVisitor):
     #         self.visit(node.args)
 
 class SketchVisitor(NodeVisitor):
-    def __init__(self, base_name):
+    # TODO change default name to sketch_array and sketch_array_n, and update test cases
+    def __init__(self, base_name, array_name='a', array_len_name='n'):
         self.main_coord = None
         self.cond_use_locations = []
         self.current_func_decl = [[]]
@@ -65,13 +71,35 @@ class SketchVisitor(NodeVisitor):
         self.declared = set()
         self.bit_mode = 0
         self.nodes_to_make_gen = {}
+        self.array_name = array_name
+        self.array_len_name = array_len_name
+        self.changed_params = set()
 
     def visit_FuncDef(self, node):
         if os.path.basename(node.decl.coord.file) != self.base_name:
             return
         if node.decl.name == "main":  
             node.decl.quals.append('harness')
-        prev = self.current_func_decl 
+        
+        # if args contain an array names self.array_name and an integer named self.array_len_name
+        # then replace those two args with a sketch like array
+        args = node.decl.type.args
+        if args and any([a for a in args if isinstance(a.type, ArrayDecl)]):
+            array_arg = [i for i, a in enumerate(args.params) if isinstance(a.type, ArrayDecl) and a.name == self.array_name]
+            array_len_arg = [i for i, a in enumerate(args.params) if 
+                isinstance(a.type, TypeDecl) and isinstance(a.type.type, IdentifierType) 
+                and 'int' in a.type.type.names and a.name == self.array_len_name]
+            assert len(array_arg) == 1 and len(array_len_arg) == 1, "When an array is an argument expecting to find exactly one array and one int named {0} and {1}".format(self.array_name, self.array_len_name)
+            # switch so int param will be first
+            if array_arg[0] < array_len_arg[0]:
+                args.params[array_arg[0]], args.params[array_len_arg[0]] = args.params[array_len_arg[0]], args.params[array_arg[0]]
+                array_arg[0], array_len_arg[0] = array_len_arg[0], array_arg[0]
+                self.changed_params.add((node.decl.name, array_arg[0], array_len_arg[0]))
+            # update array to be sized by array_len_arg
+            array_arg = args.params[array_arg[0]]
+            array_arg.type.dim = pycparser.c_ast.Constant('int', str(args.params[array_len_arg[0]].name))
+
+        prev = self.current_func_decl
         self.current_func_decl[-1].append(node.decl.type)
         if node.param_decls:
             self.current_func_decl.append([d for d in node.param_decls])
@@ -93,7 +121,7 @@ class SketchVisitor(NodeVisitor):
         if node.name.name == "__SEA_assume":
             node.name.name = "assume"
         if node.name.name == "nd":
-            node.name.name = "getND"
+            node.name.name = "getND"        
         if node.args:
             self.visit(node.args)
 
@@ -105,6 +133,8 @@ class SketchVisitor(NodeVisitor):
         elif node.name != "find_condition":
             self.current_func_decl[-1].append(node.type)
         if isinstance(node.type, pycparser.c_ast.ArrayDecl):
+            if node.type.dim is None:
+                raise Exception("Array without dimension is currently not supported")
             node.type.type.type.names[0] += "[{}]".format(node.type.dim.value)
             node.type = node.type.type
         self.declared.add(node)
@@ -149,6 +179,22 @@ class SketchVisitor(NodeVisitor):
             if typ != 'bool':
                 node.name = "({} != 0)".format(node.name)
 
+class ParamOrderVisitor(NodeVisitor):
+    def __init__(self, switched):
+        self.switched = switched
+
+    def visit_FuncCall(self, node):
+        s = [s for s in self.switched if s[0] == node.name.name]
+        assert len(s) <= 1, "Multiple switches for {}".format(node.name)
+        if s:
+            s = s[0]
+            node.args.exprs[s[1]], node.args.exprs[s[2]] = node.args.exprs[s[2]], node.args.exprs[s[1]]
+        if node.args:
+            self.visit(node.args)
+
+# TODO: make generators recursive
+# TODO: add array accesses to generators
+# TODO: add function calls with parameters to generators
 def int_generator_template(base_int): 
     base_gen_temp = "| base_generator_for_int_{0}({2}) " if base_int else ""
     return """generator int main_generator_for_int_{0}({1}) {{
@@ -244,10 +290,16 @@ def to_sketch(c_code):
                 continue
             new_dec = deepcopy(ext)
             new_dec.storage.remove('extern')
+            # TODO: remove hack and change examples
+            # if return not int change to void
+            if new_dec.type.type.type.names[0] != 'void':
+                new_dec.type.type.type.names[0] = 'void'
             ast.ext.insert(0, FuncDef(new_dec, [], Compound([])))
 
         sketcher = SketchVisitor(Path(f.name).name)
         sketcher.visit(ast)
+        switcher = ParamOrderVisitor(sketcher.changed_params)
+        switcher.visit(ast)
     c_code = pycparser.c_generator.CGenerator().visit(ast)
 
     has_base_gen = defaultdict(lambda: False)
