@@ -24,7 +24,7 @@ int main() {
 	  z += x;
 	  x -= 3;
   }
-  if (find_condition(z)) {
+  if (find_condition()) {
 	  g();
 	  z--;
   }

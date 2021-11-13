@@ -14,7 +14,7 @@ int main() {
   int x = nd();
   int y = nd();
   int z = nd();
-  if (find_condition(z)) {
+  if (find_condition()) {
 	  z = sum(x,y);
   }
   else {

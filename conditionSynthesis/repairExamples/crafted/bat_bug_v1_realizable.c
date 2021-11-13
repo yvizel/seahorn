@@ -20,7 +20,7 @@ int main() {
   else {
 	  z = 9;
   }
-  if (find_condition(z)) {
+  if (find_condition()) {
 	  g();
 	  z--;
   }
