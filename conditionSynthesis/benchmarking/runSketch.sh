@@ -32,7 +32,7 @@ outfile="$without_suffix.out"
 timefile="$without_suffix.time"
 
 echo "Outdir: $out_dir"
-docker run -v "$(realpath $out_dir)":/host poware/sketch:1.7.6 /bin/bash -c \
+docker run --rm -v "$(realpath $out_dir)":/host poware/sketch:1.7.6 /bin/bash -c \
  "{ time timeout $3s sketch '/host/$skfile' --fe-output-code --fe-output-prog-name sketch_$without_suffix --bnd-inbits 10 > '/host/$resfile.tmp' 2> '/host/$outfile.tmp' ; } 2> '/host/$timefile.tmp' && cp /sketch_$without_suffix.cpp /host/ && cp /sketch_$without_suffix.h /host/"
 cp "$out_dir/$resfile.tmp" "$out_dir/$resfile"
 cp "$out_dir/$outfile.tmp" "$out_dir/$outfile"
