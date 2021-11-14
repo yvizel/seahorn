@@ -27,9 +27,9 @@ python3 sketch_runners/c_to_sketch.py "$1" --out "$out_dir"
 without_suffix=$(basename $c_file_without_prefix)
 without_suffix=${without_suffix%.*}
 skfile="$without_suffix.sk"
-resfile="$without_suffix.res"
-outfile="$without_suffix.out"
-timefile="$without_suffix.time"
+resfile="$without_suffix.sketch.res"
+outfile="$without_suffix.sketch.out"
+timefile="$without_suffix.sketch.time"
 
 echo "Outdir: $out_dir"
 docker run --rm -v "$(realpath $out_dir)":/host poware/sketch:1.7.6 /bin/bash -c \
