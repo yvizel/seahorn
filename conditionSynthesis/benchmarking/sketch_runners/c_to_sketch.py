@@ -197,11 +197,12 @@ class ParamOrderVisitor(NodeVisitor):
 # TODO: add function calls with parameters to generators
 def int_generator_template(base_int): 
     base_gen_temp = "| base_generator_for_int_{0}({2}) " if base_int else ""
-    return """generator int main_generator_for_int_{0}({1}) {{
-    int t = ??(6);
-    int x = {{| 50 | 100 | 300 | 600 | ?? """ + base_gen_temp + """|}};
+    return """generator int main_generator_for_int_{0}(int bnd{3}{1}) {{
+    assert bnd > 0;
+    int t = ??(3);
+    int x = {{| 50 | 100 | 300 | 600 | ?? """ + base_gen_temp + """ | main_generator_for_int_{0}(bnd - 1{3}{2}) |}};
     if(t == 0){{return x;}}
-    int y = {{| 50 | 100 | 300 | 600 | ?? """ + base_gen_temp + """|}};
+    int y = {{| 50 | 100 | 300 | 600 | ?? """ + base_gen_temp + """ | main_generator_for_int_{0}(bnd - 1{3}{2}) |}};
     if(t == 1){{return x+y;}}
     if(t == 2){{return x-y;}}
     if(t == 3){{return x*y;}}
@@ -210,20 +211,21 @@ def int_generator_template(base_int):
 
 def bool_generator_template(base_bool):
     base_gen_temp = "| base_generator_for_bool_{0}({3}) " if base_bool else ""
-    return """generator bool main_generator_for_bool_{0}({1}) {{
+    return """generator bool main_generator_for_bool_{0}(int bnd{1}) {{
+    assert bnd > 0;
     int t = ??(6);
     if(t==0) {{
-        int y = main_generator_for_int_{0}({2});
-        int z = main_generator_for_int_{0}({2});
+        int y = main_generator_for_int_{0}(bnd{2});
+        int z = main_generator_for_int_{0}(bnd{2});
         int t2 = ??(2);
         if(t2 == 0) {{return y < z;}}
         if(t2 == 1) {{return y == z;}}
         if(t2 == 2) {{return y <= z;}}
     }}
-    bool x = {{| ??(1) """ + base_gen_temp + """|}};
+    bool x = {{| ??(1) """ + base_gen_temp + """ | main_generator_for_bool_{0}(bnd - 1{4}) |}};
     if(t == 3){{return x;}}
     if(t == 4){{return !x;}}
-    bool y = {{| ??(1) """ + base_gen_temp + """|}};
+    bool y = {{| ??(1) """ + base_gen_temp + """ | main_generator_for_bool_{0}(bnd - 1{4}) |}};
     if(t == 5){{return x&&y;}}
     if(t == 6){{return x||y;}}
 }}"""
@@ -266,7 +268,7 @@ def collect_usages_by_type(decs):
 root_path = str(Path(__file__).absolute().parent.parent.parent.parent) + '/'
 pycparser_util_loc = str(Path(__file__).absolute().parent) + '/'
 
-def to_sketch(c_code):
+def to_sketch(c_code, gen_bnd=1):
     c_code = c_code.replace("sassert", "assert")
 
     # put text into an in temporary file
@@ -303,12 +305,13 @@ def to_sketch(c_code):
     c_code = pycparser.c_generator.CGenerator().visit(ast)
 
     has_base_gen = defaultdict(lambda: False)
-    generators = []
+    generators = {}
     coords = set()
     types_coord_to_params = defaultdict(lambda: "")
     for (coord, decs) in sketcher.cond_use_locations:
         by_type = collect_usages_by_type(decs)
-        generators.append([])
+        if coord not in generators:
+            generators[coord.line] = []
         for k in by_type.keys(): 
             # TODO: fix resulting generators
             if '[' in k:
@@ -341,7 +344,8 @@ def to_sketch(c_code):
             generator = "{| " + " | ".join(res+for_params) + " |}"
             as_params = ", ".join([k + " " + n for n in for_params])
             types_coord_to_params[(coord.line, k)] = for_params
-            generators[-1].append(base_generator_template.format(k, k, coord.line, as_params, generator))
+            # TODO: make this a dictionary from type to generator
+            generators[coord.line].append(base_generator_template.format(k, k, coord.line, as_params, generator))
             coords.add(coord.line)
     
     def get_params(types_coord_to_params, coord, prefix=''):
@@ -359,21 +363,28 @@ def to_sketch(c_code):
         
         int_params, bool_params, full_params = get_params(types_coord_to_params, coord, prefix='sk_')
         if typ == 'int':
-            return int_generator_template(base_gen[(coord, 'int')]).format(coord, int_params, int_params.replace("int", ""))
+            prefix = ''
+            if int_params:
+                prefix = ', '
+            return int_generator_template(base_gen[(coord, 'int')]).format(coord, int_params, int_params.replace("int", ""), prefix)
         elif typ == 'bool':
-            return bool_generator_template(base_gen[(coord, 'bool')]).format(coord, full_params, int_params.replace("int", ""), bool_params.replace("bool", ""))
+            prefix = ''
+            if int_params or bool_params:
+                prefix = ', '
+            return bool_generator_template(base_gen[(coord, 'bool')]).format(coord, prefix + full_params, prefix + int_params.replace("int", ""), bool_params.replace("bool", ""), prefix + full_params.replace("bool", "").replace("int", ""))
         else:
             raise Exception("Unknown type: " + typ)
 
     new_text = c_code + '\n'
     for coord in coords:
-        new_text += '\n'.join([g for gs in generators for g in gs])
+        assert(coord in generators)
+        new_text += '\n'.join([g for g in generators[coord] if coord in generators])
         new_text += '\n' + fill_generator('int', types_coord_to_params, has_base_gen, coord)
         new_text += '\n' + fill_generator('bool', types_coord_to_params, has_base_gen, coord)
     new_text += '\n' + nd_func
     for coord in coords:
         int_params, bool_params, full_params = get_params(types_coord_to_params, coord)
-        new_call = "main_generator_for_bool_{0}({1})".format(coord, full_params.replace('int ', '').replace('bool ', ''))
+        new_call = "main_generator_for_bool_{0}({2}, {1})".format(coord, full_params.replace('int ', '').replace('bool ', ''), gen_bnd)
         old_call = "main_generator_for_bool_{0}()".format(coord)
         for p in types_coord_to_params[(coord, 'int')]:
             p = 'int ' + p
