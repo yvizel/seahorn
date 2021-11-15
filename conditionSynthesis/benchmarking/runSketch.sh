@@ -38,7 +38,7 @@ cp "$out_dir/$resfile.tmp" "$out_dir/$resfile"
 cp "$out_dir/$outfile.tmp" "$out_dir/$outfile"
 cp "$out_dir/$timefile.tmp" "$out_dir/$timefile"
 
-if ls $out_dir/sketch*.c* 1> /dev/null 2>&1; then
+if ls $out_dir/sketch_$without_suffix.cpp 1> /dev/null 2>&1; then
   echo "realizable" > "$out_dir/$resfile"
   echo "Found prog for $c_file_without_prefix"
 # elif grep -q "sat" "$2/${file_without_prefix%%.*}.sketch.res"; then
