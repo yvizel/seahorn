@@ -27,9 +27,9 @@ python3 sketch_runners/c_to_sketch.py "$1" --out "$out_dir"
 without_suffix=$(basename $c_file_without_prefix)
 without_suffix=${without_suffix%.*}
 skfile="$without_suffix.sk"
-resfile="$without_suffix.res"
-outfile="$without_suffix.out"
-timefile="$without_suffix.time"
+resfile="$without_suffix.sketch.res"
+outfile="$without_suffix.sketch.out"
+timefile="$without_suffix.sketch.time"
 
 echo "Outdir: $out_dir"
 docker run --rm -v "$(realpath $out_dir)":/host poware/sketch:1.7.6 /bin/bash -c \
@@ -38,7 +38,7 @@ cp "$out_dir/$resfile.tmp" "$out_dir/$resfile"
 cp "$out_dir/$outfile.tmp" "$out_dir/$outfile"
 cp "$out_dir/$timefile.tmp" "$out_dir/$timefile"
 
-if ls $out_dir/sketch*.c* 1> /dev/null 2>&1; then
+if ls $out_dir/sketch_$without_suffix.cpp 1> /dev/null 2>&1; then
   echo "realizable" > "$out_dir/$resfile"
   echo "Found prog for $c_file_without_prefix"
 # elif grep -q "sat" "$2/${file_without_prefix%%.*}.sketch.res"; then

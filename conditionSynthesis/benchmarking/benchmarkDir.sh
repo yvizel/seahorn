@@ -28,7 +28,7 @@ git rev-parse HEAD >> "$settings_file"
 echo "frontend command: sea pf <file> --inline -o0 --keep-temp --temp-dir=/tmp/repair/ --step=large --horn-cond-synthesis --horn-synth-cps=h1 --horn-read-file --horn-avoid-synthesis" >> "$settings_file"
 echo "backend command: z3 <reversefile.smt2> -T:$4 -v:1 fp.xform.slice=false fp.xform.inline_linear=false fp.xform.inline_eager=false" >> "$settings_file"
 echo "cvc5 command: timeout "$4"s cvc5 <fwdfile.sl> --sygus-add-const-grammar" >> "$settings_file"
-echo "sketch command: python3 c_to_sketch.py && timeout "$4"s sketch <generated sketch file> --fe-output-code --bnd-inbits 10"
+echo "sketch command: python3 c_to_sketch.py && timeout "$4"s sketch <generated sketch file> --fe-output-code --bnd-inbits 10" >> "$settings_file"
 
 # $5 inside this function is a single .c file from $1
 # $6 inside this function is new_dir_name
