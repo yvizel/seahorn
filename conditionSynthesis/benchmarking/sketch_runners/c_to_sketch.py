@@ -352,7 +352,9 @@ def collect_usages_by_type(decs):
 root_path = str(Path(__file__).absolute().parent.parent.parent.parent) + '/'
 pycparser_util_loc = str(Path(__file__).absolute().parent) + '/'
 
-def to_sketch(c_code, gen_bnd=1):
+def to_sketch(c_code, gen_bnd=None):
+    if gen_bnd is None:
+        gen_bnd = 1
     c_code = c_code.replace("sassert", "assert")
 
     # put text into an in temporary file
@@ -488,12 +490,13 @@ if __name__ == '__main__':
     arg_parser = ArgumentParser()
     arg_parser.add_argument('input')
     arg_parser.add_argument('--out', default=None)
+    arg_parser.add_argument('--genbnd', type=int, default=None)
     args = arg_parser.parse_args()
 
     with open(args.input, 'r') as f:
         text = f.read()
 
-    lines = to_sketch(text)
+    lines = to_sketch(text, args.genbnd)
 
     out_path = Path(args.input)
     if args.out is not None:

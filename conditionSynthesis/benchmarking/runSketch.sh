@@ -3,6 +3,7 @@
 # $2- output directory for sketch.res,sketch.time,sketch.out files (write): created if not exists
 # $3- timeout (in seconds)
 # $4- base directory of examples ($4 should be a prefix of $1).
+# $5- optional generator bound for c_to_sketch
 
 # Run sketch with timeout and save realizable/unknown (timeout also gets unknown) in file.sketch.res,
 # time (secs) in file.sketch.time, and complete output in file.sketch.out. 
@@ -14,6 +15,17 @@ if [ ! -z "$4" ] && [[ ! "$4" =~ */ ]] ; then
   basedir="$basedir"/
 fi
 
+# if generator bound is specified create var --genbnd $5 else empty
+if [ ! -z "$5" ] ; then
+  # assert genbnd is a number
+  if [[ $5 =~ ^[0-9]+$ ]] ; then
+    genbnd="--genbnd $5"
+  else
+    echo "Error: generator bound must be a number"
+    exit 1
+  fi
+fi
+
 echo "Basedir: $basedir"
 echo "File: $1"
 
@@ -23,7 +35,7 @@ out_dir="$2/${c_file_without_prefix%/*}"
 mkdir -p "$out_dir"
 
 # this will create the out file at the same location as the input
-python3 sketch_runners/c_to_sketch.py "$1" --out "$out_dir"
+python3 sketch_runners/c_to_sketch.py "$1" --out "$out_dir" $genbnd
 without_suffix=$(basename $c_file_without_prefix)
 without_suffix=${without_suffix%.*}
 skfile="$without_suffix.sk"
