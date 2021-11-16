@@ -1,14 +1,16 @@
+from sys import prefix
 import pycparser
 import pycparser.c_generator
 import os.path
 import io
 import tempfile
+import logging
 
 from pathlib import Path
 from copy import deepcopy
 from argparse import ArgumentParser
 from collections import defaultdict
-from pycparser.c_ast import ArrayDecl, Compound, Decl, FuncDecl, FuncDef, IdentifierType, NodeVisitor, TypeDecl
+from pycparser.c_ast import ID, ArrayDecl, Case, Compound, Decl, For, FuncDecl, FuncDef, IdentifierType, NodeVisitor, TypeDecl
 
 class CleanerVisitor(NodeVisitor):
     """
@@ -29,6 +31,7 @@ class CleanerVisitor(NodeVisitor):
             self.to_remove.append(node)
 
     def visit_FuncDef(self, node):
+        logging.debug("Visiting {}")
         if node.decl.name == "main": 
             # if main returns void, change it to return int
             if node.decl.type.type.type.names[0] == "void":
@@ -37,10 +40,14 @@ class CleanerVisitor(NodeVisitor):
             if not isinstance(node.body.block_items[-1], pycparser.c_ast.Return):
                 node.body.block_items.append(pycparser.c_ast.Return(pycparser.c_ast.Constant('int', '0')))
         # Compare d arg and name to node arg and name
-        for d in [d for d in self.decls if d.name == node.decl.name and d.type.args != node.decl.type.args]:
+        def arg_types(type_node):
+            return [p.type.type.names for p in type_node.args.params]
+        for d in [d for d in self.decls if d.name == node.decl.name and 
+        (((not d.type.args) and (not node.decl.type.args))
+            or (d.type.args and node.decl.type.args and arg_types(d.type) == arg_types(node.decl.type)))]:
             self.to_remove.append(d)
         # call super
-        self.visit(node.decl)
+        # self.visit(node.decl)
         self.visit(node.body)
     
     def visit_Decl(self, node):
@@ -61,11 +68,34 @@ class CleanerVisitor(NodeVisitor):
     #         self.visit(node.args)
 
 class SketchVisitor(NodeVisitor):
+    """
+    This visitor does most of the neccessary translation of the AST from c to sketch.
+    The translation includes the following:
+    - Creating generators for find_condition
+        + Find all relevant functions and variables
+        + Create syntax for generator
+        + Careful recursive call, so generators will not use unnecessary resources
+    - Fixing array declarations to fit sketch's syntax (dynamic arrays)
+    - Removing external functions and their calls
+    - Fixing special functions f, g, g1, g2 so they will not be external and will return void
+    - Fixing main to return int
+    - Automatic fixing of shadowing variables (which sketch does not support)
+      Collect all variable declarations (Decl), 
+      and check if they are shadowed change shadowed name in scope:
+        + Global
+        + FuncDef
+        + For loop
+        + Block (Compound - block_items)
+        + Case (statements)
+    - Automatic changing of int vars into bits using !=0 when necessary. 
+        + TODO: Support all expression types (will need to turn off bit mode at some places)
+    """
     # TODO change default name to sketch_array and sketch_array_n, and update test cases
     def __init__(self, base_name, array_name='a', array_len_name='n'):
         self.main_coord = None
         self.cond_use_locations = []
-        self.current_func_decl = [[]]
+        # Global scope
+        self.current_func_decl = [{}]
         self.base_name = base_name
         self.defined_fun = set()
         self.declared = set()
@@ -75,7 +105,33 @@ class SketchVisitor(NodeVisitor):
         self.array_len_name = array_len_name
         self.changed_params = set()
 
-    def visit_FuncDef(self, node):
+    def visit_Compound(self, node: Compound):
+        logging.debug(f"Visiting {type(node)}")
+        self.current_func_decl.append({})
+        for c in node:
+            self.visit(c)
+        self.current_func_decl.pop()
+    
+    def visit_Case(self, node: Case):
+        logging.debug(f"Visiting {type(node)}")
+        self.current_func_decl.append({})
+        for c in node:
+            self.visit(c)
+        self.current_func_decl.pop()
+
+    def visit_For(self, node: For):
+        logging.debug(f"Visiting {type(node)}")
+        self.current_func_decl.append({})
+        # init is the first child visited so it should be ok
+        # TODO: assert init has a decleration
+        self.visit(node.init)
+        self.visit(node.cond)
+        self.visit(node.next)
+        self.visit(node.stmt)
+        self.current_func_decl.pop()
+
+    def visit_FuncDef(self, node: FuncDef):
+        logging.debug(f"Visiting {type(node)}")
         if os.path.basename(node.decl.coord.file) != self.base_name:
             return
         if node.decl.name == "main":  
@@ -99,14 +155,15 @@ class SketchVisitor(NodeVisitor):
             array_arg = args.params[array_arg[0]]
             array_arg.type.dim = pycparser.c_ast.Constant('int', str(args.params[array_len_arg[0]].name))
 
-        prev = self.current_func_decl
-        self.current_func_decl[-1].append(node.decl.type)
-        if node.param_decls:
-            self.current_func_decl.append([d for d in node.param_decls])
-        else:
-            self.current_func_decl.append([])
         self.defined_fun.add(node.decl.name)
-        self.visit(node.decl)
+        self.visit(node.decl.type.type) # TODO: maybe add manually so I will have args?
+        self.current_func_decl.append({})
+        if node.decl.type.args:
+            self.visit(node.decl.type.args)
+        if node.param_decls:
+            for p in node.param_decls:
+                # TODO: assert this is a decl
+                self.visit(p)
         self.visit(node.body)
         self.current_func_decl.pop()
         
@@ -115,7 +172,7 @@ class SketchVisitor(NodeVisitor):
         if os.path.basename(node.coord.file) != self.base_name:
             return
         if node.name.name == "find_condition":
-            self.cond_use_locations.append((node.coord, [[x for x in l] for l in self.current_func_decl]))
+            self.cond_use_locations.append((node.coord, [[x.type for name, x in d.items()] for d in self.current_func_decl]))
             node.name.name = "main_generator_for_bool_{0}".format(node.coord.line)
             self.nodes_to_make_gen[node.coord.line] = node
         if node.name.name == "__SEA_assume":
@@ -125,13 +182,19 @@ class SketchVisitor(NodeVisitor):
         if node.args:
             self.visit(node.args)
 
-    def visit_Decl(self, node):
+    def visit_Decl(self, node: Decl):
         if os.path.basename(node.coord.file) != self.base_name:
             return
         if node.name == "nd":
             node.name = "seahorn_nd"
         elif node.name != "find_condition":
-            self.current_func_decl[-1].append(node.type)
+            old_name = node.name
+            existing = next((mapping for mapping in self.current_func_decl if node.name in mapping), None)
+            if existing is not None:
+                if existing == self.current_func_decl[-1]: 
+                    raise Exception(f"{node.name} defined twice in same scope")
+                node.name = node.name + "_shadow"
+            self.current_func_decl[-1][old_name] = node
         if isinstance(node.type, pycparser.c_ast.ArrayDecl):
             if node.type.dim is None:
                 raise Exception("Array without dimension is currently not supported")
@@ -139,18 +202,29 @@ class SketchVisitor(NodeVisitor):
             node.type = node.type.type
         self.declared.add(node)
         self.visit(node.type)
+        if node.init:
+            self.visit(node.init)
+        if node.bitsize:
+            self.visit(node.bitsize)
 
     def visit_BinaryOp(self, node):
+        temp = self.bit_mode
         if node.op in ["&&", "||"]:
             self.bit_mode += 1
-            self.visit(node.left)
-            self.visit(node.right)
+        elif node.op in ["<", "<=", "==", "!=", ">", ">="]:
+            self.bit_mode = 0
+        self.visit(node.left)
+        self.visit(node.right)
+        if node.op in ["&&", "||"]:
             self.bit_mode -= 1
+        elif node.op in ["<", "<=", "==", "!=", ">", ">="]:
+            self.bit_mode = temp
 
     def visit_UnaryOp(self, node):
         if node.op == "!":
             self.bit_mode += 1
-            self.visit(node.expr)
+        self.visit(node.expr)
+        if node.op == "!":
             self.bit_mode -= 1
     
     def visit_If(self, node):
@@ -168,7 +242,11 @@ class SketchVisitor(NodeVisitor):
         self.visit(node.iftrue)
         self.visit(node.iffalse)
 
-    def visit_ID(self, node):
+    def visit_ID(self, node: ID):
+        # Find ID in mapping and update id to shadowless name
+        mapped = next((mapping for mapping in reversed(self.current_func_decl) if node.name in mapping), None)
+        if mapped is not None:
+            node.name = mapped[node.name].name
         if self.bit_mode > 0:
             dec = next((d for d in self.declared if d.name == node.name), None)
             if dec is None: 
@@ -178,6 +256,13 @@ class SketchVisitor(NodeVisitor):
                 typ = dec.type.type.names[0]
             if typ != 'bool':
                 node.name = "({} != 0)".format(node.name)
+
+    def visit_TypeDecl(self, node: TypeDecl):
+        mapped = next((mapping for mapping in reversed(self.current_func_decl) if node.declname in mapping), None)
+        if mapped is not None:
+            node.declname = mapped[node.declname].name
+        if node.type:
+            self.visit(node.type)
 
 class ParamOrderVisitor(NodeVisitor):
     def __init__(self, switched):
@@ -192,7 +277,6 @@ class ParamOrderVisitor(NodeVisitor):
         if node.args:
             self.visit(node.args)
 
-# TODO: make generators recursive
 # TODO: add array accesses to generators
 # TODO: add function calls with parameters to generators
 def int_generator_template(base_int): 
@@ -384,7 +468,10 @@ def to_sketch(c_code, gen_bnd=1):
     new_text += '\n' + nd_func
     for coord in coords:
         int_params, bool_params, full_params = get_params(types_coord_to_params, coord)
-        new_call = "main_generator_for_bool_{0}({2}, {1})".format(coord, full_params.replace('int ', '').replace('bool ', ''), gen_bnd)
+        prefix = ""
+        if full_params:
+            prefix = ", "
+        new_call = "main_generator_for_bool_{0}({2}{1})".format(coord, prefix + full_params.replace('int ', '').replace('bool ', ''), gen_bnd)
         old_call = "main_generator_for_bool_{0}()".format(coord)
         for p in types_coord_to_params[(coord, 'int')]:
             p = 'int ' + p

@@ -5,8 +5,10 @@ import io
 import tarfile
 import pathlib
 import timeout_decorator
+import logging
 
 class TestSketch(unittest.TestCase):
+    logging.basicConfig(level=logging.DEBUG)
     client = docker.from_env()
     project_root = pathlib.Path(__file__).absolute().parent.parent.parent.parent
     assert project_root.name == "seahorn"
@@ -41,6 +43,7 @@ class TestSketch(unittest.TestCase):
         """
         lines = c_to_sketch.to_sketch(benchmark)
         assert lines
+        logging.debug("Sketch program is: \n"+"\n".join([f"{i}: {l}" for i, l in enumerate(lines)]))
         # Run sketch in a subprocess and assert no errors in output or err stream
         return self.run_sketch("\n".join(lines))
 
@@ -48,7 +51,8 @@ class TestSketch(unittest.TestCase):
         with open(benchmark, "r") as f:
             c_code = f.read()
         out, err = self.sketch_checker(c_code)
-        assert "- error] [sketch]" not in err.lower()
+        assert "- error] [sketch]" not in err.lower(), f"Got error from sketch:\n{err}"
+        logging.debug(f"Sketch returned: {err}")
         return err
 
     def success_case_checker(self, benchmark):
@@ -65,8 +69,12 @@ class TestSketch(unittest.TestCase):
 
     @timeout_decorator.timeout(300)
     def test_arrays(self):
-        self.success_case_checker(self.repairExamples / "crafted" / "4-A-synthesis_realizable.c")
+        self.case_checker(self.repairExamples / "crafted" / "4-A-synthesis_realizable.c")
 
     @timeout_decorator.timeout(300)
+    def test_decl_and_def(self):
+        self.success_case_checker(self.repairExamples / "tcas" / "tcas_v1_realizable.c")
+
+    # @timeout_decorator.timeout(300)
     def test_shadowing(self):
-        self.case_checker(self.repairExamples / "tcas" / "tcas_v1_realizable.c")
+        self.case_checker(self.repairExamples / "crafted" / "array_positive_sum_v1_loop_realizable.c")
