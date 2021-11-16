@@ -7,9 +7,9 @@ def parse(text):
     """
     lines = text.split("\n")
     # Find lines with "Error -" in them
-    error_lines = [line.lower() for line in lines if "- error" in line.lower()]
-    # Extract the error message after "- ERROR] [SKETCH]" and clean it up
-    error_messages = ["".join(line.split("- error] [sketch] ")[1:]).strip() for line in error_lines]
+    error_lines = [line.lower() for line in lines if "error] [sketch]" in line.lower()]
+    # Extract the error message after "ERROR] [SKETCH]" and clean it up
+    error_messages = ["".join(line.split("error] [sketch] ")[1:]).strip() for line in error_lines]
     return error_messages
 
 
