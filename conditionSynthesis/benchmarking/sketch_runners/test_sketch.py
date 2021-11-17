@@ -75,6 +75,10 @@ class TestSketch(unittest.TestCase):
     def test_decl_and_def(self):
         self.success_case_checker(self.repairExamples / "tcas" / "tcas_v1_realizable.c")
 
-    # @timeout_decorator.timeout(300)
+    @timeout_decorator.timeout(300)
     def test_shadowing(self):
         self.case_checker(self.repairExamples / "crafted" / "array_positive_sum_v1_loop_realizable.c")
+
+    @timeout_decorator.timeout(300)
+    def test_paper_example(self):
+        self.case_checker(self.repairExamples / "crafted" / "max_abs_plus_div_v5_realizable.c")
