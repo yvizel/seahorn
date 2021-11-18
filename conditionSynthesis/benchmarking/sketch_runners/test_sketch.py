@@ -82,3 +82,7 @@ class TestSketch(unittest.TestCase):
     @timeout_decorator.timeout(300)
     def test_paper_example(self):
         self.case_checker(self.repairExamples / "crafted" / "max_abs_plus_div_v5_realizable.c")
+
+    @timeout_decorator.timeout(300)
+    def test_function_recieving_arr(self):
+        self.case_checker(self.repairExamples / "crafted" / "binary_search_synthesis_v2_realizable.c")

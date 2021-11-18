@@ -41,7 +41,18 @@ class CleanerVisitor(NodeVisitor):
                 node.body.block_items.append(pycparser.c_ast.Return(pycparser.c_ast.Constant('int', '0')))
         # Compare d arg and name to node arg and name
         def arg_types(type_node):
-            return [p.type.type.names for p in type_node.args.params]
+            res = []
+            for p in type_node.args.params:
+                # if p is not an array names of type
+                # else return array type
+                if isinstance(p.type, ArrayDecl):
+                    res.append(p.type.type.type.names)
+                    # dim = p.type.dim if p.type.dim is not None else '' 
+                    # res[-1].append(f'[{dim}]')
+                else:
+                    res.append(p.type.type.names)
+            return res
+            
         for d in [d for d in self.decls if d.name == node.decl.name and 
         (((not d.type.args) and (not node.decl.type.args))
             or (d.type.args and node.decl.type.args and arg_types(d.type) == arg_types(node.decl.type)))]:
@@ -334,13 +345,15 @@ base_generator_template = """generator {} base_generator_for_{}_{}({}) {{
 
 def collect_usages_by_type(decs):
     by_type = defaultdict(lambda: (list(), list()))
+    # first is globals second is locals but the truth is it is  abug and we need to seperate funcs from vals
+    # anyway not relevant to experimentation
     for d in decs[0]:
         if isinstance(d.type, pycparser.c_ast.TypeDecl):
             by_type[d.type.type.names[0]][0].append(d)
         else:
             by_type[d.type.names[0]][0].append(d)
     if len(decs) > 0:
-        for d in decs[-1]:
+        for d in [d for ds in decs[1:] for d in ds]:
             if isinstance(d.type, pycparser.c_ast.TypeDecl):
                 by_type[d.type.type.names[0]][1].append(d)
             else:
