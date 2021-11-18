@@ -10,7 +10,7 @@ from pathlib import Path
 from copy import deepcopy
 from argparse import ArgumentParser
 from collections import defaultdict
-from pycparser.c_ast import ID, ArrayDecl, Case, Compound, Decl, For, FuncDecl, FuncDef, IdentifierType, NodeVisitor, TypeDecl
+from pycparser.c_ast import ID, ArrayDecl, Case, Compound, Constant, Decl, For, FuncDecl, FuncDef, IdentifierType, NodeVisitor, TypeDecl
 
 class CleanerVisitor(NodeVisitor):
     """
@@ -211,6 +211,9 @@ class SketchVisitor(NodeVisitor):
                 raise Exception("Array without dimension is currently not supported")
             node.type.type.type.names[0] += "[{}]".format(node.type.dim.value)
             node.type = node.type.type
+        if isinstance(node.type, TypeDecl):
+            if ('int' in node.type.type.names or 'bool' in node.type.type.names) and node.init is None:
+                node.init = Constant(node.type.type, '0')
         self.declared.add(node)
         self.visit(node.type)
         if node.init:
@@ -465,12 +468,12 @@ def to_sketch(c_code, gen_bnd=None):
             prefix = ''
             if int_params:
                 prefix = ', '
-            return int_generator_template(base_gen[(coord, 'int')]).format(coord, int_params, int_params.replace("int", ""), prefix)
+            return int_generator_template(base_gen[(coord, 'int')]).format(coord, int_params, int_params.replace("int ", ""), prefix)
         elif typ == 'bool':
             prefix = ''
             if int_params or bool_params:
                 prefix = ', '
-            return bool_generator_template(base_gen[(coord, 'bool')]).format(coord, prefix + full_params, prefix + int_params.replace("int", ""), bool_params.replace("bool", ""), prefix + full_params.replace("bool", "").replace("int", ""))
+            return bool_generator_template(base_gen[(coord, 'bool')]).format(coord, prefix + full_params, prefix + int_params.replace("int ", ""), bool_params.replace("bool ", ""), prefix + full_params.replace("bool ", "").replace("int ", ""))
         else:
             raise Exception("Unknown type: " + typ)
 

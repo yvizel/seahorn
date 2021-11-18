@@ -86,3 +86,7 @@ class TestSketch(unittest.TestCase):
     @timeout_decorator.timeout(300)
     def test_function_recieving_arr(self):
         self.case_checker(self.repairExamples / "crafted" / "binary_search_synthesis_v2_realizable.c")
+
+    @timeout_decorator.timeout(300)
+    def test_tcas_param_usage_generator(self):
+        self.success_case_checker(self.repairExamples / "tcas" / "tcas_v12_unknown.c")
