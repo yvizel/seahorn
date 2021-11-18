@@ -1,7 +1,8 @@
 from collections import defaultdict
 from io import UnsupportedOperation
-from typing import DefaultDict, Dict, List, Optional, Tuple
+from typing import Any, DefaultDict, Dict, List, Optional, Tuple, NamedTuple
 from copy import deepcopy
+from itertools import groupby
 
 import sexpdata
 import argparse
@@ -37,7 +38,7 @@ class SExp:
             # Raise error
             raise UnsupportedOperation("most_lhs")
 
-    def flatten(self) -> List[sexpdata.Symbol]:
+    def flatten(self) -> List[str]:
         if isinstance(self.exp, list):
             res = []
             for x in self.exp:
@@ -47,7 +48,22 @@ class SExp:
             return [self.exp.value()]
         else: 
             return [self.exp]
+
+    @classmethod
+    def map_sexpdata(cls, exp, f, match_lists=True):
+        if isinstance(exp, list):
+            res = []
+            for x in exp:
+                res.append(cls.map_sexpdata(x, f))
+            if match_lists:
+                res = f(res)
+            return res
+        else:
+            return f(exp)
     
+    def map(self, f, match_lists=True):
+        return self.map_sexpdata(self.exp, f, match_lists)
+
     # Support printing SExp as a string
     def __str__(self) -> str:
         return sexpdata.dumps(self.exp)
@@ -69,6 +85,8 @@ class Var(SExp):
     @classmethod
     def OP(cls): return 'declare-var'
 
+    def name(self):
+        return self.arg(1).op()
 
 class SynthFun(SExp):
     @classmethod
@@ -84,7 +102,7 @@ class Synth(SExp):
 
 
 class SyGuS:
-    def __init__(self, expressions) -> None:
+    def __init__(self, expressions, simplify=True) -> None:
         self.expressions = expressions
 
     def synth_funs(self) -> List[SynthFun]:
@@ -92,6 +110,26 @@ class SyGuS:
 
     def constraints(self) -> List[Constraint]:
         return [e for e in self.expressions if isinstance(e, Constraint)]
+
+    def vars(self) -> List[Var]:
+        return [e for e in self.expressions if isinstance(e, Var)]
+
+    def match(self, pattern, matchee) -> bool:
+        """
+        Check if inner expression of pattern and matchee
+        are equal, where global variables in pattern are ignored
+        """
+        global_vars = [v.name() for v in self.vars()]
+        def helper(p, m) -> bool:
+            if not isinstance(p, list):
+                if isinstance(p, sexpdata.Symbol) and p.value() in global_vars:
+                    return True
+                return m == p
+            # If p is list then m must be a list of same size
+            if (not isinstance(m, list)) or len(m) != len(p):
+                return False
+            return all(helper(p1, m1) for p1, m1 in zip(p, m))
+        return helper(pattern, matchee)
 
     def dumps(self) -> str:
         return "\n".join([sexpdata.dumps(e.exp) for e in self.expressions])
@@ -110,27 +148,58 @@ class SyGuS:
     def parse(cls, sl_text: str, **kwargs) -> "SyGuS":
         sl_text = sl_text.strip()
         expressions = sexpdata.parse(sl_text, **kwargs)
-        return SyGuS([SyGuS.translate(sexp) for sexp in expressions])
-        
+        return SyGuS([SyGuS.translate(sexp) for sexp in expressions])        
+
 
 class Graph:
+    class Edge(NamedTuple):
+        srcs: List[str]
+        dst: Optional[str]
+        constr: Constraint
+
+
     def __init__(self, name: str, sygus: SyGuS) -> None:
         self.sygus: SyGuS = deepcopy(sygus)
+        self.orig_sygus = sygus
         sygus = self.sygus
         self.name: str = name
-        self.edges: DefaultDict[str, List[Tuple[Optional[str], Constraint]]] = defaultdict(lambda: [])
+        self.edges: DefaultDict[str, List['Graph.Edge']] = defaultdict(lambda: [])
         self.stopper = lambda x: x.op() in self.node_names()
+
 
         for c in sygus.constraints():
             cond = c.condition()
             if cond.op() != '=>':
                 continue
             lhs = cond.arg(1)
-            src_inv_name = lhs.most_lhs(self.stopper)
-            if src_inv_name not in self.node_names():
+            srcs = []
+            if isinstance(lhs.exp, list):
+                for i in range(1, len(lhs.exp)):
+                    src_inv_name = lhs.arg(i).most_lhs(self.stopper)
+                    if src_inv_name not in self.node_names():
+                        break
+                    srcs.append(src_inv_name)
+            else:
+                src_inv_name = lhs.most_lhs(self.stopper)
+                if src_inv_name not in self.node_names():
+                    continue
+                srcs.append(src_inv_name)
+            if not srcs:
                 continue
             dst_inv_name = cond.arg(2).most_lhs(self.stopper) if lhs.op() == 'and' else None
-            self.edges[src_inv_name].append((dst_inv_name, c))
+            print(srcs, dst_inv_name)
+            for src in srcs:
+                self.edges[src].append(self.Edge(srcs, dst_inv_name, c))
+    
+    def delete_edges_by_src(self, src):
+        # TODO: is it ok to delete edges by a single src? I think so because two srcs imply one is a condition inv
+        edges = self.edges[src]
+        for e in edges:
+            for next_src in e.srcs:
+                if next_src == src:
+                    continue
+                self.edges[next_src].remove(e)
+        del self.edges[src]
 
     def nodes(self):
         return self.sygus.synth_funs()
@@ -147,13 +216,13 @@ class Graph:
             * Deleting the inv from the edges
         otherwise returns self
         """
-        if (not self.edges[inv_name]) or len(self.edges[inv_name]) > 1:
+        if (not self.edges(inv_name)) or len(self.edges(inv_name)) > 1:
             return self
         inv = next((i for i in self.nodes() if i.name() == inv_name), None)
         assert inv is not None
         graph = deepcopy(self)
         graph.sygus.expressions.remove(inv)
-        edge = graph.edges[inv_name][0]
+        edge = graph.edges(inv_name)[0]
         
         # Get conditions from and expression to add to other edges
         assert edge[1].condition().op() == '=>'
@@ -166,8 +235,8 @@ class Graph:
         new_dst = edge[1].condition().arg(2)
         
         # For each edge with destination (edge[0]) equal to inv_name, add conditions to and exp
-        for src, dests in graph.edges.items():
-            if src == inv_name:
+        for srcs, dests in graph.edges.items():
+            if inv_name in srcs:
                 continue
             for dst, constraint in dests:
                 if dst != inv_name:
@@ -177,34 +246,49 @@ class Graph:
                 imlplies.arg(1).exp.extend(conditions_to_append)
                 imlplies.exp[2] = new_dst.exp
 
-        for dst, constr in graph.edges[inv_name]:
+        k, v = graph.edges_items(inv_name)
+        for dst, constr in v:
             graph.sygus.expressions.remove(constr)
-        del graph.edges[inv_name]
+        del graph.edges_dict[k]
         return graph
 
     def fold(self) -> "Graph":
-        names = [n for n in self.node_names()]
+        names = {n: (max(len(e.srcs) for e in self.edges[n]), len(self.edges[n])) 
+                    for n in self.node_names() if self.edges[n]}
+        # for name in names keep fold by number of edges and whether an edge is nonlinear
+        #   an edge is nonlinear if srcs is longer then 1
         res = self
-        for n in names:
-            res = res.fold_inv(n)
+        for name, (max_srcs, num_edges) in names.items():
+            # We fold everything which is not a loop, so only skip multi edge single src nodes
+            # TODO: check how while loops with hole in condition behace
+            if max_srcs > 1:
+                # A non linear predicate can be a condition and only appear in the tr of that location
+                # Or a predicate, in which case it will appear in other locations.
+                if any(name in c.flatten() for c in self.orig_sygus.constraints() 
+                    if c not in [e.constr for e in self.edges[name]]):
+                    res = res.fold_inv(name)
+            elif num_edges == 1:
+                res = res.fold_inv(name)
         return res
 
-    def collect_usages(self) -> Dict[str, List[Constraint]]:
+    def simplify(self) -> "Graph":
         """
-        Returns a dict of all usages of the nodes in the constraints.
+        Inline constraints that are not edges.
+        Removes nodes that are not used in any edge.
         """
-        res = defaultdict(lambda: [])
-        for n in self.nodes():
-            for c in self.edges[n.name()]:
-                res[n.name()].append(c[0])
-        return res
+        non_implies_constraints = [c for c in self.sygus.constraints() if c.condition().op() != '=>']
+        for c in non_implies_constraints:
+            def mapper(x):
+                if self.sygus.match(c.condition().exp, x):
+                    return sexpdata.Symbol('true')
+                return x
+            for constr in self.sygus.constraints():
+                if constr == c:
+                    continue
+                constr.exp = constr.map(mapper)
 
-    def clean_unused_nodes(self) -> "Graph":
-        """
-        Removes nodes that are not used in any edge
-        """
         nodes = self.nodes()
-        used_nodes = [x for e in self.edges.values() for dst in e for x in dst[1].flatten()]
+        used_nodes = set([x for edges in self.edges.values() for e in edges for x in e.constr.flatten()])
         unused_nodes = [n for n in nodes if n.name() not in used_nodes]
         for n in unused_nodes:
             # TODO: is it sound to remove constraints that are not transition formulas?
@@ -216,7 +300,9 @@ class Graph:
         return self
 
     def __str__(self):
-        edges_text = "\n    ".join([f"{e1} -> [{', '.join([str(x) for x, y in e2])}]" for e1, e2 in self.edges.items()])
+        all_edges = set(e for es in self.edges.values() for e in es)
+        grouped = groupby(all_edges, lambda x: x.srcs)
+        edges_text = "\n    ".join([f"{k} -> [{', '.join([str(x.dst) for x in g])}]" for k, g in grouped])
         return f'{self.name}({", ".join([str(n) for n in self.nodes()])},\n    {edges_text}\n)'
 
     def __repr__(self):
@@ -236,14 +322,8 @@ if __name__ == '__main__':
         sl_text = f.read()
     s = SyGuS.parse(sl_text)
     g = Graph('if1_v1_realizable_fwd', s)
-    print(g)
     folded = g.fold()
     print(folded)
-    for name, dsts in folded.edges.items():
-        if dsts:
-            for d, cond in dsts:
-                print(f"{name} -> {d}")
-                print(cond)
-                print()
-    folded.clean_unused_nodes()
+    folded.simplify()
+    print("Simplified:")
     print(folded.sygus.dumps())
