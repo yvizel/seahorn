@@ -90,3 +90,7 @@ class TestSketch(unittest.TestCase):
     @timeout_decorator.timeout(300)
     def test_tcas_param_usage_generator(self):
         self.success_case_checker(self.repairExamples / "tcas" / "tcas_v12_unknown.c")
+
+    @timeout_decorator.timeout(300)
+    def test_bad_example_fixed(self):
+        self.case_checker(self.repairExamples / "crafted" / "function_call_realizable.c")
