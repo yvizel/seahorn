@@ -211,9 +211,9 @@ class SketchVisitor(NodeVisitor):
                 raise Exception("Array without dimension is currently not supported")
             node.type.type.type.names[0] += "[{}]".format(node.type.dim.value)
             node.type = node.type.type
-        if isinstance(node.type, TypeDecl):
-            if ('int' in node.type.type.names or 'bool' in node.type.type.names) and node.init is None:
-                node.init = Constant(node.type.type, '0')
+        # if isinstance(node.type, TypeDecl):
+        #     if ('int' in node.type.type.names or 'bool' in node.type.type.names) and node.init is None:
+        #         node.init = Constant(node.type.type, '0')
         self.declared.add(node)
         self.visit(node.type)
         if node.init:
