@@ -2,7 +2,7 @@
 
 extern int nd();
 extern void g();
-extern void h();
+extern void g1();
 extern bool find_condition();
 int f(int x);
 
@@ -14,7 +14,7 @@ int main() {
 	int z = f(x);
 	sassert(z == 0);
   } else {
-	h();
+	g1();
 	int z = f(x);
 	sassert(z == 0);
   }
@@ -24,7 +24,7 @@ int main() {
 int f(int x) {
   int y = 0;
   if (find_condition()){
-	h();
+	g1();
 	return y;
   }
 
