@@ -24,6 +24,10 @@ for obj in "$1"/*; do
   if [ -d "$obj" ] && [ "$toolname" != "reverseSmt2" ] && [ "$toolname" != "forwardSl" ] && [ "$toolname" != "names" ] && [ "$toolname" != "loops" ]; then
     echo -n ",$toolname"_res >>"$csv"
     echo -n ",$toolname"_time >>"$csv"
+    if [ "$toolname" == "sketch" ]; then
+        ./sketch_runners/collect_errors.sh "$1"/sketch
+        echo -n ",sketch_error" >>"$csv"
+    fi
   fi
 done
 echo "" >>"$csv"
@@ -53,6 +57,11 @@ for file in "$2"/**/*.c; do
       echo -n "," >> "$csv"
       { [ -f "$obj/${file_without_prefix%%.*}.$toolname.time" ] && grep real "$obj/${file_without_prefix%%.*}.$toolname.time" | tr -d '\n' | tr -d real'\t' || echo -n "error"; } >> "$csv"
       echo -n "," >> "$csv"
+      # if toolname is sketch and sketch.err exists, then print sketch.err without newlines into file
+      if [ "$toolname" == "sketch" ] && [ -f "$obj/${file_without_prefix%%.*}.sketch.err" ]; then
+        cat "$obj/${file_without_prefix%%.*}.sketch.err" | tr -d '\n' |tr -d ',' >> "$csv"
+        echo -n "," >> "$csv"
+      fi
     fi
   done
   echo "" >>"$csv"
