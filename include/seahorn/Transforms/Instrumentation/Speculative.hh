@@ -34,6 +34,7 @@ namespace seahorn
     Value * m_nd;
     Type * m_BoolTy;
     GlobalVariable * m_SpecCount;
+    GlobalVariable * m_spec;
 
     unsigned m_numOfSpec;
     unsigned m_numOfFences;

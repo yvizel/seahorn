@@ -31,10 +31,14 @@ void Speculative::addSpeculation(IRBuilder<> &B, std::string name, Value *cond, 
   // the speculation variable. This is because we want to have mutual exclusion.
   // Meaning, if the condition holds, the branch is taken anyway, so no need
   // to assume it was taken due to speculative execution.
-  Value *assumption = B.CreateBinOp(Instruction::Xor, cond, spec, name + "__xor");
+  Value *startSpec = B.CreateBinOp(Instruction::Xor, cond, spec, name + "__xor");
+  Value *globalSpec = B.CreateAlignedLoad(m_spec, 1);
+  Value *assumption = B.CreateOr(globalSpec, startSpec);
   B.CreateCall(m_assumeFn, assumption, "");
+  globalSpec = B.CreateOr(globalSpec, spec);
+  B.CreateAlignedStore(globalSpec, m_spec, 1);
   Value *fence = B.CreateCall(fenceFkt);
-  Value *stop = B.CreateAnd(spec, fence, "");
+  Value *stop = B.CreateAnd(globalSpec, fence, "");
   Value *notStop = B.CreateNot(stop, "");
   B.CreateCall(m_assumeFn, notStop, "");
 }
@@ -116,7 +120,7 @@ bool Speculative::insertSpeculation(IRBuilder<> &B, BranchInst &BI) {
 
   outs() << "Here...\n";
 
-  std::string name = "spec" + std::to_string(++m_numOfSpec);
+  std::string name = "spec" + std::to_string(m_numOfSpec++);
   Value *cond = BI.getCondition();
   B.SetInsertPoint(&BI);
   Value *negCond = B.CreateNot(cond, name + "__cond_neg");
@@ -124,24 +128,26 @@ bool Speculative::insertSpeculation(IRBuilder<> &B, BranchInst &BI) {
 
 
   // Determine speculation
-  AllocaInst *specVar = B.CreateAlloca(m_BoolTy, 0, name);
-  specVar->setAlignment(MaybeAlign(1));
-  Value *nd = B.CreateCall(m_ndBoolFn, None, name + "__nd");
-  B.CreateAlignedStore(nd, specVar, 1);
-  LoadInst *spec = B.CreateAlignedLoad(specVar, 1);
+//  AllocaInst *specVar = B.CreateAlloca(m_BoolTy, 0, name);
+//  specVar->setAlignment(MaybeAlign(1));
+  Value *ndSpec = B.CreateCall(m_ndBoolFn, None, name + "__nd");
+//  B.CreateAlignedStore(ndSpec, specVar, 1);
+//  LoadInst *spec = B.CreateAlignedLoad(specVar, 1);
   Value *condNd = B.CreateCall(m_ndBoolFn, None, name + "__cond_nd");
 
   BI.setCondition(condNd);
 
-  addSpeculation(B, name + "__then", cond, spec, thenBB, fences[0]);
-  addSpeculation(B, name + "__else", negCond, spec, elseBB, fences[1]);
+  addSpeculation(B, name + "__then", cond, ndSpec, thenBB, fences[0]);
+  addSpeculation(B, name + "__else", negCond, ndSpec, elseBB, fences[1]);
 
   // Now initialize the counter
-  initSpecCount(B, *spec);
+  // Todo: uncomment it again
+//  initSpecCount(B, *spec);
 
+  // Todo: this might be unnecessary for the new version with a global spec variable
   // Store the Speculation variable associated with this conditional branch.
   // This should help us add the proper assertions.
-  m_bb2spec.emplace(&BI, cast<Value>(specVar));
+  //m_bb2spec.emplace(&BI, cast<Value>(specVar));
 
   return true;
 }
@@ -339,24 +345,26 @@ void Speculative::addAssertions(Function &F, IRBuilder<> &B , std::vector<Instru
   outs() << "Starting to add assertions...\n";
   for (Instruction *I : WorkList) {
 	if (isa<LoadInst>(I) || isa<StoreInst>(I)) {
-	  outs() << "\n\n Looking for spec vars for "; I->print(outs()); outs() << "\n";
-	  std::set<Value*> COI;
-	  collectCOI(I, COI);
-	  bool mem = false;
-	  for (Value *v : COI) {
-	      if (isa<GetElementPtrInst>(v)) {
-	          mem = true;
-	          break;
-	      }
-	  }
-	  if (!mem) continue;
-	  std::set<Value*> S;
-	  for (Value *coi : COI) {
-		  getSpecForInst(cast<Instruction>(coi), S);
-          }
-          outs() << "COI size: " << COI.size() << " and SPEC size: " << S.size() << "\n";
-	  if (S.size() > 0)
-	      insertSpecCheck(F, B, *I, S);
+          std::set<Value*> S;
+          insertSpecCheck(F, B, *I, S);
+//	  outs() << "\n\n Looking for spec vars for "; I->print(outs()); outs() << "\n";
+//	  std::set<Value*> COI;
+//	  collectCOI(I, COI);
+//	  bool mem = false;
+//	  for (Value *v : COI) {
+//	      if (isa<GetElementPtrInst>(v)) {
+//	          mem = true;
+//	          break;
+//	      }
+//	  }
+//	  if (!mem) continue;
+//	  std::set<Value*> S;
+//	  for (Value *coi : COI) {
+//		  getSpecForInst(cast<Instruction>(coi), S);
+//          }
+//          outs() << "COI size: " << COI.size() << " and SPEC size: " << S.size() << "\n";
+//	  if (S.size() > 0)
+//	      insertSpecCheck(F, B, *I, S);
 	}
   }
 }
@@ -379,6 +387,11 @@ bool Speculative::runOnModule(llvm::Module &M) {
 		  ConstantInt::get(ctx, APInt(32,0)),
 		  "__Spec_Counter__");
   m_SpecCount->setAlignment(4);
+
+  m_spec = new GlobalVariable(M, m_BoolTy, false, GlobalValue::CommonLinkage,
+                              ConstantInt::get(ctx, APInt(1, 0)),
+                              "__global_spec");
+  m_spec->setAlignment(1);
 
   if (HasErrorFunc) {
 
@@ -420,6 +433,7 @@ bool Speculative::runOnModule(llvm::Module &M) {
   return change;
 }
 
+// Todo: The pass changes the code
 void Speculative::getAnalysisUsage(llvm::AnalysisUsage &AU) const {
   AU.setPreservesAll();
 }
@@ -449,7 +463,6 @@ BasicBlock *Speculative::createErrorBlock(Function &F, IRBuilder<> & B,
 
 void Speculative::insertSpecCheck(Function &F, IRBuilder<> &B,
                                   Instruction &inst, std::set<Value*> & S) {
-
   // Create error blocks
   LLVMContext &ctx = B.getContext();
   BasicBlock *err_spec_bb = BasicBlock::Create(ctx, "spec_error_bb", &F);
@@ -462,40 +475,52 @@ void Speculative::insertSpecCheck(Function &F, IRBuilder<> &B,
   CallInst *ci_spec = B.CreateCall(m_errorFn);
   outs() << "Call to error function created...\n";
   ci_spec->setDebugLoc(inst.getDebugLoc());
-  B.CreateUnreachable();
+  Type *retType = F.getReturnType();
+  if (retType->isVoidTy()) { B.CreateRetVoid(); }
+  else { B.CreateRet(ConstantInt::get(retType, 0)); }
 
   B.SetInsertPoint(&inst);
   outs() << "Insertion point set...\n";
 
-  BasicBlock *OldBB0 = inst.getParent();
-  BasicBlock *Cont0 = OldBB0->splitBasicBlock(B.GetInsertPoint());
-  OldBB0->getTerminator()->eraseFromParent();
-  BranchInst::Create(Cont0, OldBB0);
+//  BasicBlock *OldBB0 = inst.getParent();
+//  BasicBlock *Cont0 = OldBB0->splitBasicBlock(B.GetInsertPoint());
+//  OldBB0->getTerminator()->eraseFromParent();
+//  BranchInst::Create(Cont0, OldBB0);
+//
+//  B.SetInsertPoint(Cont0->getFirstNonPHI());
 
-  B.SetInsertPoint(Cont0->getFirstNonPHI());
+//  outs() << "Iterating over specs...\n";
+//
+//  /// --- spec: add check var_spec == false
+//  Value *specOr = ConstantInt::get(m_BoolTy, 0);
+//  for (Value *s : S) {
+//    specOr = B.CreateBinOp(
+//			Instruction::Or,
+//			specOr,
+//			B.CreateAlignedLoad(s,1));
+//  }
+//
+//  outs() << "Create or of specs...\n";
+//
+//  Value *specCheck = B.CreateICmpEQ(specOr, ConstantInt::get(m_BoolTy, 0), "spec_check");
 
-  outs() << "Iterating over specs...\n";
-
-  /// --- spec: add check var_spec == false
-  Value *specOr = ConstantInt::get(m_BoolTy, 0);
-  for (Value *s : S) {
-    specOr = B.CreateBinOp(
-			Instruction::Or,
-			specOr,
-			B.CreateAlignedLoad(s,1));
-  }
-
-  outs() << "Create or of specs...\n";
-
-  Value *specCheck = B.CreateICmpEQ(specOr, ConstantInt::get(m_BoolTy, 0), "spec_check");
+  Value *globalSpec = B.CreateAlignedLoad(m_spec, 1);
+//  Value *specCheck = B.CreateNot(globalSpec);
+  // Todo: Using asserts does not work. Why not?
+//  B.CreateCall(m_assertFn, specCheck);
 
   outs() << "Assertion expression created...\n";
+  BasicBlock *BB = B.GetInsertBlock();
+  BasicBlock *Cont = BB->splitBasicBlock(B.GetInsertPoint());
+  Instruction *terminator = BB->getTerminator();
+  B.SetInsertPoint(terminator);
+  B.CreateCondBr(globalSpec, err_spec_bb, Cont);
+  terminator->eraseFromParent();
 
-
-  BasicBlock *OldBB1 = Cont0;
-  BasicBlock *Cont1 = OldBB1->splitBasicBlock(B.GetInsertPoint());
-  OldBB1->getTerminator()->eraseFromParent();
-  BranchInst::Create(Cont1, err_spec_bb, specCheck, OldBB1);
+//  BasicBlock *OldBB1 = Cont0;
+//  BasicBlock *Cont1 = OldBB1->splitBasicBlock(B.GetInsertPoint());
+//  OldBB1->getTerminator()->eraseFromParent();
+//  BranchInst::Create(Cont1, err_spec_bb, specCheck, OldBB1);
 
   outs() << "Added A SPECULATION check...\n";
 }
