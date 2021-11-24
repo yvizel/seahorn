@@ -90,6 +90,7 @@ bool StaticTaint::runOnBasicBlock(BasicBlock &B) {
       } else {
         for (Use &U : I->operands()) {
           Value *v = U.get();
+          // Todo: Why not taint in case of pointer type?
           if (m_taint.find(v) != m_taint.end() &&
               !v->getType()->isPointerTy()) {
             LOG("taint", errs() << "Tainting..."; I->print(errs()); errs() << "\n";);

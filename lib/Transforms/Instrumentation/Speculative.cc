@@ -475,9 +475,7 @@ void Speculative::insertSpecCheck(Function &F, IRBuilder<> &B,
   CallInst *ci_spec = B.CreateCall(m_errorFn);
   outs() << "Call to error function created...\n";
   ci_spec->setDebugLoc(inst.getDebugLoc());
-  Type *retType = F.getReturnType();
-  if (retType->isVoidTy()) { B.CreateRetVoid(); }
-  else { B.CreateRet(ConstantInt::get(retType, 0)); }
+  B.CreateUnreachable();
 
   B.SetInsertPoint(&inst);
   outs() << "Insertion point set...\n";
