@@ -7,7 +7,7 @@ extern void __taint(int*);
 extern void __is_tainted(int);
 extern int nd();
 
-unsigned int array1_size = 16;
+const unsigned int array1_size = 16;
 uint8_t array1[16];
 uint8_t array2[256 * 512];
 uint8_t temp = 0;
@@ -18,7 +18,7 @@ int main(int argn, char* args[]) {
     source = nd();
     __taint(&source);
     uint8_t *p1 = (uint8_t*)array1;
- 
+
     if (source < array1_size) {
         temp = source;
     }

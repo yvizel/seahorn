@@ -13,7 +13,7 @@ extern int nd();
 // avoid optimization of array
 extern void init(void*);
 
-//unsigned int array1_size = 16;
+const unsigned int array1_size = 16;
 uint8_t array1[16];
 uint8_t array2[256 * 512];
 uint8_t temp = 1;
@@ -23,7 +23,6 @@ int main(int argn, char* args[]) {
     init(array1);
     init(array2);
 
-    unsigned array1_size = 16;
 
     int source;
     source = nd();
