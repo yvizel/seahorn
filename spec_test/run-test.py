@@ -16,7 +16,8 @@ if not llfile.endswith(".ll"):
     sys.exit("Input file must end with '.ll'")
 
 print("run on", llfile)
-cmd = ["../build/run/bin/sea", "horn", "--solve", "--horn-answer", "-o=output/out.smt2", "--oll=output/out.ll", "--cex=cex.ll", "--step=large", "--horn-tail-simplifier-pve=false", "--horn-subsumption=false", "--speculative-exe", "--log=cex", llfile]
+subprocess.run("mkdir -p output", shell=True)
+cmd = ["../build/run/bin/sea", "horn", "--solve", "-o=output/out.smt2", "--oll=output/out.ll", "--step=large", "--horn-tail-simplifier-pve=false", "--horn-subsumption=false", "--speculative-exe", "--horn-inline-all", llfile]
 p = subprocess.run(cmd, check = True, capture_output = True, text=True)
 
 fences = p.stdout.count("insert fence")
