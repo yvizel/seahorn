@@ -1120,6 +1120,9 @@ class Seahorn(sea.LimitedCmd):
         ap.add_argument ('--speculative-exe', help='Create speculative execution ' +
                          'semantics', default=False,
                          action='store_true', dest='speculative_exe')
+        ap.add_argument ('--insert-fences', help='Insert fences to mitigate ' +
+                         'Spectre attacks', default=False,
+                         action='store_true', dest='insert_fences')
 
         return ap
 
@@ -1192,6 +1195,9 @@ class Seahorn(sea.LimitedCmd):
 
         if args.speculative_exe:
             argv.append('--speculative-exe')
+
+        if args.insert_fences:
+            argv.append('--insert-fences')
 
         argv.extend (['-horn-inter-proc',
                       '-horn-sem-lvl={0}'.format (args.track),

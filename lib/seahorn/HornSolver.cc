@@ -28,6 +28,10 @@ static llvm::cl::opt<bool>
     PrintAnswer("horn-answer", cl::desc("Print Horn answer"), cl::init(false));
 
 static llvm::cl::opt<bool>
+    InsertFences("insert-fences", cl::desc("Insert fences to mitigate Spectre attacks"),
+                 cl::init(false));
+
+static llvm::cl::opt<bool>
     SimplifierPve("horn-tail-simplifier-pve",
                   cl::desc("Set fp.xform.tail_simplifier_pve"),
                   cl::init(false));
@@ -194,31 +198,37 @@ bool HornSolver::runOnModule(Module &M, HornifyModule &hm) {
     HornDbModel dbModel;
     initDBModelFromFP(dbModel, db, fp);
     printInvars(M, dbModel);
-  } else if (PrintAnswer && m_result) {
-    printCex();
-    std::vector<std::string> fences;
-    getFencesAlongTrace(fences);
-    // Todo: choose a fence wisely
-    if (!fences.empty()) {
-      std::string name = fences.back();
-      fences.pop_back();
-      outs() << "insert fence at " << name << '\n';
-//      Function *fence = M.getFunction(name);
-//      if (fence) {
-//        fence->print(outs());
-//        fence->deleteBody();
-//        fence->setLinkage(llvm::GlobalValue::InternalLinkage);
-//        LLVMContext &ctx = M.getContext();
-//        IRBuilder<> B(ctx);
-//        BasicBlock *bb = BasicBlock::Create(ctx, "entry", fence);
-//        B.SetInsertPoint(bb);
-//        B.CreateRet(B.getTrue());
-//        fence->print(outs());
-//      }
-      Expr rule;
-      bool changed = db.changeFenceRules(name, rule);
-      if (changed) {
-        return runOnModule(M, hm);
+  } else if (m_result) {
+    if (PrintAnswer) {
+      printCex();
+    }
+    if (InsertFences) {
+      std::vector<std::string> fences;
+      getFencesAlongTrace(fences);
+      // Todo: choose a fence wisely
+      if (!fences.empty()) {
+        std::string name = fences.back();
+        fences.pop_back();
+        outs() << "insert fence at " << name << '\n';
+        //      Function *fence = M.getFunction(name);
+        //      if (fence) {
+        //        fence->print(outs());
+        //        fence->deleteBody();
+        //        fence->setLinkage(llvm::GlobalValue::InternalLinkage);
+        //        LLVMContext &ctx = M.getContext();
+        //        IRBuilder<> B(ctx);
+        //        BasicBlock *bb = BasicBlock::Create(ctx, "entry", fence);
+        //        B.SetInsertPoint(bb);
+        //        B.CreateRet(B.getTrue());
+        //        fence->print(outs());
+        //      }
+        Expr rule;
+        bool changed = db.changeFenceRules(name, rule);
+        if (changed) {
+          return runOnModule(M, hm);
+        }
+      } else {
+        outs() << "Program not secure, but no place for a fence found\n";
       }
     }
   }
