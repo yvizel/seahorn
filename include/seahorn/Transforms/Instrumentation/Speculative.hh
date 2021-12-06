@@ -27,6 +27,7 @@ namespace seahorn
     Function * m_assumeFn;
     Function * m_assertFn;
     Function * m_ndBoolFn;
+    BasicBlock * m_errorBB;
     CallGraph * m_CG; // Call graph of the program
     StaticTaint m_taint;
 
@@ -45,7 +46,7 @@ namespace seahorn
     void addSpeculation(IRBuilder<>& B, std::string name, Value *cond, Value *spec, BasicBlock* bb, Function *fenceFkt);
     bool insertSpeculation(IRBuilder<>& B, BranchInst& inst);
 
-    BasicBlock* createErrorBlock (Function &F, IRBuilder<> &B, AllocaInst* specVar);
+    BasicBlock* createErrorBlock (Function &F, IRBuilder<> &B);
     void insertSpecCheck(Function &F, IRBuilder<> &B, Instruction &inst, std::set<Value*> & S);
 
     bool isErrorBB(BasicBlock *bb) {
@@ -81,6 +82,7 @@ namespace seahorn
 		m_assumeFn(nullptr),
 		m_assertFn(nullptr),
 		m_ndBoolFn(nullptr),
+                m_errorBB(nullptr),
         m_CG (nullptr),
 		m_bb2spec(),
 		m_nd(nullptr),

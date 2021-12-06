@@ -237,6 +237,8 @@ bool Speculative::runOnFunction(Function &F) {
   if (F.isDeclaration())
     return false;
 
+  m_errorBB = nullptr;
+
   LLVMContext &ctx = F.getContext();
   IRBuilder<> B(ctx);
 
@@ -438,15 +440,8 @@ void Speculative::getAnalysisUsage(llvm::AnalysisUsage &AU) const {
   AU.setPreservesAll();
 }
 
-/**
- * Unused code for now.
- * Will use it in case we want to add our own checks.
- */
-
-BasicBlock *Speculative::createErrorBlock(Function &F, IRBuilder<> & B,
-                                         AllocaInst *specVar) {
-  BasicBlock *errBB = BasicBlock::Create(
-      B.getContext(), "SpeculationCheck_" + specVar->getName().str(), &F);
+BasicBlock *Speculative::createErrorBlock(Function &F, IRBuilder<> & B) {
+  BasicBlock *errBB = BasicBlock::Create(B.getContext(), "spec_error_bb", &F);
 
   B.SetInsertPoint(errBB);
   CallInst *CI = B.CreateCall(m_errorFn);
@@ -463,19 +458,7 @@ BasicBlock *Speculative::createErrorBlock(Function &F, IRBuilder<> & B,
 
 void Speculative::insertSpecCheck(Function &F, IRBuilder<> &B,
                                   Instruction &inst, std::set<Value*> & S) {
-  // Create error blocks
-  LLVMContext &ctx = B.getContext();
-  BasicBlock *err_spec_bb = BasicBlock::Create(ctx, "spec_error_bb", &F);
-
-  outs() << "Added error block...\n";
-
-  if (m_errorFn == nullptr) outs() << "Something is wrong...\n";
-
-  B.SetInsertPoint(err_spec_bb);
-  CallInst *ci_spec = B.CreateCall(m_errorFn);
-  outs() << "Call to error function created...\n";
-  ci_spec->setDebugLoc(inst.getDebugLoc());
-  B.CreateUnreachable();
+  if (!m_errorBB) { m_errorBB = createErrorBlock(F, B); }
 
   B.SetInsertPoint(&inst);
   outs() << "Insertion point set...\n";
@@ -512,7 +495,7 @@ void Speculative::insertSpecCheck(Function &F, IRBuilder<> &B,
   BasicBlock *Cont = BB->splitBasicBlock(B.GetInsertPoint());
   Instruction *terminator = BB->getTerminator();
   B.SetInsertPoint(terminator);
-  B.CreateCondBr(globalSpec, err_spec_bb, Cont);
+  B.CreateCondBr(globalSpec, m_errorBB, Cont);
   terminator->eraseFromParent();
 
 //  BasicBlock *OldBB1 = Cont0;
