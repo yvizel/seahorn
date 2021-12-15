@@ -25,12 +25,10 @@ using namespace llvm;
 
 char Speculative::ID = 0;
 
-void Speculative::addSpeculation(IRBuilder<> &B, std::string name, Value *cond, Value *spec, BasicBlock *bb, Function *fenceFkt) {
-  B.SetInsertPoint(bb->getFirstNonPHI());
-  // The assumption for speculation is a XOR between the actual condition and
-  // the speculation variable. This is because we want to have mutual exclusion.
-  // Meaning, if the condition holds, the branch is taken anyway, so no need
-  // to assume it was taken due to speculative execution.
+BasicBlock *Speculative::addSpeculation(IRBuilder<> &B, std::string name, Value *cond, Value *spec, BasicBlock *bb, Function *fenceFkt) {
+  LLVMContext &ctx = B.getContext();
+  BasicBlock *newBB = BasicBlock::Create(ctx, "", bb->getParent(), bb);
+  B.SetInsertPoint(newBB);
   Value *startSpec = B.CreateBinOp(Instruction::Xor, cond, spec, name + "__xor");
   Value *globalSpec = B.CreateAlignedLoad(m_spec, 1);
   Value *assumption = B.CreateOr(globalSpec, startSpec);
@@ -41,6 +39,8 @@ void Speculative::addSpeculation(IRBuilder<> &B, std::string name, Value *cond, 
   Value *stop = B.CreateAnd(globalSpec, fence, "");
   Value *notStop = B.CreateNot(stop, "");
   B.CreateCall(m_assumeFn, notStop, "");
+  B.CreateBr(bb);
+  return newBB;
 }
 
 void Speculative::initSpecCount(IRBuilder<> &B, LoadInst & spec) {
@@ -88,7 +88,6 @@ void Speculative::incrementSpecCount(IRBuilder<> &B, Instruction &inst) {
 }
 
 bool Speculative::insertSpeculation(IRBuilder<> &B, BranchInst &BI) {
-
   BasicBlock *thenBB = BI.getSuccessor(0);
   BasicBlock *elseBB = BI.getSuccessor(1);
 
@@ -137,8 +136,24 @@ bool Speculative::insertSpeculation(IRBuilder<> &B, BranchInst &BI) {
 
   BI.setCondition(condNd);
 
-  addSpeculation(B, name + "__then", cond, ndSpec, thenBB, fences[0]);
-  addSpeculation(B, name + "__else", negCond, ndSpec, elseBB, fences[1]);
+  BasicBlock *newThenBB = addSpeculation(B, name + "__then", cond, ndSpec, thenBB, fences[0]);
+  BasicBlock *newElseBB = addSpeculation(B, name + "__else", negCond, ndSpec, elseBB, fences[1]);
+  BI.setSuccessor(0, newThenBB);
+  BI.setSuccessor(1, newElseBB);
+  // Fix phi nodes in thenBB and elseBB
+  BasicBlock *currBB = BI.getParent();
+  for (Instruction &inst : *thenBB) {
+    PHINode *phi;
+    if ((phi = dyn_cast<PHINode>(&inst))) {
+      phi->setIncomingBlock(phi->getBasicBlockIndex(currBB), newThenBB);
+    } else { break; }
+  }
+  for (Instruction &inst : *elseBB) {
+    PHINode *phi;
+    if ((phi = dyn_cast<PHINode>(&inst))) {
+      phi->setIncomingBlock(phi->getBasicBlockIndex(currBB), newElseBB);
+    } else { break; }
+  }
 
   // Now initialize the counter
   // Todo: uncomment it again
@@ -212,7 +227,7 @@ bool Speculative::runOnBasicBlock(BasicBlock &BB) {
   if (BI == nullptr)
     return false;
 
-  if (!BI->isConditional() || !m_taint.isTainted(BI->getCondition()))
+  if (!BI->isConditional()) // || !m_taint.isTainted(BI->getCondition()))
     return false;
 
   if (isFenced(*BI))
@@ -221,11 +236,11 @@ bool Speculative::runOnBasicBlock(BasicBlock &BB) {
   // TODO
   // For now, let's not worry about PHI nodes.
   // XXX DO WE NEED SPECIAL HANDLING? XXX
-  BasicBlock::iterator first = BB.begin();
-  if (isa<PHINode>(first)) {
-	  errs() << "Not supporting PHI nodes for now...\n";
-	  return false;
-  }
+//  BasicBlock::iterator first = BB.begin();
+//  if (isa<PHINode>(first)) {
+//	  errs() << "Not supporting PHI nodes for now...\n";
+//	  return false;
+//  }
 
   LLVMContext &ctx = BB.getContext();
   IRBuilder<> B(ctx);
@@ -375,7 +390,7 @@ bool Speculative::runOnModule(llvm::Module &M) {
   if (M.begin() == M.end())
     return false;
 
-  M.print(outs(), nullptr);
+//  M.print(outs(), nullptr);
   LLVMContext &ctx = M.getContext();
 
   m_BoolTy = Type::getInt1Ty(ctx);
@@ -392,7 +407,7 @@ bool Speculative::runOnModule(llvm::Module &M) {
 
   m_spec = new GlobalVariable(M, m_BoolTy, false, GlobalValue::CommonLinkage,
                               ConstantInt::get(ctx, APInt(1, 0)),
-                              "__global_spec");
+                              "__global_spec__");
   m_spec->setAlignment(1);
 
   if (HasErrorFunc) {
@@ -428,9 +443,9 @@ bool Speculative::runOnModule(llvm::Module &M) {
     change |= runOnFunction(F);
   }
 
-  errs() << "-- Inserted " << m_numOfSpec << " speculations.\n";
+  outs() << "-- Inserted " << m_numOfSpec << " speculations.\n";
   if (m_dump)
-	  M.print(errs(), nullptr);
+    M.print(outs(), nullptr);
 
   return change;
 }
