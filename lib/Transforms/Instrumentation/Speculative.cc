@@ -25,10 +25,10 @@ using namespace llvm;
 
 char Speculative::ID = 0;
 
-BasicBlock *Speculative::addSpeculation(IRBuilder<> &B, std::string name, Value *cond, Value *spec, BasicBlock *bb, Function *fenceFkt) {
+BasicBlock *Speculative::addSpeculationBB(IRBuilder<> &B, std::string name, Value *cond, Value *spec, BasicBlock *bb, Function *fenceFkt) {
   LLVMContext &ctx = B.getContext();
-  BasicBlock *newBB = BasicBlock::Create(ctx, "", bb->getParent(), bb);
-  B.SetInsertPoint(newBB);
+  BasicBlock *specBB = BasicBlock::Create(ctx, name + "__bb", bb->getParent(), bb);
+  B.SetInsertPoint(specBB);
   Value *startSpec = B.CreateBinOp(Instruction::Xor, cond, spec, name + "__xor");
   Value *globalSpec = B.CreateAlignedLoad(m_spec, 1);
   Value *assumption = B.CreateOr(globalSpec, startSpec);
@@ -40,7 +40,7 @@ BasicBlock *Speculative::addSpeculation(IRBuilder<> &B, std::string name, Value 
   Value *notStop = B.CreateNot(stop, "");
   B.CreateCall(m_assumeFn, notStop, "");
   B.CreateBr(bb);
-  return newBB;
+  return specBB;
 }
 
 void Speculative::initSpecCount(IRBuilder<> &B, LoadInst & spec) {
@@ -124,8 +124,6 @@ bool Speculative::insertSpeculation(IRBuilder<> &B, BranchInst &BI) {
   B.SetInsertPoint(&BI);
   Value *negCond = B.CreateNot(cond, name + "__cond_neg");
 
-
-
   // Determine speculation
 //  AllocaInst *specVar = B.CreateAlloca(m_BoolTy, 0, name);
 //  specVar->setAlignment(MaybeAlign(1));
@@ -136,22 +134,22 @@ bool Speculative::insertSpeculation(IRBuilder<> &B, BranchInst &BI) {
 
   BI.setCondition(condNd);
 
-  BasicBlock *newThenBB = addSpeculation(B, name + "__then", cond, ndSpec, thenBB, fences[0]);
-  BasicBlock *newElseBB = addSpeculation(B, name + "__else", negCond, ndSpec, elseBB, fences[1]);
-  BI.setSuccessor(0, newThenBB);
-  BI.setSuccessor(1, newElseBB);
+  BasicBlock *specThenBB = addSpeculationBB(B, name + "__then", cond, ndSpec, thenBB, fences[0]);
+  BasicBlock *specElseBB = addSpeculationBB(B, name + "__else", negCond, ndSpec, elseBB, fences[1]);
+  BI.setSuccessor(0, specThenBB);
+  BI.setSuccessor(1, specElseBB);
   // Fix phi nodes in thenBB and elseBB
   BasicBlock *currBB = BI.getParent();
   for (Instruction &inst : *thenBB) {
     PHINode *phi;
     if ((phi = dyn_cast<PHINode>(&inst))) {
-      phi->setIncomingBlock(phi->getBasicBlockIndex(currBB), newThenBB);
+      phi->setIncomingBlock(phi->getBasicBlockIndex(currBB), specThenBB);
     } else { break; }
   }
   for (Instruction &inst : *elseBB) {
     PHINode *phi;
     if ((phi = dyn_cast<PHINode>(&inst))) {
-      phi->setIncomingBlock(phi->getBasicBlockIndex(currBB), newElseBB);
+      phi->setIncomingBlock(phi->getBasicBlockIndex(currBB), specElseBB);
     } else { break; }
   }
 
