@@ -1123,6 +1123,9 @@ class Seahorn(sea.LimitedCmd):
         ap.add_argument ('--insert-fences', help='Insert fences to mitigate ' +
                          'Spectre attacks', default=False,
                          action='store_true', dest='insert_fences')
+        ap.add_argument ('--fence-placement', help='Location of possible fence ' +
+                         'placements', choices=['branch', 'error'],
+                         default='branch', dest='fence_placement')
 
         return ap
 
@@ -1197,7 +1200,8 @@ class Seahorn(sea.LimitedCmd):
             argv.append('--speculative-exe')
 
         if args.insert_fences:
-            argv.append('--insert-fences')
+            argv.extend (['--insert-fences',
+                          '--fence-placement={0}'.format (args.fence_placement)])
 
         argv.extend (['-horn-inter-proc',
                       '-horn-sem-lvl={0}'.format (args.track),

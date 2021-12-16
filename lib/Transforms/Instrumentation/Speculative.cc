@@ -20,6 +20,20 @@ static llvm::cl::opt<bool> HasErrorFunc(
     llvm::cl::desc("Available verifier.error function to denote error."),
     llvm::cl::init(true));
 
+enum FencePlaceOpt {
+  AFTER_BRANCH,
+  BEFORE_ERROR
+};
+
+static llvm::cl::opt<FencePlaceOpt> FencePlacement(
+    "fence-placement",
+    llvm::cl::desc("Location of the possible fence placements"),
+    llvm::cl::values(
+        clEnumValN(AFTER_BRANCH, "branch", "Insert fences directly after branches"),
+        clEnumValN(BEFORE_ERROR, "error", "Insert fences directly before error")
+        ),
+    llvm::cl::init(AFTER_BRANCH));
+
 namespace seahorn {
 using namespace llvm;
 
@@ -35,10 +49,12 @@ BasicBlock *Speculative::addSpeculationBB(IRBuilder<> &B, std::string name, Valu
   B.CreateCall(m_assumeFn, assumption, "");
   globalSpec = B.CreateOr(globalSpec, spec);
   B.CreateAlignedStore(globalSpec, m_spec, 1);
-  Value *fence = B.CreateCall(fenceFkt);
-  Value *stop = B.CreateAnd(globalSpec, fence, "");
-  Value *notStop = B.CreateNot(stop, "");
-  B.CreateCall(m_assumeFn, notStop, "");
+  if (FencePlacement == AFTER_BRANCH) {
+    Value *fence = B.CreateCall(fenceFkt);
+    Value *stop = B.CreateAnd(globalSpec, fence, "");
+    Value *notStop = B.CreateNot(stop, "");
+    B.CreateCall(m_assumeFn, notStop, "");
+  }
   B.CreateBr(bb);
   return specBB;
 }
