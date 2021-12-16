@@ -15,6 +15,7 @@ class HornSolver : public llvm::ModulePass {
   boost::tribool m_result;
   std::unique_ptr<EZ3> m_local_ctx;
   std::unique_ptr<ZFixedPoint<EZ3>> m_fp;
+  std::vector<std::string> m_inserted_fences;
 
   bool runOnModule(Module &M, HornifyModule &hm);
 
@@ -28,7 +29,7 @@ class HornSolver : public llvm::ModulePass {
 public:
   static char ID;
 
-  HornSolver() : ModulePass(ID), m_result(boost::indeterminate) {}
+  HornSolver() : ModulePass(ID), m_result(boost::indeterminate), m_inserted_fences() {}
   virtual ~HornSolver() {}
 
   virtual bool runOnModule(Module &M);
@@ -40,6 +41,7 @@ public:
   void releaseMemory() {
     m_fp.reset(nullptr);
     m_local_ctx.reset(nullptr);
+    m_inserted_fences.clear();
   }
 };
 

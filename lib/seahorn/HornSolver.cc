@@ -127,7 +127,7 @@ bool HornSolver::runOnModule(Module &M) {
 }
 
 bool HornSolver::runOnModule(Module &M, HornifyModule &hm) {
-  // Todo: Do we have to free old Z3?
+  // Todo: copy old may-summaries (overapproximation) to the new Z3 instance
   if (LocalContext) {
     m_local_ctx.reset(new EZ3(hm.getExprFactory()));
     m_fp.reset(new ZFixedPoint<EZ3>(*m_local_ctx));
@@ -198,6 +198,11 @@ bool HornSolver::runOnModule(Module &M, HornifyModule &hm) {
     HornDbModel dbModel;
     initDBModelFromFP(dbModel, db, fp);
     printInvars(M, dbModel);
+    if (InsertFences) {
+      outs() << "inserted fences: ";
+      for (std::string fences : m_inserted_fences) { outs() << fences << ','; }
+      outs() << '\n';
+    }
   } else if (m_result) {
     if (PrintAnswer) {
       printCex();
@@ -205,10 +210,12 @@ bool HornSolver::runOnModule(Module &M, HornifyModule &hm) {
     if (InsertFences) {
       std::vector<std::string> fences;
       getFencesAlongTrace(fences);
-      // Todo: choose a fence wisely
       if (!fences.empty()) {
-        std::string name = fences.back();
+        // Todo: choose a fence wisely
+        //std::string name = fences.back();
+        std::string name = fences.front();
         fences.pop_back();
+        m_inserted_fences.push_back(name);
         outs() << "insert fence at " << name << '\n';
         //      Function *fence = M.getFunction(name);
         //      if (fence) {
@@ -228,7 +235,7 @@ bool HornSolver::runOnModule(Module &M, HornifyModule &hm) {
           return runOnModule(M, hm);
         }
       } else {
-        outs() << "Program not secure, but no place for a fence found\n";
+        errs() << "Program not secure, but no place for a fence found\n";
       }
     }
   }
