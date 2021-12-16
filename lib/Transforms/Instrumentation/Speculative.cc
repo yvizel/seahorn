@@ -39,7 +39,29 @@ using namespace llvm;
 
 char Speculative::ID = 0;
 
-BasicBlock *Speculative::addSpeculationBB(IRBuilder<> &B, std::string name, Value *cond, Value *spec, BasicBlock *bb, Function *fenceFkt) {
+void Speculative::insertFenceFunction(IRBuilder<> &B, BasicBlock *bb, Value *globalSpec) {
+  Module *M = bb->getModule();
+  LLVMContext &ctx = M->getContext();
+  FunctionType *fenceType = FunctionType::get(m_BoolTy, false);
+  std::string fenceName = "fence_" + std::to_string(m_numOfFences++);
+  Function *fenceFkt = M->getFunction(fenceName);
+  if (!fenceFkt) {
+    fenceFkt = Function::Create(fenceType, Function::ExternalLinkage, fenceName, M);
+    fenceFkt->addFnAttr(Attribute::NoInline);
+    fenceFkt->addFnAttr(Attribute::NoUnwind);
+    BasicBlock *fenceBB = BasicBlock::Create(ctx, "entry", fenceFkt);
+    B.SetInsertPoint(fenceBB);
+    Value *nd = B.CreateCall(m_ndBoolFn);
+    B.CreateRet(nd);
+  }
+  B.SetInsertPoint(bb);
+  Value *fence = B.CreateCall(fenceFkt);
+  Value *stop = B.CreateAnd(globalSpec, fence, "");
+  Value *notStop = B.CreateNot(stop, "");
+  B.CreateCall(m_assumeFn, notStop, "");
+}
+
+BasicBlock *Speculative::addSpeculationBB(IRBuilder<> &B, std::string name, Value *cond, Value *spec, BasicBlock *bb) {
   LLVMContext &ctx = B.getContext();
   BasicBlock *specBB = BasicBlock::Create(ctx, name + "__bb", bb->getParent(), bb);
   B.SetInsertPoint(specBB);
@@ -50,10 +72,7 @@ BasicBlock *Speculative::addSpeculationBB(IRBuilder<> &B, std::string name, Valu
   globalSpec = B.CreateOr(globalSpec, spec);
   B.CreateAlignedStore(globalSpec, m_spec, 1);
   if (FencePlacement == AFTER_BRANCH) {
-    Value *fence = B.CreateCall(fenceFkt);
-    Value *stop = B.CreateAnd(globalSpec, fence, "");
-    Value *notStop = B.CreateNot(stop, "");
-    B.CreateCall(m_assumeFn, notStop, "");
+    insertFenceFunction(B, specBB, globalSpec);
   }
   B.CreateBr(bb);
   return specBB;
@@ -113,26 +132,6 @@ bool Speculative::insertSpeculation(IRBuilder<> &B, BranchInst &BI) {
   if (isErrorBB(thenBB) || isErrorBB(elseBB))
 	  return false;
 
-  Module *M = BI.getModule();
-  LLVMContext &ctx = M->getContext();
-
-  FunctionType *fenceType = FunctionType::get(m_BoolTy, false);
-  Function *fences[2];
-  for (int i = 0; i < 2; ++i) {
-    std::string fenceName = "fence_" + std::to_string(m_numOfFences++);
-    Function *fence = M->getFunction(fenceName);
-    if (!fence) {
-      fence = Function::Create(fenceType, Function::ExternalLinkage, fenceName, M);
-      fence->addFnAttr(Attribute::NoInline);
-      fence->addFnAttr(Attribute::NoUnwind);
-      BasicBlock *bb = BasicBlock::Create(ctx, "entry", fence);
-      B.SetInsertPoint(bb);
-      Value *nd = B.CreateCall(m_ndBoolFn);
-      B.CreateRet(nd);
-    }
-    fences[i] = fence;
-  }
-
   outs() << "Here...\n";
 
   std::string name = "spec" + std::to_string(m_numOfSpec++);
@@ -150,8 +149,8 @@ bool Speculative::insertSpeculation(IRBuilder<> &B, BranchInst &BI) {
 
   BI.setCondition(condNd);
 
-  BasicBlock *specThenBB = addSpeculationBB(B, name + "__then", cond, ndSpec, thenBB, fences[0]);
-  BasicBlock *specElseBB = addSpeculationBB(B, name + "__else", negCond, ndSpec, elseBB, fences[1]);
+  BasicBlock *specThenBB = addSpeculationBB(B, name + "__then", cond, ndSpec, thenBB);
+  BasicBlock *specElseBB = addSpeculationBB(B, name + "__else", negCond, ndSpec, elseBB);
   BI.setSuccessor(0, specThenBB);
   BI.setSuccessor(1, specElseBB);
   // Fix phi nodes in thenBB and elseBB
