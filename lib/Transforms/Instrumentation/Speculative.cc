@@ -39,26 +39,24 @@ using namespace llvm;
 
 char Speculative::ID = 0;
 
-void Speculative::insertFenceFunction(IRBuilder<> &B, BasicBlock *bb, Value *globalSpec) {
-  Module *M = bb->getModule();
-  LLVMContext &ctx = M->getContext();
+void Speculative::insertFenceFunction(IRBuilder<> &B, Module *M, Value *globalSpec) {
   FunctionType *fenceType = FunctionType::get(m_BoolTy, false);
   std::string fenceName = "fence_" + std::to_string(m_numOfFences++);
-  Function *fenceFkt = M->getFunction(fenceName);
-  if (!fenceFkt) {
-    fenceFkt = Function::Create(fenceType, Function::ExternalLinkage, fenceName, M);
-    fenceFkt->addFnAttr(Attribute::NoInline);
-    fenceFkt->addFnAttr(Attribute::NoUnwind);
-    BasicBlock *fenceBB = BasicBlock::Create(ctx, "entry", fenceFkt);
-    B.SetInsertPoint(fenceBB);
-    Value *nd = B.CreateCall(m_ndBoolFn);
-    B.CreateRet(nd);
-  }
-  B.SetInsertPoint(bb);
+  Function *fenceFkt = Function::Create(fenceType, Function::ExternalLinkage, fenceName, M);
+  fenceFkt->addFnAttr(Attribute::NoInline);
+  fenceFkt->addFnAttr(Attribute::NoUnwind);
+
   Value *fence = B.CreateCall(fenceFkt);
   Value *stop = B.CreateAnd(globalSpec, fence, "");
   Value *notStop = B.CreateNot(stop, "");
   B.CreateCall(m_assumeFn, notStop, "");
+
+  LLVMContext &ctx = globalSpec->getContext();
+  BasicBlock *fenceBB = BasicBlock::Create(ctx, "entry", fenceFkt);
+  B.SetInsertPoint(fenceBB);
+  Value *nd = B.CreateCall(m_ndBoolFn);
+  B.CreateRet(nd);
+  B.ClearInsertionPoint();
 }
 
 BasicBlock *Speculative::addSpeculationBB(IRBuilder<> &B, std::string name, Value *cond, Value *spec, BasicBlock *bb) {
@@ -72,7 +70,8 @@ BasicBlock *Speculative::addSpeculationBB(IRBuilder<> &B, std::string name, Valu
   globalSpec = B.CreateOr(globalSpec, spec);
   B.CreateAlignedStore(globalSpec, m_spec, 1);
   if (FencePlacement == AFTER_BRANCH) {
-    insertFenceFunction(B, specBB, globalSpec);
+    insertFenceFunction(B, specBB->getModule(), globalSpec);
+    B.SetInsertPoint(specBB);
   }
   B.CreateBr(bb);
   return specBB;
@@ -154,6 +153,7 @@ bool Speculative::insertSpeculation(IRBuilder<> &B, BranchInst &BI) {
   BI.setSuccessor(0, specThenBB);
   BI.setSuccessor(1, specElseBB);
   // Fix phi nodes in thenBB and elseBB
+  // Todo: use replacePhiUsesWith
   BasicBlock *currBB = BI.getParent();
   for (Instruction &inst : *thenBB) {
     PHINode *phi;
@@ -514,13 +514,17 @@ void Speculative::insertSpecCheck(Function &F, IRBuilder<> &B,
 //  Value *specCheck = B.CreateICmpEQ(specOr, ConstantInt::get(m_BoolTy, 0), "spec_check");
 
   Value *globalSpec = B.CreateAlignedLoad(m_spec, 1);
+  if (FencePlacement == BEFORE_ERROR) {
+    insertFenceFunction(B, inst.getModule(), globalSpec);
+  }
 //  Value *specCheck = B.CreateNot(globalSpec);
   // Todo: Using asserts does not work. Why not?
 //  B.CreateCall(m_assertFn, specCheck);
 
   outs() << "Assertion expression created...\n";
-  BasicBlock *BB = B.GetInsertBlock();
-  BasicBlock *Cont = BB->splitBasicBlock(B.GetInsertPoint());
+  BasicBlock *BB = inst.getParent();
+  // Todo: maybe use SplitBlock or its variants
+  BasicBlock *Cont = BB->splitBasicBlock(&inst);
   Instruction *terminator = BB->getTerminator();
   B.SetInsertPoint(terminator);
   B.CreateCondBr(globalSpec, m_errorBB, Cont);

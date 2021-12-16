@@ -43,7 +43,7 @@ namespace seahorn
     Value* createNdBoolean (IRBuilder<>& B);
     unsigned getId (const Instruction *n);
 
-    void insertFenceFunction(IRBuilder<>& B, BasicBlock* bb, Value* globalSpec);
+    void insertFenceFunction(IRBuilder<>& B, Module* M, Value* globalSpec);
     BasicBlock* addSpeculationBB(IRBuilder<>& B, std::string name, Value *cond, Value *spec, BasicBlock* bb);
     bool insertSpeculation(IRBuilder<>& B, BranchInst& inst);
 
