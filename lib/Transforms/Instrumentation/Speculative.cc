@@ -153,20 +153,9 @@ bool Speculative::insertSpeculation(IRBuilder<> &B, BranchInst &BI) {
   BI.setSuccessor(0, specThenBB);
   BI.setSuccessor(1, specElseBB);
   // Fix phi nodes in thenBB and elseBB
-  // Todo: use replacePhiUsesWith
   BasicBlock *currBB = BI.getParent();
-  for (Instruction &inst : *thenBB) {
-    PHINode *phi;
-    if ((phi = dyn_cast<PHINode>(&inst))) {
-      phi->setIncomingBlock(phi->getBasicBlockIndex(currBB), specThenBB);
-    } else { break; }
-  }
-  for (Instruction &inst : *elseBB) {
-    PHINode *phi;
-    if ((phi = dyn_cast<PHINode>(&inst))) {
-      phi->setIncomingBlock(phi->getBasicBlockIndex(currBB), specElseBB);
-    } else { break; }
-  }
+  thenBB->replacePhiUsesWith(currBB, specThenBB);
+  elseBB->replacePhiUsesWith(currBB, specElseBB);
 
   // Now initialize the counter
   // Todo: uncomment it again
