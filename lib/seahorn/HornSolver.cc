@@ -31,6 +31,20 @@ static llvm::cl::opt<bool>
     InsertFences("insert-fences", cl::desc("Insert fences to mitigate Spectre attacks"),
                  cl::init(false));
 
+enum FenceChoiceOpt {
+  EARLY,
+  LATE
+};
+
+static llvm::cl::opt<FenceChoiceOpt> FenceChoice(
+    "fence-choice",
+    llvm::cl::desc("Choice of the possible fences that eliminate a counterexample"),
+    llvm::cl::values(
+        clEnumValN(LATE, "late", "Choose the latest possible fences"),
+        clEnumValN(EARLY, "early", "Choose the earliest possible fence")
+    ),
+    llvm::cl::init(LATE));
+
 static llvm::cl::opt<bool>
     SimplifierPve("horn-tail-simplifier-pve",
                   cl::desc("Set fp.xform.tail_simplifier_pve"),
@@ -212,9 +226,7 @@ bool HornSolver::runOnModule(Module &M, HornifyModule &hm) {
       getFencesAlongTrace(fences);
       if (!fences.empty()) {
         // Todo: choose a fence wisely
-        //std::string name = fences.back();
-        std::string name = fences.front();
-        fences.pop_back();
+        std::string name = FenceChoice == LATE ? fences.back() : fences.front();
         m_inserted_fences.push_back(name);
         outs() << "insert fence at " << name << '\n';
         //      Function *fence = M.getFunction(name);

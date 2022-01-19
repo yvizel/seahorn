@@ -1126,6 +1126,9 @@ class Seahorn(sea.LimitedCmd):
         ap.add_argument ('--fence-placement', help='Location of possible fence ' +
                          'placements', choices=['branch', 'error'],
                          default='branch', dest='fence_placement')
+        ap.add_argument ('--fence-choice', help='Choice of the possible fences ' +
+                         'that eliminate a counterexample', choices=['late', 'early'],
+                         default='late', dest='fence_choice')
 
         return ap
 
@@ -1201,7 +1204,8 @@ class Seahorn(sea.LimitedCmd):
 
         if args.insert_fences:
             argv.extend (['--insert-fences',
-                          '--fence-placement={0}'.format (args.fence_placement)])
+                          '--fence-placement={0}'.format (args.fence_placement),
+                          '--fence-choice={0}'.format (args.fence_choice)])
 
         argv.extend (['-horn-inter-proc',
                       '-horn-sem-lvl={0}'.format (args.track),
