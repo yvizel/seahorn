@@ -4,9 +4,7 @@
 
 extern void __taint(int);
 extern void __is_tainted(int);
-
-// bn_local.h
-#define bn_check_top(a)
+extern void display(void*);
 
 // bn_sqr.c
 int bn_sqr_fixed_top(BIGNUM *r, const BIGNUM *a, BN_CTX *ctx);
@@ -22,12 +20,6 @@ int BN_sqr(BIGNUM *r, const BIGNUM *a, BN_CTX *ctx)
 
 // bn_mul.c
 // with #define BN_RECURSION
-#define BN_FLG_FIXED_TOP 0
-void bn_mul_normal(BN_ULONG *r, BN_ULONG *a, int na, BN_ULONG *b, int nb);
-void bn_mul_recursive(BN_ULONG *r, BN_ULONG *a, BN_ULONG *b, int n2,
-                      int dna, int dnb, BN_ULONG *t);
-void bn_mul_part_recursive(BN_ULONG *r, BN_ULONG *a, BN_ULONG *b, int n,
-                           int tna, int tnb, BN_ULONG *t);
 int bn_mul_fixed_top(BIGNUM *r, const BIGNUM *a, const BIGNUM *b, BN_CTX *ctx);
 int bn_mul_fixed_top(BIGNUM *r, const BIGNUM *a, const BIGNUM *b, BN_CTX *ctx)
 {
@@ -176,14 +168,17 @@ int BN_exp(BIGNUM *r, const BIGNUM *a, const BIGNUM *p, BN_CTX *ctx)
 }
 
 int main() {
-  BIGNUM *r = NULL;
-  BIGNUM *a = NULL;
-  BIGNUM *p = NULL;
-  bn_init(r);
-  bn_init(a);
-  bn_init(p);
-
   BN_CTX *ctx = BN_CTX_new();
+  BIGNUM *r = BN_CTX_get(ctx);
+  BIGNUM *a = BN_CTX_get(ctx);
+  BIGNUM *p = BN_CTX_get(ctx);
+
   BN_exp(r, a, p, ctx);
+
+  // to avoid optimizations
+  display(ctx);
+  display(r);
+  display(a);
+  display(p);
   return 0;
 }

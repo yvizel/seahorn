@@ -1,4 +1,3 @@
-
 // include/openssl/bn.h
 // TODO: try also unsigned long
 #define BN_ULONG unsigned int
@@ -11,7 +10,22 @@ typedef struct bignum_ctx BN_CTX;
 typedef struct ossl_lib_ctx_st OSSL_LIB_CTX;
 
 // bn_local.h
+// with SIXTY_FOUR_BIT
+#define BN_MASK2        (0xffffffffffffffffLL)
+#define bn_check_top(a)
+#define BN_FLG_FIXED_TOP 0
 #define BN_MULL_SIZE_NORMAL (16)/* 32 */
+
+BN_ULONG bn_mul_add_words(BN_ULONG *rp, const BN_ULONG *ap, int num,
+                          BN_ULONG w);
+BN_ULONG bn_mul_words(BN_ULONG *rp, const BN_ULONG *ap, int num, BN_ULONG w);
+void bn_sqr_words(BN_ULONG *rp, const BN_ULONG *ap, int num);
+BN_ULONG bn_div_words(BN_ULONG h, BN_ULONG l, BN_ULONG d);
+BN_ULONG bn_add_words(BN_ULONG *rp, const BN_ULONG *ap, const BN_ULONG *bp,
+                      int num);
+BN_ULONG bn_sub_words(BN_ULONG *rp, const BN_ULONG *ap, const BN_ULONG *bp,
+                      int num);
+
 struct bignum_st {
     BN_ULONG *d;                /* Pointer to an array of 'BN_BITS2' bit
                                  * chunks. */
@@ -21,7 +35,34 @@ struct bignum_st {
     int neg;                    /* one if the number is negative */
     int flags;
 };
+
+# define BN_MULL_SIZE_NORMAL                     (16)/* 32 */
+# define BN_MUL_RECURSIVE_SIZE_NORMAL            (16)/* 32 less than */
+# define BN_SQR_RECURSIVE_SIZE_NORMAL            (16)/* 32 */
+# define BN_MUL_LOW_RECURSIVE_SIZE_NORMAL        (32)/* 32 */
+# define BN_MONT_CTX_SET_SIZE_WORD               (64)/* 32 */
+
 void bn_init(BIGNUM *a);
+void bn_mul_normal(BN_ULONG *r, BN_ULONG *a, int na, BN_ULONG *b, int nb);
+void bn_mul_comba8(BN_ULONG *r, BN_ULONG *a, BN_ULONG *b);
+void bn_mul_comba4(BN_ULONG *r, BN_ULONG *a, BN_ULONG *b);
+void bn_sqr_normal(BN_ULONG *r, const BN_ULONG *a, int n, BN_ULONG *tmp);
+void bn_sqr_comba8(BN_ULONG *r, const BN_ULONG *a);
+void bn_sqr_comba4(BN_ULONG *r, const BN_ULONG *a);
+int bn_cmp_words(const BN_ULONG *a, const BN_ULONG *b, int n);
+int bn_cmp_part_words(const BN_ULONG *a, const BN_ULONG *b, int cl, int dl);
+void bn_mul_recursive(BN_ULONG *r, BN_ULONG *a, BN_ULONG *b, int n2,
+                      int dna, int dnb, BN_ULONG *t);
+void bn_mul_part_recursive(BN_ULONG *r, BN_ULONG *a, BN_ULONG *b,
+                           int n, int tna, int tnb, BN_ULONG *t);
+void bn_sqr_recursive(BN_ULONG *r, const BN_ULONG *a, int n2, BN_ULONG *t);
+void bn_mul_low_normal(BN_ULONG *r, BN_ULONG *a, BN_ULONG *b, int n);
+void bn_mul_low_recursive(BN_ULONG *r, BN_ULONG *a, BN_ULONG *b, int n2,
+                          BN_ULONG *t);
+BN_ULONG bn_sub_part_words(BN_ULONG *r, const BN_ULONG *a, const BN_ULONG *b,
+                           int cl, int dl);
+int bn_mul_mont(BN_ULONG *rp, const BN_ULONG *ap, const BN_ULONG *bp,
+                const BN_ULONG *np, const BN_ULONG *n0, int num);
 
 // include/openssl/bn.h
 int BN_set_word(BIGNUM *a, BN_ULONG w);
@@ -88,4 +129,3 @@ int BN_is_odd(const BIGNUM *a);
 int BN_is_bit_set(const BIGNUM *a, int n);
 void bn_correct_top(BIGNUM *a);
 BIGNUM *bn_wexpand(BIGNUM *a, int words);
-
