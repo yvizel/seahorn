@@ -1,13 +1,23 @@
-// include/openssl/bn.h
-// TODO: try also unsigned long
-#define BN_ULONG unsigned int
-
 // include/openssl/types.h
 typedef struct bignum_st BIGNUM;
 typedef struct bignum_ctx BN_CTX;
 // XXX: we keep the context abstract here
 // definition in context.c
 typedef struct ossl_lib_ctx_st OSSL_LIB_CTX;
+
+// include/openssl/bn.h
+// TODO: try also unsigned long
+#define BN_ULONG unsigned int
+int BN_set_word(BIGNUM *a, BN_ULONG w);
+#define BN_one(a) (BN_set_word((a),1))
+void BN_zero_ex(BIGNUM *a);
+#define BN_zero(a) BN_zero_ex(a)
+int BN_num_bits_word(BN_ULONG l);
+
+
+// include/crypto/bn.h
+int bn_mul_fixed_top(BIGNUM *r, const BIGNUM *a, const BIGNUM *b, BN_CTX *ctx);
+int bn_sqr_fixed_top(BIGNUM *r, const BIGNUM *a, BN_CTX *ctx);
 
 // bn_local.h
 // with SIXTY_FOUR_BIT
@@ -63,13 +73,6 @@ BN_ULONG bn_sub_part_words(BN_ULONG *r, const BN_ULONG *a, const BN_ULONG *b,
                            int cl, int dl);
 int bn_mul_mont(BN_ULONG *rp, const BN_ULONG *ap, const BN_ULONG *bp,
                 const BN_ULONG *np, const BN_ULONG *n0, int num);
-
-// include/openssl/bn.h
-int BN_set_word(BIGNUM *a, BN_ULONG w);
-#define BN_one(a) (BN_set_word((a),1))
-void BN_zero_ex(BIGNUM *a);
-#define BN_zero(a) BN_zero_ex(a)
-int BN_num_bits_word(BN_ULONG l);
 
 // bn_ctx.c
 /* How many bignums are in each "pool item"; */
