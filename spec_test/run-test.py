@@ -1,15 +1,24 @@
 import subprocess
 import sys
 
-if len(sys.argv) < 2:
-    sys.exit("Test file not provided")
+if len(sys.argv) < 4:
+    print(sys.argv[0])
+    sys.exit("Script expects testfile, fence placement, and fence choice as arguments")
 llfile = sys.argv[1]
+placement = sys.argv[2]
+choice = sys.argv[3]
+
 if not llfile.endswith(".ll"):
     sys.exit("Input file must end with '.ll'")
 
-print("run on", llfile)
-subprocess.run("mkdir -p output", shell=True)
-cmd = ["../build/run/bin/sea", "horn", "--solve", "-o=output/out.smt2", "--oll=output/out.ll", "--step=large", "--horn-tail-simplifier-pve=false", "--horn-subsumption=false", "--horn-inline-all", "--speculative-exe", "--insert-fences", llfile]
+print("run on", llfile, "with fences at", placement, "and", choice)
+subprocess.run("mkdir -p tmp", shell=True)
+# Todo: use better names for output files
+cmd = ["../build/run/bin/sea", "horn", "--solve", "-o=tmp/out.smt2",
+       "--oll=tmp/out.ll", "--step=large", "--horn-tail-simplifier-pve=false",
+       "--horn-subsumption=false", "--horn-inline-all", "--speculative-exe",
+       "--insert-fences", "--fence-placement={}".format(placement),
+       "--fence-choice={}".format(choice), llfile]
 p = subprocess.run(cmd, check = True, capture_output = True, text=True)
 
 secure = False
