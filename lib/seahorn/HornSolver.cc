@@ -46,6 +46,10 @@ static llvm::cl::opt<FenceChoiceOpt> FenceChoice(
     llvm::cl::init(LATE));
 
 static llvm::cl::opt<bool>
+    IncrementalCover("horn-incremental-cover", cl::init(true),
+                     cl::desc("Reuse cover for recursive repair iterations"));
+
+static llvm::cl::opt<bool>
     SimplifierPve("horn-tail-simplifier-pve",
                   cl::desc("Set fp.xform.tail_simplifier_pve"),
                   cl::init(false));
@@ -136,12 +140,28 @@ bool HornSolver::runOnModule(Module &M) {
   Stats::sset("Result", "UNKNOWN");
 
   HornifyModule &hm = getAnalysis<HornifyModule>();
-
-  return runOnModule(M, hm);
+  return runOnModule(M, hm, false);
 }
 
-bool HornSolver::runOnModule(Module &M, HornifyModule &hm) {
-  // Todo: copy old may-summaries (overapproximation) to the new Z3 instance
+bool HornSolver::runOnModule(Module &M, HornifyModule &hm, bool reuseCover) {
+  // Load the Horn clause database
+  auto &db = hm.getHornClauseDB();
+  ExprMap cover;
+  if (reuseCover) {
+    ExprFactory &efac = db.getExprFactory();
+    for (auto &r : db.getRelations()) {
+      ExprVector args;
+      for (unsigned i = 0, sz = bind::domainSz(r); i < sz; ++i) {
+        Expr argName = mkTerm<std::string>(
+            "arg_" + boost::lexical_cast<std::string>(i), efac);
+        args.push_back(bind::mkConst(argName, bind::domainTy(r, i)));
+      }
+      Expr pred = bind::fapp(r, args);
+      Expr lemma = m_fp->getCoverDelta(pred);
+      // remember the cover
+      cover[pred] = lemma;
+    }
+  }
   if (LocalContext) {
     m_local_ctx.reset(new EZ3(hm.getExprFactory()));
     m_fp.reset(new ZFixedPoint<EZ3>(*m_local_ctx));
@@ -180,9 +200,28 @@ bool HornSolver::runOnModule(Module &M, HornifyModule &hm) {
   params.set(":spacer.max_level", HornMaxDepth);
   fp.set(params);
 
-  // Load the Horn clause database
-  auto &db = hm.getHornClauseDB();
-  db.loadZFixedPoint(fp, SkipConstraints);
+  if (reuseCover) {
+    db.loadZFixedPoint(fp, true);
+    for (auto &p : cover) {
+      fp.addCover(p.first, p.second);
+    }
+  } else {
+    db.loadZFixedPoint(fp, SkipConstraints);
+  }
+
+  ExprFactory &efac = db.getExprFactory();
+  for (auto &r : db.getRelations()) {
+    ExprVector args;
+    for (unsigned i = 0, sz = bind::domainSz(r); i < sz; ++i) {
+      Expr argName = mkTerm<std::string>(
+          "arg_" + boost::lexical_cast<std::string>(i), efac);
+      args.push_back(bind::mkConst(argName, bind::domainTy(r, i)));
+    }
+    Expr pred;
+    pred = bind::fapp(r, args);
+    Expr lemma = m_fp->getCoverDelta(pred);
+    outs() << "cover for " << *pred << ": " << *lemma << "\n";
+  }
 
   if (UseInvariant == solver_detail::INACTIVE) {
     params.set(":spacer.use_bg_invs", false);
@@ -244,7 +283,7 @@ bool HornSolver::runOnModule(Module &M, HornifyModule &hm) {
         Expr rule;
         bool changed = db.changeFenceRules(name, rule);
         if (changed) {
-          return runOnModule(M, hm);
+          return runOnModule(M, hm, IncrementalCover);
         }
       } else {
         errs() << "Program not secure, but no place for a fence found\n";

@@ -17,7 +17,7 @@ class HornSolver : public llvm::ModulePass {
   std::unique_ptr<ZFixedPoint<EZ3>> m_fp;
   std::vector<std::string> m_inserted_fences;
 
-  bool runOnModule(Module &M, HornifyModule &hm);
+  bool runOnModule(Module &M, HornifyModule &hm, bool reuseCover);
 
   void printCex();
   void getFencesAlongTrace(std::vector<std::string> &fences);
