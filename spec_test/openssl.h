@@ -6,8 +6,8 @@ typedef struct bignum_ctx BN_CTX;
 typedef struct ossl_lib_ctx_st OSSL_LIB_CTX;
 
 // include/openssl/bn.h
-// TODO: try also unsigned long
-#define BN_ULONG unsigned int
+// with SIXTY_FOUR_BIT_LONG
+#define BN_ULONG unsigned long
 int BN_set_word(BIGNUM *a, BN_ULONG w);
 #define BN_one(a) (BN_set_word((a),1))
 void BN_zero_ex(BIGNUM *a);
@@ -20,11 +20,11 @@ int bn_mul_fixed_top(BIGNUM *r, const BIGNUM *a, const BIGNUM *b, BN_CTX *ctx);
 int bn_sqr_fixed_top(BIGNUM *r, const BIGNUM *a, BN_CTX *ctx);
 
 // bn_local.h
-// with SIXTY_FOUR_BIT
-#define BN_MASK2        (0xffffffffffffffffLL)
+// with SIXTY_FOUR_BIT_LONG
+#define BN_MASK2        (0xffffffffffffffffL)
+// with !BN_DEBUG
 #define bn_check_top(a)
 #define BN_FLG_FIXED_TOP 0
-#define BN_MULL_SIZE_NORMAL (16)/* 32 */
 
 BN_ULONG bn_mul_add_words(BN_ULONG *rp, const BN_ULONG *ap, int num,
                           BN_ULONG w);

@@ -1,4 +1,5 @@
 #include <stddef.h>
+#include <assert.h>
 #include "openssl.h"
 #include <seahorn/seahorn.h>
 
@@ -6,8 +7,13 @@ extern void __taint(int);
 extern void __is_tainted(int);
 extern void display(void*);
 
+# ifndef OPENSSL_SMALL_FOOTPRINT
+#  define BN_MUL_COMBA
+#  define BN_SQR_COMBA
+#  define BN_RECURSION
+# endif
+
 // bn_sqr.c
-int bn_sqr_fixed_top(BIGNUM *r, const BIGNUM *a, BN_CTX *ctx);
 int BN_sqr(BIGNUM *r, const BIGNUM *a, BN_CTX *ctx)
 {
     int ret = bn_sqr_fixed_top(r, a, ctx);
@@ -18,17 +24,113 @@ int BN_sqr(BIGNUM *r, const BIGNUM *a, BN_CTX *ctx)
     return ret;
 }
 
+// TODO
+#if 0
+int bn_sqr_fixed_top(BIGNUM *r, const BIGNUM *a, BN_CTX *ctx)
+{
+    int max, al;
+    int ret = 0;
+    BIGNUM *tmp, *rr;
+
+    bn_check_top(a);
+
+    al = a->top;
+    if (al <= 0) {
+        r->top = 0;
+        r->neg = 0;
+        return 1;
+    }
+
+    BN_CTX_start(ctx);
+    rr = (a != r) ? r : BN_CTX_get(ctx);
+    tmp = BN_CTX_get(ctx);
+    if (rr == NULL || tmp == NULL)
+        goto err;
+
+    max = 2 * al;               /* Non-zero (from above) */
+    if (bn_wexpand(rr, max) == NULL)
+        goto err;
+
+    if (al == 4) {
+#ifndef BN_SQR_COMBA
+        BN_ULONG t[8];
+        bn_sqr_normal(rr->d, a->d, 4, t);
+#else
+        bn_sqr_comba4(rr->d, a->d);
+#endif
+    } else if (al == 8) {
+#ifndef BN_SQR_COMBA
+        BN_ULONG t[16];
+        bn_sqr_normal(rr->d, a->d, 8, t);
+#else
+        bn_sqr_comba8(rr->d, a->d);
+#endif
+    } else {
+#if defined(BN_RECURSION)
+        if (al < BN_SQR_RECURSIVE_SIZE_NORMAL) {
+            BN_ULONG t[BN_SQR_RECURSIVE_SIZE_NORMAL * 2];
+            bn_sqr_normal(rr->d, a->d, al, t);
+        } else {
+            int j, k;
+
+            j = BN_num_bits_word((BN_ULONG)al);
+            j = 1 << (j - 1);
+            k = j + j;
+            if (al == j) {
+                if (bn_wexpand(tmp, k * 2) == NULL)
+                    goto err;
+                bn_sqr_recursive(rr->d, a->d, al, tmp->d);
+            } else {
+                if (bn_wexpand(tmp, max) == NULL)
+                    goto err;
+                bn_sqr_normal(rr->d, a->d, al, tmp->d);
+            }
+        }
+#else
+        if (bn_wexpand(tmp, max) == NULL)
+            goto err;
+        bn_sqr_normal(rr->d, a->d, al, tmp->d);
+#endif
+    }
+
+    rr->neg = 0;
+    rr->top = max;
+    rr->flags |= BN_FLG_FIXED_TOP;
+    if (r != rr && BN_copy(r, rr) == NULL)
+        goto err;
+
+    ret = 1;
+ err:
+    bn_check_top(rr);
+    bn_check_top(tmp);
+    BN_CTX_end(ctx);
+    return ret;
+}
+#endif
+
 // bn_mul.c
-// with #define BN_RECURSION
-int bn_mul_fixed_top(BIGNUM *r, const BIGNUM *a, const BIGNUM *b, BN_CTX *ctx);
+int BN_mul(BIGNUM *r, const BIGNUM *a, const BIGNUM *b, BN_CTX *ctx)
+{
+    int ret = bn_mul_fixed_top(r, a, b, ctx);
+
+    bn_correct_top(r);
+    bn_check_top(r);
+
+    return ret;
+}
+
 int bn_mul_fixed_top(BIGNUM *r, const BIGNUM *a, const BIGNUM *b, BN_CTX *ctx)
 {
     int ret = 0;
     int top, al, bl;
     BIGNUM *rr;
+#if defined(BN_MUL_COMBA) || defined(BN_RECURSION)
     int i;
+#endif
+#ifdef BN_RECURSION
     BIGNUM *t = NULL;
     int j = 0, k;
+#endif
 
     bn_check_top(a);
     bn_check_top(b);
@@ -50,7 +152,30 @@ int bn_mul_fixed_top(BIGNUM *r, const BIGNUM *a, const BIGNUM *b, BN_CTX *ctx)
     } else
         rr = r;
 
+#if defined(BN_MUL_COMBA) || defined(BN_RECURSION)
     i = al - bl;
+#endif
+#ifdef BN_MUL_COMBA
+    if (i == 0) {
+# if 0
+        if (al == 4) {
+            if (bn_wexpand(rr, 8) == NULL)
+                goto err;
+            rr->top = 8;
+            bn_mul_comba4(rr->d, a->d, b->d);
+            goto end;
+        }
+# endif
+        if (al == 8) {
+            if (bn_wexpand(rr, 16) == NULL)
+                goto err;
+            rr->top = 16;
+            bn_mul_comba8(rr->d, a->d, b->d);
+            goto end;
+        }
+    }
+#endif                          /* BN_MUL_COMBA */
+#ifdef BN_RECURSION
     if ((al >= BN_MULL_SIZE_NORMAL) && (bl >= BN_MULL_SIZE_NORMAL)) {
         if (i >= -1 && i <= 1) {
             /*
@@ -64,7 +189,7 @@ int bn_mul_fixed_top(BIGNUM *r, const BIGNUM *a, const BIGNUM *b, BN_CTX *ctx)
                 j = BN_num_bits_word((BN_ULONG)bl);
             }
             j = 1 << (j - 1);
-//            assert(j <= al || j <= bl);
+            assert(j <= al || j <= bl);
             k = j + j;
             t = BN_CTX_get(ctx);
             if (t == NULL)
@@ -88,12 +213,15 @@ int bn_mul_fixed_top(BIGNUM *r, const BIGNUM *a, const BIGNUM *b, BN_CTX *ctx)
             goto end;
         }
     }
+#endif                          /* BN_RECURSION */
     if (bn_wexpand(rr, top) == NULL)
         goto err;
     rr->top = top;
     bn_mul_normal(rr->d, a->d, al, b->d, bl);
 
+#if defined(BN_MUL_COMBA) || defined(BN_RECURSION)
  end:
+#endif
     rr->neg = a->neg ^ b->neg;
     rr->flags |= BN_FLG_FIXED_TOP;
     if (r != rr && BN_copy(r, rr) == NULL)
@@ -106,18 +234,7 @@ int bn_mul_fixed_top(BIGNUM *r, const BIGNUM *a, const BIGNUM *b, BN_CTX *ctx)
     return ret;
 }
 
-int BN_mul(BIGNUM *r, const BIGNUM *a, const BIGNUM *b, BN_CTX *ctx)
-{
-    int ret = bn_mul_fixed_top(r, a, b, ctx);
-
-    bn_correct_top(r);
-    bn_check_top(r);
-
-    return ret;
-}
-
 /* this one works - simple but works */
-__attribute__ ((always_inline))
 int BN_exp(BIGNUM *r, const BIGNUM *a, const BIGNUM *p, BN_CTX *ctx)
 {
     int i, bits, ret = 0;
