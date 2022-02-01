@@ -47,6 +47,7 @@ void Speculative::insertFenceFunction(IRBuilder<> &B, Module *M, Value *globalSp
   fenceFkt->addFnAttr(Attribute::NoUnwind);
 
   Value *fence = B.CreateCall(fenceFkt);
+  // Todo: add debug location to fence call
   Value *stop = B.CreateAnd(globalSpec, fence, "");
   Value *notStop = B.CreateNot(stop, "");
   B.CreateCall(m_assumeFn, notStop, "");
@@ -229,7 +230,7 @@ bool Speculative::runOnBasicBlock(BasicBlock &BB) {
   if (BI == nullptr)
     return false;
 
-  if (!BI->isConditional()) // || !m_taint.isTainted(BI->getCondition()))
+  if (!BI->isConditional() || !m_taint.isTainted(BI))
     return false;
 
   if (isFenced(*BI))
@@ -363,7 +364,7 @@ void Speculative::getSpecForInst_rec(Instruction *I, std::set<Value*> & spec, st
 void Speculative::addAssertions(Function &F, IRBuilder<> &B , std::vector<Instruction*> & WorkList) {
   outs() << "Starting to add assertions...\n";
   for (Instruction *I : WorkList) {
-	if (isa<LoadInst>(I) || isa<StoreInst>(I)) {
+	if ((isa<LoadInst>(I) || isa<StoreInst>(I)) && m_taint.isTainted(I)) {
           std::set<Value*> S;
           insertSpecCheck(F, B, *I, S);
 //	  outs() << "\n\n Looking for spec vars for "; I->print(outs()); outs() << "\n";
@@ -516,7 +517,8 @@ void Speculative::insertSpecCheck(Function &F, IRBuilder<> &B,
   BasicBlock *Cont = BB->splitBasicBlock(&inst);
   Instruction *terminator = BB->getTerminator();
   B.SetInsertPoint(terminator);
-  B.CreateCondBr(globalSpec, m_errorBB, Cont);
+  Instruction *br = B.CreateCondBr(globalSpec, m_errorBB, Cont);
+  br->setDebugLoc(inst.getDebugLoc());
   terminator->eraseFromParent();
 
 //  BasicBlock *OldBB1 = Cont0;

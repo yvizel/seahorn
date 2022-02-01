@@ -54,11 +54,13 @@ bool StaticTaint::runOnBasicBlock(BasicBlock &B) {
       }
     } else if (BranchInst *BI = dyn_cast<BranchInst>(I)) {
       if (BI->isConditional()) {
-        Value *cond = BI->getCondition();
-        if (m_taint.find(cond) != m_taint.end()) {
+        // conditional branches can be trained to mispredict out-of-place, thus
+        // no direct influence via the condition needed
+        //Value *cond = BI->getCondition();
+        //if (m_taint.find(cond) != m_taint.end()) {
           m_taint.insert(BI);
           return true;
-        }
+        //}
       }
     } else {
       if (LoadInst *LI = dyn_cast<LoadInst>(I)) {
@@ -70,16 +72,19 @@ bool StaticTaint::runOnBasicBlock(BasicBlock &B) {
         if (m_taint.find(ptr) != m_taint.end())
           m_taint.insert(I);
       } else if (StoreInst *SI = dyn_cast<StoreInst>(I)) {
-        /*Value *ptr = SI->getPointerOperand();
-        Value *src = SI->getOperand(0);
-        if (m_taint.find(src) != m_taint.end())
+        Value *ptr = SI->getPointerOperand();
+        Value *src = SI->getValueOperand();
+        if (isTainted(ptr) || isTainted(src)) {
+          m_taint.insert(I);
+        }
+        /*if (m_taint.find(src) != m_taint.end())
           m_taint.insert(ptr);
         else
           m_taint.erase(ptr);*/
       } else if (PHINode *PHI = dyn_cast<PHINode>(I)) {
         PHINode::value_op_iterator it = PHI->value_op_begin();
         PHINode::value_op_iterator end = PHI->value_op_end();
-        for (; it != end; it++) {
+        for (; it != end; ++it) {
           Value *v = *it;
           if (m_taint.find(v) != m_taint.end()) {
             LOG("taint", errs() << "Tainting..."; I->print(errs()); errs() << "\n";);
@@ -91,8 +96,9 @@ bool StaticTaint::runOnBasicBlock(BasicBlock &B) {
         for (Use &U : I->operands()) {
           Value *v = U.get();
           // Todo: Why not taint in case of pointer type?
-          if (m_taint.find(v) != m_taint.end() &&
-              !v->getType()->isPointerTy()) {
+          //if (m_taint.find(v) != m_taint.end() &&
+          //    !v->getType()->isPointerTy()) {
+          if (isTainted(v)) {
             LOG("taint", errs() << "Tainting..."; I->print(errs()); errs() << "\n";);
             m_taint.insert(I);
             break;
