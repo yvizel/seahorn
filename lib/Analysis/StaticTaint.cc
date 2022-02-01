@@ -8,12 +8,18 @@
 #include "llvm/CodeGen/MachineDominators.h"
 #include "llvm/IR/InstIterator.h"
 #include "llvm/Support/Debug.h"
+#include "llvm/Support/CommandLine.h"
 #include "llvm/IR/DebugInfoMetadata.h"
 
 #include "seahorn/Support/SeaDebug.h"
 #include "seahorn/Support/SeaLog.hh"
 
 #include <deque>
+
+static llvm::cl::opt<bool> InPlaceTraining(
+    "in-place-training",
+    llvm::cl::desc("Attacker restricted to in-place training of branch predictor"),
+    llvm::cl::init(false));
 
 using namespace llvm;
 
@@ -56,11 +62,12 @@ bool StaticTaint::runOnBasicBlock(BasicBlock &B) {
       if (BI->isConditional()) {
         // conditional branches can be trained to mispredict out-of-place, thus
         // no direct influence via the condition needed
-        //Value *cond = BI->getCondition();
-        //if (m_taint.find(cond) != m_taint.end()) {
-          m_taint.insert(BI);
-          return true;
-        //}
+        Value *cond = BI->getCondition();
+        if (InPlaceTraining && !isTainted(cond)) {
+          return false;
+        }
+        m_taint.insert(BI);
+        return true;
       }
     } else {
       if (LoadInst *LI = dyn_cast<LoadInst>(I)) {
