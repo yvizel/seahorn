@@ -45,6 +45,11 @@ static llvm::cl::opt<FenceChoiceOpt> FenceChoice(
     ),
     llvm::cl::init(LATE));
 
+static llvm::cl::list<std::string> FenceHints(
+    "fence-hints",
+    llvm::cl::desc("Give hints on where to place fences"),
+    llvm::cl::CommaSeparated);
+
 static llvm::cl::opt<bool>
     IncrementalCover("horn-incremental-cover", cl::init(true),
                      cl::desc("Reuse cover for recursive repair iterations"));
@@ -266,6 +271,15 @@ bool HornSolver::runOnModule(Module &M, HornifyModule &hm, bool reuseCover) {
       if (!fences.empty()) {
         // Todo: choose a fence wisely
         std::string name = FenceChoice == LATE ? fences.back() : fences.front();
+        for (std::string &fence : fences) {
+          for (std::string &hint : FenceHints) {
+            if (fence.compare(hint) == 0) {
+              name = fence;
+              goto end_search;
+            }
+          }
+        }
+end_search:
         m_inserted_fences.push_back(name);
         outs() << "insert fence at " << name << '\n';
         //      Function *fence = M.getFunction(name);

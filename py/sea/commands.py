@@ -1129,6 +1129,8 @@ class Seahorn(sea.LimitedCmd):
         ap.add_argument ('--fence-choice', help='Choice of the possible fences ' +
                          'that eliminate a counterexample', choices=['late', 'early'],
                          default='late', dest='fence_choice')
+        ap.add_argument ('--fence-hints', help='Give hints on where to place fences',
+                         default='', dest='fence_hints')
         ap.add_argument ('--in-place-training', help='Attacker restricted to ' +
                          'in-place training of the branch predictor', default=False,
                          action='store_true', dest='in_place_training')
@@ -1209,6 +1211,7 @@ class Seahorn(sea.LimitedCmd):
             argv.extend (['--insert-fences',
                           '--fence-placement={0}'.format (args.fence_placement),
                           '--fence-choice={0}'.format (args.fence_choice),
+                          '--fence-hints={0}'.format (args.fence_hints),
                           '--in-place-training={0}'.format (args.in_place_training)])
 
         argv.extend (['-horn-inter-proc',
