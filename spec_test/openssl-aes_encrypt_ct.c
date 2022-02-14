@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <string.h>
 #include "openssl-aes.h"
 #include <seahorn/seahorn.h>
 
@@ -8,10 +9,6 @@ extern void __taint(void*);
 extern void* init_array();
 extern AES_KEY *init_key();
 extern void display(void*);
-
-/* This controls loop-unrolling in aes_core.c */
-// #define FULL_UNROLL
-#define OPENSSL_NO_AES_CONST_TIME
 
 #include "openssl-aes_core_impl.h"
 
