@@ -18,7 +18,12 @@ cmd = ["../build/run/bin/sea", "horn", "--solve", "-o=tmp/out.smt2",
        "--oll=tmp/out.ll", "--step=large", "--horn-tail-simplifier-pve=false",
        "--horn-subsumption=false", "--horn-inline-all", "--speculative-exe",
        "--insert-fences", "--fence-placement={}".format(placement),
-       "--fence-choice={}".format(choice), llfile]
+       "--fence-choice={}".format(choice)]
+if len(sys.argv) > 4 and sys.argv[4] == "--in-place-training":
+    cmd.append(sys.argv[4])
+    print("use in-place training")
+cmd.append(llfile)
+
 p = subprocess.run(cmd, check = True, capture_output = True, text=True)
 
 secure = False
