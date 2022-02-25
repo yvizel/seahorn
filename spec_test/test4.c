@@ -10,17 +10,22 @@ extern void __is_tainted(int);
 extern void spec_fence();
 extern int nd();
 
+// avoid optimizations
+extern void init(void*);
+
 const unsigned int array1_size = 16;
 uint8_t array1[16];
 uint8_t array2[256 * 512];
-uint8_t temp = 0;
+uint8_t temp = 1;
 
 int main(int argn, char* args[]) {
-    int source;
+    init(array1);
+    init(array2);
+    unsigned source;
 
     source = nd();
     __taint(source);
-    if (source < array1_size) {
+    if (source < (array1_size / 2)) {
         temp &= array2[array1[source << 1] * 512];
     }
     return 0;

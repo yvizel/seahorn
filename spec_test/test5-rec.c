@@ -1,4 +1,4 @@
-/* EXAMPLE 2:  Moving the leak to a local function that can be inlined. */
+/*  EXAMPLE 5:  Use x as the initial value in a for() loop. */
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
@@ -10,26 +10,34 @@ extern int nd();
 
 // avoid optimizations
 extern void init(void*);
-
-/*  Moving the leak to a local inlined function. */
+extern void display(uint8_t);
 
 const unsigned int array1_size = 16;
 uint8_t array1[16];
 uint8_t array2[256 * 512];
-uint8_t temp = 1;
 
-void leak_byte_local_function(uint8_t k) {
-    temp &= array2[k * 512];
+uint8_t loop(int i, uint8_t temp) {
+  if (i >= 0) {
+    temp &= array2[array1[i] * 512];
+    loop(--i, temp);
+  }
+  return temp;
 }
 
 int main(int argn, char* args[]) {
     init(array1);
     init(array2);
+    uint8_t temp = 1;
 
-    unsigned source = nd();
+    int source = nd();
     __taint(source);
+
     if (source < array1_size) {
-        leak_byte_local_function(array1[source]);
+        temp = loop(source - 1, temp);
+//        for (int i = source - 1; i >= 0; i--)
+//            temp &= array2[array1[i] * 512];
     }
+
+    display(temp);
     return 0;
 }
