@@ -2,6 +2,8 @@
 #include "BvOpSem2ExtraWideMemMgr.hh"
 #include "BvOpSem2RawMemMgr.hh"
 
+#include "llvm/Analysis/LazyValueInfo.h"
+#include "llvm/Analysis/TargetLibraryInfo.h"
 #include "llvm/CodeGen/IntrinsicLowering.h"
 #include "llvm/IR/DebugInfo.h"
 #include "llvm/IR/DebugLoc.h"
@@ -24,6 +26,14 @@
 
 #include "BvOpSem2Context.hh"
 
+#include "clam/CfgBuilder.hh"
+#include "clam/Clam.hh"
+#include "clam/ClamQueryAPI.hh"
+#include "clam/SeaDsaHeapAbstraction.hh"
+#include "crab/domains/abstract_domain_params.hpp"
+
+#include "seadsa/ShadowMem.hh"
+
 #include <fstream>
 #include <memory>
 
@@ -33,6 +43,8 @@ using namespace seahorn::details;
 using gep_type_iterator = generic_gep_type_iterator<>;
 
 namespace seahorn {
+extern bool isUnifiedAssume(const Instruction &CI);
+extern clam::CrabDomain::Type CrabDom;
 namespace details {
 enum class VacCheckOptions { NONE, ANTE, ALL };
 }
@@ -133,6 +145,30 @@ static llvm::cl::opt<unsigned>
     MaxSizeGlobalVarInit("horn-bv2-max-gv-init-size",
                          llvm::cl::desc("Maximum size for global initializers"),
                          llvm::cl::init(0));
+
+static llvm::cl::opt<bool>
+    UseCrabInferRng("horn-bv2-crab-rng",
+                    llvm::cl::desc("Use crab to infer rng invariants"),
+                    llvm::cl::init(false));
+
+// Crab does not understand sea.is_dereferenceable but the intrinsics
+// is lowered into instructions that Crab can understand.
+static llvm::cl::opt<bool> UseCrabLowerIsDeref(
+    "horn-bv2-crab-lower-is-deref",
+    llvm::cl::desc("Use crab to lower sea.is_dereferenceable"),
+    llvm::cl::init(false));
+
+// Crab reason natively about sea.is_dereferenceable without any
+// lowering.
+static llvm::cl::opt<bool> UseCrabCheckIsDeref(
+    "horn-bv2-crab-check-is-deref",
+    llvm::cl::desc("Use crab to check sea.is_dereferenceable"),
+    llvm::cl::init(false));
+
+static llvm::cl::opt<bool> UseLVIInferRng(
+    "horn-bv2-lvi-rng",
+    llvm::cl::desc("Use LVI (LazyValueInfo) to infer rng invariants"),
+    llvm::cl::init(false));
 namespace {
 
 const Value *extractUniqueScalar(CallSite &cs) {
@@ -741,7 +777,34 @@ public:
   void visitIsDereferenceable(CallSite CS) {
     Expr ptr = lookup(*CS.getArgument(0));
     Expr byteSz = lookup(*CS.getArgument(1));
-    Expr res = m_ctx.mem().isDereferenceable(ptr, byteSz);
+    Expr res;
+    bool crabSolved = false;
+    if (UseCrabLowerIsDeref || UseCrabCheckIsDeref) {
+      // if crab is used, infer the result of sea.is_deref
+      Instruction *inst = CS.getInstruction();
+      auto derefInfoFromCrab = m_sem.getCrabInstRng(*inst);
+      if (derefInfoFromCrab.isEmptySet()) {
+        // Crab skips is_deref due to invariant inferred along the path is
+        // bottom
+        Stats::count("crab.isderef.solve");
+        // Remove this is_deref checks
+        res = m_ctx.alu().getTrue();
+      } else if (derefInfoFromCrab.isSingleElement()) {
+        // Crab inferred is_deref call is either true or false
+        // Set the value for res expression
+        Stats::count("crab.isderef.solve");
+        res = derefInfoFromCrab.getSingleElement()->getBoolValue()
+                  ? m_ctx.alu().getTrue()
+                  : m_ctx.alu().getFalse();
+        crabSolved = true;
+      } else {
+        Stats::count("crab.isderef.not.solve");
+        LOG("opsem-crab", MSG << "crab cannot solve: " << *inst;);
+      }
+    }
+    if (!crabSolved) {
+      res = m_ctx.mem().isDereferenceable(ptr, byteSz);
+    }
     setValue(*CS.getInstruction(), res);
   }
 
@@ -922,7 +985,21 @@ public:
     m_ctx.addToSolver(m_ctx.getPathCond());
     m_ctx.addToSolver(solveFor);
 
-    return m_ctx.solve();
+    auto r = m_ctx.solve();
+    // if the solver returns unknown then dump smt2 formula to file for analysis
+    LOG("opsem.dump.incassert", {
+      if (r || !r) {
+      } else { // indeterminate case
+        std::error_code EC;
+        static unsigned cnt = 0;
+        auto filename = "incassert." + std::to_string(++cnt) + ".smt2";
+        errs() << "Writing increment assert formula to '" << filename << "'..."
+               << "\n";
+        raw_fd_ostream File(filename, EC, sys::fs::F_Text);
+        m_ctx.toSmtLib(File);
+      }
+    });
+    return r;
   }
 
   void visitVerifierAssertCall(CallSite CS) {
@@ -984,6 +1061,9 @@ public:
   }
 
   void visitVerifierAssumeCall(CallSite CS) {
+    // ignore assume with metadata: unified.assume
+    if (CS.getInstruction() && isUnifiedAssume(*CS.getInstruction()))
+      return;
     auto &f = *getCalledFunction(CS);
 
     Expr op = lookup(*CS.getArgument(0));
@@ -1997,16 +2077,21 @@ public:
   Expr executeStoreInst(const Value &val, const Value &addr, unsigned alignment,
                         Bv2OpSemContext &ctx) {
 
+    // -- fn to update ctx in case the store operation is treated as a noop
+    auto noop = [&ctx]() {
+      Expr res = ctx.read(ctx.getMemReadRegister());
+      ctx.write(ctx.getMemWriteRegister(), res);
+      ctx.setMemReadRegister(Expr());
+      ctx.setMemWriteRegister(Expr());
+      return res;
+    };
+
     if (val.getType()->isDoubleTy() || val.getType()->isFloatTy()) {
       if (ctx.getMemReadRegister() && ctx.getMemWriteRegister()) {
         LOG("opsem", WARN << "treating double/float store as noop: *" << addr
                           << " := " << val << "\n";);
 
-        Expr res = ctx.read(ctx.getMemReadRegister());
-        ctx.write(ctx.getMemWriteRegister(), res);
-        ctx.setMemReadRegister(Expr());
-        ctx.setMemWriteRegister(Expr());
-        return res;
+        return noop();
       }
       // if anything above fails, continue as usual. Exceptional cases are
       // treated as memhavoc below.
@@ -2019,6 +2104,12 @@ public:
       ctx.setMemReadRegister(Expr());
       ctx.setMemWriteRegister(Expr());
       return Expr();
+    }
+
+    if (isa<UndefValue>(val)) {
+      // from LLVM Lang Ref:
+      // A store of an undefined value can be assumed to not have any effect;
+      return noop();
     }
 
     Expr v = lookup(val);
@@ -2155,6 +2246,11 @@ public:
 
   void visitModule(Module &M) {
     LOG("opsem.module", errs() << M << "\n";);
+    if (UseCrabInferRng || UseCrabLowerIsDeref || UseCrabCheckIsDeref) {
+      m_sem.initCrabAnalysis(M);
+      m_sem.runCrabAnalysis();
+    }
+
     m_ctx.onModuleEntry(M);
 
     for (const Function &fn : M.functions()) {
@@ -2184,6 +2280,10 @@ public:
                           << gv.getName(););
         continue;
       }
+      if (gv.getName().equals("llvm.global_ctors") ||
+          gv.getName().equals("llvm.global_dtors")) {
+        continue;
+      }
       Expr symReg = m_ctx.mkRegister(gv);
       assert(symReg);
       setValue(gv, m_ctx.mem().galloc(gv));
@@ -2196,6 +2296,10 @@ public:
         continue;
       if (gv.getSection().equals("llvm.metadata"))
         continue;
+      if (gv.getName().equals("llvm.global_ctors") ||
+          gv.getName().equals("llvm.global_dtors")) {
+        continue;
+      }
       m_ctx.mem().initGlobalVariable(gv);
     }
 
@@ -2306,11 +2410,42 @@ Bv2OpSemContext::Bv2OpSemContext(SymStore &values, ExprVector &side,
   setPathCond(o.getPathCond());
 }
 
+// If running in lambda mode,
+// convert constant arrays returned by Z3 simplifier to a lambda.
+//
+// Details: When Z3 is given a lambda of the form lambda x: 0 to simplify, a
+// constant array is returned. If running in lambda mode, this will cause the
+// formula to have both lambdas and constant arrays which is not supported
+// (fully) by Z3 and y2.
+// This workaround fixes the issue by converting constant arrays gotten from
+// Z3 back to lambda x: 0.
+Expr coerceConstArrayToLambda(Expr e, ExprFactory &efac) {
+  // go into structs until a non struct is found; convert to lambda if needed.
+  if (strct::isStructVal(e)) {
+    llvm::SmallVector<Expr, 8> kids;
+    for (unsigned i = 0, sz = e->arity(); i < sz; ++i) {
+
+      kids.push_back(coerceConstArrayToLambda(e->arg(i), efac));
+    }
+    return strct::mk(kids);
+  } else if (isOpX<CONST_ARRAY>(e)) {
+    Expr dom = e->arg(0); // get domain
+    Expr val = e->arg(1); // get value
+    Expr addr = bind::mkConst(mkTerm<std::string>("addr", efac), dom);
+    Expr decl = bind::fname(addr);
+    Expr res = mk<LAMBDA>(decl, val);
+    return res;
+  } else {
+    return e;
+  }
+}
+
 Expr Bv2OpSemContext::simplify(Expr u) {
   ScopedStats _st_("opsem.simplify");
 
-  Expr _u;
-  _u = m_z3_simplifier->simplify(u);
+  Expr _u, _u_simp;
+  _u_simp = m_z3_simplifier->simplify(u);
+  _u = UseLambdas ? coerceConstArrayToLambda(_u_simp, efac()) : _u_simp;
   LOG(
       "opsem.simplify",
       if (!isOpX<LAMBDA>(_u) && !isOpX<ITE>(_u) && dagSize(_u) > 100) {
@@ -2477,6 +2612,8 @@ Expr Bv2OpSemContext::gep(Expr ptr, gep_type_iterator it,
 }
 
 void Bv2OpSemContext::onFunctionEntry(const Function &fn) {
+  if (UseLVIInferRng)
+    m_sem.runLVIAnalysis(fn);
   mem().onFunctionEntry(fn);
 }
 void Bv2OpSemContext::onModuleEntry(const Module &M) {
@@ -2618,7 +2755,12 @@ Expr Bv2OpSemContext::mkRegister(const llvm::Value &v) {
 
 Expr Bv2OpSemContext::getConstantValue(const llvm::Constant &c) {
   // -- easy common cases
-  if (isa<ConstantPointerNull>(&c)) {
+  if (false && isa<const UndefValue>(c)) {
+    // XXX causes issues with structures, disable for now
+    // -- `undef` is an arbitrary bit-pattern, so we treat it as 0
+    return alu().ui(0U, m_sem.sizeInBits(c));
+  } else if (isa<ConstantPointerNull>(c) ||
+             (c.getType()->isPointerTy() && isa<UndefValue>(c))) {
     return mem().nullPtr();
   } else if (const ConstantInt *ci = dyn_cast<const ConstantInt>(&c)) {
     if (ci->getType()->isIntegerTy(1))
@@ -2682,6 +2824,10 @@ void Bv2OpSemContext::addToSolver(const Expr e) {
   }
 }
 
+void Bv2OpSemContext::toSmtLib(llvm::raw_ostream &o) {
+  m_z3_solver->toSmtLib(o);
+}
+
 boost::tribool Bv2OpSemContext::solve() { return m_z3_solver->solve(); }
 
 Expr Bv2OpSemContext::ptrToAddr(Expr p) { return mem().ptrToAddr(p); }
@@ -2695,6 +2841,7 @@ Bv2OpSem::Bv2OpSem(ExprFactory &efac, Pass &pass, const DataLayout &dl,
     : OperationalSemantics(efac), m_pass(pass), m_trackLvl(trackLvl),
       m_td(&dl) {
   m_canFail = pass.getAnalysisIfAvailable<CanFail>();
+  m_lvi_map = UseLVIInferRng ? std::make_unique<lvi_func_map_t>() : nullptr;
   auto *p = pass.getAnalysisIfAvailable<TargetLibraryInfoWrapperPass>();
   if (p)
     m_tliWrapper = p;
@@ -2718,6 +2865,8 @@ Expr Bv2OpSem::errorFlag(const BasicBlock &BB) {
     return falseE;
   return this->OperationalSemantics::errorFlag(BB);
 }
+
+Bv2OpSem::~Bv2OpSem() = default;
 
 void Bv2OpSem::exec(const BasicBlock &bb,
                     seahorn::details::Bv2OpSemContext &ctx) {
@@ -2824,6 +2973,20 @@ Expr Bv2OpSem::getOperandValue(const Value &v,
       res = ctx.read(reg);
     } else
       res = ctx.getConstantValue(*gv);
+  } else if (auto *ce = dyn_cast<ConstantExpr>(&v)) {
+    // HACK: handle bitcast of a global variable
+    if (ce->getType()->isPointerTy() &&
+        ce->getOpcode() == Instruction::BitCast) {
+      if (auto *gv = dyn_cast<GlobalVariable>(ce->getOperand(0))) {
+        if (Expr reg = ctx.getRegister(*gv))
+          res = ctx.read(reg);
+      }
+    }
+    if (!res) {
+      res = ctx.getConstantValue(*ce);
+      LOG("opsem",
+          if (!res) WARN << "Failed to evaluate constant expression " << v;);
+    }
   } else if (auto *cv = dyn_cast<Constant>(&v)) {
     res = ctx.getConstantValue(*cv);
     LOG("opsem", if (!res) WARN << "Failed to evaluate a constant " << v;);
@@ -3142,6 +3305,87 @@ Optional<APInt> Bv2OpSem::agg(Type *aggTy,
   if (res.getBitWidth() < aggSize)
     res = res.zext(aggSize); // padding for last element
   return res;
+}
+
+void Bv2OpSem::initCrabAnalysis(const llvm::Module &M) {
+  // Get seadsa -- pointer analysis
+  auto &dsa_pass = m_pass.getAnalysis<seadsa::ShadowMemPass>().getShadowMem();
+  auto &dsa = dsa_pass.getDsaAnalysis();
+
+  // XXX: use of legacy operational semantics
+  auto &tli = m_pass.getAnalysis<TargetLibraryInfoWrapperPass>();
+
+  std::unique_ptr<clam::HeapAbstraction> heap_abs =
+      std::make_unique<clam::SeaDsaHeapAbstraction>(M, dsa);
+
+  // -- Set parameters for CFG
+  clam::CrabBuilderParams cfg_builder_params;
+  LOG("opsem-crab", cfg_builder_params.print_cfg = true;);
+  cfg_builder_params.setPrecision(clam::CrabBuilderPrecision::MEM);
+  cfg_builder_params.interprocedural = true;
+  if (UseCrabLowerIsDeref) {
+    // Use CrabIR instrumentation for offset/size of ptr
+    cfg_builder_params.add_is_deref = true;
+  }
+  cfg_builder_params.lowerUnsignedICmpIntoSigned();
+  cfg_builder_params.lower_arithmetic_with_overflow_intrinsics = true;
+
+  m_cfg_builder_man = std::make_unique<clam::CrabBuilderManager>(
+      cfg_builder_params, tli, std::move(heap_abs));
+  // -- Initialize crab for solving ranges
+  m_crab_rng_solver =
+      std::make_unique<clam::InterGlobalClam>(M, *m_cfg_builder_man);
+}
+
+void Bv2OpSem::runCrabAnalysis() {
+  /// Set Crab parameters
+  clam::AnalysisParams aparams;
+  aparams.dom = CrabDom;
+  aparams.run_inter = true;
+  aparams.check = clam::CheckerKind::NOCHECKS;
+
+  if (UseCrabCheckIsDeref) {
+    crab::domains::crab_domain_params_man::get().
+      set_param("region.is_dereferenceable", "true");
+  }
+  /// Run the Crab analysis
+  clam::ClamGlobalAnalysis::abs_dom_map_t assumptions;
+  LOG("opsem-crab", aparams.print_invars = true;);
+  m_crab_rng_solver->analyze(aparams, assumptions);
+}
+
+void Bv2OpSem::runLVIAnalysis(const Function &F) {
+  if (m_lvi_map) {
+    Function &fn = const_cast<Function &>(F);
+    LazyValueInfoWrapperPass *m_lvi =
+        &m_pass.getAnalysis<LazyValueInfoWrapperPass>(fn);
+    if (m_lvi) {
+      m_lvi_map->insert({&F, m_lvi});
+      LOG("opsem-rng", MSG << "Running LVI on function: " << F.getName(););
+    }
+  }
+}
+
+const llvm::ConstantRange Bv2OpSem::getCrabInstRng(const llvm::Instruction &I) {
+  unsigned IntWidth = I.getType()->getIntegerBitWidth();
+  if (!m_crab_rng_solver)
+    return llvm::ConstantRange::getFull(IntWidth);
+  return m_crab_rng_solver->range(I);
+}
+
+const llvm::ConstantRange Bv2OpSem::getLVIInstRng(llvm::Instruction &I) {
+  unsigned IntWidth = getDataLayout().getTypeSizeInBits(I.getType());
+  if (m_lvi_map) {
+    Function *fn = I.getFunction();
+    if (fn) {
+      auto it = m_lvi_map->find(fn);
+      if (it != m_lvi_map->end()) {
+        return it->second->getLVI().getConstantRange(dyn_cast<Value>(&I),
+                                                     I.getParent(), &I);
+      }
+    }
+  }
+  return llvm::ConstantRange::getFull(IntWidth);
 }
 
 } // namespace seahorn
