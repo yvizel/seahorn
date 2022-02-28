@@ -57,6 +57,14 @@ bool StaticTaint::runOnBasicBlock(BasicBlock &B) {
         if (isTainted(op)) {
           m_tainted.insert(CI);
         }
+      } else {
+        for (Use &U : CI->operands()) {
+          Value *arg = U.get();
+          if (isTainted(arg)) {
+            m_taint.insert(CI);
+            break;
+          }
+        }
       }
     } else if (BranchInst *BI = dyn_cast<BranchInst>(I)) {
       if (BI->isConditional()) {
@@ -187,6 +195,12 @@ bool StaticTaint::runOnModule(llvm::Module &M) {
     }
     outs() << "\n========================== END =========================\n";
   }
+//  outs() << "tainted instructions:\n";
+//  for (Value *v : m_taint) {
+//    outs() << *v << "\n";
+//  }
+//  outs() << "end tainted instructions\n";
+//  //exit(1);
 
   return false;
 }
