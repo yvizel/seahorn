@@ -46,13 +46,20 @@ void Speculative::insertFenceFunction(IRBuilder<> &B, Module *M, Value *globalSp
   fenceFkt->addFnAttr(Attribute::NoInline);
   fenceFkt->addFnAttr(Attribute::NoUnwind);
 
-  Value *fence = B.CreateCall(fenceFkt);
   // Todo: add debug location to fence call
-  Value *stop = B.CreateAnd(globalSpec, fence, "");
+  CallInst *fenceCall = B.CreateCall(fenceFkt);
+  // update call graph
+  if (m_CG) {
+    Function *F = fenceCall->getFunction();
+    auto f1 = m_CG->getOrInsertFunction(F);
+    auto f2 = m_CG->getOrInsertFunction(fenceFkt);
+    f1->addCalledFunction(fenceCall, f2);
+  }
+  Value *stop = B.CreateAnd(globalSpec, fenceCall, "");
   Value *notStop = B.CreateNot(stop, "");
   B.CreateCall(m_assumeFn, notStop, "");
 
-  LLVMContext &ctx = globalSpec->getContext();
+  LLVMContext &ctx = M->getContext();
   BasicBlock *fenceBB = BasicBlock::Create(ctx, "entry", fenceFkt);
   B.SetInsertPoint(fenceBB);
   Value *nd = B.CreateCall(m_ndBoolFn);
@@ -447,8 +454,9 @@ bool Speculative::runOnModule(llvm::Module &M) {
   }
 
   outs() << "-- Inserted " << m_numOfSpec << " speculations.\n";
-  if (m_dump)
+  if (m_dump) {
     M.print(outs(), nullptr);
+  }
 
   return change;
 }
@@ -463,6 +471,12 @@ BasicBlock *Speculative::createErrorBlock(Function &F, IRBuilder<> & B) {
 
   B.SetInsertPoint(errBB);
   CallInst *CI = B.CreateCall(m_errorFn);
+//  Type *retType = F.getReturnType();
+//  if (retType->isVoidTy()) {
+//    B.CreateRetVoid();
+//  } else {
+//    B.CreateRet(ConstantInt::get(retType, 0));
+//  }
   B.CreateUnreachable();
 
   // update call graph
