@@ -222,10 +222,10 @@ bool HornSolver::runOnModule(Module &M, HornifyModule &hm, bool reuseCover) {
           "arg_" + boost::lexical_cast<std::string>(i), efac);
       args.push_back(bind::mkConst(argName, bind::domainTy(r, i)));
     }
-    Expr pred;
-    pred = bind::fapp(r, args);
-    Expr lemma = m_fp->getCoverDelta(pred);
-    outs() << "cover for " << *pred << ": " << *lemma << "\n";
+//    Expr pred;
+//    pred = bind::fapp(r, args);
+//    Expr lemma = m_fp->getCoverDelta(pred);
+//    outs() << "cover for " << *pred << ": " << *lemma << "\n";
   }
 
   if (UseInvariant == solver_detail::INACTIVE) {
@@ -330,19 +330,38 @@ void HornSolver::printCex() {
     if (isOpX<IMPL>(r)) {
       dst = r->arg(1);
       r = r->arg(0);
-      src = isOpX<AND>(r) ? r->arg(0) : r;
+      // Todo: We probalby cannot just take the first conjunct.
+//      src = isOpX<AND>(r) ? r->arg(0) : r;
+      if (isOpX<AND>(r)) {
+        bool notFirst = false;
+        for (auto B = r->args_begin(), E = r->args_end(); B != E; ++B) {
+          src = *B;
+          if (!bind::isFapp(src)) { continue; }
+          src = bind::fname(bind::fname(src));
+          if (notFirst) { outs() << ", "; }
+          outs() << *src;
+          notFirst = true;
+        }
+        outs() << " --> ";
+      } else {
+        src = r;
+        if (bind::isFapp(src)) {
+          src = bind::fname(bind::fname(src));
+          outs() << *src << " --> ";
+        }
+      }
     } else
       dst = r;
 
-    if (src) {
-      if (!bind::isFapp(src))
-        src.reset(0);
-      else
-        src = bind::fname(bind::fname(src));
-    }
-
-    if (src)
-      outs() << *src << " --> ";
+//    if (src) {
+//      if (!bind::isFapp(src))
+//        src.reset(0);
+//      else
+//        src = bind::fname(bind::fname(src));
+//    }
+//
+//    if (src)
+//      outs() << *src << " --> ";
 
     dst = bind::fname(bind::fname(dst));
     outs() << *dst << "\n";
