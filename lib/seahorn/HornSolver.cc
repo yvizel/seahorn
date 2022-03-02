@@ -333,14 +333,14 @@ void HornSolver::printCex() {
       // Todo: We probalby cannot just take the first conjunct.
 //      src = isOpX<AND>(r) ? r->arg(0) : r;
       if (isOpX<AND>(r)) {
-        bool notFirst = false;
+        bool nonEmpty = false;
         for (auto B = r->args_begin(), E = r->args_end(); B != E; ++B) {
           src = *B;
           if (!bind::isFapp(src)) { continue; }
           src = bind::fname(bind::fname(src));
-          if (notFirst) { outs() << ", "; }
+          if (nonEmpty) { outs() << ", "; }
           outs() << *src;
-          notFirst = true;
+          nonEmpty = true;
         }
         outs() << " --> ";
       } else {

@@ -326,7 +326,7 @@ int main(int argc, char **argv) {
   }
   pass_manager.add(new seahorn::RemoveUnreachableBlocksPass());
 
-  // Todo: is this a good place for taint tracking and speculative execution
+  // Todo: Is this a good place for taint tracking and speculative execution?
   if (StaticTaint) {
     pass_manager.add(seahorn::createStaticTaintPass(true));
   }
