@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include <seahorn/seahorn.h>
 
-extern void __taint(int*);
+extern void __taint(int);
 extern void __is_tainted(int);
 extern void spec_fence();
 extern int nd();
@@ -21,7 +21,7 @@ int main(int argn, char* args[]) {
     int temp = 0;
 
     source = nd();
-    __taint(&source);
+    __taint(source);
 
 //    spec_fence();
     if (source < array1_size) {

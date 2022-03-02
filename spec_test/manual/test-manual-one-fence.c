@@ -12,19 +12,19 @@ extern bool fence_nd();
 unsigned int array1_size = 16;
 int array1[16];
 
-__attribute__ ((noinline)) bool __fence_0() {
+__attribute__ ((noinline)) bool fence_0() {
     return fence_nd();
     //return true;
 }
 
-__attribute__ ((noinline)) bool __fence_1() {
+__attribute__ ((noinline)) bool fence_1() {
     return fence_nd();
     //return true;
 }
 
-__attribute__ ((noinline)) bool __fence_2() {
-    //return fence_nd();
-    return true;
+__attribute__ ((noinline)) bool fence_2() {
+    return fence_nd();
+    //return true;
 }
 
 int main(int argn, char* args[]) {
@@ -47,7 +47,7 @@ int main(int argn, char* args[]) {
         assume_cond = ((source < array1_size) ^ start_spec);
         assume(assume_cond);
         spec |= start_spec;
-        assume(!(spec & __fence_0()));
+        assume(!(spec & fence_0()));
         //
         // One fence here suffices to prevent leakage.
         // However, having one fence each in the following branches is also fine
@@ -66,7 +66,7 @@ int main(int argn, char* args[]) {
             assume_cond = (unrelated ^ start_spec);
             assume(assume_cond);
             spec |= start_spec;
-            assume(!(spec & __fence_1()));
+            assume(!(spec & fence_1()));
 
             sassert(!spec);
             //sassert(source < array1_size);
@@ -76,7 +76,7 @@ int main(int argn, char* args[]) {
             assume_cond = ((!unrelated) ^ start_spec);
             assume(assume_cond);
             spec |= start_spec;
-            assume(!(spec & __fence_2()));
+            assume(!(spec & fence_2()));
 
             sassert(!spec);
             //sassert(source < array1_size);

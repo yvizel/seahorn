@@ -32,7 +32,7 @@ int main(int argn, char* args[]) {
 
     __taint(source);
     __taint(x);
-//    __taint(&access_granted);
+//    __taint(access_granted);
 
     if (source < array1_size) {
 //      if (access_granted) {

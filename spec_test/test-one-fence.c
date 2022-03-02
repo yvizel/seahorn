@@ -10,6 +10,7 @@ extern void spec_fence();
 
 // avoid optimization of array
 extern void init(void*);
+extern int permute(int, unsigned);
 
 const unsigned int array1_size = 16;
 int array1[16];
@@ -36,7 +37,7 @@ int main(int argn, char* args[]) {
         if (unrelated) {
             temp = array1[source];
         } else {
-            temp = array1[15-source];
+            temp = array1[permute(source, array1_size)];
         }
     }
 
