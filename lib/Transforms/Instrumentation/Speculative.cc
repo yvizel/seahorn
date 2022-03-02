@@ -48,6 +48,7 @@ void Speculative::insertFenceFunction(IRBuilder<> &B, Module *M, Value *globalSp
 
   // Todo: add debug location to fence call
   CallInst *fenceCall = B.CreateCall(fenceFkt);
+  addFenceCall(fenceName, *fenceCall);
   // update call graph
   if (m_CG) {
     Function *F = fenceCall->getFunction();

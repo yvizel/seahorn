@@ -3,6 +3,7 @@
 #include "seahorn/HornClauseDBTransf.hh"
 #include "seahorn/HornDbModel.hh"
 #include "seahorn/HornifyModule.hh"
+#include "seahorn/Transforms/Instrumentation/Speculative.hh"
 
 #include "seahorn/Support/Stats.hh"
 #include "llvm/IR/Function.h"
@@ -32,8 +33,9 @@ static llvm::cl::opt<bool>
                  cl::init(false));
 
 enum FenceChoiceOpt {
+  LATE,
   EARLY,
-  LATE
+  DOM
 };
 
 static llvm::cl::opt<FenceChoiceOpt> FenceChoice(
@@ -41,7 +43,8 @@ static llvm::cl::opt<FenceChoiceOpt> FenceChoice(
     llvm::cl::desc("Choice of the possible fences that eliminate a counterexample"),
     llvm::cl::values(
         clEnumValN(LATE, "late", "Choose the latest possible fences"),
-        clEnumValN(EARLY, "early", "Choose the earliest possible fence")
+        clEnumValN(EARLY, "early", "Choose the earliest possible fence"),
+        clEnumValN(DOM, "dom", "Choose the fence that is dominated by all other possibilities")
     ),
     llvm::cl::init(LATE));
 
@@ -270,7 +273,32 @@ bool HornSolver::runOnModule(Module &M, HornifyModule &hm, bool reuseCover) {
       getFencesAlongTrace(fences);
       if (!fences.empty()) {
         // Todo: choose a fence wisely
-        std::string name = FenceChoice == LATE ? fences.back() : fences.front();
+        std::string name;
+        switch (FenceChoice) {
+        case LATE:
+          name = fences.back();
+          break;
+        case EARLY:
+          name = fences.front();
+          break;
+        case DOM:
+          name = fences.front();
+          Speculative &spec = getAnalysis<Speculative>();
+          std::map<std::string, CallInst&> &fenceCallMap = spec.getFenceCallMap();
+          CallInst &maxCI = fenceCallMap.at(fences.front());
+          outs() << "fence calls:\n";
+          outs() << maxCI << "\n";
+          auto B = fences.begin();
+          ++B;
+          auto E = fences.end();
+          while (B != E) {
+            CallInst &CI = fenceCallMap.at(*B);
+            outs() << CI << "\n";
+            // Todo: if maxCI dominates CI then maxCI = CI
+            // update name
+          }
+          break;
+        }
         for (std::string &fence : fences) {
           for (std::string &hint : FenceHints) {
             if (fence.compare(hint) == 0) {
@@ -313,6 +341,7 @@ end_search:
 
 void HornSolver::getAnalysisUsage(AnalysisUsage &AU) const {
   AU.addRequired<HornifyModule>();
+  AU.addRequired<Speculative>();
   AU.setPreservesAll();
 }
 
