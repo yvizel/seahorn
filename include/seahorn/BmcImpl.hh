@@ -139,6 +139,17 @@ Expr BmcTrace<Engine, Model>::eval(unsigned loc, const llvm::Value &inst,
 template <class Engine, class Model>
 Expr BmcTrace<Engine, Model>::eval(unsigned loc, Expr u, bool complete) {
 
+  auto isTuple = [](Expr e) {
+      return expr::op::bind::isFdecl(e->left()) && isOpX<TUPLE>(e->left()->left());
+  };
+
+  auto extractTupleAsPair = [](Expr e) {
+      Expr tuple = e->left()->left();
+      Expr src = tuple->left();
+      Expr dst = tuple->right();
+      return std::make_pair(src, dst);
+  };
+  
   unsigned stateidx = cpid(loc);
   stateidx++;
   // -- out of bounds, no value in the model
@@ -146,8 +157,36 @@ Expr BmcTrace<Engine, Model>::eval(unsigned loc, Expr u, bool complete) {
     return Expr();
 
   SymStore &store = m_bmc.getStates()[stateidx];
-  Expr v = store.eval(u);
+
+  Expr v;
+  if (isTuple(u)) {
+    // This is needed because s.eval does not traverse function
+    // declarations
+    auto pair = extractTupleAsPair(u);
+    if (store.isDefined(pair.first) && store.isDefined(pair.second)) {
+      v = bind::boolConst(mk<TUPLE>(store.eval(pair.first),
+				    store.eval(pair.second)));
+    }
+  }
+  if (!v) {
+    v = store.eval(u);
+  }
   return m_model->eval(v, complete);
+}
+
+template <typename Out> Out &printLineno(Out &out, const llvm::Instruction &I) {
+  const DebugLoc &dloc = I.getDebugLoc();
+
+  if (dloc) {
+    if (out.has_colors())
+      out.changeColor(raw_ostream::CYAN);
+
+    out << "[" << (*dloc).getFilename() << ":" << dloc.getLine() << "]";
+
+    if (out.has_colors())
+      out.resetColor();
+  }
+  return out;
 }
 
 template <class Engine, class Model>
@@ -181,6 +220,7 @@ Out &BmcTrace<Engine, Model>::print(Out &out) {
       }
 
       bool print_inst = true;
+      bool print_lineno = false;
       bool shadow_mem = false;
       if (auto *ci = dyn_cast<CallInst>(&I)) {
         const Function *f = getCalledFunction(*ci);
@@ -217,13 +257,20 @@ Out &BmcTrace<Engine, Model>::print(Out &out) {
           }
           if (out.has_colors())
             out.resetColor();
+        } else if (f && f->getName().equals("verifier.assert")) {
+          print_lineno = true;
         }
       } else if (isa<PHINode>(I)) {
         shadow_mem = I.hasMetadata("shadow.mem");
       }
 
       if (print_inst) {
-        out << I << "\n";
+        out << I;
+        if (print_lineno) {
+          out << " ";
+          printLineno(out, I);
+        }
+        out << "\n";
       }
 
       Expr v = eval(loc, I);

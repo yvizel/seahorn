@@ -5,6 +5,8 @@
 // This file is distributed under the MIT License. See LICENSE for details.
 //
 
+#include "llvm_seahorn/InitializePasses.h"
+#include "llvm_seahorn/Transforms/IPO.h"
 #include "llvm/IR/LLVMContext.h"
 #include "llvm/IR/LegacyPassManager.h"
 #include "llvm/IR/Module.h"
@@ -301,6 +303,8 @@ int main(int argc, char **argv) {
   llvm::initializeDsaInfoPassPass(Registry);
   llvm::initializeAllocSiteInfoPass(Registry);
   llvm::initializeCompleteCallGraphPass(Registry);
+  llvm::initializeAnnotation2MetadataLegacyPass(Registry);
+  llvm::initializeGeneratePartialFnPassPass(Registry);
   // add an appropriate DataLayout instance for the module
   const llvm::DataLayout *dl = &module->getDataLayout();
   if (!dl && !DefaultDataLayout.empty()) {
@@ -310,6 +314,7 @@ int main(int argc, char **argv) {
 
   assert(dl && "Could not find Data Layout for the module");
 
+  pass_manager.add(llvm_seahorn::createAnnotation2MetadataLegacyPass());
   pass_manager.add(seahorn::createSeaBuiltinsWrapperPass());
   // turn all functions internal so that we can inline them if requested
   auto PreserveMain = [=](const llvm::GlobalValue &GV) {
@@ -317,6 +322,7 @@ int main(int argc, char **argv) {
   };
   pass_manager.add(llvm::createInternalizePass(PreserveMain));
   pass_manager.add(llvm::createGlobalDCEPass()); // kill unused internal global
+  pass_manager.add(seahorn::createGeneratePartialFnPass());
 
   if (InlineAll) {
     pass_manager.add(seahorn::createMarkInternalInlinePass());
@@ -358,6 +364,7 @@ int main(int argc, char **argv) {
   // -- initialize any global variables that are left
   if (LowerGlobalInitializers) {
     pass_manager.add(new seahorn::LowerGvInitializers());
+    pass_manager.add(llvm::createFunctionInliningPass());
   }
 
   pass_manager.add(seadsa::createRemovePtrToIntPass());
@@ -373,7 +380,6 @@ int main(int argc, char **argv) {
 
   if (NondetInit)
     pass_manager.add(seahorn::createNondetInitPass());
-  pass_manager.add(seahorn::createSeaDsaShadowMemPass());
 
   // Preceding passes may introduce overflow intrinsics. This is undesirable if
   // we are not in BMC mode.
@@ -388,6 +394,10 @@ int main(int argc, char **argv) {
     // -- it must be called after all the cfg simplifications
     pass_manager.add(seahorn::createOneAssumePerBlockPass());
   }
+
+  // -- called after DeadNondetElimPass so that the graphs do not contain
+  // -- values that have been freed
+  pass_manager.add(seahorn::createSeaDsaShadowMemPass());
 
   if (UnifyAssumes) {
     pass_manager.add(seahorn::createUnifyAssumesPass());

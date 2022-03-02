@@ -1,3 +1,4 @@
+#include "llvm/Analysis/LazyValueInfo.h"
 #include "llvm/Analysis/PostDominators.h"
 #include "llvm/Analysis/TargetLibraryInfo.h"
 #include "llvm/Bitcode/BitcodeWriter.h"
@@ -120,6 +121,8 @@ public:
   void getAnalysisUsage(AnalysisUsage &AU) const {
     AU.addRequired<TargetLibraryInfoWrapperPass>();
     AU.addRequired<seadsa::ShadowMemPass>();
+    AU.addRequired<LazyValueInfoWrapperPass>();
+    AU.addRequired<DominatorTreeWrapperPass>();
 
     AU.addRequired<CanFail>();
     AU.addRequired<NameValues>();
@@ -253,8 +256,7 @@ public:
 
       // XXX: use of legacy operational semantics
       auto &tli = getAnalysis<TargetLibraryInfoWrapperPass>();
-      PathBmcEngine bmc(static_cast<LegacyOperationalSemantics &>(*sem), tli,
-                        sm);
+      PathBmcEngine bmc(*sem, tli, sm);
 
       bmc.addCutPoint(src);
       bmc.addCutPoint(*dst);
