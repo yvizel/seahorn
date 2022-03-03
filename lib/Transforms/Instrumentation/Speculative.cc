@@ -39,7 +39,7 @@ using namespace llvm;
 
 char Speculative::ID = 0;
 
-void Speculative::insertFenceFunction(IRBuilder<> &B, Module *M, Value *globalSpec) {
+void Speculative::insertFenceFunction(Module *M, Value *globalSpec) {
   FunctionType *fenceType = FunctionType::get(m_BoolTy, false);
   std::string fenceName = "fence_" + std::to_string(m_numOfFences++);
   Function *fenceFkt = Function::Create(fenceType, Function::ExternalLinkage, fenceName, M);
@@ -47,7 +47,7 @@ void Speculative::insertFenceFunction(IRBuilder<> &B, Module *M, Value *globalSp
   fenceFkt->addFnAttr(Attribute::NoUnwind);
 
   // Todo: add debug location to fence call
-  CallInst *fenceCall = B.CreateCall(fenceFkt);
+  CallInst *fenceCall = m_Builder->CreateCall(fenceFkt);
   // update call graph
   if (m_CG) {
     Function *F = fenceCall->getFunction();
@@ -55,81 +55,81 @@ void Speculative::insertFenceFunction(IRBuilder<> &B, Module *M, Value *globalSp
     auto f2 = m_CG->getOrInsertFunction(fenceFkt);
     f1->addCalledFunction(fenceCall, f2);
   }
-  Value *stop = B.CreateAnd(globalSpec, fenceCall, "");
-  Value *notStop = B.CreateNot(stop, "");
-  B.CreateCall(m_assumeFn, notStop, "");
+  Value *stop = m_Builder->CreateAnd(globalSpec, fenceCall, "");
+  Value *notStop = m_Builder->CreateNot(stop, "");
+  m_Builder->CreateCall(m_assumeFn, notStop, "");
 
   LLVMContext &ctx = M->getContext();
   BasicBlock *fenceBB = BasicBlock::Create(ctx, "entry", fenceFkt);
-  B.SetInsertPoint(fenceBB);
-  Value *nd = B.CreateCall(m_ndBoolFn);
-  B.CreateRet(nd);
-  B.ClearInsertionPoint();
+  m_Builder->SetInsertPoint(fenceBB);
+  Value *nd = m_Builder->CreateCall(m_ndBoolFn);
+  m_Builder->CreateRet(nd);
+  m_Builder->ClearInsertionPoint();
 }
 
-BasicBlock *Speculative::addSpeculationBB(IRBuilder<> &B, std::string name, Value *cond, Value *spec, BasicBlock *bb) {
-  LLVMContext &ctx = B.getContext();
+BasicBlock *Speculative::addSpeculationBB(std::string name, Value *cond, Value *spec, BasicBlock *bb) {
+  LLVMContext &ctx = m_Builder->getContext();
   BasicBlock *specBB = BasicBlock::Create(ctx, name + "__bb", bb->getParent(), bb);
-  B.SetInsertPoint(specBB);
-  Value *startSpec = B.CreateBinOp(Instruction::Xor, cond, spec, name + "__xor");
-  Value *globalSpec = B.CreateAlignedLoad(m_spec, 1);
-  Value *assumption = B.CreateOr(globalSpec, startSpec);
-  B.CreateCall(m_assumeFn, assumption, "");
-  globalSpec = B.CreateOr(globalSpec, spec);
-  B.CreateAlignedStore(globalSpec, m_spec, 1);
+  m_Builder->SetInsertPoint(specBB);
+  Value *startSpec = m_Builder->CreateBinOp(Instruction::Xor, cond, spec, name + "__xor");
+  Value *globalSpec = m_Builder->CreateAlignedLoad(m_spec, 1);
+  Value *assumption = m_Builder->CreateOr(globalSpec, startSpec);
+  m_Builder->CreateCall(m_assumeFn, assumption, "");
+  globalSpec = m_Builder->CreateOr(globalSpec, spec);
+  m_Builder->CreateAlignedStore(globalSpec, m_spec, 1);
   if (FencePlacement == AFTER_BRANCH) {
-    insertFenceFunction(B, specBB->getModule(), globalSpec);
-    B.SetInsertPoint(specBB);
+    insertFenceFunction(specBB->getModule(), globalSpec);
+    m_Builder->SetInsertPoint(specBB);
   }
-  B.CreateBr(bb);
+  m_Builder->CreateBr(bb);
   return specBB;
 }
 
-void Speculative::initSpecCount(IRBuilder<> &B, LoadInst & spec) {
-  LLVMContext &ctx = B.getContext();
+void Speculative::initSpecCount(LoadInst & spec) {
+  LLVMContext &ctx = m_Builder->getContext();
 
   BasicBlock *Orig = spec.getParent();
   BasicBlock *Cont = Orig->splitBasicBlock(spec.getNextNode());
 
   outs() << "Spliting BB\n";
   BasicBlock *initSpecCount = BasicBlock::Create(ctx, "spec_count_init", Orig->getParent(), Cont);
-  B.SetInsertPoint(initSpecCount);
+  m_Builder->SetInsertPoint(initSpecCount);
 
   outs() << "New BB created\n";
-  Value *nd = B.CreateCall(m_ndBoolFn, None, "spec_init");
-  nd = B.CreateSExtOrBitCast(nd, Type::getInt32Ty(ctx), "spec_cast");
-  B.CreateAlignedStore(nd, m_SpecCount, 4);
+  Value *nd = m_Builder->CreateCall(m_ndBoolFn, None, "spec_init");
+  nd = m_Builder->CreateSExtOrBitCast(nd, Type::getInt32Ty(ctx), "spec_cast");
+  m_Builder->CreateAlignedStore(nd, m_SpecCount, 4);
 
   outs() << "Spec Count initialized\n";
   BranchInst::Create(Cont, initSpecCount);
 
   Orig->getTerminator()->eraseFromParent();
-  B.SetInsertPoint(Orig);
-  LoadInst *loadSpecCount = B.CreateAlignedLoad(m_SpecCount, 4);
-  Value *initCond = B.CreateAnd(
+  m_Builder->SetInsertPoint(Orig);
+  LoadInst *loadSpecCount = m_Builder->CreateAlignedLoad(m_SpecCount, 4);
+  Value *initCond = m_Builder->CreateAnd(
 		  &spec,
-		  B.CreateICmpEQ(loadSpecCount, ConstantInt::get(ctx, APInt(32,0)), "spec_count_is_zero"),
+		  m_Builder->CreateICmpEQ(loadSpecCount, ConstantInt::get(ctx, APInt(32,0)), "spec_count_is_zero"),
 		  "spec_count_init_cond");
   BranchInst::Create(initSpecCount, Cont, initCond, Orig);
 
 }
 
-void Speculative::incrementSpecCount(IRBuilder<> &B, Instruction &inst) {
+void Speculative::incrementSpecCount(Instruction &inst) {
 
   // XXX
   // XXX The Cost should be computed relative to where speculation started
   // XXX
   unsigned cost = 1; //getInstructionCost()
-  B.SetInsertPoint(&inst);
-  Value *Load = B.CreateAlignedLoad(m_SpecCount, 4, "load_count");
-  Value *Inc = B.CreateAdd(
+  m_Builder->SetInsertPoint(&inst);
+  Value *Load = m_Builder->CreateAlignedLoad(m_SpecCount, 4, "load_count");
+  Value *Inc = m_Builder->CreateAdd(
 		  Load,
 		  ConstantInt::get(inst.getContext(), APInt(32, cost)),
 		  "spec_count_int");
-  Value *Store = B.CreateAlignedStore(Inc, m_SpecCount, 4, false);
+  Value *Store = m_Builder->CreateAlignedStore(Inc, m_SpecCount, 4, false);
 }
 
-bool Speculative::insertSpeculation(IRBuilder<> &B, BranchInst &BI) {
+bool Speculative::insertSpeculation(BranchInst &BI) {
   BasicBlock *thenBB = BI.getSuccessor(0);
   BasicBlock *elseBB = BI.getSuccessor(1);
 
@@ -143,21 +143,21 @@ bool Speculative::insertSpeculation(IRBuilder<> &B, BranchInst &BI) {
 
   std::string name = "spec" + std::to_string(m_numOfSpec++);
   Value *cond = BI.getCondition();
-  B.SetInsertPoint(&BI);
-  Value *negCond = B.CreateNot(cond, name + "__cond_neg");
+  m_Builder->SetInsertPoint(&BI);
+  Value *negCond = m_Builder->CreateNot(cond, name + "__cond_neg");
 
   // Determine speculation
-//  AllocaInst *specVar = B.CreateAlloca(m_BoolTy, 0, name);
+//  AllocaInst *specVar = m_Builder->CreateAlloca(m_BoolTy, 0, name);
 //  specVar->setAlignment(MaybeAlign(1));
-  Value *ndSpec = B.CreateCall(m_ndBoolFn, None, name + "__nd");
-//  B.CreateAlignedStore(ndSpec, specVar, 1);
-//  LoadInst *spec = B.CreateAlignedLoad(specVar, 1);
-  Value *condNd = B.CreateCall(m_ndBoolFn, None, name + "__cond_nd");
+  Value *ndSpec = m_Builder->CreateCall(m_ndBoolFn, None, name + "__nd");
+//  m_Builder->CreateAlignedStore(ndSpec, specVar, 1);
+//  LoadInst *spec = m_Builder->CreateAlignedLoad(specVar, 1);
+  Value *condNd = m_Builder->CreateCall(m_ndBoolFn, None, name + "__cond_nd");
 
   BI.setCondition(condNd);
 
-  BasicBlock *specThenBB = addSpeculationBB(B, name + "__then", cond, ndSpec, thenBB);
-  BasicBlock *specElseBB = addSpeculationBB(B, name + "__else", negCond, ndSpec, elseBB);
+  BasicBlock *specThenBB = addSpeculationBB(name + "__then", cond, ndSpec, thenBB);
+  BasicBlock *specElseBB = addSpeculationBB(name + "__else", negCond, ndSpec, elseBB);
   BI.setSuccessor(0, specThenBB);
   BI.setSuccessor(1, specElseBB);
   // Fix phi nodes in thenBB and elseBB
@@ -200,30 +200,30 @@ bool Speculative::isFenced(BranchInst & inst) {
   return false;
 }
 
-void Speculative::splitSelectInst(Function &F, IRBuilder<> &B, SelectInst *SI) {
+void Speculative::splitSelectInst(Function &F, SelectInst *SI) {
 
-  B.SetInsertPoint(SI);
+  m_Builder->SetInsertPoint(SI);
 
   BasicBlock *orig = SI->getParent();
-  BasicBlock *Cont = orig->splitBasicBlock(B.GetInsertPoint());
+  BasicBlock *Cont = orig->splitBasicBlock(m_Builder->GetInsertPoint());
 
   BasicBlock *thenBB = BasicBlock::Create(
-    B.getContext(), "SplitSelect_then_" + SI->getName().str(), &F, Cont);
+    m_Builder->getContext(), "SplitSelect_then_" + SI->getName().str(), &F, Cont);
   BasicBlock *elseBB = BasicBlock::Create(
-	B.getContext(), "SplitSelect_else_" + SI->getName().str(), &F, Cont);
+	m_Builder->getContext(), "SplitSelect_else_" + SI->getName().str(), &F, Cont);
 
   Instruction *term = orig->getTerminator ();
-  B.SetInsertPoint(term);
-  BranchInst *newTerm = B.CreateCondBr(SI->getCondition(), thenBB, elseBB);
+  m_Builder->SetInsertPoint(term);
+  BranchInst *newTerm = m_Builder->CreateCondBr(SI->getCondition(), thenBB, elseBB);
   term->eraseFromParent();
 
-  B.SetInsertPoint(thenBB);
-  B.CreateBr(Cont);
-  B.SetInsertPoint(elseBB);
-  B.CreateBr(Cont);
+  m_Builder->SetInsertPoint(thenBB);
+  m_Builder->CreateBr(Cont);
+  m_Builder->SetInsertPoint(elseBB);
+  m_Builder->CreateBr(Cont);
 
-  B.SetInsertPoint(Cont->getFirstNonPHI());
-  PHINode *phi = B.CreatePHI(SI->getType(), 2);
+  m_Builder->SetInsertPoint(Cont->getFirstNonPHI());
+  PHINode *phi = m_Builder->CreatePHI(SI->getType(), 2);
   phi->addIncoming(SI->getTrueValue(), thenBB);
   phi->addIncoming(SI->getFalseValue(), elseBB);
 
@@ -255,19 +255,23 @@ bool Speculative::runOnBasicBlock(BasicBlock &BB) {
   LLVMContext &ctx = BB.getContext();
   IRBuilder<> B(ctx);
 
-  return insertSpeculation(B, *BI);
+  return insertSpeculation(*BI);
 }
 
 bool Speculative::runOnFunction(Function &F) {
   if (F.isDeclaration())
     return false;
 
-  m_errorBB = nullptr;
+  auto *M = F.getParent();
+  const auto &DL = M->getDataLayout();
+  SBI = &getAnalysis<seahorn::SeaBuiltinsInfoWrapperPass>().getSBI();
 
   LLVMContext &ctx = F.getContext();
-  IRBuilder<> B(ctx);
+  m_ErrorBB = nullptr;
+  BuilderTy B(ctx, TargetFolder(DL));
+  m_Builder = &B;
 
-  if (!m_errorFn || !m_assumeFn || !m_ndBoolFn) {
+  if (!m_assumeFn || !m_ndBoolFn) {
     assert(false);
   }
 
@@ -280,7 +284,7 @@ bool Speculative::runOnFunction(Function &F) {
   // Select Instructions have a condition by which a value is picked.
   // Break them down to different basic blocks.
   for (Instruction *I : WorkList)
-	  splitSelectInst(F, B, cast<SelectInst>(I));
+	  splitSelectInst(F, cast<SelectInst>(I));
 
   // Collect all instructions.
   // This work list does not include the added speculation instructions
@@ -303,7 +307,7 @@ bool Speculative::runOnFunction(Function &F) {
 
   // If speculation was added, add the proper assertions
   if (changed)
-	  addAssertions(F, B, WorkList);
+	  addAssertions(F, WorkList);
 
   return changed;
 }
@@ -368,12 +372,12 @@ void Speculative::getSpecForInst_rec(Instruction *I, std::set<Value*> & spec, st
   }
 }
 
-void Speculative::addAssertions(Function &F, IRBuilder<> &B , std::vector<Instruction*> & WorkList) {
+void Speculative::addAssertions(Function &F , std::vector<Instruction*> & WorkList) {
   outs() << "Starting to add assertions...\n";
   for (Instruction *I : WorkList) {
 	if ((isa<LoadInst>(I) || isa<StoreInst>(I)) && m_taint.isTainted(I)) {
           std::set<Value*> S;
-          insertSpecCheck(F, B, *I, S);
+          insertSpecCheck(F, *I, S);
 //	  outs() << "\n\n Looking for spec vars for "; I->print(outs()); outs() << "\n";
 //	  std::set<Value*> COI;
 //	  collectCOI(I, COI);
@@ -436,12 +440,6 @@ bool Speculative::runOnModule(llvm::Module &M) {
 
     B.addAttribute(Attribute::NoReturn);
     B.addAttribute(Attribute::ReadNone);
-
-    as = AttributeList::get(ctx, AttributeList::FunctionIndex, B);
-
-    m_errorFn = dyn_cast<Function>(M.getOrInsertFunction(
-        "verifier.error", as, Type::getVoidTy(ctx)).getCallee());
-
   }
 
   outs() << "Computing taint...\n";
@@ -464,35 +462,100 @@ bool Speculative::runOnModule(llvm::Module &M) {
 // Todo: The pass changes the code
 void Speculative::getAnalysisUsage(llvm::AnalysisUsage &AU) const {
   AU.setPreservesAll();
+  AU.addRequired<seahorn::SeaBuiltinsInfoWrapperPass>();
 }
 
-BasicBlock *Speculative::createErrorBlock(Function &F, IRBuilder<> & B) {
-  BasicBlock *errBB = BasicBlock::Create(B.getContext(), "spec_error_bb", &F);
+BasicBlock *Speculative::createErrorBlock(Function &F) {
+  BasicBlock *errBB = BasicBlock::Create(m_Builder->getContext(), "spec_error_bb", &F);
 
-  B.SetInsertPoint(errBB);
-  CallInst *CI = B.CreateCall(m_errorFn);
+  m_Builder->SetInsertPoint(errBB);
+  auto errorFn = SBI->mkSeaBuiltinFn(seahorn::SeaBuiltinsOp::ERROR, *F.getParent());
+  CallInst *CI = m_Builder->CreateCall(errorFn);
 //  Type *retType = F.getReturnType();
 //  if (retType->isVoidTy()) {
 //    B.CreateRetVoid();
 //  } else {
 //    B.CreateRet(ConstantInt::get(retType, 0));
 //  }
-  B.CreateUnreachable();
+  m_Builder->CreateUnreachable();
 
   // update call graph
   if (m_CG) {
     auto f1 = m_CG->getOrInsertFunction(&F);
-    auto f2 = m_CG->getOrInsertFunction(m_errorFn);
+    auto f2 = m_CG->getOrInsertFunction(errorFn);
     f1->addCalledFunction(CI, f2);
   }
   return errBB;
 }
 
-void Speculative::insertSpecCheck(Function &F, IRBuilder<> &B,
-                                  Instruction &inst, std::set<Value*> & S) {
-  if (!m_errorBB) { m_errorBB = createErrorBlock(F, B); }
+/// getErrorBB - create a basic block that traps. All overflowing conditions
+/// branch to this block. There's only one trap block per function.
+BasicBlock *Speculative::getErrorBB(Instruction *I) {
+  if (m_ErrorBB)
+    return m_ErrorBB;
 
-  B.SetInsertPoint(&inst);
+  Function *Fn = I->getParent()->getParent();
+  Module &M = *Fn->getParent();
+  LLVMContext &ctx = M.getContext();
+  IRBuilder<>::InsertPointGuard Guard(*m_Builder);
+  m_ErrorBB = BasicBlock::Create(Fn->getContext(), "spec_error_bb", Fn);
+  m_Builder->SetInsertPoint(m_ErrorBB);
+
+  AttrBuilder AB;
+  AB.addAttribute(Attribute::NoReturn);
+  AttributeList as = AttributeList::get(ctx, AttributeList::FunctionIndex, AB);
+  auto errorFn = SBI->mkSeaBuiltinFn(seahorn::SeaBuiltinsOp::FAIL, M);
+  CallInst *TrapCall = m_Builder->CreateCall(errorFn);
+  //TrapCall->setDoesNotReturn();
+  //TrapCall->setDoesNotThrow();
+  TrapCall->setDebugLoc(I->getDebugLoc());
+  //m_Builder->CreateUnreachable();
+  for (auto & bb : *I->getParent()->getParent()) {
+    if (!bb.getTerminator()) continue;
+    if (ReturnInst *ret = dyn_cast<ReturnInst>(bb.getTerminator())) {
+      if (ret->getReturnValue())
+        m_Builder->CreateRet(ret->getOperand(0));
+      else
+        m_Builder->CreateRetVoid();
+      ret->eraseFromParent();
+      m_Builder->SetInsertPoint(&bb);
+      m_Builder->CreateBr(m_ErrorBB);
+      break;
+    }
+  }
+
+  return m_ErrorBB;
+}
+
+/// emitBranchToTrap - emit a branch instruction to a trap block.
+/// If Cmp is non-null, perform a jump only if its value evaluates to true.
+void Speculative::emitBranchToTrap(Instruction *I, Value *Cmp) {
+  // check if the comparison is always false
+  ConstantInt *C = dyn_cast_or_null<ConstantInt>(Cmp);
+  if (C) {
+    //++ChecksSkipped;
+    if (!C->getZExtValue())
+      return;
+    else
+      Cmp = nullptr; // unconditional branch
+  }
+  //++ChecksAdded;
+
+  BasicBlock::iterator Inst = m_Builder->GetInsertPoint();
+  BasicBlock *OldBB = Inst->getParent();
+  BasicBlock *Cont = OldBB->splitBasicBlock(Inst);
+  OldBB->getTerminator()->eraseFromParent();
+
+  if (Cmp)
+    BranchInst::Create(getErrorBB(I), Cont, Cmp, OldBB);
+  else
+    BranchInst::Create(getErrorBB(I), OldBB);
+}
+
+void Speculative::insertSpecCheck(Function &F,
+                                  Instruction &inst, std::set<Value*> & S) {
+
+  m_Builder->SetInsertPoint(&inst);
   outs() << "Insertion point set...\n";
 
 //  BasicBlock *OldBB0 = inst.getParent();
@@ -517,23 +580,31 @@ void Speculative::insertSpecCheck(Function &F, IRBuilder<> &B,
 //
 //  Value *specCheck = B.CreateICmpEQ(specOr, ConstantInt::get(m_BoolTy, 0), "spec_check");
 
-  Value *globalSpec = B.CreateAlignedLoad(m_spec, 1);
+  Value *globalSpec = m_Builder->CreateAlignedLoad(m_spec, 1);
   if (FencePlacement == BEFORE_ERROR) {
-    insertFenceFunction(B, inst.getModule(), globalSpec);
+    insertFenceFunction(inst.getModule(), globalSpec);
   }
+
+  //auto assertFn = SBI->mkSeaBuiltinFn(seahorn::SeaBuiltinsOp::ASSERT_NOT, *F.getParent());
+  //m_Builder->SetInsertPoint(&inst);
+  //Value *ndSpec = m_Builder->CreateCall(m_ndBoolFn, None);
+  //m_Builder->CreateCall(assertFn, ndSpec, "");
+
+  Value *specCheck = m_Builder->CreateNot(globalSpec);
+  emitBranchToTrap(&inst, specCheck);
 //  Value *specCheck = B.CreateNot(globalSpec);
   // Todo: Using asserts does not work. Why not?
 //  B.CreateCall(m_assertFn, specCheck);
 
-  outs() << "Assertion expression created...\n";
-  BasicBlock *BB = inst.getParent();
-  // Todo: maybe use SplitBlock or its variants
-  BasicBlock *Cont = BB->splitBasicBlock(&inst);
-  Instruction *terminator = BB->getTerminator();
-  B.SetInsertPoint(terminator);
-  Instruction *br = B.CreateCondBr(globalSpec, m_errorBB, Cont);
-  br->setDebugLoc(inst.getDebugLoc());
-  terminator->eraseFromParent();
+//  outs() << "Assertion expression created...\n";
+//  BasicBlock *BB = inst.getParent();
+//  // Todo: maybe use SplitBlock or its variants
+//  BasicBlock *Cont = BB->splitBasicBlock(&inst);
+//  Instruction *terminator = BB->getTerminator();
+//  B.SetInsertPoint(terminator);
+//  Instruction *br = B.CreateCondBr(globalSpec, m_errorBB, Cont);
+//  br->setDebugLoc(inst.getDebugLoc());
+//  terminator->eraseFromParent();
 
 //  BasicBlock *OldBB1 = Cont0;
 //  BasicBlock *Cont1 = OldBB1->splitBasicBlock(B.GetInsertPoint());
