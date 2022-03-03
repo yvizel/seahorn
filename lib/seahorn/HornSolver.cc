@@ -286,10 +286,12 @@ bool HornSolver::runOnModule(Module &M, HornifyModule &hm, bool reuseCover) {
           if (fences.size() > 1) {
             // Todo: calculate map from fence name to BB
             //calculateFenceCallMap();
-            // Todo: calculate dominator tree
+            // Todo: calculate dominator tree or
+            // YV: maybe use WtoOrder: gives order of predicates
+            //const BasicBlock &bb = hm.predicateBb(dst);
             Speculative &spec = getAnalysis<Speculative>();
             std::map<std::string, CallInst&> &fenceCallMap = spec.getFenceCallMap();
-            CallInst &maxCI = fenceCallMap.at(fences.front());
+            CallInst &maxCI = fenceCallMap.at(name);
             BasicBlock *maxBB = maxCI.getParent();
             outs().flush();
             outs() << "fence calls:\n";
@@ -300,9 +302,9 @@ bool HornSolver::runOnModule(Module &M, HornifyModule &hm, bool reuseCover) {
             auto E = fences.end();
             do {
               CallInst &CI = fenceCallMap.at(*B);
-              BasicBlock *BB = CI.getParent();
+              BasicBlock *fenceBB = CI.getParent();
               outs() << CI << " in";
-              outs() << *BB << "\n";
+              outs() << *fenceBB << "\n";
               // Todo: if maxCI dominates CI then maxCI = CI
               // update name
               ++B;
