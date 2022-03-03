@@ -192,6 +192,10 @@ insert fence at fence_14
 inserted fences: fence_0,fence_1,fence_2,fence_3,fence_4,fence_5,fence_6,fence_16,fence_8,fence_9,fence_10,fence_11,fence_12,fence_13,fence_14,
 15 fences
 
+
+inserted fences: fence_2,fence_6,fence_16,fence_8,fence_10,fence_12,fence_14,
+7 fences
+
 --------------------------------------------------------------------------------
 openssl-bn_sqr.ll with --horn-inline-all --fence-placement=error --fence-choice=early:
 number of all potential places: 30
