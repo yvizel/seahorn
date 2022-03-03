@@ -272,7 +272,6 @@ bool HornSolver::runOnModule(Module &M, HornifyModule &hm, bool reuseCover) {
       std::vector<std::string> fences;
       getFencesAlongTrace(fences);
       if (!fences.empty()) {
-        // Todo: choose a fence wisely
         std::string name;
         switch (FenceChoice) {
         case LATE:
@@ -282,20 +281,34 @@ bool HornSolver::runOnModule(Module &M, HornifyModule &hm, bool reuseCover) {
           name = fences.front();
           break;
         case DOM:
+          // Todo: choose a fence wisely
           name = fences.front();
-          Speculative &spec = getAnalysis<Speculative>();
-          std::map<std::string, CallInst&> &fenceCallMap = spec.getFenceCallMap();
-          CallInst &maxCI = fenceCallMap.at(fences.front());
-          outs() << "fence calls:\n";
-          outs() << maxCI << "\n";
-          auto B = fences.begin();
-          ++B;
-          auto E = fences.end();
-          while (B != E) {
-            CallInst &CI = fenceCallMap.at(*B);
-            outs() << CI << "\n";
-            // Todo: if maxCI dominates CI then maxCI = CI
-            // update name
+          if (fences.size() > 1) {
+            // Todo: calculate map from fence name to BB
+            //calculateFenceCallMap();
+            // Todo: calculate dominator tree
+            Speculative &spec = getAnalysis<Speculative>();
+            std::map<std::string, CallInst&> &fenceCallMap = spec.getFenceCallMap();
+            CallInst &maxCI = fenceCallMap.at(fences.front());
+            BasicBlock *maxBB = maxCI.getParent();
+            outs().flush();
+            outs() << "fence calls:\n";
+            outs() << maxCI << " in";
+            outs() << *maxBB << "\n";
+            auto B = fences.begin();
+            ++B; // skip first fence, already visited above
+            auto E = fences.end();
+            do {
+              CallInst &CI = fenceCallMap.at(*B);
+              BasicBlock *BB = CI.getParent();
+              outs() << CI << " in";
+              outs() << *BB << "\n";
+              // Todo: if maxCI dominates CI then maxCI = CI
+              // update name
+              ++B;
+            } while (B != E);
+            outs() << "end fence calls\n";
+            outs().flush();
           }
           break;
         }
