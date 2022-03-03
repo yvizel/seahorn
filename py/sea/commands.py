@@ -1,4 +1,5 @@
 import os.path
+import platform
 import sea
 import shutil
 import subprocess
@@ -134,7 +135,13 @@ class Clang(sea.LimitedCmd):
 
             if args.llvm_asm: argv.append ('-S')
             argv.append ('-m{0}'.format (args.machine))
-
+            # To avoid the error:
+            # "unknown target triple 'unknown-apple-macosx10.17.0', please use -triple or -arch"
+            if args.machine == 64 and platform.processor() == 'arm' and \
+               platform.system() == 'Darwin':
+                # Not sure if we need to add this line for other OS.
+                argv.extend(['-arch', 'arm64'])
+        
             if args.include_dir is not None:
                 if ':' in args.include_dir:
                     idirs = ["-I{}".format(x.strip())  \
@@ -150,16 +157,12 @@ class Clang(sea.LimitedCmd):
 
             if args.debug_info: argv.append ('-g')
 
-            ## Hack for OSX Mojave that no longer exposes libc and libstd headers by default
-            osx_sdk_dirs = ['/Applications/Xcode.app/Contents/Developer/Platforms/' + \
-                            'MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk',
-                            '/Applications/Xcode.app/Contents/Developer/Platforms/' + \
-                            'MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk']
-
-            for osx_sdk_dir in osx_sdk_dirs:
-                if os.path.isdir(osx_sdk_dir):
-                    argv.append('--sysroot=' + osx_sdk_dir)
-                    break
+            # Since Mojave, OSX does not longer exposes libc and libstd headers by default.
+            if platform.system() == 'Darwin':
+                osx_sdk_path = subprocess.run(
+                    ["xcrun","--show-sdk-path"], text=True, stdout=subprocess.PIPE)
+                if osx_sdk_path.returncode == 0:
+                    argv.append('--sysroot=' + osx_sdk_path.stdout.strip())                        
 
             for in_file, out_file in zip(args.in_files, out_files):
                 if _bc_or_ll_file (in_file): continue
@@ -899,6 +902,8 @@ class FatBoundsCheck(sea.LimitedCmd):
                         metavar='STR', help='Log level')
         ap.add_argument('--no-fat-fns', dest='no_fat_fns', default=None,
                         type=str, metavar='STR,STR,...', help='List of functions to NOT instrument')
+        add_bool_argument(ap, 'enable-fat-vacuity-check', dest='enable_fat_vacuity_check', default=False,
+                         help='Enable vacuity check for fat bound checks')
         add_in_out_args (ap)
         _add_S_arg (ap)
         return ap
@@ -918,6 +923,10 @@ class FatBoundsCheck(sea.LimitedCmd):
 
         # slots=false ==> use is_dereferenceable(...) instrumentation
         argv.append('--horn-bnd-chk-slots=false')
+        if args.enable_fat_vacuity_check:
+            argv.append('--horn-bnd-chk-vac=true')
+        else:
+            argv.append('--horn-bnd-chk-vac=false')
         if args.llvm_asm: argv.append ('-S')
         argv.extend (args.in_files)
 
@@ -1127,7 +1136,7 @@ class Seahorn(sea.LimitedCmd):
                          'placements', choices=['branch', 'error'],
                          default='branch', dest='fence_placement')
         ap.add_argument ('--fence-choice', help='Choice of the possible fences ' +
-                         'that eliminate a counterexample', choices=['late', 'early'],
+                         'that eliminate a counterexample', choices=['late', 'early', 'dom'],
                          default='late', dest='fence_choice')
         ap.add_argument ('--fence-hints', help='Give hints on where to place fences',
                          default='', dest='fence_hints')

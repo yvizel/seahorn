@@ -39,6 +39,7 @@ namespace seahorn
     seahorn::SeaBuiltinsInfo *SBI;
 
     std::map<BranchInst*, Value*> m_bb2spec;
+    std::map<std::string, CallInst&> m_fenceCallMap;
     Value * m_nd;
     Type * m_BoolTy;
     GlobalVariable * m_SpecCount;
@@ -82,23 +83,27 @@ namespace seahorn
     void initSpecCount(LoadInst & spec);
     void incrementSpecCount(Instruction &inst);
 
+    void addFenceCall(std::string name, CallInst &CI) {
+      m_fenceCallMap.insert(std::pair<std::string, CallInst&>(name, CI));
+    }
 
   public:
 
     static char ID;
 
     Speculative (bool dump = false) :
-        llvm::ModulePass (ID), 
+        llvm::ModulePass (ID),
 		m_dump(dump),
 		m_assumeFn(nullptr),
 		m_assertFn(nullptr),
 		m_ndBoolFn(nullptr),
                 m_ErrorBB(nullptr),
                 m_CG (nullptr),
-		m_bb2spec(),
-		m_nd(nullptr),
-		m_BoolTy(nullptr),
-		m_numOfSpec(0),
+                m_bb2spec(),
+                m_fenceCallMap(std::map<std::string, CallInst&>()),
+                m_nd(nullptr),
+                m_BoolTy(nullptr),
+                m_numOfSpec(0),
                 m_numOfFences(0) { }
 
     virtual bool runOnModule (llvm::Module &M);
@@ -109,7 +114,8 @@ namespace seahorn
 
     virtual void getAnalysisUsage (llvm::AnalysisUsage &AU) const;
     virtual StringRef getPassName () const {return "SpeculativeExecution";}
-    
+
+    std::map<std::string, CallInst&>& getFenceCallMap() { return m_fenceCallMap; }
   };
 
 }

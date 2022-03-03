@@ -3,8 +3,6 @@
 #include "openssl.h"
 #include <seahorn/seahorn.h>
 
-// void* memset(void*, int, unsigned long);
-
 extern void __taint(int);
 extern void __is_tainted(int);
 extern void display(void*);

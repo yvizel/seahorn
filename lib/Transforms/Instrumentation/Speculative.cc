@@ -48,6 +48,7 @@ void Speculative::insertFenceFunction(Module *M, Value *globalSpec) {
 
   // Todo: add debug location to fence call
   CallInst *fenceCall = m_Builder->CreateCall(fenceFkt);
+  addFenceCall(fenceName, *fenceCall);
   // update call graph
   if (m_CG) {
     Function *F = fenceCall->getFunction();

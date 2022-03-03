@@ -491,3 +491,25 @@ inserted fences: fence_0,fence_5,fence_4,fence_3,fence_7,fence_10,fence_6,fence_
 9 fences
 ~4m20s
 
+--------------------------------------------------------------------------------
+openssl-aes_encrypt_ct.ll with --horn-inline-all --fence-placement=error --fence-choice=early:
+number of all potential places: 73
+
+with incremental cover and --fence-hints=fence_41,fence_67:
+
+found fences: fence_0,
+insert fence at fence_0
+found fences: fence_11,fence_12,fence_13,fence_14,fence_15,fence_16,fence_17,fence_18,fence_19,fence_20,fence_21,fence_22,fence_23,fence_24,fence_25,fence_26,fence_67,fence_1,fence_2,fence_3,fence_4,fence_5,fence_6,fence_7,fence_8,fence_9,fence_10,
+insert fence at fence_67
+found fences: fence_27,fence_11,fence_12,fence_13,fence_14,fence_15,fence_16,fence_17,fence_18,fence_19,fence_20,fence_21,fence_22,fence_23,fence_24,fence_25,fence_26,fence_1,fence_2,fence_3,fence_4,fence_5,fence_6,fence_7,fence_8,fence_9,fence_10,
+insert fence at fence_27
+found fences: fence_11,fence_11,fence_12,fence_13,fence_14,fence_15,fence_16,fence_17,fence_18,fence_19,fence_20,fence_21,fence_22,fence_23,fence_24,fence_25,fence_26,fence_11,fence_12,fence_13,fence_14,fence_15,fence_16,fence_17,fence_18,fence_19,fence_20,fence_21,fence_22,fence_23,fence_24,fence_25,fence_26,fence_11,fence_12,fence_13,fence_14,fence_15,fence_16,fence_17,fence_18,fence_19,fence_20,fence_21,fence_22,fence_23,fence_24,fence_25,fence_26,fence_11,fence_12,fence_13,fence_14,fence_15,fence_16,fence_17,fence_18,fence_19,fence_20,fence_21,fence_22,fence_23,fence_24,fence_25,fence_26,fence_1,fence_2,fence_3,fence_4,fence_5,fence_6,fence_7,fence_8,fence_9,fence_10,
+insert fence at fence_11
+found fences: fence_28,fence_29,fence_30,fence_31,fence_32,fence_33,fence_34,fence_35,fence_36,fence_37,fence_38,fence_39,fence_40,fence_41,fence_12,fence_13,fence_14,fence_15,fence_16,fence_17,fence_18,fence_19,fence_20,fence_21,fence_22,fence_23,fence_24,fence_25,fence_26,fence_12,fence_13,fence_14,fence_15,fence_16,fence_17,fence_18,fence_19,fence_20,fence_21,fence_22,fence_23,fence_24,fence_25,fence_26,fence_12,fence_13,fence_14,fence_15,fence_16,fence_17,fence_18,fence_19,fence_20,fence_21,fence_22,fence_23,fence_24,fence_25,fence_26,fence_12,fence_13,fence_14,fence_15,fence_16,fence_17,fence_18,fence_19,fence_20,fence_21,fence_22,fence_23,fence_24,fence_25,fence_26,fence_1,fence_2,fence_3,fence_4,fence_5,fence_6,fence_7,fence_8,fence_9,fence_10,
+insert fence at fence_41
+found fences: fence_51,fence_51,fence_52,fence_53,fence_54,fence_55,fence_56,fence_57,fence_58,fence_59,fence_60,fence_61,fence_62,fence_63,fence_64,fence_65,fence_66,fence_51,fence_52,fence_53,fence_54,fence_55,fence_56,fence_57,fence_58,fence_59,fence_60,fence_61,fence_62,fence_63,fence_64,fence_65,fence_66,fence_51,fence_52,fence_53,fence_54,fence_55,fence_56,fence_57,fence_58,fence_59,fence_60,fence_61,fence_62,fence_63,fence_64,fence_65,fence_66,fence_51,fence_52,fence_53,fence_54,fence_55,fence_56,fence_57,fence_58,fence_59,fence_60,fence_61,fence_62,fence_63,fence_64,fence_65,fence_66,fence_28,fence_29,fence_30,fence_31,fence_32,fence_33,fence_34,fence_35,fence_36,fence_37,fence_38,fence_39,fence_40,fence_42,fence_43,fence_44,fence_45,fence_46,fence_47,fence_48,fence_49,fence_50,fence_28,fence_29,fence_30,fence_31,fence_32,fence_33,fence_34,fence_35,fence_36,fence_37,fence_38,fence_39,fence_40,fence_12,fence_13,fence_14,fence_15,fence_16,fence_17,fence_18,fence_19,fence_20,fence_21,fence_22,fence_23,fence_24,fence_25,fence_26,fence_12,fence_13,fence_14,fence_15,fence_16,fence_17,fence_18,fence_19,fence_20,fence_21,fence_22,fence_23,fence_24,fence_25,fence_26,fence_12,fence_13,fence_14,fence_15,fence_16,fence_17,fence_18,fence_19,fence_20,fence_21,fence_22,fence_23,fence_24,fence_25,fence_26,fence_12,fence_13,fence_14,fence_15,fence_16,fence_17,fence_18,fence_19,fence_20,fence_21,fence_22,fence_23,fence_24,fence_25,fence_26,fence_1,fence_2,fence_3,fence_4,fence_5,fence_6,fence_7,fence_8,fence_9,fence_10,
+insert fence at fence_51
+inserted fences: fence_0,fence_67,fence_27,fence_11,fence_41,fence_51,
+6 fences
+~4m52s, ~6m12s
+
