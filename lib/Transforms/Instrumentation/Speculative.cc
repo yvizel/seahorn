@@ -56,9 +56,9 @@ void Speculative::insertFenceFunction(Module *M, Value *globalSpec) {
     auto f2 = m_CG->getOrInsertFunction(fenceFkt);
     f1->addCalledFunction(fenceCall, f2);
   }
-  Value *stop = m_Builder->CreateAnd(globalSpec, fenceCall, "");
-  Value *notStop = m_Builder->CreateNot(stop, "");
-  m_Builder->CreateCall(m_assumeFn, notStop, "");
+  Value *specAndFence = m_Builder->CreateAnd(globalSpec, fenceCall, "");
+  Function *assumeNotFn = SBI->mkSeaBuiltinFn(SeaBuiltinsOp::ASSUME_NOT, *M);
+  m_Builder->CreateCall(assumeNotFn, specAndFence, "");
 
   LLVMContext &ctx = M->getContext();
   BasicBlock *fenceBB = BasicBlock::Create(ctx, "entry", fenceFkt);
@@ -75,7 +75,8 @@ BasicBlock *Speculative::addSpeculationBB(std::string name, Value *cond, Value *
   Value *startSpec = m_Builder->CreateBinOp(Instruction::Xor, cond, spec, name + "__xor");
   Value *globalSpec = m_Builder->CreateAlignedLoad(m_spec, 1);
   Value *assumption = m_Builder->CreateOr(globalSpec, startSpec);
-  m_Builder->CreateCall(m_assumeFn, assumption, "");
+  Function *assumeFn = SBI->mkSeaBuiltinFn(SeaBuiltinsOp::ASSUME, *specBB->getModule());
+  m_Builder->CreateCall(assumeFn, assumption, "");
   globalSpec = m_Builder->CreateOr(globalSpec, spec);
   m_Builder->CreateAlignedStore(globalSpec, m_spec, 1);
   if (FencePlacement == AFTER_BRANCH) {
@@ -499,8 +500,15 @@ BasicBlock *Speculative::getErrorBB(Instruction *I) {
   Module &M = *Fn->getParent();
   LLVMContext &ctx = M.getContext();
   IRBuilder<>::InsertPointGuard Guard(*m_Builder);
-  m_ErrorBB = BasicBlock::Create(Fn->getContext(), "spec_error_bb", Fn);
+  m_ErrorBB = BasicBlock::Create(ctx, "spec_error_bb", Fn);
+  BasicBlock *retBB = BasicBlock::Create(ctx, "ret_bb", Fn);
   m_Builder->SetInsertPoint(m_ErrorBB);
+  m_Builder->CreateBr(retBB);
+  m_Builder->SetInsertPoint(retBB);
+  PHINode *phi = m_Builder->CreatePHI(m_Builder->getInt1Ty(), 2);
+  phi->addIncoming(m_Builder->getTrue(), m_ErrorBB);
+  Function *assumeFn = SBI->mkSeaBuiltinFn(seahorn::SeaBuiltinsOp::ASSUME, M);
+  m_Builder->CreateCall(assumeFn, phi);
 
   AttrBuilder AB;
   AB.addAttribute(Attribute::NoReturn);
@@ -520,7 +528,8 @@ BasicBlock *Speculative::getErrorBB(Instruction *I) {
         m_Builder->CreateRetVoid();
       ret->eraseFromParent();
       m_Builder->SetInsertPoint(&bb);
-      m_Builder->CreateBr(m_ErrorBB);
+      m_Builder->CreateBr(retBB);
+      phi->addIncoming(m_Builder->getFalse(), &bb);
       break;
     }
   }
@@ -531,20 +540,19 @@ BasicBlock *Speculative::getErrorBB(Instruction *I) {
 /// emitBranchToTrap - emit a branch instruction to a trap block.
 /// If Cmp is non-null, perform a jump only if its value evaluates to true.
 void Speculative::emitBranchToTrap(Instruction *I, Value *Cmp) {
-  // check if the comparison is always false
-  ConstantInt *C = dyn_cast_or_null<ConstantInt>(Cmp);
-  if (C) {
-    //++ChecksSkipped;
-    if (!C->getZExtValue())
-      return;
-    else
-      Cmp = nullptr; // unconditional branch
-  }
-  //++ChecksAdded;
+//  // check if the comparison is always false
+//  ConstantInt *C = dyn_cast_or_null<ConstantInt>(Cmp);
+//  if (C) {
+//    //++ChecksSkipped;
+//    if (!C->getZExtValue())
+//      return;
+//    else
+//      Cmp = nullptr; // unconditional branch
+//  }
+//  //++ChecksAdded;
 
-  BasicBlock::iterator Inst = m_Builder->GetInsertPoint();
-  BasicBlock *OldBB = Inst->getParent();
-  BasicBlock *Cont = OldBB->splitBasicBlock(Inst);
+  BasicBlock *OldBB = I->getParent();
+  BasicBlock *Cont = OldBB->splitBasicBlock(I);
   OldBB->getTerminator()->eraseFromParent();
 
   if (Cmp)
@@ -591,11 +599,7 @@ void Speculative::insertSpecCheck(Function &F,
   //Value *ndSpec = m_Builder->CreateCall(m_ndBoolFn, None);
   //m_Builder->CreateCall(assertFn, ndSpec, "");
 
-  Value *specCheck = m_Builder->CreateNot(globalSpec);
-  emitBranchToTrap(&inst, specCheck);
-//  Value *specCheck = B.CreateNot(globalSpec);
-  // Todo: Using asserts does not work. Why not?
-//  B.CreateCall(m_assertFn, specCheck);
+  emitBranchToTrap(&inst, globalSpec);
 
 //  outs() << "Assertion expression created...\n";
 //  BasicBlock *BB = inst.getParent();
