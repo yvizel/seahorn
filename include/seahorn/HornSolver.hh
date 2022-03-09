@@ -21,6 +21,7 @@ class HornSolver : public llvm::ModulePass {
 
   void printCex();
   void getFencesAlongTrace(std::vector<std::string> &fences);
+  std::string getFence(std::vector<std::string> &fences);
   void estimateSizeInvars(Module &M);
 
   void printInvars(Function &F, HornDbModel &model);

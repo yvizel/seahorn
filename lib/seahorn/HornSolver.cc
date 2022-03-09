@@ -281,37 +281,10 @@ bool HornSolver::runOnModule(Module &M, HornifyModule &hm, bool reuseCover) {
           name = fences.front();
           break;
         case DOM:
-          // Todo: choose a fence wisely
-          name = fences.front();
-          if (fences.size() > 1) {
-            // Todo: calculate map from fence name to BB
-            //calculateFenceCallMap();
-            // Todo: calculate dominator tree or
-            // YV: maybe use WtoOrder: gives order of predicates
-            //const BasicBlock &bb = hm.predicateBb(dst);
-            Speculative &spec = getAnalysis<Speculative>();
-            std::map<std::string, CallInst&> &fenceCallMap = spec.getFenceCallMap();
-            CallInst &maxCI = fenceCallMap.at(name);
-            BasicBlock *maxBB = maxCI.getParent();
-            outs().flush();
-            outs() << "fence calls:\n";
-            outs() << maxCI << " in";
-            outs() << *maxBB << "\n";
-            auto B = fences.begin();
-            ++B; // skip first fence, already visited above
-            auto E = fences.end();
-            do {
-              CallInst &CI = fenceCallMap.at(*B);
-              BasicBlock *fenceBB = CI.getParent();
-              outs() << CI << " in";
-              outs() << *fenceBB << "\n";
-              // Todo: if maxCI dominates CI then maxCI = CI
-              // update name
-              ++B;
-            } while (B != E);
-            outs() << "end fence calls\n";
-            outs().flush();
-          }
+          name = getFence(fences);
+//          if (fences.size() > 1) {
+//            // YV: maybe use WtoOrder: gives order of predicates
+//            //const BasicBlock &bb = hm.predicateBb(dst);
           break;
         }
         for (std::string &fence : fences) {
@@ -356,7 +329,6 @@ end_search:
 
 void HornSolver::getAnalysisUsage(AnalysisUsage &AU) const {
   AU.addRequired<HornifyModule>();
-  AU.addRequired<Speculative>();
   AU.setPreservesAll();
 }
 
@@ -419,10 +391,9 @@ void HornSolver::getFencesAlongTrace(std::vector<std::string> &fences) {
   outs() << "found fences: ";
   for (Expr r : rules) {
     if (isOpX<IMPL>(r)) { continue; }
-    Expr expr;
-    expr = bind::fname(bind::fname(r));
+    Expr expr = bind::fname(bind::fname(r));
     std::string name = boost::lexical_cast<std::string>(*expr);
-    // match fence_[0-9]+@entry
+    // match fence_*@entry
     int noFence = name.compare(0, 6, "fence_");
     size_t at = name.find("@entry");
     if (noFence || at == std::string::npos) { continue; }
@@ -431,6 +402,60 @@ void HornSolver::getFencesAlongTrace(std::vector<std::string> &fences) {
     outs() << name << ',';
   }
   outs() << '\n';
+}
+
+std::string HornSolver::getFence(std::vector<std::string> &fences) {
+  if (fences.size() == 1) { return fences.front(); }
+  ZFixedPoint<EZ3> fp = *m_fp;
+  ExprVector rules;
+  fp.getCexRules(rules);
+  std::string fenceName = fences.front();
+  auto fencePos = fences.begin();
+  bool noFenceFound = true;
+  for (auto rulesI = rules.begin(), rulesE = rules.end(); noFenceFound && rulesI != rulesE; ++rulesI) {
+    Expr r = *rulesI;
+    if (!isOpX<IMPL>(r)) { continue; }
+    Expr body = r->arg(0);
+    Expr expr;
+    if (isOpX<AND>(body)) {
+      for (auto argsI = body->args_begin(), argsE = body->args_end(); argsI != argsE;
+           ++argsI) {
+        expr = bind::fname(bind::fname(*argsI));
+        std::string name = boost::lexical_cast<std::string>(*expr);
+        int noFence = name.compare(0, 6, "fence_");
+        if (!noFence) {
+          outs() << "try " << name << '\n';
+          for (auto fencesI = fencePos, fencesE = fences.end(); fencesI != fencesE; ++fencesI) {
+            if (name == *fencesI) {
+              noFenceFound = false;
+              fenceName = name;
+              fencePos = fencesI;
+              outs() << "update to " << name << '\n';
+              break;
+            }
+          }
+        }
+      }
+    } else {
+      expr = bind::fname(bind::fname(body));
+      std::string name = boost::lexical_cast<std::string>(*expr);
+      int noFence = name.compare(0, 6, "fence_");
+      if (!noFence) {
+        outs() << "try " << name << '\n';
+        for (auto fencesI = fencePos, fencesE = fences.end(); fencesI != fencesE; ++fencesI) {
+          if (name == *fencesI) {
+            noFenceFound = false;
+            fenceName = name;
+            fencePos = fencesI;
+            outs() << "update to " << name << '\n';
+            break;
+          }
+        }
+      }
+    }
+  }
+  if (noFenceFound) { WARN << "no fence found"; }
+  return fenceName;
 }
 
 void HornSolver::estimateSizeInvars(Module &M) {
