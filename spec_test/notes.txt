@@ -590,6 +590,31 @@ inserted fences: fence_0,fence_5,fence_4,fence_3,fence_7,fence_10,fence_6,fence_
 ~4m20s
 
 --------------------------------------------------------------------------------
+openssl-aes_encrypt_ct.ll with --horn-inline-all --fence-placement=branch --fence-choice=dom:
+number of all potential places: 12
+
+found fences: fence_0,
+insert fence at fence_0
+found fences: fence_2,fence_5,
+insert fence at fence_5
+found fences: fence_2,fence_4,
+insert fence at fence_4
+found fences: fence_3,fence_3,fence_3,fence_3,
+insert fence at fence_3
+found fences: fence_7,fence_2,
+insert fence at fence_7
+found fences: fence_6,fence_6,fence_2,
+insert fence at fence_6
+found fences: fence_8,fence_10,fence_2,
+insert fence at fence_10
+found fences: fence_8,fence_11,fence_2,
+insert fence at fence_11
+found fences: fence_9,fence_9,fence_9,fence_9,fence_2,
+insert fence at fence_9
+inserted fences: fence_0,fence_5,fence_4,fence_3,fence_7,fence_6,fence_10,fence_11,fence_9,
+9 fences
+
+--------------------------------------------------------------------------------
 openssl-aes_encrypt_ct.ll with --horn-inline-all --fence-placement=error --fence-choice=early:
 number of all potential places: 73
 
@@ -614,3 +639,12 @@ inserted fences: fence_0,fence_67,fence_27,fence_11,fence_41,fence_51,
 ---
 with --step=small (no hints):
 
+memout
+
+--------------------------------------------------------------------------------
+openssl-aes_encrypt_ct.ll with --horn-inline-all --fence-placement=error --fence-choice=dom:
+number of all potential places: 73
+
+inserted fences: fence_0,fence_67,fence_27,fence_11,fence_41,fence_51,
+6 fences
+~4m32s
