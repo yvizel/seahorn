@@ -281,7 +281,7 @@ bool HornSolver::runOnModule(Module &M, HornifyModule &hm, bool reuseCover) {
           name = fences.front();
           break;
         case DOM:
-          name = getFence(fences);
+          name = getFence();
 //          if (fences.size() > 1) {
 //            // YV: maybe use WtoOrder: gives order of predicates
 //            //const BasicBlock &bb = hm.predicateBb(dst);
@@ -395,67 +395,79 @@ void HornSolver::getFencesAlongTrace(std::vector<std::string> &fences) {
     std::string name = boost::lexical_cast<std::string>(*expr);
     // match fence_*@entry
     int noFence = name.compare(0, 6, "fence_");
-    size_t at = name.find("@entry");
-    if (noFence || at == std::string::npos) { continue; }
-    name.erase(at);
+    size_t atEntry = name.find("@entry");
+    if (noFence || atEntry == std::string::npos) { continue; }
+    name.erase(atEntry);
     fences.push_back(name);
     outs() << name << ',';
   }
   outs() << '\n';
 }
 
-std::string HornSolver::getFence(std::vector<std::string> &fences) {
-  if (fences.size() == 1) { return fences.front(); }
+std::string HornSolver::getFence() {
   ZFixedPoint<EZ3> fp = *m_fp;
   ExprVector rules;
   fp.getCexRules(rules);
-  std::string fenceName = fences.front();
-  auto fencePos = fences.begin();
+  std::string fenceName;
+  auto fenceI = rules.begin(), fenceE = rules.end();
   bool noFenceFound = true;
-  for (auto rulesI = rules.begin(), rulesE = rules.end(); noFenceFound && rulesI != rulesE; ++rulesI) {
+  for (auto rulesI = rules.begin(), rulesE = rules.end();
+       noFenceFound && rulesI != rulesE; ++rulesI) {
+    // search for a rule that has fences in its body
     Expr r = *rulesI;
     if (!isOpX<IMPL>(r)) { continue; }
     Expr body = r->arg(0);
     Expr expr;
+    std::set<std::string> fences;
     if (isOpX<AND>(body)) {
       for (auto argsI = body->args_begin(), argsE = body->args_end(); argsI != argsE;
            ++argsI) {
         expr = bind::fname(bind::fname(*argsI));
         std::string name = boost::lexical_cast<std::string>(*expr);
         int noFence = name.compare(0, 6, "fence_");
-        if (!noFence) {
-          outs() << "try " << name << '\n';
-          for (auto fencesI = fencePos, fencesE = fences.end(); fencesI != fencesE; ++fencesI) {
-            if (name == *fencesI) {
-              noFenceFound = false;
-              fenceName = name;
-              fencePos = fencesI;
-              outs() << "update to " << name << '\n';
-              break;
-            }
-          }
-        }
+        if (!noFence) { fences.insert(name); }
       }
+      if (fences.empty()) { continue; }
     } else {
+      // only 1 predicate in body
       expr = bind::fname(bind::fname(body));
       std::string name = boost::lexical_cast<std::string>(*expr);
       int noFence = name.compare(0, 6, "fence_");
-      if (!noFence) {
-        outs() << "try " << name << '\n';
-        for (auto fencesI = fencePos, fencesE = fences.end(); fencesI != fencesE; ++fencesI) {
-          if (name == *fencesI) {
+      if (!noFence) { fences.insert(name); }
+      else continue;
+    }
+    // search for the rules corresponding to fences
+    for (; !fences.empty() && fenceI != fenceE; ++fenceI) {
+      expr = *fenceI;
+      if (isOpX<IMPL>(expr)) { continue; }
+      else {
+        expr = bind::fname(bind::fname(expr));
+        std::string name = boost::lexical_cast<std::string>(*expr);
+        int noFence = name.compare(0, 6, "fence_");
+        size_t atEntry = name.find("@entry");
+        if (!noFence) {
+          if (atEntry != std::string::npos) {
+            name = name.erase(atEntry);
+            outs() << "found: " << name << "\n";
             noFenceFound = false;
             fenceName = name;
-            fencePos = fencesI;
-            outs() << "update to " << name << '\n';
-            break;
           }
+          fences.erase(name);
         }
       }
     }
+    if (!noFenceFound) {
+      if (!fences.empty()) {
+        WARN << "possible fences not found:";
+        std::string str = "  ";
+        for (std::string name : fences) { str.append(name); }
+        WARN << str;
+      }
+      return fenceName;
+    }
   }
-  if (noFenceFound) { WARN << "no fence found"; }
-  return fenceName;
+  if (noFenceFound) { errs() << "no fence found\n"; }
+  return "";
 }
 
 void HornSolver::estimateSizeInvars(Module &M) {
