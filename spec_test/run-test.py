@@ -15,7 +15,8 @@ outfile = "tmp/{}_{}_{}".format(llfile[:-len('.ll')], placement, choice)
 print("run on", llfile, "with fences at", placement, "and", choice)
 subprocess.run("mkdir -p tmp", shell=True)
 
-cmd = ["../build/run/bin/sea", "horn", "--solve",
+cmd = ["time",
+       "../build/run/bin/sea", "horn", "--solve",
        "-o={}.smt2".format(outfile),
        "--oll={}.ll".format(outfile),
        "--step=large", "--horn-answer", "--horn-tail-simplifier-pve=false",
@@ -30,7 +31,7 @@ if len(sys.argv) > 4 and sys.argv[4] == "--in-place-training":
 cmd.append("--horn-incremental-cover=false")
 cmd.append(llfile)
 
-p = subprocess.run(cmd, check = True, capture_output = True, text=True)
+p = subprocess.run(cmd, timeout=60*20, check=True, capture_output=True, text=True)
 
 secure = False
 numfences = 0
@@ -50,6 +51,7 @@ for line in lines:
 
 print("  number of fences:", numfences)
 
+# TODO: parse time
 print(p.stdout, file=open(outfile + ".out", 'w'))
 
 # TODO: check stderr
