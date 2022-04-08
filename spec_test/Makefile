@@ -1,13 +1,14 @@
 SHELL=/bin/bash
 
-CC=clang-10
+CC:=clang-10
 
-CFILES=$(wildcard *.c)
-LLFILES=$(CFILES:.c=.ll)
+DIRS:=Kocher openssl
+CFILES:=$(foreach d, $(DIRS), $(sort $(wildcard $d/*.c)))
+LLFILES:=$(CFILES:.c=.ll)
 
-SEAHORN=../build/run/bin/seahorn
-SCRIPT=run-test.py
-TMPDIR=tmp
+SEAHORN:=../build/run/bin/seahorn
+SCRIPT:=run-test.py
+TMPDIR:=tmp
 
 .default: compile
 
@@ -24,8 +25,8 @@ test: compile $(SCRIPT)
 
 .PHONY: clean
 clean:
-	rm $(LLFILES)
-	rm $(TMPDIR)/*.ll
-	rm $(TMPDIR)/*.smt2
-	rm $(TMPDIR)/*.out
-	rm $(TMPDIR)/*.err
+	rm -f $(LLFILES)
+	rm -f $(TMPDIR)/*.ll
+	rm -f $(TMPDIR)/*.smt2
+	rm -f $(TMPDIR)/*.out
+	rm -f $(TMPDIR)/*.err
