@@ -8,6 +8,9 @@ extern void __taint(int);
 extern void __is_tainted(int);
 extern int nd();
 
+// avoid optimizations
+extern void init(void*);
+
 /*  Moving the leak to a local inlined function. */
 
 const unsigned int array1_size = 16;
@@ -21,6 +24,9 @@ void leak_byte_local_function(uint8_t k) {
 }
 
 int main(int argn, char* args[]) {
+    init(array1);
+    init(array2);
+
     unsigned source = nd();
     __taint(source);
     if (source < array1_size) {
