@@ -1,17 +1,21 @@
+import os
 import subprocess
 import sys
 import glob
 
+timecmd = "/usr/bin/time"# -f '%E'"
 delim = " & "
 tmpdir = "tmp"
 texfilename = "table.tex"
+testdirs = ["Kocher", "openssl"]
 
 def run_single_test(llfile, placement, choice):
-    outfile = "{}/{}_{}_{}".format(tmpdir, llfile[:-len(".ll")], placement, choice)
+    basename = os.path.basename(llfile[:-len(".ll")])
+    outfile = "{}/{}_{}_{}".format(tmpdir, basename, placement, choice)
 
     print("run on", llfile, "with fences at", placement, "and", choice)
 
-    cmd = ["time",
+    cmd = [timecmd, "-f", "runtime:%E",
            "../build/run/bin/sea", "horn", "--solve",
            "-o={}.smt2".format(outfile),
            "--oll={}.ll".format(outfile),
@@ -24,17 +28,15 @@ def run_single_test(llfile, placement, choice):
     cmd.append(llfile)
 
     try:
-        p = subprocess.run(cmd, timeout=60*20, check=True, capture_output=True, text=True)
+        p = subprocess.run(cmd, timeout=60*1, check=True, capture_output=True, text=True)
     except subprocess.TimeoutExpired:
         print("Timeout expired for {}!".format(llfile), file=sys.stderr)
-        return (-1, -1)
-    # TODO: calculate runtime
-    runtime = 0
+        return (-1, "---$\dagger$")
 
     secure = False
     num_fences = 0
-    lines = p.stdout.splitlines()
-    for line in lines:
+
+    for line in p.stdout.splitlines():
         if line.startswith("insert fence"):
             print("    " + line)
             num_fences += 1
@@ -42,40 +44,41 @@ def run_single_test(llfile, placement, choice):
             secure = True
             break
 
-    lines = p.stderr.splitlines()
-    for line in lines:
+    for line in p.stderr.splitlines():
+        if line.startswith("runtime:"):
+            runtime = line[len("runtime:"):]
         if line.startswith("Program not secure"):
             print("  " + line, file=sys.stderr)
-            return (-1, -1)
+            return (-1, "---")
 
     print(p.stdout, file=open(outfile + ".out", "w"))
 
-    # TODO: check stderr
+    # TODO: check stderr for errors
     print(p.stderr, file=sys.stderr)
     print(p.stderr, file=open(outfile + ".err", "w"))
 
     if not secure:
         print("Program still not secure", file=sys.stderr)
-        return (-1, -1)
+        return (-1, "---")
     return (num_fences, runtime)
+
 
 if sys.argv[1] == "--all":
     texfile = open("{}/{}".format(tmpdir, texfilename), "w")
     print("\\begin{tabular}{l|c|c|c|c|}\n\\toprule", file=texfile)
     print("File & \multicolumn{2}{c|}{branch} & \multicolumn{2}{c|}{error} \\\\", file=texfile)
-    print("& \\#fences & time & \\#fences & time\\\\\midrule", file=texfile)
-    alltestcases = glob.glob("*.ll")
-    for test in alltestcases:
-        (num_fences_branch, t_branch) = run_single_test(test, "branch", "dom")
-        (num_fences_error, t_error) = run_single_test(test, "error", "dom")
-        if num_fences_branch < 0:
-            num_fences_branch = "---"
-            t_branch = "---"
-        if num_fences_error < 0:
-            num_fences_error = "---"
-            t_error = "---"
-        print(test.replace("_", "\\_"), num_fences_branch, t_branch,
-                num_fences_error, t_error, sep=delim, end="\\\\\n", file=texfile)
+    print("& \\#fences & time & \\#fences & time\\\\", file=texfile)
+    for d in testdirs:
+        print("\\midrule", file=texfile)
+        for test in sorted(glob.glob(d + "/*.ll")):
+            (num_fences_branch, t_branch) = run_single_test(test, "branch", "dom")
+            (num_fences_error, t_error) = run_single_test(test, "error", "dom")
+            if num_fences_branch < 0:
+                num_fences_branch = "---"
+            if num_fences_error < 0:
+                num_fences_error = "---"
+            print(os.path.basename(test).replace("_", "\\_"), num_fences_branch, t_branch,
+                    num_fences_error, t_error, sep=delim, end="\\\\\n", file=texfile)
     print("\\bottomrule\n\\end{tabular}", file=texfile)
 else:
     if len(sys.argv) < 4:
