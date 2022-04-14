@@ -75,9 +75,10 @@ BasicBlock *Speculative::addSpeculationBB(std::string name, Value *cond, Value *
   m_Builder->SetInsertPoint(specBB);
   Value *startSpec = m_Builder->CreateBinOp(Instruction::Xor, cond, spec, name + "__xor");
   Value *globalSpec = m_Builder->CreateAlignedLoad(m_spec, 1);
-  Value *assumption = m_Builder->CreateOr(globalSpec, startSpec);
+//  Value *assumption = m_Builder->CreateOr(globalSpec, startSpec);
   Function *assumeFn = SBI->mkSeaBuiltinFn(SeaBuiltinsOp::ASSUME, *specBB->getModule());
-  m_Builder->CreateCall(assumeFn, assumption, "");
+  m_Builder->CreateCall(assumeFn, startSpec, "");
+//  m_Builder->CreateCall(assumeFn, assumption, "");
   globalSpec = m_Builder->CreateOr(globalSpec, spec);
   m_Builder->CreateAlignedStore(globalSpec, m_spec, 1);
   if (FencePlacement == AFTER_BRANCH) {
