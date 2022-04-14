@@ -48,7 +48,7 @@ void Speculative::insertFenceFunction(Module *M, Value *globalSpec) {
 
   // Todo: add debug location to fence call
   CallInst *fenceCall = m_Builder->CreateCall(fenceFkt);
-  addFenceCall(fenceName, *fenceCall);
+//  addFenceCall(fenceName, *fenceCall);
   // update call graph
   if (m_CG) {
     Function *F = fenceCall->getFunction();
@@ -65,6 +65,7 @@ void Speculative::insertFenceFunction(Module *M, Value *globalSpec) {
   m_Builder->SetInsertPoint(fenceBB);
   Value *nd = m_Builder->CreateCall(m_ndBoolFn);
   m_Builder->CreateRet(nd);
+//  m_Builder->CreateRet(m_Builder->getFalse());
   m_Builder->ClearInsertionPoint();
 }
 
@@ -145,6 +146,7 @@ bool Speculative::insertSpeculation(BranchInst &BI) {
 
   std::string name = "spec" + std::to_string(m_numOfSpec++);
   Value *cond = BI.getCondition();
+  cond->setName(name + "__cond");
   m_Builder->SetInsertPoint(&BI);
   Value *negCond = m_Builder->CreateNot(cond, name + "__cond_neg");
 
@@ -293,7 +295,9 @@ bool Speculative::runOnFunction(Function &F) {
   WorkList.clear();
   for (inst_iterator i = inst_begin(F), e = inst_end(F); i != e; ++i) {
     Instruction *I = &*i;
-  	WorkList.push_back (I);
+    if (isa<LoadInst>(I) || isa<StoreInst>(I)) {
+      WorkList.push_back(I);
+    }
   }
 
   // Collect all basic blocks
@@ -307,9 +311,7 @@ bool Speculative::runOnFunction(Function &F) {
   for (auto * B : BBWorkList)
 	  changed |= runOnBasicBlock(*B);
 
-  // If speculation was added, add the proper assertions
-  if (changed)
-	  addAssertions(F, WorkList);
+  addAssertions(F, WorkList);
 
   return changed;
 }
@@ -356,49 +358,28 @@ void Speculative::collectCOI(Instruction *src, std::set<Value*> & coi) {
   }
 }
 
-void Speculative::getSpecForInst(Instruction *I, std::set<Value*> & spec) {
-  std::set<BasicBlock*> processed;
-  getSpecForInst_rec(I, spec, processed);
-}
-
-void Speculative::getSpecForInst_rec(Instruction *I, std::set<Value*> & spec, std::set<BasicBlock*> & processed) {
-  BasicBlock *BB = I->getParent();
-  if (processed.find(BB) != processed.end()) return;
-  processed.insert(BB);
-  for (BasicBlock *Pred : predecessors(BB)) {
-	if (BranchInst *BI = dyn_cast<BranchInst>(Pred->getTerminator())) {
-		if (m_bb2spec.find(BI) != m_bb2spec.end())
-			spec.insert(m_bb2spec[BI]);
-                getSpecForInst_rec(BI, spec, processed);
-	}
-  }
-}
+// void Speculative::getSpecForInst(Instruction *I, std::set<Value*> & spec) {
+//   std::set<BasicBlock*> processed;
+//   getSpecForInst_rec(I, spec, processed);
+// }
+//
+// void Speculative::getSpecForInst_rec(Instruction *I, std::set<Value*> & spec, std::set<BasicBlock*> & processed) {
+//   BasicBlock *BB = I->getParent();
+//   if (processed.find(BB) != processed.end()) return;
+//   processed.insert(BB);
+//   for (BasicBlock *Pred : predecessors(BB)) {
+// 	if (BranchInst *BI = dyn_cast<BranchInst>(Pred->getTerminator())) {
+// 		if (m_bb2spec.find(BI) != m_bb2spec.end())
+// 			spec.insert(m_bb2spec[BI]);
+//                 getSpecForInst_rec(BI, spec, processed);
+// 	}
+//   }
+// }
 
 void Speculative::addAssertions(Function &F , std::vector<Instruction*> & WorkList) {
-  outs() << "Starting to add assertions...\n";
+  outs() << "Starting to add assertions for " << F.getName() << "\n";
   for (Instruction *I : WorkList) {
-	if ((isa<LoadInst>(I) || isa<StoreInst>(I)) && m_taint.isTainted(I)) {
-          std::set<Value*> S;
-          insertSpecCheck(F, *I, S);
-//	  outs() << "\n\n Looking for spec vars for "; I->print(outs()); outs() << "\n";
-//	  std::set<Value*> COI;
-//	  collectCOI(I, COI);
-//	  bool mem = false;
-//	  for (Value *v : COI) {
-//	      if (isa<GetElementPtrInst>(v)) {
-//	          mem = true;
-//	          break;
-//	      }
-//	  }
-//	  if (!mem) continue;
-//	  std::set<Value*> S;
-//	  for (Value *coi : COI) {
-//		  getSpecForInst(cast<Instruction>(coi), S);
-//          }
-//          outs() << "COI size: " << COI.size() << " and SPEC size: " << S.size() << "\n";
-//	  if (S.size() > 0)
-//	      insertSpecCheck(F, B, *I, S);
-	}
+      insertSpecCheck(F, *I);
   }
 }
 
@@ -561,8 +542,7 @@ void Speculative::emitBranchToTrap(Instruction *I, Value *Cmp) {
     BranchInst::Create(getErrorBB(I), OldBB);
 }
 
-void Speculative::insertSpecCheck(Function &F,
-                                  Instruction &inst, std::set<Value*> & S) {
+void Speculative::insertSpecCheck(Function &F, Instruction &inst) {
 
   m_Builder->SetInsertPoint(&inst);
   outs() << "Insertion point set...\n";

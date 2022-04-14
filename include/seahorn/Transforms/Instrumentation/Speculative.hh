@@ -38,8 +38,8 @@ namespace seahorn
     BuilderTy * m_Builder;
     seahorn::SeaBuiltinsInfo *SBI;
 
-    std::map<BranchInst*, Value*> m_bb2spec;
-    std::map<std::string, CallInst&> m_fenceCallMap;
+//    std::map<BranchInst*, Value*> m_bb2spec;
+//    std::map<std::string, CallInst&> m_fenceCallMap;
     Value * m_nd;
     Type * m_BoolTy;
     GlobalVariable * m_SpecCount;
@@ -56,7 +56,7 @@ namespace seahorn
     bool insertSpeculation(BranchInst& inst);
 
     BasicBlock* createErrorBlock (Function &F);
-    void insertSpecCheck(Function &F, Instruction &inst, std::set<Value*> & S);
+    void insertSpecCheck(Function &F, Instruction &inst);
 
     bool isErrorBB(BasicBlock *bb) {
     	Instruction *inst = bb->getFirstNonPHI();
@@ -83,9 +83,9 @@ namespace seahorn
     void initSpecCount(LoadInst & spec);
     void incrementSpecCount(Instruction &inst);
 
-    void addFenceCall(std::string name, CallInst &CI) {
-      m_fenceCallMap.insert(std::pair<std::string, CallInst&>(name, CI));
-    }
+//    void addFenceCall(std::string name, CallInst &CI) {
+//      m_fenceCallMap.insert(std::pair<std::string, CallInst&>(name, CI));
+//    }
 
   public:
 
@@ -99,8 +99,8 @@ namespace seahorn
 		m_ndBoolFn(nullptr),
                 m_ErrorBB(nullptr),
                 m_CG (nullptr),
-                m_bb2spec(),
-                m_fenceCallMap(std::map<std::string, CallInst&>()),
+//                m_bb2spec(),
+//                m_fenceCallMap(std::map<std::string, CallInst&>()),
                 m_nd(nullptr),
                 m_BoolTy(nullptr),
                 m_numOfSpec(0),
@@ -115,7 +115,7 @@ namespace seahorn
     virtual void getAnalysisUsage (llvm::AnalysisUsage &AU) const;
     virtual StringRef getPassName () const {return "SpeculativeExecution";}
 
-    std::map<std::string, CallInst&>& getFenceCallMap() { return m_fenceCallMap; }
+//    std::map<std::string, CallInst&>& getFenceCallMap() { return m_fenceCallMap; }
   };
 
 }

@@ -8,6 +8,7 @@ delim = " & "
 tmpdir = "tmp"
 texfilename = "table.tex"
 testdirs = ["Kocher", "openssl"]
+iterations = 3
 
 def run_single_test(llfile, placement, choice):
     basename = os.path.basename(llfile[:-len(".ll")])
@@ -28,7 +29,7 @@ def run_single_test(llfile, placement, choice):
     cmd.append(llfile)
 
     try:
-        p = subprocess.run(cmd, timeout=60*1, check=True, capture_output=True, text=True)
+        p = subprocess.run(cmd, timeout=60*10, check=True, capture_output=True, text=True)
     except subprocess.TimeoutExpired:
         print("Timeout expired for {}!".format(llfile), file=sys.stderr)
         return (-1, "---$\dagger$")
@@ -66,19 +67,20 @@ def run_single_test(llfile, placement, choice):
 if sys.argv[1] == "--all":
     texfile = open("{}/{}".format(tmpdir, texfilename), "w")
     print("\\begin{tabular}{l|c|c|c|c|}\n\\toprule", file=texfile)
-    print("File & \multicolumn{2}{c|}{branch} & \multicolumn{2}{c|}{error} \\\\", file=texfile)
+    print("File & \multicolumn{2}{c|}{branch} & \multicolumn{2}{c|}{memory} \\\\", file=texfile)
     print("& \\#fences & time & \\#fences & time\\\\", file=texfile)
     for d in testdirs:
         print("\\midrule", file=texfile)
         for test in sorted(glob.glob(d + "/*.ll")):
-            (num_fences_branch, t_branch) = run_single_test(test, "branch", "dom")
-            (num_fences_error, t_error) = run_single_test(test, "error", "dom")
-            if num_fences_branch < 0:
-                num_fences_branch = "---"
-            if num_fences_error < 0:
-                num_fences_error = "---"
-            print(os.path.basename(test).replace("_", "\\_"), num_fences_branch, t_branch,
-                    num_fences_error, t_error, sep=delim, end="\\\\\n", file=texfile)
+            for i in range(iterations):
+                (num_fences_branch, t_branch) = run_single_test(test, "branch", "opt")
+                (num_fences_mem, t_mem) = run_single_test(test, "memory", "opt")
+                if num_fences_branch < 0:
+                    num_fences_branch = "---"
+                if num_fences_mem < 0:
+                    num_fences_mem = "---"
+                print(os.path.basename(test).replace("_", "\\_"), num_fences_branch, t_branch,
+                        num_fences_mem, t_mem, sep=delim, end="\\\\\n", file=texfile)
     print("\\bottomrule\n\\end{tabular}", file=texfile)
 else:
     if len(sys.argv) < 4:

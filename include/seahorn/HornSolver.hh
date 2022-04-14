@@ -4,6 +4,7 @@
 #include "boost/logic/tribool.hpp"
 #include "seahorn/HornDbModel.hh"
 #include "llvm/IR/Module.h"
+//#include "llvm/IR/Dominators.h"
 #include "llvm/Pass.h"
 
 #include "seahorn/Expr/Smt/EZ3.hh"
@@ -16,6 +17,7 @@ class HornSolver : public llvm::ModulePass {
   std::unique_ptr<EZ3> m_local_ctx;
   std::unique_ptr<ZFixedPoint<EZ3>> m_fp;
   std::vector<std::string> m_inserted_fences;
+//  std::map<std::string, Instruction&> m_fence2call;
 
   bool runOnModule(Module &M, HornifyModule &hm, bool reuseCover);
 
@@ -43,6 +45,7 @@ public:
     m_fp.reset(nullptr);
     m_local_ctx.reset(nullptr);
     m_inserted_fences.clear();
+//    m_fence2call.clear();
   }
 };
 

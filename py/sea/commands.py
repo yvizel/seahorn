@@ -1133,11 +1133,11 @@ class Seahorn(sea.LimitedCmd):
                          'Spectre attacks', default=False,
                          action='store_true', dest='insert_fences')
         ap.add_argument ('--fence-placement', help='Location of possible fence ' +
-                         'placements', choices=['branch', 'error'],
-                         default='branch', dest='fence_placement')
+                         'placements', choices=['branch', 'memory'],
+                         default='memory', dest='fence_placement')
         ap.add_argument ('--fence-choice', help='Choice of the possible fences ' +
-                         'that eliminate a counterexample', choices=['late', 'early', 'dom'],
-                         default='late', dest='fence_choice')
+                         'that eliminate a counterexample', choices=['late', 'early', 'opt'],
+                         default='opt', dest='fence_choice')
         ap.add_argument ('--fence-hints', help='Give hints on where to place fences',
                          default='', dest='fence_hints')
         ap.add_argument ('--in-place-training', help='Attacker restricted to ' +
@@ -1219,9 +1219,10 @@ class Seahorn(sea.LimitedCmd):
         if args.insert_fences:
             argv.extend (['--insert-fences',
                           '--fence-placement={0}'.format (args.fence_placement),
-                          '--fence-choice={0}'.format (args.fence_choice),
-                          '--fence-hints={0}'.format (args.fence_hints),
-                          '--in-place-training={0}'.format (args.in_place_training)])
+                          '--fence-choice={0}'.format (args.fence_choice)])
+            if args.fence_hints != '':
+                argv.append('--fence-hints={0}'.format (args.fence_hints))
+            argv.append('--in-place-training={0}'.format (args.in_place_training))
 
         argv.extend (['-horn-inter-proc',
                       '-horn-sem-lvl={0}'.format (args.track),

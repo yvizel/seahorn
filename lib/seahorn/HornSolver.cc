@@ -147,6 +147,7 @@ char HornSolver::ID = 0;
 bool HornSolver::runOnModule(Module &M) {
   Stats::sset("Result", "UNKNOWN");
 
+  errs() << "incremental cover: " << IncrementalCover << "\n";
   HornifyModule &hm = getAnalysis<HornifyModule>();
   return runOnModule(M, hm, false);
 }
@@ -168,6 +169,8 @@ bool HornSolver::runOnModule(Module &M, HornifyModule &hm, bool reuseCover) {
       Expr lemma = m_fp->getCoverDelta(pred);
       // remember the cover
       cover[pred] = lemma;
+      // Todo: add cover to DB instead of the above
+//      db.addConstraint(pred, lemma);
     }
   }
   if (LocalContext) {
@@ -217,19 +220,19 @@ bool HornSolver::runOnModule(Module &M, HornifyModule &hm, bool reuseCover) {
     db.loadZFixedPoint(fp, SkipConstraints);
   }
 
-  ExprFactory &efac = db.getExprFactory();
-  for (auto &r : db.getRelations()) {
-    ExprVector args;
-    for (unsigned i = 0, sz = bind::domainSz(r); i < sz; ++i) {
-      Expr argName = mkTerm<std::string>(
-          "arg_" + boost::lexical_cast<std::string>(i), efac);
-      args.push_back(bind::mkConst(argName, bind::domainTy(r, i)));
-    }
+//  ExprFactory &efac = db.getExprFactory();
+//  for (auto &r : db.getRelations()) {
+//    ExprVector args;
+//    for (unsigned i = 0, sz = bind::domainSz(r); i < sz; ++i) {
+//      Expr argName = mkTerm<std::string>(
+//          "arg_" + boost::lexical_cast<std::string>(i), efac);
+//      args.push_back(bind::mkConst(argName, bind::domainTy(r, i)));
+//    }
 //    Expr pred;
 //    pred = bind::fapp(r, args);
 //    Expr lemma = m_fp->getCoverDelta(pred);
 //    outs() << "cover for " << *pred << ": " << *lemma << "\n";
-  }
+//  }
 
   if (UseInvariant == solver_detail::INACTIVE) {
     params.set(":spacer.use_bg_invs", false);
@@ -448,7 +451,43 @@ std::string HornSolver::getFence() {
         if (!noFence) {
           if (atEntry != std::string::npos) {
             name = name.erase(atEntry);
-            outs() << "found: " << name << "\n";
+            if (noFenceFound) {
+              // first fence, no other to compare
+              outs() << "found: " << name << "\n";
+//              BasicBlock &curr = *m_fence2call.at(name).getParent();
+//              m_dm.recalculate(*curr.getParent());
+//              m_pdm.recalculate(*curr.getParent());
+            } else {
+//              BasicBlock *prev = m_fence2call.at(fenceName).getParent();
+//              BasicBlock *curr = m_fence2call.at(name).getParent();
+//              Function *currF = curr->getParent();
+//              Function *prevF = prev->getParent();
+//              if (prevF == currF) {
+//                if (m_dm.dominates(prev, curr)) {
+//                  if (prev == curr) { errs() << "equal basic blocks\n"; }
+//                  outs() << fenceName << " dominates " << name << "\n";
+//                } else {
+//                  errs() << fenceName << " does not dominate " << name << "\n";
+//                  outs() << fenceName << " does not dominate " << name << " (still update?)\n";
+//                  // fences.erase(name);
+//                  // continue;
+//                }
+//                if (m_pdm.dominates(curr, prev)) {
+//                  if (prev == curr) { errs() << "equal basic blocks\n"; }
+//                  outs() << name << " post-dominates " << fenceName << "\n";
+//                } else {
+//                  errs() << name << " does not post-dominate " << fenceName << "\n";
+//                  outs() << name << " does not post-dominate " << fenceName << " (still update?)\n";
+//                  // fences.erase(name);
+//                  // continue;
+//                }
+//              } else {
+//                errs() << "dominance not possible for different functions\n";
+//                errs() << "got " << fenceName << " in " << *prevF << " and ";
+//                errs() << name << " in " << *currF << "\n";
+//              }
+              outs() << "update to " << name << "\n";
+            }
             noFenceFound = false;
             fenceName = name;
           }
@@ -466,7 +505,7 @@ std::string HornSolver::getFence() {
       return fenceName;
     }
   }
-  if (noFenceFound) { errs() << "no fence found\n"; }
+  errs() << "no fence found\n";
   return "";
 }
 
