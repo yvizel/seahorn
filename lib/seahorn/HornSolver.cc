@@ -35,18 +35,18 @@ static llvm::cl::opt<bool>
 enum FenceChoiceOpt {
   LATE,
   EARLY,
-  DOM
+  OPT
 };
 
 static llvm::cl::opt<FenceChoiceOpt> FenceChoice(
     "fence-choice",
     llvm::cl::desc("Choice of the possible fences that eliminate a counterexample"),
     llvm::cl::values(
-        clEnumValN(LATE, "late", "Choose the latest possible fences"),
-        clEnumValN(EARLY, "early", "Choose the earliest possible fence"),
-        clEnumValN(DOM, "dom", "Choose the fence that is dominated by all other possibilities")
+        clEnumValN(LATE, "late", "Choose the last fence out of some list"),
+        clEnumValN(EARLY, "early", "Choose the first fence out of some list"),
+        clEnumValN(OPT, "opt", "Choose the fence according to some heuristic")
     ),
-    llvm::cl::init(LATE));
+    llvm::cl::init(OPT));
 
 static llvm::cl::list<std::string> FenceHints(
     "fence-hints",
@@ -271,55 +271,54 @@ bool HornSolver::runOnModule(Module &M, HornifyModule &hm, bool reuseCover) {
     if (PrintAnswer) {
       printCex();
     }
+//    static int max_iters = 4;
+//    if (InsertFences && --max_iters >= 0) {
     if (InsertFences) {
-      std::vector<std::string> fences;
-      getFencesAlongTrace(fences);
-      if (!fences.empty()) {
-        std::string name;
-        switch (FenceChoice) {
-        case LATE:
-          name = fences.back();
-          break;
-        case EARLY:
-          name = fences.front();
-          break;
-        case DOM:
-          name = getFence();
-//          if (fences.size() > 1) {
-//            // YV: maybe use WtoOrder: gives order of predicates
-//            //const BasicBlock &bb = hm.predicateBb(dst);
-          break;
-        }
-        for (std::string &fence : fences) {
-          for (std::string &hint : FenceHints) {
-            if (fence.compare(hint) == 0) {
-              name = fence;
-              goto end_search;
+      std::string name;
+      if (FenceChoice == OPT) { name = getFenceOpt(); }
+      else { name = getFenceSimple(); }
+      if (name != "") {
+        if (!FenceHints.empty()) {
+          std::vector<std::string> fences;
+          getFencesAlongTrace(fences);
+          for (std::string &fence : fences) {
+            for (std::string &hint : FenceHints) {
+              if (fence.compare(hint) == 0) {
+                name = fence;
+                goto end_search;
+              }
             }
           }
         }
 end_search:
         m_inserted_fences.push_back(name);
         outs() << "insert fence at " << name << '\n';
-        //      Function *fence = M.getFunction(name);
-        //      if (fence) {
-        //        fence->print(outs());
-        //        fence->deleteBody();
-        //        fence->setLinkage(llvm::GlobalValue::InternalLinkage);
-        //        LLVMContext &ctx = M.getContext();
-        //        IRBuilder<> B(ctx);
-        //        BasicBlock *bb = BasicBlock::Create(ctx, "entry", fence);
-        //        B.SetInsertPoint(bb);
-        //        B.CreateRet(B.getTrue());
-        //        fence->print(outs());
-        //      }
+        Function *fence = M.getFunction(name);
+        if (fence) {
+          fence->print(outs());
+//          fence->deleteBody();
+//          fence->setLinkage(llvm::GlobalValue::InternalLinkage);
+          LLVMContext &ctx = M.getContext();
+          IRBuilder<> B(ctx);
+          for (BasicBlock &BB : *fence) {
+            for (Instruction &I : BB) {
+              if (ReturnInst *RI = dyn_cast<ReturnInst>(&I)) {
+                RI->setOperand(0, B.getTrue());
+              }
+            }
+          }
+//          BasicBlock *bb = BasicBlock::Create(ctx, "entry", fence);
+//          B.SetInsertPoint(bb);
+//          B.CreateRet(B.getTrue());
+          fence->print(outs());
+        } else { errs() << "could not insert fence " << name << " to module\n"; }
         Expr rule;
         bool changed = db.changeFenceRules(name, rule);
         if (changed) {
           return runOnModule(M, hm, IncrementalCover);
         }
       } else {
-        errs() << "Program not secure, but no place for a fence found\n";
+        errs() << "Program not secure, but no fence found\n";
       }
     }
   }
@@ -407,14 +406,57 @@ void HornSolver::getFencesAlongTrace(std::vector<std::string> &fences) {
   outs() << '\n';
 }
 
-std::string HornSolver::getFence() {
+// void HornSolver::getFenceCallMap(Module &M) {
+//   outs() << "fence calls:\n";
+//   for (Function &F : M) {
+//     for (BasicBlock &BB : F) {
+//       for (Instruction &I : BB) {
+//         if (CallInst *CI = dyn_cast<CallInst>(&I)) {
+//           Function *fence = CI->getCalledFunction();
+//           if (fence) {
+//             StringRef name = fence->getName();
+//             if (name.startswith("fence_")) {
+//               m_fence2call.insert(std::pair<std::string, Instruction&>(name.str(), I));
+//               outs() << I << " in " << BB.getName() << " in " << F.getName() << "\n";
+//             }
+//           }
+//         }
+//       }
+//     }
+//   }
+//   outs().flush();
+// }
+
+std::string HornSolver::getFenceSimple() {
+  ExprVector rules;
+  m_fp->getCexRules(rules);
+  ExprVector::const_iterator rulesI = rules.cbegin(), rulesE = rules.cend();
+  std::string fenceName = "";
+  for (; rulesI != rulesE; ++rulesI) {
+    Expr r = *rulesI;
+    if (isOpX<IMPL>(r)) { continue; }
+    Expr expr = bind::fname(bind::fname(r));
+    std::string name = boost::lexical_cast<std::string>(*expr);
+    // match fence_*@entry
+    int noFence = name.compare(0, 6, "fence_");
+    size_t atEntry = name.find("@entry");
+    if (noFence || atEntry == std::string::npos) { continue; }
+    name.erase(atEntry);
+    if (FenceChoice == EARLY) { return name; }
+    fenceName = name;
+  }
+  if (fenceName == "") { errs() << "no fence found\n"; }
+  return fenceName;
+}
+
+  std::string HornSolver::getFenceOpt() {
   ZFixedPoint<EZ3> fp = *m_fp;
   ExprVector rules;
   fp.getCexRules(rules);
   std::string fenceName;
-  auto fenceI = rules.begin(), fenceE = rules.end();
+  ExprVector::const_iterator fenceI = rules.cbegin(), fenceE = rules.cend();
   bool noFenceFound = true;
-  for (auto rulesI = rules.begin(), rulesE = rules.end();
+  for (ExprVector::const_iterator rulesI = rules.cbegin(), rulesE = rules.cend();
        noFenceFound && rulesI != rulesE; ++rulesI) {
     // search for a rule that has fences in its body
     Expr r = *rulesI;

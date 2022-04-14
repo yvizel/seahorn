@@ -21,8 +21,8 @@ static llvm::cl::opt<bool> HasErrorFunc(
     llvm::cl::init(true));
 
 enum FencePlaceOpt {
-  AFTER_BRANCH,
-  BEFORE_ERROR
+  BEFORE_MEMORY,
+  AFTER_BRANCH
 };
 
 static llvm::cl::opt<FencePlaceOpt> FencePlacement(
@@ -30,9 +30,9 @@ static llvm::cl::opt<FencePlaceOpt> FencePlacement(
     llvm::cl::desc("Location of the possible fence placements"),
     llvm::cl::values(
         clEnumValN(AFTER_BRANCH, "branch", "Insert fences directly after branches"),
-        clEnumValN(BEFORE_ERROR, "error", "Insert fences directly before error")
+        clEnumValN(BEFORE_MEMORY, "memory", "Insert fences directly before memory operations")
         ),
-    llvm::cl::init(AFTER_BRANCH));
+    llvm::cl::init(BEFORE_MEMORY));
 
 namespace seahorn {
 using namespace llvm;
@@ -572,7 +572,7 @@ void Speculative::insertSpecCheck(Function &F, Instruction &inst) {
 //  Value *specCheck = B.CreateICmpEQ(specOr, ConstantInt::get(m_BoolTy, 0), "spec_check");
 
   Value *globalSpec = m_Builder->CreateAlignedLoad(m_spec, 1);
-  if (FencePlacement == BEFORE_ERROR) {
+  if (FencePlacement == BEFORE_MEMORY) {
     insertFenceFunction(inst.getModule(), globalSpec);
   }
 
