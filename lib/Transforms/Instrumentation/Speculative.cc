@@ -241,7 +241,7 @@ bool Speculative::runOnBasicBlock(BasicBlock &BB) {
   if (BI == nullptr)
     return false;
 
-  if (!BI->isConditional() || !m_taint.isTainted(BI))
+  if (!BI->isConditional() /* || !m_taint.isTainted(BI) */)
     return false;
 
   if (isFenced(*BI))
@@ -425,9 +425,10 @@ bool Speculative::runOnModule(llvm::Module &M) {
     B.addAttribute(Attribute::ReadNone);
   }
 
-  outs() << "Computing taint...\n";
-  m_taint.runOnModule(M);
-  outs() << "Done - computing taint...\n";
+//  Todo: removing taint for now
+//  outs() << "Computing taint...\n";
+//  m_taint.runOnModule(M);
+//  outs() << "Done - computing taint...\n";
 
   bool change = false;
   for (Function &F : M) {
