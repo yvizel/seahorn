@@ -274,9 +274,7 @@ bool HornSolver::runOnModule(Module &M, HornifyModule &hm, bool reuseCover) {
 //    static int max_iters = 4;
 //    if (InsertFences && --max_iters >= 0) {
     if (InsertFences) {
-      std::string name;
-      if (FenceChoice == OPT) { name = getFenceOpt(); }
-      else { name = getFenceSimple(); }
+      std::string name = FenceChoice == OPT ? getFenceOpt() : getFenceSimple();
       if (name != "") {
         if (!FenceHints.empty()) {
           std::vector<std::string> fences;
