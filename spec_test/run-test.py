@@ -16,7 +16,7 @@ def run_single_test(llfile, placement, choice):
 
     print("run on", llfile, "with fences at", placement, "and", choice)
 
-    cmd = [timecmd, "-f", "runtime:%E",
+    cmd = [timecmd, "-f", "runtime:%e",
            "../build/run/bin/sea", "horn", "--solve",
            "-o={}.smt2".format(outfile),
            "--oll={}.ll".format(outfile),
@@ -25,7 +25,7 @@ def run_single_test(llfile, placement, choice):
            "--insert-fences", "--fence-placement={}".format(placement),
            "--fence-choice={}".format(choice)]
 
-    cmd.append("--horn-incremental-cover=false")
+    cmd.append("--horn-incremental-cover=true")
     cmd.append(llfile)
 
     try:
