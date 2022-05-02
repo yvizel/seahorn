@@ -1,4 +1,5 @@
 #include <stddef.h>
+#include <string.h>
 #include "openssl.h"
 #include <seahorn/seahorn.h>
 
