@@ -1133,7 +1133,7 @@ class Seahorn(sea.LimitedCmd):
                          'Spectre attacks', default=False,
                          action='store_true', dest='insert_fences')
         ap.add_argument ('--fence-placement', help='Location of possible fence ' +
-                         'placements', choices=['branch', 'memory'],
+                         'placements', choices=['memory', 'branch', 'every-inst'],
                          default='memory', dest='fence_placement')
         ap.add_argument ('--fence-choice', help='Choice of the possible fences ' +
                          'that eliminate a counterexample', choices=['late', 'early', 'opt'],

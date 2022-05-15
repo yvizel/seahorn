@@ -22,15 +22,17 @@ static llvm::cl::opt<bool> HasErrorFunc(
 
 enum FencePlaceOpt {
   BEFORE_MEMORY,
-  AFTER_BRANCH
+  AFTER_BRANCH,
+  EVERY_INST
 };
 
 static llvm::cl::opt<FencePlaceOpt> FencePlacement(
     "fence-placement",
     llvm::cl::desc("Location of the possible fence placements"),
     llvm::cl::values(
+        clEnumValN(BEFORE_MEMORY, "memory", "Insert fences directly before memory operations"),
         clEnumValN(AFTER_BRANCH, "branch", "Insert fences directly after branches"),
-        clEnumValN(BEFORE_MEMORY, "memory", "Insert fences directly before memory operations")
+        clEnumValN(EVERY_INST, "every-inst", "Insert fences before every instruction")
         ),
     llvm::cl::init(BEFORE_MEMORY));
 
@@ -238,29 +240,29 @@ void Speculative::splitSelectInst(Function &F, SelectInst *SI) {
 }
 
 bool Speculative::runOnBasicBlock(BasicBlock &BB) {
+  bool changed = false;
   BranchInst *BI = dyn_cast<BranchInst>(BB.getTerminator());
-  if (BI == nullptr)
-    return false;
 
-  if (!BI->isConditional() /* || !m_taint.isTainted(BI) */)
-    return false;
+  if (FencePlacement == EVERY_INST) {
+    changed = true;
+    Module *M = BB.getModule();
+    m_Builder->SetInsertPoint(&BB.front());
+    Value *globalSpec = m_Builder->CreateAlignedLoad(m_spec, 1);
+    auto I = BB.begin();
+    // skip globalSpec instruction which is created before
+    ++I;
+    auto E = BB.end();
+    for (; I != E; ++I) {
+      //
+      m_Builder->SetInsertPoint(&*I);
+      insertFenceFunction(M, globalSpec);
+    }
+  }
+  if (BI == nullptr || !BI->isConditional() /* || !m_taint.isTainted(BI) */)
+    return changed;
 
-  if (isFenced(*BI))
-	  return false;
-
-  // TODO
-  // For now, let's not worry about PHI nodes.
-  // XXX DO WE NEED SPECIAL HANDLING? XXX
-//  BasicBlock::iterator first = BB.begin();
-//  if (isa<PHINode>(first)) {
-//	  errs() << "Not supporting PHI nodes for now...\n";
-//	  return false;
-//  }
-
-  LLVMContext &ctx = BB.getContext();
-  IRBuilder<> B(ctx);
-
-  return insertSpeculation(*BI);
+  changed |= insertSpeculation(*BI);
+  return changed;
 }
 
 bool Speculative::runOnFunction(Function &F) {
@@ -432,8 +434,13 @@ bool Speculative::runOnModule(llvm::Module &M) {
 //  outs() << "Done - computing taint...\n";
 
   bool change = false;
+//  llvm::Module::FunctionListType Funcs;
+  std::vector<Function*> Funcs;
   for (Function &F : M) {
-    change |= runOnFunction(F);
+    Funcs.push_back(&F);
+  }
+  for (Function *F : Funcs) {
+    change |= runOnFunction(*F);
   }
 
   outs() << "-- Inserted " << m_numOfSpec << " speculations.\n";
