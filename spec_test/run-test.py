@@ -3,12 +3,18 @@ import subprocess
 import sys
 import glob
 
-timecmd = "/usr/bin/time"# -f '%E'"
+step = "large"
+incremental = "true"
+choice = "opt"
+
+timecmd = "/usr/bin/time"
+timeout = 60 # minutes
 delim = " & "
 tmpdir = "tmp"
 texfilename = "table.tex"
-testdirs = ["Kocher", "openssl"]
-iterations = 3
+testdirs = ["Kocher"]
+#testdirs = ["Kocher", "openssl"]
+iterations = 2
 
 def run_single_test(llfile, placement, choice):
     basename = os.path.basename(llfile[:-len(".ll")])
@@ -20,18 +26,19 @@ def run_single_test(llfile, placement, choice):
            "../build/run/bin/sea", "horn", "--solve",
            "-o={}.smt2".format(outfile),
            "--oll={}.ll".format(outfile),
-           "--step=large", "--horn-answer", "--horn-tail-simplifier-pve=false",
+           "--step={}".format(step), "--horn-answer", "--horn-tail-simplifier-pve=false",
            "--horn-subsumption=false", "--horn-inline-all", "--speculative-exe",
            "--insert-fences", "--fence-placement={}".format(placement),
            "--fence-choice={}".format(choice)]
 
-    cmd.append("--horn-incremental-cover=true")
+    cmd.append("--horn-incremental-cover={}".format(incremental))
     cmd.append(llfile)
 
     try:
-        p = subprocess.run(cmd, timeout=60*10, check=True, capture_output=True, text=True)
+        p = subprocess.run(cmd, timeout=60*timeout, check=True, capture_output=True, text=True)
     except subprocess.TimeoutExpired:
         print("Timeout expired for {}!".format(llfile), file=sys.stderr)
+        # TODO: kill subprocess
         return (-1, "---$\dagger$")
 
     secure = False
@@ -66,21 +73,26 @@ def run_single_test(llfile, placement, choice):
 
 if sys.argv[1] == "--all":
     texfile = open("{}/{}".format(tmpdir, texfilename), "w")
-    print("\\begin{tabular}{l|c|c|c|c|}\n\\toprule", file=texfile)
-    print("File & \multicolumn{2}{c|}{branch} & \multicolumn{2}{c|}{memory} \\\\", file=texfile)
-    print("& \\#fences & time & \\#fences & time\\\\", file=texfile)
+    print("\\begin{tabular}{l|cc|cc|cc}\n\\toprule", file=texfile)
+    print("\\textbf{Benchmark} & \multicolumn{2}{c|}{\\textbf{every-inst}} & \multicolumn{2}{c|}{\\textbf{after-branch}} & \multicolumn{2}{c}{\\textbf{before-memory}} \\\\", file=texfile)
+    print("& fences & time & fences & time & fences & time\\\\", file=texfile)
     for d in testdirs:
         print("\\midrule", file=texfile)
         for test in sorted(glob.glob(d + "/*.ll")):
             for i in range(iterations):
-                (num_fences_branch, t_branch) = run_single_test(test, "branch", "opt")
-                (num_fences_mem, t_mem) = run_single_test(test, "memory", "opt")
+                (num_fences_every_inst, t_every_inst) = run_single_test(test, "every-inst", choice)
+                (num_fences_branch, t_branch) = run_single_test(test, "branch", choice)
+                (num_fences_mem, t_mem) = run_single_test(test, "memory", choice)
+                if num_fences_every_inst < 0:
+                    num_fences_every_inst = "---"
                 if num_fences_branch < 0:
                     num_fences_branch = "---"
                 if num_fences_mem < 0:
                     num_fences_mem = "---"
-                print(os.path.basename(test).replace("_", "\\_"), num_fences_branch, t_branch,
-                        num_fences_mem, t_mem, sep=delim, end="\\\\\n", file=texfile)
+                print(os.path.basename(test).replace("_", "\\_"),
+                        num_fences_every_inst, t_every_inst,
+                        num_fences_branch, t_branch,  num_fences_mem, t_mem,
+                        sep=delim, end="\\\\\n", file=texfile)
     print("\\bottomrule\n\\end{tabular}", file=texfile)
 else:
     if len(sys.argv) < 4:
