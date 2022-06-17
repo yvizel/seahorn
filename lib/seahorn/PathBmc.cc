@@ -137,7 +137,10 @@ static llvm::cl::opt<clam::CrabDomain::Type, true, clam::CrabDomainParser>
                  clEnumValN(clam::CrabDomain::TERMS_ZONES, "rtz",
                             "Reduced product of term-dis-int and zones"),
                  clEnumValN(clam::CrabDomain::WRAPPED_INTERVALS, "w-int",
-                            "Wrapped interval domain")),
+                            "Wrapped interval domain"),
+                 clEnumValN(clam::CrabDomain::OCT, "oct", "Octagon domain"),
+                 clEnumValN(clam::CrabDomain::PK, "pk",
+                            "Convex Polyhedra and Linear Equalities domains")),
              llvm::cl::location(seahorn::CrabDom),
              llvm::cl::init(clam::CrabDomain::ZONES_SPLIT_DBM));
 
@@ -459,11 +462,11 @@ static Expr encodePHI(clam::statement_t &s, const PHINode &PHI,
 }
 
 static bool isMemRead(const clam::statement_t &s) {
-  return s.is_arr_read() || s.is_ref_load() || s.is_ref_arr_load();
+  return s.is_arr_read() || s.is_ref_load();
 }
 
 static bool isMemWrite(const clam::statement_t &s) {
-  return s.is_arr_write() || s.is_ref_store() || s.is_ref_arr_store();
+  return s.is_arr_write() || s.is_ref_store();
 }
 
 static void getMemoryDefs(const std::vector<clam::statement_t *> stmts,
@@ -648,8 +651,7 @@ bool PathBmcEngine::encodeBoolPathFromCrabCex(
 	s->is_arr_write() || s->is_arr_read() || s->is_arr_init() ||
 	/* region and reference operations */
 	s->is_region_init() || s->is_region_cast() || s->is_region_copy() ||
-	s->is_ref_load() || s->is_ref_arr_load() ||
-	s->is_ref_store() || s->is_ref_arr_store() ||
+	s->is_ref_load() ||  s->is_ref_store() || 
 	s->is_ref_make() || s->is_ref_remove() || s->is_ref_gep() ||
 	s->is_ref_assume() || s->is_ref_assert()) {
       

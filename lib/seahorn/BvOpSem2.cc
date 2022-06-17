@@ -30,6 +30,7 @@
 #include "clam/Clam.hh"
 #include "clam/ClamQueryAPI.hh"
 #include "clam/SeaDsaHeapAbstraction.hh"
+#include "crab/domains/abstract_domain_params.hpp"
 
 #include "seadsa/ShadowMem.hh"
 
@@ -43,6 +44,7 @@ using gep_type_iterator = generic_gep_type_iterator<>;
 
 namespace seahorn {
 extern bool isUnifiedAssume(const Instruction &CI);
+extern clam::CrabDomain::Type CrabDom;
 namespace details {
 enum class VacCheckOptions { NONE, ANTE, ALL };
 }
@@ -148,6 +150,20 @@ static llvm::cl::opt<bool>
     UseCrabInferRng("horn-bv2-crab-rng",
                     llvm::cl::desc("Use crab to infer rng invariants"),
                     llvm::cl::init(false));
+
+// Crab does not understand sea.is_dereferenceable but the intrinsics
+// is lowered into instructions that Crab can understand.
+static llvm::cl::opt<bool> UseCrabLowerIsDeref(
+    "horn-bv2-crab-lower-is-deref",
+    llvm::cl::desc("Use crab to lower sea.is_dereferenceable"),
+    llvm::cl::init(false));
+
+// Crab reason natively about sea.is_dereferenceable without any
+// lowering.
+static llvm::cl::opt<bool> UseCrabCheckIsDeref(
+    "horn-bv2-crab-check-is-deref",
+    llvm::cl::desc("Use crab to check sea.is_dereferenceable"),
+    llvm::cl::init(false));
 
 static llvm::cl::opt<bool> UseLVIInferRng(
     "horn-bv2-lvi-rng",
@@ -486,7 +502,9 @@ public:
     // TODO: check that addr is valid
     auto memIn = m_ctx.read(m_ctx.getMemReadRegister());
     OpSemMemManager &memManager = m_ctx.mem();
-    auto res = memManager.setMetadata(MetadataKind::ALLOC, addr, memIn, 1);
+    auto res = memManager.setMetadata(
+        MetadataKind::ALLOC, addr, memIn,
+        m_ctx.alu().num(1, memManager.getMetadataMemWordSzInBits()));
     m_ctx.write(m_ctx.getMemWriteRegister(), res);
 
     m_ctx.setMemReadRegister(Expr());
@@ -594,42 +612,63 @@ public:
       return;
     }
 
+    auto funDeclStartsWithVisitorMap = hana::make_map(
+        hana::make_pair(BOOST_HANA_STRING("sea.is_dereferenceable"),
+                        &OpSemVisitor::visitIsDereferenceable),
+        hana::make_pair(BOOST_HANA_STRING("sea.is_modified"),
+                        &OpSemVisitor::visitIsModified),
+        hana::make_pair(BOOST_HANA_STRING("sea.reset_modified"),
+                        &OpSemVisitor::visitResetModified),
+        hana::make_pair(BOOST_HANA_STRING("sea.is_read"),
+                        &OpSemVisitor::visitIsRead),
+        hana::make_pair(BOOST_HANA_STRING("sea.reset_read"),
+                        &OpSemVisitor::visitResetRead),
+        hana::make_pair(BOOST_HANA_STRING("sea.is_alloc"),
+                        &OpSemVisitor::visitIsAlloc),
+        hana::make_pair(BOOST_HANA_STRING("sea.tracking_on"),
+                        &OpSemVisitor::visitSetTrackingOn),
+        hana::make_pair(BOOST_HANA_STRING("sea.tracking_off"),
+                        &OpSemVisitor::visitSetTrackingOff),
+        hana::make_pair(BOOST_HANA_STRING("sea.free"),
+                        &OpSemVisitor::visitFree),
+        hana::make_pair(BOOST_HANA_STRING("sea.assert.if"),
+                        &OpSemVisitor::visitSeaAssertIfCall),
+        hana::make_pair(BOOST_HANA_STRING("verifier.assert"),
+                        &OpSemVisitor::visitVerifierAssertCall),
+        hana::make_pair(BOOST_HANA_STRING("sea.branch_sentinel"),
+                        &OpSemVisitor::visitBranchSentinel),
+        hana::make_pair(BOOST_HANA_STRING("smt."), &OpSemVisitor::visitSmtCall),
+        hana::make_pair(BOOST_HANA_STRING("sea.set_shadowmem"),
+                        &OpSemVisitor::visitSetShadowMem),
+        hana::make_pair(BOOST_HANA_STRING("sea.get_shadowmem"),
+                        &OpSemVisitor::visitGetShadowMem));
+
+    auto visitFunDecl = [&](StringRef candidate) {
+      auto found = false;
+      // Note: not efficient to loop through all keys.
+      // There is no way to break a hana::for_each loop
+      // The ease of adding a new instrinsic outweighs the cost of looping --
+      // since the number of entries is small and not likely to grow 2x
+      hana::for_each(hana::keys(funDeclStartsWithVisitorMap), [&](auto key) {
+        if (candidate.startswith(key.c_str()) && !found) {
+          auto fnPtr = funDeclStartsWithVisitorMap[key];
+          (this->*fnPtr)(CS);
+          found = true;
+          return;
+        }
+      });
+      return found;
+    };
+
     if (f->isDeclaration()) {
       if (f->arg_empty() && (f->getName().startswith("nd") ||
                              f->getName().startswith("nondet.") ||
                              f->getName().endswith("nondet") ||
                              f->getName().startswith("verifier.nondet") ||
-                             f->getName().startswith("__VERIFIER_nondet")))
+                             f->getName().startswith("__VERIFIER_nondet"))) {
         visitNondetCall(CS);
-      else if (f->getName().startswith("sea.is_dereferenceable")) {
-        visitIsDereferenceable(CS);
-      } else if (f->getName().startswith("sea.is_modified")) {
-        visitIsModified(CS);
-      } else if (f->getName().startswith("sea.reset_modified")) {
-        visitResetModified(CS);
-      } else if (f->getName().startswith("sea.is_read")) {
-        visitIsRead(CS);
-      } else if (f->getName().startswith("sea.reset_read")) {
-        visitResetRead(CS);
-      } else if (f->getName().startswith("sea.is_alloc")) {
-        visitIsAlloc(CS);
-      } else if (f->getName().startswith("sea.reset_modified")) {
-        visitResetModified(CS);
-      } else if (f->getName().startswith("sea.tracking_on")) {
-        visitSetTrackingOn(CS);
-      } else if (f->getName().startswith(("sea.tracking_off"))) {
-        visitSetTrackingOff(CS);
-      } else if (f->getName().startswith("sea.free")) {
-        visitFree(CS);
-      } else if (f->getName().startswith(("sea.assert.if"))) {
-        visitSeaAssertIfCall(CS);
-      } else if (f->getName().startswith(("verifier.assert"))) {
-        // this deals with both assert and assert.not stmts
-        visitVerifierAssertCall(CS);
-      } else if (f->getName().startswith("sea.branch_sentinel")) {
-        visitBranchSentinel(CS);
-      } else if (f->getName().startswith("smt.")) {
-        visitSmtCall(CS);
+      } else if (visitFunDecl(f->getName())) {
+        return;
       } else if (fatptr_intrnsc_re.match(f->getName())) {
         visitFatPointerInstr(CS);
       } else
@@ -758,10 +797,86 @@ public:
 
   void visitBranchSentinel(CallSite CS) {}
 
+  void visitGetShadowMem(CallSite CS) {
+    if (!m_ctx.getMemReadRegister()) {
+      LOG("opsem", ERR << "No read register found - check if corresponding"
+                          "shadow instruction is present.");
+      m_ctx.setMemReadRegister(Expr());
+      return;
+    }
+    Expr slot = lookup(*CS.getArgument(0));
+    if (!m_ctx.alu().isNum(slot)) {
+      LOG("opsem", ERR << "Metadata slot should resolve to a number.");
+      assert(false);
+    }
+    size_t slotNum = m_ctx.alu().toNum(slot).get_ui();
+    if (slotNum >= m_ctx.mem().getNumOfMetadataSlots()) {
+      LOG("opsem", ERR << "Metadata slot exceeds number of available slots.");
+      assert(false);
+    }
+    Expr ptr = lookup(*CS.getArgument(1));
+    auto memIn = m_ctx.read(m_ctx.getMemReadRegister());
+    OpSemMemManager &memManager = m_ctx.mem();
+    auto res =
+        memManager.getMetadata(static_cast<MetadataKind>(slotNum), ptr, memIn,
+                               memManager.getMetadataMemWordSzInBits() / 8);
+    setValue(*CS.getInstruction(), res);
+    m_ctx.setMemReadRegister(Expr());
+  };
+
+  void visitSetShadowMem(CallSite CS) {
+    Expr slot = lookup(*CS.getArgument(0));
+    if (!m_ctx.alu().isNum(slot)) {
+      LOG("opsem", ERR << "Metadata slot should resolve to a number.");
+      assert(false);
+    }
+    size_t slotNum = m_ctx.alu().toNum(slot).get_ui();
+    if (slotNum >= m_ctx.mem().getNumOfMetadataSlots()) {
+      LOG("opsem", ERR << "Metadata slot exceeds number of available slots.");
+      assert(false);
+    }
+    Expr ptr = lookup(*CS.getArgument(1));
+    Expr exprToSet = lookup(*CS.getArgument(2));
+    auto memIn = m_ctx.read(m_ctx.getMemReadRegister());
+    Expr res = m_ctx.mem().setMetadata(static_cast<MetadataKind>(slotNum), ptr,
+                                       memIn, exprToSet);
+    m_ctx.write(m_ctx.getMemWriteRegister(), res);
+    // clear hidden mem reg for next instruction
+    m_ctx.setMemReadRegister(Expr());
+    m_ctx.setMemWriteRegister(Expr());
+  };
+
   void visitIsDereferenceable(CallSite CS) {
     Expr ptr = lookup(*CS.getArgument(0));
     Expr byteSz = lookup(*CS.getArgument(1));
-    Expr res = m_ctx.mem().isDereferenceable(ptr, byteSz);
+    Expr res;
+    bool crabSolved = false;
+    if (UseCrabLowerIsDeref || UseCrabCheckIsDeref) {
+      // if crab is used, infer the result of sea.is_deref
+      Instruction *inst = CS.getInstruction();
+      auto derefInfoFromCrab = m_sem.getCrabInstRng(*inst);
+      if (derefInfoFromCrab.isEmptySet()) {
+        // Crab skips is_deref due to invariant inferred along the path is
+        // bottom
+        Stats::count("crab.isderef.solve");
+        // Remove this is_deref checks
+        res = m_ctx.alu().getTrue();
+      } else if (derefInfoFromCrab.isSingleElement()) {
+        // Crab inferred is_deref call is either true or false
+        // Set the value for res expression
+        Stats::count("crab.isderef.solve");
+        res = derefInfoFromCrab.getSingleElement()->getBoolValue()
+                  ? m_ctx.alu().getTrue()
+                  : m_ctx.alu().getFalse();
+        crabSolved = true;
+      } else {
+        Stats::count("crab.isderef.not.solve");
+        LOG("opsem-crab", MSG << "crab cannot solve: " << *inst;);
+      }
+    }
+    if (!crabSolved) {
+      res = m_ctx.mem().isDereferenceable(ptr, byteSz);
+    }
     setValue(*CS.getInstruction(), res);
   }
 
@@ -792,7 +907,9 @@ public:
     Expr ptr = lookup(*CS.getArgument(0));
     auto memIn = m_ctx.read(m_ctx.getMemReadRegister());
     OpSemMemManager &memManager = m_ctx.mem();
-    auto res = memManager.setMetadata(MetadataKind::WRITE, ptr, memIn, 0);
+    auto res = memManager.setMetadata(
+        MetadataKind::WRITE, ptr, memIn,
+        m_ctx.alu().num(0, memManager.getMetadataMemWordSzInBits()));
     m_ctx.write(m_ctx.getMemWriteRegister(), res);
 
     m_ctx.setMemReadRegister(Expr());
@@ -834,7 +951,9 @@ public:
     Expr ptr = lookup(*CS.getArgument(0));
     auto memIn = m_ctx.read(m_ctx.getMemReadRegister());
     OpSemMemManager &memManager = m_ctx.mem();
-    auto res = memManager.setMetadata(MetadataKind::ALLOC, ptr, memIn, 0);
+    auto res = memManager.setMetadata(
+        MetadataKind::ALLOC, ptr, memIn,
+        m_ctx.alu().num(0, memManager.getMetadataMemWordSzInBits()));
     m_ctx.write(m_ctx.getMemWriteRegister(), res);
 
     m_ctx.setMemReadRegister(Expr());
@@ -942,7 +1061,21 @@ public:
     m_ctx.addToSolver(m_ctx.getPathCond());
     m_ctx.addToSolver(solveFor);
 
-    return m_ctx.solve();
+    auto r = m_ctx.solve();
+    // if the solver returns unknown then dump smt2 formula to file for analysis
+    LOG("opsem.dump.incassert", {
+      if (r || !r) {
+      } else { // indeterminate case
+        std::error_code EC;
+        static unsigned cnt = 0;
+        auto filename = "incassert." + std::to_string(++cnt) + ".smt2";
+        errs() << "Writing increment assert formula to '" << filename << "'..."
+               << "\n";
+        raw_fd_ostream File(filename, EC, sys::fs::F_Text);
+        m_ctx.toSmtLib(File);
+      }
+    });
+    return r;
   }
 
   void visitVerifierAssertCall(CallSite CS) {
@@ -2189,7 +2322,7 @@ public:
 
   void visitModule(Module &M) {
     LOG("opsem.module", errs() << M << "\n";);
-    if (UseCrabInferRng) {
+    if (UseCrabInferRng || UseCrabLowerIsDeref || UseCrabCheckIsDeref) {
       m_sem.initCrabAnalysis(M);
       m_sem.runCrabAnalysis();
     }
@@ -2353,11 +2486,42 @@ Bv2OpSemContext::Bv2OpSemContext(SymStore &values, ExprVector &side,
   setPathCond(o.getPathCond());
 }
 
+// If running in lambda mode,
+// convert constant arrays returned by Z3 simplifier to a lambda.
+//
+// Details: When Z3 is given a lambda of the form lambda x: 0 to simplify, a
+// constant array is returned. If running in lambda mode, this will cause the
+// formula to have both lambdas and constant arrays which is not supported
+// (fully) by Z3 and y2.
+// This workaround fixes the issue by converting constant arrays gotten from
+// Z3 back to lambda x: 0.
+Expr coerceConstArrayToLambda(Expr e, ExprFactory &efac) {
+  // go into structs until a non struct is found; convert to lambda if needed.
+  if (strct::isStructVal(e)) {
+    llvm::SmallVector<Expr, 8> kids;
+    for (unsigned i = 0, sz = e->arity(); i < sz; ++i) {
+
+      kids.push_back(coerceConstArrayToLambda(e->arg(i), efac));
+    }
+    return strct::mk(kids);
+  } else if (isOpX<CONST_ARRAY>(e)) {
+    Expr dom = e->arg(0); // get domain
+    Expr val = e->arg(1); // get value
+    Expr addr = bind::mkConst(mkTerm<std::string>("addr", efac), dom);
+    Expr decl = bind::fname(addr);
+    Expr res = mk<LAMBDA>(decl, val);
+    return res;
+  } else {
+    return e;
+  }
+}
+
 Expr Bv2OpSemContext::simplify(Expr u) {
   ScopedStats _st_("opsem.simplify");
 
-  Expr _u;
-  _u = m_z3_simplifier->simplify(u);
+  Expr _u, _u_simp;
+  _u_simp = m_z3_simplifier->simplify(u);
+  _u = UseLambdas ? coerceConstArrayToLambda(_u_simp, efac()) : _u_simp;
   LOG(
       "opsem.simplify",
       if (!isOpX<LAMBDA>(_u) && !isOpX<ITE>(_u) && dagSize(_u) > 100) {
@@ -2734,6 +2898,10 @@ void Bv2OpSemContext::addToSolver(const Expr e) {
     m_z3_solver->assertExpr(e);
     m_addedToSolver.insert(e);
   }
+}
+
+void Bv2OpSemContext::toSmtLib(llvm::raw_ostream &o) {
+  m_z3_solver->toSmtLib(o);
 }
 
 boost::tribool Bv2OpSemContext::solve() { return m_z3_solver->solve(); }
@@ -3228,9 +3396,15 @@ void Bv2OpSem::initCrabAnalysis(const llvm::Module &M) {
 
   // -- Set parameters for CFG
   clam::CrabBuilderParams cfg_builder_params;
-  LOG("opsem-rng", cfg_builder_params.print_cfg = true;);
+  LOG("opsem-crab", cfg_builder_params.print_cfg = true;);
   cfg_builder_params.setPrecision(clam::CrabBuilderPrecision::MEM);
   cfg_builder_params.interprocedural = true;
+  if (UseCrabLowerIsDeref) {
+    // Use CrabIR instrumentation for offset/size of ptr
+    cfg_builder_params.add_is_deref = true;
+  }
+  cfg_builder_params.lowerUnsignedICmpIntoSigned();
+  cfg_builder_params.lower_arithmetic_with_overflow_intrinsics = true;
 
   m_cfg_builder_man = std::make_unique<clam::CrabBuilderManager>(
       cfg_builder_params, tli, std::move(heap_abs));
@@ -3242,12 +3416,17 @@ void Bv2OpSem::initCrabAnalysis(const llvm::Module &M) {
 void Bv2OpSem::runCrabAnalysis() {
   /// Set Crab parameters
   clam::AnalysisParams aparams;
-  aparams.dom = clam::CrabDomain::INTERVALS;
+  aparams.dom = CrabDom;
   aparams.run_inter = true;
   aparams.check = clam::CheckerKind::NOCHECKS;
+
+  if (UseCrabCheckIsDeref) {
+    crab::domains::crab_domain_params_man::get().
+      set_param("region.is_dereferenceable", "true");
+  }
   /// Run the Crab analysis
   clam::ClamGlobalAnalysis::abs_dom_map_t assumptions;
-  LOG("opsem-rng", aparams.print_invars = true;);
+  LOG("opsem-crab", aparams.print_invars = true;);
   m_crab_rng_solver->analyze(aparams, assumptions);
 }
 
