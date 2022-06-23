@@ -797,7 +797,7 @@ public:
 					llvm::errs() << "u3: " << *ty << "\n";
 				}
 			}
-			sstream << ") Bool)\n";
+			sstream << ") Bool\n)\n";
 		}
 
 		for (const Expr &v : getVars()) {
