@@ -175,15 +175,18 @@ bool HornSolver::runOnModule(Module &M) {
 	  std::ostringstream ss;
 	  ss << *bind::fname(bind::fname(rule.head())); // fapp -> fdecl -> fname
 	  if (ss.str() == branchPredName){
-		  // outs() <<"found branch!\n";
+		  // outs() << "found rule with branch as head!\n";
 		  branchFapp = rule.head();
-	  } else if (ss.str() == thenPredName){
-		  // outs() <<"found then!\n";
-		  thenFapp = rule.head();
-	  } else if (ss.str() == elsePredName){
-		  // outs() <<"found else!\n";
-		  elseFapp = rule.head();
-	  }
+      Expr body = rule.body();
+      assert(isOpX<AND>(body));
+      assert(body->arity() == 2);
+      Expr first = body->arg(0);
+      assert(*bind::fname(bind::fname(first)) == thenPredName);
+      thenFapp = first;
+      Expr second = body->arg(1);
+      assert(*bind::fname(bind::fname(second)) == elsePredName);
+		  elseFapp = second;
+	  } 
   }
 
   if (LocalContext) {
