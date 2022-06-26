@@ -18,8 +18,8 @@ int main() {
 	for (int i=0; i<4; i++){
 		assume(a[i]<=a[i+1]);
 	}
-	bool res_naive = naive_search(a,5,x);
 	bool res_binary = binary_search(a,5,x);
+	bool res_naive = naive_search(a,5,x);
 	sassert(res_naive == res_binary);
 }
 
@@ -28,7 +28,7 @@ bool binary_search(int a[], int n, int x){
 	int right = n-1;
 	while (right >= left){
 		int mid = (right+left) / 2;
-		if (find_condition()){
+		if (find_condition()){ // a[mid] == x
 			return true;
 		} else if (a[mid] > x){
 			right = mid - 1;

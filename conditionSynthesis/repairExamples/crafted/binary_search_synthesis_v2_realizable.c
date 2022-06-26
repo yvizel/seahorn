@@ -18,8 +18,8 @@ int main() {
 	for (int i=0; i<4; i++){
 		assume(a[i]<=a[i+1]);
 	}
-	bool res_naive = naive_search(a,5,x);
 	bool res_binary = binary_search(a,5,x);
+	bool res_naive = naive_search(a,5,x);
 	sassert(res_naive == res_binary);
 }
 
