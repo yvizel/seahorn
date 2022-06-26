@@ -1,0 +1,5 @@
+    ((Start Bool) (Atom Bool) (Expr Int) (Arr (Array Int Int)))
+    ((Start Bool ((and Start Start) (or Start Start) (not Start) Atom (Variable Bool)))
+    (Atom Bool ((>= Expr Expr) (<= Expr Expr) (< Expr Expr) (= Expr Expr) ))
+    (Expr Int ((+ Expr Expr) (- Expr Expr) (* Expr Expr) (mod Expr Expr) (Constant Int) (Variable Int) (select Arr Expr) ))
+    (Arr (Array Int Int) ((Variable (Array Int Int)) (Constant (Array Int Int)))))
