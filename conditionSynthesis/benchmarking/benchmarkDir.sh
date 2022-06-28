@@ -1,18 +1,19 @@
 #!/bin/bash
 # $1- input directory with .c files (read)
 # $2- output directory (write, should exist): a directory will be created under it.
-# $3- string that says which tool to run. options: frontend/cosyn/cvc5/all.
+# $3- string that says which tool to run. options: frontend/cosyn/cvc5/sketch/boundaries/all.
 # $4- timeout for all (backend) tools (in seconds).
 
 # For every file.c in $1, run tools according to $3.
 # For the results: create a directory with input_dir name, date and time, under $2.
-# In this directory: a settings file with settings of all tools; a directory of reverse and forward files;
-# a directory for each of the tools run (cosyn/cvc5) with .res,.out,.time files.
+# In this directory: a settings file with settings of all tools; a directory for each of the following:
+# reverse, forward, names, loop_count and boundaries files;
+# a directory for each of the tools run (cosyn/cvc5/boundaries) with .res,.out,.time files.
 
 shopt -s globstar
 
-[[ "$3" != "frontend" ]] && [[ "$3" != "cosyn" ]] && [[ "$3" != "cvc5" ]] && [[ "$3" != "sketch" ]] && [[ "$3" != "all" ]] && \
-  echo "Invalid option: $3. Choose from:frontend/cosyn/cvc5/sketch/all." && exit 1
+[[ "$3" != "frontend" ]] && [[ "$3" != "cosyn" ]] && [[ "$3" != "cvc5" ]] && [[ "$3" != "sketch" ]] && [[ "$3" != "boundaries" ]] && [[ "$3" != "all" ]] && \
+  echo "Invalid option: $3. Choose from:frontend/cosyn/cvc5/sketch/boundaries/all." && exit 1
 # new output dir name is determined according to the last directory on the path of $1
 if [ -z "${1##*/}" ]; then
     echo "please remove trailing slash from input directory name."
@@ -38,8 +39,9 @@ doForFile() {
   if ./frontend.sh "$5" "$6/reverseSmt2" "$6/forwardSl" "$6/names" "$6/loops" "$1"; then
     { [[ "$3" == "cosyn" ]] || [[ "$3" == "all" ]] ;} && ./runCosyn.sh "$6/reverseSmt2/$file_relative_to_dir_no_suffix.reverse.smt2" "$6/cosyn" "$4" "$6/reverseSmt2/"
     { [[ "$3" == "cvc5" ]] || [[ "$3" == "all" ]] ;} &&  ./runCVC5.sh "$6/forwardSl/$file_relative_to_dir_no_suffix.fwd.sl" "$6/cvc5" "$4" "$6/forwardSl/"
-    { [[ "$3" == "sketch" ]] || [[ "$3" == "all" ]] ;} &&  ./runSketch.sh "$5" "$6/sketch" "$4" "$1"
   fi
+  { [[ "$3" == "sketch" ]] || [[ "$3" == "all" ]] ;} &&  ./runSketch.sh "$5" "$6/sketch" "$4" "$1"
+  { [[ "$3" == "boundaries" ]] || [[ "$3" == "all" ]] ;} &&  ./createBoundaries.sh "$5" "$6/boundaries" "$4" "$1" && ./runCVC5.sh "$6/boundaries/$file_relative_to_dir_no_suffix.boundaries.sl" "$6/cvcBoundaries" "$4" "$6/boundaries/"
 }
 
 export -f doForFile
