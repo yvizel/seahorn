@@ -10,7 +10,7 @@
 
 echo "running CoSyn on file: $1 for boundaries"
 file_without_prefix="${1#$4}"
-mkdir -p "$2/$(dirname -- file_without_prefix)"
+mkdir -p "$2/$(dirname -- $file_without_prefix)"
 docker run --rm -v "$(realpath $4)":/host seahorn/seahorn-builder:bionic-llvm10 \
 /bin/bash -c "time timeout '$3s' sea pf '/host/$file_without_prefix' --inline -o0 --keep-temp --temp-dir=/tmp/repair/ --step=large --horn-cond-synthesis --horn-synth-cps=h1 --horn-read-file && \
 [[ -e boundaries.sl ]] && cp boundaries.sl '/host/${file_without_prefix%%.*}.boundaries.sl'"
