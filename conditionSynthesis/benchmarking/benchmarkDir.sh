@@ -34,6 +34,7 @@ echo "sketch command: python3 c_to_sketch.py && timeout "$4"s sketch <generated 
 # $5 inside this function is a single .c file from $1
 # $6 inside this function is new_dir_name
 doForFile() {
+  shopt -s globstar
   file_relative_to_dir="${5#$1}"
   file_relative_to_dir_no_suffix="${file_relative_to_dir%%.*}"
   if ./frontend.sh "$5" "$6/reverseSmt2" "$6/forwardSl" "$6/names" "$6/loops" "$1"; then
@@ -41,7 +42,9 @@ doForFile() {
     { [[ "$3" == "cvc5" ]] || [[ "$3" == "all" ]] ;} &&  ./runCVC5.sh "$6/forwardSl/$file_relative_to_dir_no_suffix.fwd.sl" "$6/cvc5" "$4" "$6/forwardSl/"
   fi
   { [[ "$3" == "sketch" ]] || [[ "$3" == "all" ]] ;} &&  ./runSketch.sh "$5" "$6/sketch" "$4" "$1"
-  { [[ "$3" == "boundaries" ]] || [[ "$3" == "all" ]] ;} &&  ./createBoundaries.sh "$5" "$6/boundaries" "$4" "$1" && ./runCVC5.sh "$6/boundaries/$file_relative_to_dir_no_suffix.boundaries.sl" "$6/cvcBoundaries" "$4" "$6/boundaries/"
+  { [[ "$3" == "boundaries" ]] || [[ "$3" == "all" ]] ;} &&  ./createBoundaries.sh "$5" "$6/boundariesSl" "$4" "$1" && \
+      ./runCVC5.sh "$6/boundariesSl/$file_relative_to_dir_no_suffix.boundaries.sl" "$6/boundaries" "$4" "$6/boundariesSl/" && \
+      rename -d 's/.cvc5./.boundaries./' "$6/boundaries"/**/*
 }
 
 export -f doForFile
