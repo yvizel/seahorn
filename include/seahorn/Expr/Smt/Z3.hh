@@ -671,6 +671,8 @@ private:
   ExprVector m_rules;
   ExprVector m_queries;
 
+  friend class SygusForwardUnwinding;
+
 public:
   ZFixedPoint(Z &z)
       : z3(z), ctx(z.get_ctx()), fp(z.get_ctx()), efac(z.get_efac()) {}

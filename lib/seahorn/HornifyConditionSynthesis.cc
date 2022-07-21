@@ -1,6 +1,7 @@
 #include "seahorn/HornifyConditionSynthesis.hh"
 #include "seahorn/Support/Stats.hh"
 #include "seahorn/Support/SeaDebug.h"
+#include "seahorn/SygusForwardUnwinding.hh"
 
 namespace seahorn {
 
@@ -531,6 +532,10 @@ void HornifyConditionSynthesis::runOnFunction(Function &F) {
   nonhornSygus.close();
 
   outs() << "Printed SyGuS non-horn file\n";
+
+  SygusForwardUnwinding unwd_sygus(fp_nonhorn);
+  // std::cout << unwd_sygus << "\n";
+  unwd_sygus.build_graph_from_rules();
 
   m_db.m_queries.clear();
   m_db.m_vars.clear();
