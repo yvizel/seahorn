@@ -30,6 +30,7 @@ class SygusForwardUnwinding{
 		enum nodeStatus_t {unseen,visiting,done};
 		nodeStatus_t nodeStatus; 
 		bool needs_synthesis;
+		ruleGraphNode_t(const std::string& name) : predName(name), nodeStatus(nodeStatus_t::unseen), needs_synthesis(false) {};
 		bool operator==(const ruleGraphNode_t &other) const{ 
 			return (predName == other.predName);
 		}
@@ -45,9 +46,10 @@ class SygusForwardUnwinding{
 	struct ruleGraphEdge_t{
 		Expr rule;
 		std::string targetNode;
+		ruleGraphEdge_t(const Expr& rule_arg, const std::string& targetNode_arg) : rule(rule_arg), targetNode(targetNode_arg) {};
 	};
 
-	typedef std::unordered_map<ruleGraphNode_t,ruleGraphEdge_t,graphNodeHash> ruleGraph_t;
+	typedef std::unordered_map<ruleGraphNode_t,std::vector<ruleGraphEdge_t>,graphNodeHash> ruleGraph_t;
 
 	ruleGraph_t m_ruleGraph;
 
@@ -55,6 +57,7 @@ public:
 	SygusForwardUnwinding(ZFixedPoint<EZ3>& fp, const std::string& conditionEnding = "_Cond") : m_fp(fp), m_conditionEnding(conditionEnding) {std::cout << "hi! I am sygus unwinding!!\n";}
 	friend std::ostream& operator<<(std::ostream& os, SygusForwardUnwinding& syg);
 	void build_graph_from_rules();
+	void print_rule_graph();
 };
 }
 

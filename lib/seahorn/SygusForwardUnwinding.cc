@@ -36,17 +36,33 @@ void SygusForwardUnwinding::build_graph_from_rules(){
             ss << body_predicate_name;
             std::string body_predicate_string = ss.str();
             if (has_ending(body_predicate_string, m_conditionEnding)){
-                std::cout << "found condiiton ending: " << body_predicate_string << "\n";
+                std::cout << "found condition ending: " << body_predicate_string << "\n";
                 body_predicate_string = body_predicate_string.substr(0, body_predicate_string.size() - m_conditionEnding.size());
             }
             std::cout << "original rule: " << rule << "\n";
             std::cout << body_predicate_string << "--->" << *head_predicate_name << "\n";
+            ruleGraphNode_t body_node(body_predicate_string);
+            std::stringstream head_ss;
+            head_ss << head_predicate_name;
+            std::string head_predicate_string = head_ss.str();
+            m_ruleGraph[body_node].emplace_back(rule, head_predicate_string);
         }
     }
     std::cout << "\n";
 }
 
-
+void SygusForwardUnwinding::print_rule_graph(){
+    std::cout << "Printing rule graph:\n";
+    for (const auto& pair : m_ruleGraph){
+        const auto& node = pair.first;
+        std::cout << node.predName << "\n";
+        for (const auto& edge : pair.second){
+            std::cout << "edge with rule: " << edge.rule << "\n";
+            std::cout << "and target predicate: " << edge.targetNode << "\n";
+        }
+        // std::cout << pair.second.targetNode << "\n";
+    }
+}
 
 
 
