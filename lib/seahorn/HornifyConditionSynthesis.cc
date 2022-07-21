@@ -536,7 +536,7 @@ void HornifyConditionSynthesis::runOnFunction(Function &F) {
   SygusForwardUnwinding unwd_sygus(fp_nonhorn);
   // std::cout << unwd_sygus << "\n";
   unwd_sygus.build_graph_from_rules();
-  unwd_sygus.print_rule_graph();
+  unwd_sygus.print_graph();
 
   m_db.m_queries.clear();
   m_db.m_vars.clear();

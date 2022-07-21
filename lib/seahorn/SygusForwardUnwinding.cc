@@ -72,7 +72,7 @@ void SygusForwardUnwinding::build_graph_from_rules(){
     std::cout << "\n";
 }
 
-void SygusForwardUnwinding::print_rule_graph(){
+void SygusForwardUnwinding::print_graph(){
     std::cout << "Printing rule graph:\n";
     for (const auto& pair : m_ruleGraph){
         const auto& node = pair.first;
