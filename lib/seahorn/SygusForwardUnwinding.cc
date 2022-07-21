@@ -97,6 +97,28 @@ std::string SygusForwardUnwinding::get_root() const{
     return "none";
 }
 
+void SygusForwardUnwinding::mark_nodes_for_synthesis(){
+    std::string root = get_root();
+    mark_nodes_for_synthesis_aux(root);
+    // mark_all_unseen(); //todo: implement
+}
+
+void SygusForwardUnwinding::mark_nodes_for_synthesis_aux(const std::string& node){
+    m_node_info_map.at(node).nodeStatus = graphNodeInfo_t::visiting;
+    for (const auto& edge : m_ruleGraph.at(node)){
+        std::string child = edge.targetNode;
+        if (m_node_info_map.at(child).nodeStatus == graphNodeInfo_t::visiting){ // back edge
+            m_node_info_map.at(child).needs_synthesis = true;
+            std::cout << "marking node " << child << " for synthesis\n";
+            continue;
+        } else if (m_node_info_map.at(child).nodeStatus == graphNodeInfo_t::done || m_ruleGraph.count(child)==0 ) {
+            continue;
+        }
+        mark_nodes_for_synthesis_aux(child);
+    }
+    m_node_info_map.at(node).nodeStatus = graphNodeInfo_t::done;
+}
+
 
 
 

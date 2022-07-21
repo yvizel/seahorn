@@ -538,6 +538,8 @@ void HornifyConditionSynthesis::runOnFunction(Function &F) {
   unwd_sygus.build_graph_from_rules();
   unwd_sygus.print_graph();
   std::cout << "root is: " << unwd_sygus.get_root() << "\n";
+  unwd_sygus.mark_nodes_for_synthesis();
+  unwd_sygus.print_graph();
 
   m_db.m_queries.clear();
   m_db.m_vars.clear();
