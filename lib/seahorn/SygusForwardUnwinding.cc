@@ -55,10 +55,11 @@ void SygusForwardUnwinding::print_rule_graph(){
     std::cout << "Printing rule graph:\n";
     for (const auto& pair : m_ruleGraph){
         const auto& node = pair.first;
-        std::cout << node.predName << "\n";
+        std::cout << "Node: " << node.predName << ": ";
+        std::cout << (node.needs_synthesis ? "synthesized" : "skipped") << ". With edges to:\n";
         for (const auto& edge : pair.second){
-            std::cout << "edge with rule: " << edge.rule << "\n";
-            std::cout << "and target predicate: " << edge.targetNode << "\n";
+            // std::cout << "edge with rule: " << edge.rule << "\n";
+            std::cout << "\t" << edge.targetNode << "\n";
         }
         // std::cout << pair.second.targetNode << "\n";
     }
