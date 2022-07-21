@@ -72,7 +72,7 @@ void SygusForwardUnwinding::build_graph_from_rules(){
     std::cout << "\n";
 }
 
-void SygusForwardUnwinding::print_graph(){
+void SygusForwardUnwinding::print_graph() const{
     std::cout << "Printing rule graph:\n";
     for (const auto& pair : m_ruleGraph){
         const auto& node = pair.first;
@@ -87,6 +87,16 @@ void SygusForwardUnwinding::print_graph(){
         std::cout << "with out degree: " << m_node_info_map.at(node).out_degree << "\n";
     }
 }
+
+std::string SygusForwardUnwinding::get_root() const{
+    for (const auto& pair : m_ruleGraph){
+        const auto& node = pair.first;
+        if (m_node_info_map.at(node).in_degree == 0) return node;
+    }
+    assert(false);
+    return "none";
+}
+
 
 
 

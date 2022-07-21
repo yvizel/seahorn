@@ -54,7 +54,8 @@ public:
 	SygusForwardUnwinding(ZFixedPoint<EZ3>& fp, const std::string& conditionEnding = "!_Cond") : m_fp(fp), m_conditionEnding(conditionEnding) {std::cout << "hi! I am sygus unwinding!!\n";}
 	friend std::ostream& operator<<(std::ostream& os, SygusForwardUnwinding& syg);
 	void build_graph_from_rules();
-	void print_graph();
+	void print_graph() const;
+	std::string get_root() const;
 };
 }
 
