@@ -119,6 +119,12 @@ void SygusForwardUnwinding::mark_nodes_for_synthesis_aux(const std::string& node
     m_node_info_map.at(node).nodeStatus = graphNodeInfo_t::done;
 }
 
+void SygusForwardUnwinding::mark_all_unseen(){
+    for (const auto& pair : m_node_info_map){
+        graphNodeInfo_t node_info = pair.second;
+        node_info.nodeStatus = graphNodeInfo_t::unseen;
+    }
+}
 
 
 

@@ -60,6 +60,7 @@ public:
 
 private:
 	void mark_nodes_for_synthesis_aux(const std::string& node);
+	void mark_all_unseen();
 };
 }
 
