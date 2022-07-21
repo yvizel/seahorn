@@ -15,8 +15,6 @@
 #include <iostream>
 #include <string>
 
-// using namespace expr;
-
 namespace seahorn{
 class SygusForwardUnwinding{
 
@@ -27,6 +25,31 @@ class SygusForwardUnwinding{
 	std::string m_conditionEnding;
 	ZFixedPoint<EZ3>& m_fp;
 
+	struct ruleGraphNode_t{
+		std::string predName;
+		enum nodeStatus_t {unseen,visiting,done};
+		nodeStatus_t nodeStatus; 
+		bool needs_synthesis;
+		bool operator==(const ruleGraphNode_t &other) const{ 
+			return (predName == other.predName);
+		}
+	};
+
+	struct graphNodeHash{
+		std::size_t operator()(ruleGraphNode_t const& node) const noexcept
+		{
+			return std::hash<std::string>{}(node.predName);
+		}
+	};
+
+	struct ruleGraphEdge_t{
+		Expr rule;
+		std::string targetNode;
+	};
+
+	typedef std::unordered_map<ruleGraphNode_t,ruleGraphEdge_t,graphNodeHash> ruleGraph_t;
+
+	ruleGraph_t m_ruleGraph;
 
 public:
 	SygusForwardUnwinding(ZFixedPoint<EZ3>& fp, const std::string& conditionEnding = "_Cond") : m_fp(fp), m_conditionEnding(conditionEnding) {std::cout << "hi! I am sygus unwinding!!\n";}
