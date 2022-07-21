@@ -41,11 +41,32 @@ void SygusForwardUnwinding::build_graph_from_rules(){
             }
             std::cout << "original rule: " << rule << "\n";
             std::cout << body_predicate_string << "--->" << *head_predicate_name << "\n";
-            ruleGraphNode_t body_node(body_predicate_string);
+            if (m_node_info_map.count(body_predicate_string)){
+                // std::cout << "body exists!!!!!!\n";
+                m_node_info_map.at(body_predicate_string).out_degree++;
+                // std::cout << "out degree of " << body_predicate_string << " increased to: " << m_node_info_map.at(body_predicate_string).out_degree << "\n";
+            } else {
+                // std::cout << "body does not exist!!!!!!\n";
+                graphNodeInfo_t body_node(body_predicate_string);
+                body_node.out_degree++;
+                m_node_info_map.insert({body_predicate_string,body_node});
+                // std::cout << "new info node for " << body_predicate_string << " with out degree: " << m_node_info_map.at(body_predicate_string).out_degree << "\n";
+            }
             std::stringstream head_ss;
             head_ss << head_predicate_name;
             std::string head_predicate_string = head_ss.str();
-            m_ruleGraph[body_node].emplace_back(rule, head_predicate_string);
+            if (m_node_info_map.count(head_predicate_string)){
+                // std::cout << "head exists!!!!!!\n";
+                m_node_info_map.at(head_predicate_string).in_degree++;
+                // std::cout << "in degree of " << head_predicate_string << " increased to: " << m_node_info_map.at(head_predicate_string).in_degree << "\n";
+            } else {
+                // std::cout << "head does not exist!!!!!!\n";
+                graphNodeInfo_t head_node(head_predicate_string);
+                head_node.in_degree++;
+                m_node_info_map.insert({head_predicate_string,head_node});
+                // std::cout << "new info node for " << head_predicate_string << " with in degree: " << m_node_info_map.at(head_predicate_string).in_degree << "\n";
+            }
+            m_ruleGraph[body_predicate_string].emplace_back(rule, head_predicate_string);
         }
     }
     std::cout << "\n";
@@ -55,13 +76,15 @@ void SygusForwardUnwinding::print_rule_graph(){
     std::cout << "Printing rule graph:\n";
     for (const auto& pair : m_ruleGraph){
         const auto& node = pair.first;
-        std::cout << "Node: " << node.predName << ": ";
-        std::cout << (node.needs_synthesis ? "synthesized" : "skipped") << ". With edges to:\n";
+        std::cout << "Node: " << node << ": ";
+        assert(m_node_info_map.count(node));
+        std::cout << (m_node_info_map.at(node).needs_synthesis ? "synthesized" : "skipped") << ". With edges to:\n";
         for (const auto& edge : pair.second){
             // std::cout << "edge with rule: " << edge.rule << "\n";
             std::cout << "\t" << edge.targetNode << "\n";
         }
-        // std::cout << pair.second.targetNode << "\n";
+        std::cout << "with in degree: " << m_node_info_map.at(node).in_degree << "\n";
+        std::cout << "with out degree: " << m_node_info_map.at(node).out_degree << "\n";
     }
 }
 
