@@ -135,9 +135,9 @@ void SygusForwardUnwinding::print_constraints(std::ostream& os){
 
 void SygusForwardUnwinding::print_constraints_aux(std::ostream& outs, ExprVector& body_args, const std::string& src){
     m_node_info_map.at(src).nodeStatus = graphNodeInfo_t::visiting;
+    size_t old_args_size = body_args.size();
     for (const auto& edge : m_ruleGraph.at(src)){
         std::string dst = edge.targetNode;
-        size_t old_args_size = body_args.size();
         if (needs_synthesis(src)){
             get_body_args(edge.rule, body_args);    
         } else {
@@ -154,18 +154,14 @@ void SygusForwardUnwinding::print_constraints_aux(std::ostream& outs, ExprVector
             print_sygus_constraint(outs, constraint_e);
         }
         if (!is_end(dst) && (is_unseen(dst) || !needs_synthesis(dst))){
-            ExprVector saved_body_args;
             if (needs_synthesis(dst)){
-                saved_body_args = body_args;
-                body_args = ExprVector();
-            }
-            print_constraints_aux(outs, body_args, dst);
-            if (needs_synthesis(dst)){
-                body_args = saved_body_args;
+                ExprVector empty;
+                print_constraints_aux(outs, empty, dst);
             } else {
-                body_args.resize(old_args_size);
+            print_constraints_aux(outs, body_args, dst);
             }
         }
+        body_args.resize(old_args_size);
     }
     m_node_info_map.at(src).nodeStatus = graphNodeInfo_t::done;
 }
