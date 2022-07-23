@@ -129,6 +129,7 @@ void SygusForwardUnwinding::mark_all_unseen(){
 void SygusForwardUnwinding::print_constraints(std::ostream& os){
     os << "printing constraints:\n";
     ExprVector args;
+    mark_all_unseen();
     print_constraints_aux(os, args, get_root());
     mark_all_unseen();
 }
@@ -136,6 +137,12 @@ void SygusForwardUnwinding::print_constraints(std::ostream& os){
 void SygusForwardUnwinding::print_constraints_aux(std::ostream& outs, ExprVector& body_args, const std::string& src){
     m_node_info_map.at(src).nodeStatus = graphNodeInfo_t::visiting;
     size_t old_args_size = body_args.size();
+    // if (needs_synthesis(src)) {
+    //     std::cout << "reached node who needs synthesis: " << src << "and body args is: \n";
+    //     for (const auto& arg : body_args){
+    //         std::cout << *arg << "\n";
+    //     } 
+    // }
     for (const auto& edge : m_ruleGraph.at(src)){
         std::string dst = edge.targetNode;
         if (needs_synthesis(src)){
@@ -153,12 +160,13 @@ void SygusForwardUnwinding::print_constraints_aux(std::ostream& outs, ExprVector
             Expr constraint_e = construct_rule(body_args, head);
             print_sygus_constraint(outs, constraint_e);
         }
+        // std::cout << "dst is: " << dst << " is end: " << is_end(dst) << " is unseen: " << is_unseen(dst) << " needs syntheis: " << needs_synthesis(dst) << "\n";
         if (!is_end(dst) && (is_unseen(dst) || !needs_synthesis(dst))){
             if (needs_synthesis(dst)){
                 ExprVector empty;
                 print_constraints_aux(outs, empty, dst);
             } else {
-            print_constraints_aux(outs, body_args, dst);
+                print_constraints_aux(outs, body_args, dst);
             }
         }
         body_args.resize(old_args_size);
