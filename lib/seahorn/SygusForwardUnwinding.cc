@@ -126,6 +126,116 @@ void SygusForwardUnwinding::mark_all_unseen(){
     }
 }
 
+void SygusForwardUnwinding::print_constraints(std::ostream& os){
+    os << "printing constraints:\n";
+    ExprVector args;
+    print_constraints_aux(os, args, get_root());
+    mark_all_unseen();
+}
 
+void SygusForwardUnwinding::print_constraints_aux(std::ostream& outs, ExprVector& body_args, const std::string& src){
+    m_node_info_map.at(src).nodeStatus = graphNodeInfo_t::visiting;
+    for (const auto& edge : m_ruleGraph.at(src)){
+        std::string dst = edge.targetNode;
+        size_t old_args_size = body_args.size();
+        if (needs_synthesis(src)){
+            get_body_args(edge.rule, body_args);    
+        } else {
+            get_body_args_without_pred(edge.rule, body_args, src);
+        }
+        if (needs_synthesis(dst) || is_end(dst)){
+            Expr head;
+            if (needs_synthesis(dst)){
+                head = get_head(edge.rule);
+            } else {
+                head = mk<FALSE>(edge.rule->efac());
+            }
+            Expr constraint_e = construct_rule(body_args, head);
+            print_sygus_constraint(outs, constraint_e);
+        }
+        if (!is_end(dst) && (is_unseen(dst) || !needs_synthesis(dst))){
+            ExprVector saved_body_args;
+            if (needs_synthesis(dst)){
+                saved_body_args = body_args;
+                body_args = ExprVector();
+            }
+            print_constraints_aux(outs, body_args, dst);
+            if (needs_synthesis(dst)){
+                body_args = saved_body_args;
+            } else {
+                body_args.resize(old_args_size);
+            }
+        }
+    }
+    m_node_info_map.at(src).nodeStatus = graphNodeInfo_t::done;
+}
+
+void SygusForwardUnwinding::get_body_args(const Expr& rule, ExprVector& res) const{
+    assert(isOpX<IMPL>(rule));
+    Expr body = rule->arg(0);
+    for (const auto& arg : *body){
+        res.push_back(arg);
+    }
+}
+
+void SygusForwardUnwinding::get_body_args_without_pred(const Expr& rule, ExprVector& res, const std::string& pred) const{
+    assert(isOpX<IMPL>(rule));
+    Expr body = rule->arg(0);
+    ExprVector flatten_args;
+    flatten_and_expr(body, flatten_args);
+    for (const auto& arg : flatten_args){
+        if (bind::name(arg) && bind::name(bind::name(arg))){
+            std::stringstream ss;
+            ss << bind::name(bind::name(arg));
+            if (ss.str() == pred) {
+                // std::cout << "found pred in arg: " << arg << "\n";
+                continue;
+            }
+        }
+        res.push_back(arg);
+    }
+}
+
+void SygusForwardUnwinding::flatten_and_expr(const Expr& expr, ExprVector& res) const{
+    if (!isOpX<AND>(expr)) {
+        res.push_back(expr);
+        return;
+    }
+    for (const auto& arg : *expr){
+        flatten_and_expr(arg, res);
+    }
+}
+
+bool SygusForwardUnwinding::needs_synthesis(const std::string& node) const{
+    return m_node_info_map.at(node).needs_synthesis;
+}
+
+std::string SygusForwardUnwinding::get_body_pred_app(const Expr& rule) const{
+    std::stringstream ss;
+    ss << rule;
+    return "body pred app of " + ss.str(); //todo: implement
+}
+
+Expr SygusForwardUnwinding::construct_rule(const ExprVector& body_args, const Expr& head) const{
+    return mk<IMPL>(mknary<AND>(body_args), head);
+}
+
+bool SygusForwardUnwinding::is_end(const std::string& node) const{
+    return m_node_info_map.at(node).out_degree == 0;
+}
+
+bool SygusForwardUnwinding::is_unseen(const std::string& node) const{
+    return m_node_info_map.at(node).nodeStatus == graphNodeInfo_t::unseen;
+}
+
+Expr SygusForwardUnwinding::get_head(const Expr& rule) const{
+    assert(isOpX<IMPL>(rule));
+    return rule->arg(1);
+}
+
+void SygusForwardUnwinding::print_sygus_constraint(std::ostream& outs, const Expr& constraint) const{
+    // TODO: convert to sygus format
+    outs << constraint << "\n";
+}
 
 } // end namespace seahorn

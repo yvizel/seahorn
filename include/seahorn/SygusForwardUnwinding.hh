@@ -57,10 +57,22 @@ public:
 	void mark_nodes_for_synthesis();
 	void print_graph() const;
 	std::string get_root() const;
+	void print_constraints(std::ostream& os);
 
 private:
 	void mark_nodes_for_synthesis_aux(const std::string& node);
+	void print_constraints_aux(std::ostream& outs, ExprVector& body_args, const std::string& src);
+	void print_sygus_constraint(std::ostream& outs, const Expr& constraint) const;
+	Expr construct_rule(const ExprVector& body_args, const Expr& head) const;
 	void mark_all_unseen();
+	bool needs_synthesis(const std::string& node) const;
+	std::string get_body_pred_app(const Expr& rule) const;
+	bool is_end(const std::string& node) const;
+	bool is_unseen(const std::string& node) const;
+	Expr get_head(const Expr& rule) const;
+	void get_body_args(const Expr& rule, ExprVector& res) const;
+	void get_body_args_without_pred(const Expr& rule, ExprVector& res, const std::string& pred) const;
+	void flatten_and_expr(const Expr& expr, ExprVector& res) const;
 };
 }
 
