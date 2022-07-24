@@ -132,15 +132,15 @@ void SygusForwardUnwinding::mark_all_unseen(){
     }
 }
 
-void SygusForwardUnwinding::print_constraints(std::ostream& os){
-    os << "printing constraints:\n";
+void SygusForwardUnwinding::collect_constraints(ExprVector& res){
+    std::cout << "collecting constraints:\n";
     ExprVector args;
     mark_all_unseen();
-    print_constraints_aux(os, args, get_root());
+    collect_constraints_aux(res, args, get_root());
     mark_all_unseen();
 }
 
-void SygusForwardUnwinding::print_constraints_aux(std::ostream& outs, ExprVector& body_args, const std::string& src){
+void SygusForwardUnwinding::collect_constraints_aux(ExprVector& res, ExprVector& body_args, const std::string& src){
     m_node_info_map.at(src).nodeStatus = graphNodeInfo_t::visiting;
     size_t old_args_size = body_args.size();
     // if (needs_synthesis(src)) {
@@ -164,15 +164,16 @@ void SygusForwardUnwinding::print_constraints_aux(std::ostream& outs, ExprVector
                 head = mk<FALSE>(edge.rule->efac());
             }
             Expr constraint_e = construct_rule(body_args, head);
-            print_sygus_constraint(outs, constraint_e);
+            res.push_back(constraint_e);
+            // print_sygus_constraint(outs, constraint_e);
         }
         // std::cout << "dst is: " << dst << " is end: " << is_end(dst) << " is unseen: " << is_unseen(dst) << " needs syntheis: " << needs_synthesis(dst) << "\n";
         if (!is_end(dst) && (is_unseen(dst) || !needs_synthesis(dst))){
             if (needs_synthesis(dst)){
                 ExprVector empty;
-                print_constraints_aux(outs, empty, dst);
+                collect_constraints_aux(res, empty, dst);
             } else {
-                print_constraints_aux(outs, body_args, dst);
+                collect_constraints_aux(res, body_args, dst);
             }
         }
         body_args.resize(old_args_size);
@@ -244,7 +245,7 @@ Expr SygusForwardUnwinding::get_head(const Expr& rule) const{
 }
 
 void SygusForwardUnwinding::print_sygus_constraint(std::ostream& outs, const Expr& constraint) const{
-    // TODO: convert to sygus format
+    // TODO: redundant function?
     outs << constraint << "\n";
 }
 

@@ -540,7 +540,8 @@ void HornifyConditionSynthesis::runOnFunction(Function &F) {
   std::cout << "root is: " << unwd_sygus.get_root() << "\n";
   unwd_sygus.mark_nodes_for_synthesis();
   unwd_sygus.print_graph();
-  unwd_sygus.print_constraints(std::cout);
+  ExprVector constraints;
+  unwd_sygus.collect_constraints(constraints);
   std::cout << "declarations of synthesis predicates: ";
   for (const auto& fdecl: unwd_sygus.m_pred_declarations){
     std::cout << fdecl << "\n";
