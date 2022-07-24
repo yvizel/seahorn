@@ -109,6 +109,12 @@ void SygusForwardUnwinding::mark_nodes_for_synthesis_aux(const std::string& node
         std::string child = edge.targetNode;
         if (m_node_info_map.at(child).nodeStatus == graphNodeInfo_t::visiting){ // back edge
             m_node_info_map.at(child).needs_synthesis = true;
+            assert(edge.rule->arity() == 2);
+            Expr child_fapp = edge.rule->arg(1);
+            assert(bind::fname(child_fapp));
+            Expr child_fdecl = bind::fname(child_fapp);
+            std::cout << "fdecl of synthesis predicate: " << child_fdecl << "\n";
+            m_pred_declarations.push_back(child_fdecl);
             std::cout << "marking node " << child << " for synthesis\n";
             continue;
         } else if (m_node_info_map.at(child).nodeStatus == graphNodeInfo_t::done || m_ruleGraph.count(child)==0 ) {

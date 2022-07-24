@@ -58,6 +58,7 @@ public:
 	void print_graph() const;
 	std::string get_root() const;
 	void print_constraints(std::ostream& os);
+	ExprVector m_pred_declarations;
 
 private:
 	void mark_nodes_for_synthesis_aux(const std::string& node);

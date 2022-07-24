@@ -541,6 +541,10 @@ void HornifyConditionSynthesis::runOnFunction(Function &F) {
   unwd_sygus.mark_nodes_for_synthesis();
   unwd_sygus.print_graph();
   unwd_sygus.print_constraints(std::cout);
+  std::cout << "declarations of synthesis predicates: ";
+  for (const auto& fdecl: unwd_sygus.m_pred_declarations){
+    std::cout << fdecl << "\n";
+  }
 
   m_db.m_queries.clear();
   m_db.m_vars.clear();
