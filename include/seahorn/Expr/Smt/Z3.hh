@@ -758,8 +758,12 @@ public:
   }
 
   std::string toForwardSyGuS(){
+    return toForwardSyGuS(m_rels, getVars(), m_rules, m_queries);
+  }
+
+  std::string toForwardSyGuS(const ExprVector& relations, const ExprVector& variables, const ExprVector& rules, const ExprVector& queries){
 	  std::stringstream sstream;
-		for (Expr decl : m_rels) {
+		for (Expr decl : relations) {
 			sstream << "(synth-fun " << *bind::fname(decl) << " (";
 			for (unsigned i = 0; i < bind::domainSz(decl); i++) {
 				Expr ty = bind::domainTy(decl, i);
@@ -802,7 +806,7 @@ public:
 			sstream << ") Bool\n)\n";
 		}
 
-		for (const Expr &v : getVars()) {
+		for (const Expr &v : variables) {
 		      if (!bind::IsConst()(v)) {
 		        std::cerr << "FP var not a constant: " << *v << "\n";
 		      }
@@ -837,11 +841,11 @@ public:
 		      sstream << ")\n";
 		    }
 
-		for (Expr &rule : m_rules){
+		for (const Expr& rule : rules){
 		  sstream << "(constraint " << z3.toSmtLib(rule) << ")\n";
 		}
 
-		for (auto q : m_queries)
+		for (const auto& q : queries)
 		  sstream << "(constraint (=> " << z3.toSmtLib(q) << " false))\n";
 
 		sstream << "(check-synth)";

@@ -465,6 +465,7 @@ void HornifyConditionSynthesis::runOnFunction(Function &F) {
   reverseDB();
 
   std::ofstream myfile("names.txt"); //clear names file if exists
+  ExprVector condition_predicates;
   for (auto & br : branches) {
     Expr tr1 = extractTransitionRelation(br._ruleThen, m_db)->last();
     Expr tr2 = extractTransitionRelation(br._ruleElse, m_db)->last();
@@ -475,6 +476,8 @@ void HornifyConditionSynthesis::runOnFunction(Function &F) {
         bind::fname(br._src),
         br._ruleThen.head(),
         br._ruleElse.head());
+
+    condition_predicates.push_back(bind::name(join));
 
     HornRule joinRule(br._ruleThen.vars(),
                       br._ruleThen.body()->left(),
@@ -546,6 +549,22 @@ void HornifyConditionSynthesis::runOnFunction(Function &F) {
   for (const auto& fdecl: unwd_sygus.m_pred_declarations){
     std::cout << fdecl << "\n";
   }
+  std::cout << "declarations of condition predicates: ";
+  for (const auto& fdecl: condition_predicates){
+    std::cout << fdecl << "\n";
+  }
+  std::cout << "constraints: ";
+  for (const auto& rule: constraints){
+    std::cout << rule << "\n";
+  }
+  std::string fileName_sygus_unwd = "nonhorn_unwinding.sl";
+  std::ofstream nonhornSygusUnwinding(fileName_sygus_unwd);
+  ExprVector queries; // empty. queries already inside rules
+  condition_predicates.insert( condition_predicates.end(), unwd_sygus.m_pred_declarations.begin(), unwd_sygus.m_pred_declarations.end() );
+  nonhornSygusUnwinding << fp_nonhorn.toForwardSyGuS(condition_predicates, fp_nonhorn.getVars(), constraints, queries) << "\n";
+  nonhornSygusUnwinding.close();
+  
+  outs() << "Printed SyGuS unwinding file\n";
 
   m_db.m_queries.clear();
   m_db.m_vars.clear();
