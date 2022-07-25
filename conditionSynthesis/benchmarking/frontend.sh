@@ -24,7 +24,7 @@ if docker run --rm -v "$(realpath $7)":/host seahorn/seahorn-builder:bionic-llvm
     mkdir -p "$3/${file_without_prefix%/*}"
     mv "$7/$(basename -- $1).fwd.sl" "$3/${file_without_prefix%%.*}.fwd.sl"
     mkdir -p "$6/${file_without_prefix%/*}"
-    mv "$7/$(basename -- $1).unwd.sl" "$3/${file_without_prefix%%.*}.unwd.sl"
+    mv "$7/$(basename -- $1).unwd.sl" "$6/${file_without_prefix%%.*}.unwd.sl"
     mkdir -p "$4/${file_without_prefix%/*}"
     mv "$7/$(basename -- $1).names.txt" "$4/${file_without_prefix%%.*}.names.txt"
     mkdir -p "$5/${file_without_prefix%/*}"
