@@ -222,9 +222,10 @@ bool SygusForwardUnwinding::needs_synthesis(const std::string& node) const{
 }
 
 std::string SygusForwardUnwinding::get_body_pred_app(const Expr& rule) const{
+    // todo: redundant function?
     std::stringstream ss;
     ss << rule;
-    return "body pred app of " + ss.str(); //todo: implement
+    return "body pred app of " + ss.str(); 
 }
 
 Expr SygusForwardUnwinding::construct_rule(const ExprVector& body_args, const Expr& head) const{
