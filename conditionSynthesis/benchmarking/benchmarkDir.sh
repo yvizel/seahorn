@@ -69,4 +69,8 @@ doForFile() {
 }
 
 export -f doForFile
-ls "$1"/**/*.c | parallel -j+0 --eta doForFile "$@" {} "$new_dir_name"
+if [ -z ${5+x} ]; then
+  ls "$1"/**/*.c | parallel -j+0 --eta doForFile "$@" "fake" {} "$new_dir_name"
+else
+  ls "$1"/**/*.c | parallel -j+0 --eta doForFile "$@" {} "$new_dir_name"
+fi
