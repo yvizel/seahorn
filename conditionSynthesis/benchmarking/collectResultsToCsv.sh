@@ -6,8 +6,8 @@
 
 # Create under $1 a csv file in the following format:
 # title: "experiment_name: <name of $1 dir>", then settings, then name of src dir ($2).
-# column titles: filename (row for each .c in $2), expected_result, backward_exists (yes/no), forward_exists(yes/no), 
-# boundaries_exists(yes/no), num_conditions, num_loops
+# column titles: filename (row for each .c in $2), expected_result, backward_exists (yes/no), 
+# forward_exists(yes/no), forward_unwd_exists(yes/no), boundaries_exists(yes/no), num_conditions, num_loops
 # for each tool in the comdline: <tool_name>-res (sat/unsat/timeout) <tool_name>-time (time in s).
 
 if [ ! -d "$1" ]; then
@@ -25,7 +25,7 @@ for toolname in "${@:3}"; do
 done
 
 csv="$1/results_$(basename -- "$1").csv"
-echo -n "filename,expected_result,backward_exists,forward_exists,boundaries_exists,num_conditions,num_loops" > "$csv"
+echo -n "filename,expected_result,backward_exists,forward_exists,forward_unwd_exists,boundaries_exists,num_conditions,num_loops" > "$csv"
 for toolname in "${@:3}"; do
   if [ -d "$1/$toolname" ] ; then
     echo -n ",$toolname"_res >>"$csv"
@@ -47,6 +47,7 @@ for file in "$2"/**/*.c; do
   echo -n "$expected_result," >>"$csv" # expected_result
   [ -f "$1/reverseSmt2/${file_without_prefix%%.*}.reverse.smt2" ] && echo -n "yes," >>"$csv" || echo -n "no," >>"$csv" # backward_exists
   [ -f "$1/forwardSl/${file_without_prefix%%.*}.fwd.sl" ] && echo -n "yes," >>"$csv" || echo -n "no," >>"$csv"         # forward_exists
+  [ -f "$1/unwindingSl/${file_without_prefix%%.*}.unwd.sl" ] && echo -n "yes," >>"$csv" || echo -n "no," >>"$csv"         # forward_unwd_exists
   [ -f "$1/boundariesSl/${file_without_prefix%%.*}.boundaries.sl" ] && echo -n "yes," >>"$csv" || echo -n "no," >>"$csv" # boundaries_exists
   [ -f "$1/names/${file_without_prefix%%.*}.names.txt" ] && grep "condition location:" "$1/names/${file_without_prefix%%.*}.names.txt" | wc -l | tr -d '\n' >>"$csv" || echo -n "error" >>"$csv"         # #conditions (after inlining)
   
