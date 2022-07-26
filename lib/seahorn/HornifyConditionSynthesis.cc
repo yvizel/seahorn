@@ -529,10 +529,20 @@ void HornifyConditionSynthesis::runOnFunction(Function &F) {
 
   outs() << "Printed Nonhorn file\n";
 
+  // load grammar file
+  std::ifstream grammar_stream;
+  std::string grammar_file_name = "SygusGrammar.txt";
+  grammar_stream.open(grammar_file_name);
+  if (!grammar_stream.is_open()){
+    std::cout << "ERROR: COULD NOT OPEN GRAMMAR FILE: " << grammar_file_name << "\n";
+    exit(1);
+  }
+
   std::string fileName_sygus = "nonhorn.sl";
   std::ofstream nonhornSygus(fileName_sygus);
-  nonhornSygus << fp_nonhorn.toForwardSyGuS() << "\n";
+  nonhornSygus << fp_nonhorn.toForwardSyGuS("_Cond", grammar_stream) << "\n";
   nonhornSygus.close();
+  grammar_stream.seekg(0);
 
   outs() << "Printed SyGuS non-horn file\n";
 
@@ -561,8 +571,9 @@ void HornifyConditionSynthesis::runOnFunction(Function &F) {
   std::ofstream nonhornSygusUnwinding(fileName_sygus_unwd);
   ExprVector queries; // empty. queries already inside rules
   condition_predicates.insert( condition_predicates.end(), unwd_sygus.m_pred_declarations.begin(), unwd_sygus.m_pred_declarations.end() );
-  nonhornSygusUnwinding << fp_nonhorn.toForwardSyGuS(condition_predicates, fp_nonhorn.getVars(), constraints, queries) << "\n";
+  nonhornSygusUnwinding << fp_nonhorn.toForwardSyGuS(condition_predicates, fp_nonhorn.getVars(), constraints, queries, "_Cond", grammar_stream) << "\n";
   nonhornSygusUnwinding.close();
+  grammar_stream.close();
   
   outs() << "Printed SyGuS unwinding file\n";
 

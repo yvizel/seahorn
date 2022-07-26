@@ -757,11 +757,11 @@ public:
     return m_vars;
   }
 
-  std::string toForwardSyGuS(){
-    return toForwardSyGuS(m_rels, getVars(), m_rules, m_queries);
+  std::string toForwardSyGuS(const std::string& condition_ending, std::ifstream& grammar_stream){
+    return toForwardSyGuS(m_rels, getVars(), m_rules, m_queries, condition_ending, grammar_stream);
   }
 
-  std::string toForwardSyGuS(const ExprVector& relations, const ExprVector& variables, const ExprVector& rules, const ExprVector& queries){
+  std::string toForwardSyGuS(const ExprVector& relations, const ExprVector& variables, const ExprVector& rules, const ExprVector& queries, const std::string& condition_ending, std::ifstream& grammar_stream){
 	  std::stringstream sstream;
 		for (Expr decl : relations) {
 			sstream << "(synth-fun " << *bind::fname(decl) << " (";
@@ -803,7 +803,15 @@ public:
 					llvm::errs() << "u3: " << *ty << "\n";
 				}
 			}
-			sstream << ") Bool\n)\n";
+			sstream << ") Bool\n";
+      std::stringstream pred_name;
+      pred_name << *bind::fname(decl);
+      if (pred_name.str().length() >= condition_ending.length() && 0 == pred_name.str().compare(pred_name.str().length()-condition_ending.length(), condition_ending.length(), condition_ending)){
+        if (grammar_stream.is_open()){
+          sstream << grammar_stream.rdbuf();
+        }
+      }
+      sstream << ")\n";
 		}
 
 		for (const Expr &v : variables) {
