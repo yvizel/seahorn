@@ -559,24 +559,24 @@ void HornifyConditionSynthesis::runOnFunction(Function &F) {
   SygusForwardUnwinding unwd_sygus(fp_nonhorn);
   // std::cout << unwd_sygus << "\n";
   unwd_sygus.build_graph_from_rules();
-  unwd_sygus.print_graph();
-  std::cout << "root is: " << unwd_sygus.get_root() << "\n";
+  // unwd_sygus.print_graph();
+  // std::cout << "root is: " << unwd_sygus.get_root() << "\n";
   unwd_sygus.mark_nodes_for_synthesis();
-  unwd_sygus.print_graph();
+  // unwd_sygus.print_graph();
   ExprVector constraints;
   unwd_sygus.collect_constraints(constraints);
-  std::cout << "declarations of synthesis predicates: ";
-  for (const auto& fdecl: unwd_sygus.m_pred_declarations){
-    std::cout << fdecl << "\n";
-  }
-  std::cout << "declarations of condition predicates: ";
-  for (const auto& fdecl: condition_predicates){
-    std::cout << fdecl << "\n";
-  }
-  std::cout << "constraints: ";
-  for (const auto& rule: constraints){
-    std::cout << rule << "\n";
-  }
+  // std::cout << "declarations of synthesis predicates: ";
+  // for (const auto& fdecl: unwd_sygus.m_pred_declarations){
+  //   std::cout << fdecl << "\n";
+  // }
+  // std::cout << "declarations of condition predicates: ";
+  // for (const auto& fdecl: condition_predicates){
+  //   std::cout << fdecl << "\n";
+  // }
+  // std::cout << "constraints: ";
+  // for (const auto& rule: constraints){
+  //   std::cout << rule << "\n";
+  // }
   std::string fileName_sygus_unwd = "nonhorn_unwinding.sl";
   std::ofstream nonhornSygusUnwinding(fileName_sygus_unwd);
   ExprVector queries; // empty. queries already inside rules
