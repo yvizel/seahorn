@@ -2,6 +2,11 @@
 #include "seahorn/Support/Stats.hh"
 #include "seahorn/Support/SeaDebug.h"
 #include "seahorn/SygusForwardUnwinding.hh"
+#include "llvm/Support/CommandLine.h"
+
+static llvm::cl::opt<bool> UseGrammar("horn-use-grammar",
+                                     cl::init(false),
+                                     cl::desc("Use grammar file for SyGuS generation. Grammar file expected in SygusGrammar.txt"));
 
 namespace seahorn {
 
@@ -530,19 +535,24 @@ void HornifyConditionSynthesis::runOnFunction(Function &F) {
   outs() << "Printed Nonhorn file\n";
 
   // load grammar file
+  if (UseGrammar) std::cout << "Reading grammar for SyGuS from file SygusGrammar.txt\n";
   std::ifstream grammar_stream;
   std::string grammar_file_name = "SygusGrammar.txt";
-  grammar_stream.open(grammar_file_name);
-  if (!grammar_stream.is_open()){
-    std::cout << "ERROR: COULD NOT OPEN GRAMMAR FILE: " << grammar_file_name << "\n";
-    exit(1);
+  if (UseGrammar){
+    grammar_stream.open(grammar_file_name);
+    if (!grammar_stream.is_open()){
+      std::cout << "ERROR: COULD NOT OPEN GRAMMAR FILE: " << grammar_file_name << "\n";
+      exit(1);
+    }
   }
 
   std::string fileName_sygus = "nonhorn.sl";
   std::ofstream nonhornSygus(fileName_sygus);
   nonhornSygus << fp_nonhorn.toForwardSyGuS("_Cond", grammar_stream) << "\n";
-  nonhornSygus.close();
-  grammar_stream.seekg(0);
+  if (UseGrammar){
+    nonhornSygus.close();
+    grammar_stream.seekg(0);
+  }
 
   outs() << "Printed SyGuS non-horn file\n";
 
@@ -573,7 +583,9 @@ void HornifyConditionSynthesis::runOnFunction(Function &F) {
   condition_predicates.insert( condition_predicates.end(), unwd_sygus.m_pred_declarations.begin(), unwd_sygus.m_pred_declarations.end() );
   nonhornSygusUnwinding << fp_nonhorn.toForwardSyGuS(condition_predicates, fp_nonhorn.getVars(), constraints, queries, "_Cond", grammar_stream) << "\n";
   nonhornSygusUnwinding.close();
-  grammar_stream.close();
+  if (UseGrammar){
+    grammar_stream.close();
+  }
   
   outs() << "Printed SyGuS unwinding file\n";
 
