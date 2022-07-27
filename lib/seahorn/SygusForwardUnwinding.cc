@@ -3,12 +3,6 @@
 
 namespace seahorn{
 
-std::ostream& operator<<(std::ostream& os, SygusForwardUnwinding& syg){
-    os << "this is super great!\n";
-    os << syg.m_fp;
-    return os;
-}
-
 inline bool has_ending (std::string const &fullString, std::string const &ending) {
     if (fullString.length() >= ending.length()) {
         return (0 == fullString.compare (fullString.length() - ending.length(), ending.length(), ending));
@@ -36,11 +30,11 @@ void SygusForwardUnwinding::build_graph_from_rules(){
             ss << body_predicate_name;
             std::string body_predicate_string = ss.str();
             if (has_ending(body_predicate_string, m_conditionEnding)){
-                std::cout << "found condition ending: " << body_predicate_string << "\n";
+                // std::cout << "found condition ending: " << body_predicate_string << "\n";
                 body_predicate_string = body_predicate_string.substr(0, body_predicate_string.size() - m_conditionEnding.size());
             }
-            std::cout << "original rule: " << rule << "\n";
-            std::cout << body_predicate_string << "--->" << *head_predicate_name << "\n";
+            // std::cout << "original rule: " << rule << "\n";
+            // std::cout << body_predicate_string << "--->" << *head_predicate_name << "\n";
             if (m_node_info_map.count(body_predicate_string)){
                 // std::cout << "body exists!!!!!!\n";
                 m_node_info_map.at(body_predicate_string).out_degree++;
@@ -69,7 +63,7 @@ void SygusForwardUnwinding::build_graph_from_rules(){
             m_ruleGraph[body_predicate_string].emplace_back(rule, head_predicate_string);
         }
     }
-    std::cout << "\n";
+    // std::cout << "\n";
 }
 
 void SygusForwardUnwinding::print_graph() const{
@@ -113,9 +107,9 @@ void SygusForwardUnwinding::mark_nodes_for_synthesis_aux(const std::string& node
             Expr child_fapp = edge.rule->arg(1);
             assert(bind::fname(child_fapp));
             Expr child_fdecl = bind::fname(child_fapp);
-            std::cout << "fdecl of synthesis predicate: " << child_fdecl << "\n";
+            // std::cout << "fdecl of synthesis predicate: " << child_fdecl << "\n";
             m_pred_declarations.push_back(child_fdecl);
-            std::cout << "marking node " << child << " for synthesis\n";
+            // std::cout << "marking node " << child << " for synthesis\n";
             continue;
         } else if (m_node_info_map.at(child).nodeStatus == graphNodeInfo_t::done || m_ruleGraph.count(child)==0 ) {
             continue;
@@ -133,7 +127,7 @@ void SygusForwardUnwinding::mark_all_unseen(){
 }
 
 void SygusForwardUnwinding::collect_constraints(ExprVector& res){
-    std::cout << "collecting constraints:\n";
+    // std::cout << "collecting constraints:\n";
     ExprVector args;
     mark_all_unseen();
     collect_constraints_aux(res, args, get_root());
