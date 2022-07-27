@@ -21,6 +21,10 @@ if [ -z "${1##*/}" ]; then
     echo "please remove trailing slash from input directory name."
     exit
 fi
+if [ ! -z "$5" ] && [ ! -f "$5" ]; then
+  echo "grammar file not found: $5"
+  exit
+fi
 new_dir_name="$2/${1##*/}_$(date '+%d-%m-%H-%M-%S')"
 mkdir "$new_dir_name" || exit 1
 
@@ -40,18 +44,23 @@ doForFile() {
   shopt -s globstar
   file_relative_to_dir="${6#"$1"}"
   file_relative_to_dir_no_suffix="${file_relative_to_dir%%.*}"
-  if ./frontend.sh "$6" "$7/reverseSmt2" "$7/forwardSl" "$7/names" "$7/loops" "$7/unwindingSl" "$1"; then
+  if [ "$5" == "fake" ]; then
+    ./frontend.sh "$6" "$7/reverseSmt2" "$7/forwardSl" "$7/names" "$7/loops" "$7/unwindingSl" "$1"
+  else
+    ./frontend.sh "$6" "$7/reverseSmt2" "$7/forwardSl" "$7/names" "$7/loops" "$7/unwindingSl" "$1" "$5"
+  fi
+  if [[ $? == 0 ]]; then
     { [[ "$3" == "cosyn" ]] || [[ "$3" == "all" ]] ;} && ./runCosyn.sh "$7/reverseSmt2/$file_relative_to_dir_no_suffix.reverse.smt2" "$7/cosyn" "$4" "$7/reverseSmt2/"
     forwardFile="$7/forwardSl/$file_relative_to_dir_no_suffix.fwd.sl"
-    [[ -f "$5" ]] && echo "adding grammar from file $5 to file $forwardFile" && \
-        add_grammar_to_sygus/addGrammar.sh "$forwardFile" "$5" "$7/forwardSl/$file_relative_to_dir_no_suffix.fwd.grammar.sl" && \
-        forwardFile="$7/forwardSl/$file_relative_to_dir_no_suffix.fwd.grammar.sl"
+    # [[ -f "$5" ]] && echo "adding grammar from file $5 to file $forwardFile" && \
+    #     add_grammar_to_sygus/addGrammar.sh "$forwardFile" "$5" "$7/forwardSl/$file_relative_to_dir_no_suffix.fwd.grammar.sl" && \
+    #     forwardFile="$7/forwardSl/$file_relative_to_dir_no_suffix.fwd.grammar.sl"
     { [[ "$3" == "cvc5old" ]] || [[ "$3" == "all" ]] ;} &&  ./runCVC5.sh "$forwardFile" "$7/cvc5old" "$4" "$7/forwardSl/" && \
             rename -d 's/\.cvc5\./\.cvc5old\./' "$7/cvc5old"/**/*
     forwardUnwindingFile="$7/unwindingSl/$file_relative_to_dir_no_suffix.unwd.sl"
-    [[ -f "$5" ]] && echo "adding grammar from file $5 to file $forwardUnwindingFile" && \
-        add_grammar_to_sygus/addGrammar.sh "$forwardUnwindingFile" "$5" "$7/unwindingSl/$file_relative_to_dir_no_suffix.unwd.grammar.sl" && \
-        forwardUnwindingFile="$7/unwindingSl/$file_relative_to_dir_no_suffix.unwd.grammar.sl"
+    # [[ -f "$5" ]] && echo "adding grammar from file $5 to file $forwardUnwindingFile" && \
+    #     add_grammar_to_sygus/addGrammar.sh "$forwardUnwindingFile" "$5" "$7/unwindingSl/$file_relative_to_dir_no_suffix.unwd.grammar.sl" && \
+    #     forwardUnwindingFile="$7/unwindingSl/$file_relative_to_dir_no_suffix.unwd.grammar.sl"
     { [[ "$3" == "cvc5" ]] || [[ "$3" == "all" ]] ;} &&  ./runCVC5.sh "$forwardUnwindingFile" "$7/cvc5" "$4" "$7/unwindingSl/"
   fi
   { [[ "$3" == "sketch" ]] || [[ "$3" == "all" ]] ;} &&  ./runSketch.sh "$6" "$7/sketch" "$4" "$1"
