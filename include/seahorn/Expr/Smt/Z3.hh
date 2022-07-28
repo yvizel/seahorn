@@ -808,6 +808,7 @@ public:
       pred_name << *bind::fname(decl);
       if (pred_name.str().length() >= condition_ending.length() && 0 == pred_name.str().compare(pred_name.str().length()-condition_ending.length(), condition_ending.length(), condition_ending)){
         if (grammar_stream.is_open()){
+          grammar_stream.seekg(0);
           sstream << grammar_stream.rdbuf();
         }
       }

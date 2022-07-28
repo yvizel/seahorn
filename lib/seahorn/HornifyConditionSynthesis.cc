@@ -549,10 +549,7 @@ void HornifyConditionSynthesis::runOnFunction(Function &F) {
   std::string fileName_sygus = "nonhorn.sl";
   std::ofstream nonhornSygus(fileName_sygus);
   nonhornSygus << fp_nonhorn.toForwardSyGuS("_Cond", grammar_stream) << "\n";
-  if (UseGrammar){
-    nonhornSygus.close();
-    grammar_stream.seekg(0);
-  }
+  nonhornSygus.close();
 
   outs() << "Printed SyGuS non-horn file\n";
 
