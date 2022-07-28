@@ -64,7 +64,7 @@ for file in "$2"/**/*.c; do
       beginpattern="$1/$toolname/${file_without_prefix%%.*}.$toolname"
       { [ -f "$beginpattern.res" ] && cat "$beginpattern.res" | head -n 1 | tr -d '\n' || echo -n "error"; } >> "$csv"
       echo -n "," >> "$csv"
-      { [ -f "$beginpattern.time" ] && grep real "$beginpattern.time" | tr -d '\n' | tr -d real'\t' || echo -n "error"; } >> "$csv"
+      { [ -f "$beginpattern.time" ] && cat "$beginpattern.time" | tr -d '\n' || echo -n "error"; } >> "$csv"
       echo -n "," >> "$csv"
       # if toolname is sketch and sketch.err exists, then print sketch.err without newlines into file
       if [ "$toolname" == "sketch" ] && [ -f "$beginpattern.err" ]; then

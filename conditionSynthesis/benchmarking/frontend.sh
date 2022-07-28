@@ -24,7 +24,7 @@ if docker run -d -t -v "$(realpath $7)":/host --name "seahorn_$filehash" seahorn
         docker exec "seahorn_$filehash" chmod 777 '/seahorn/SygusGrammar.txt'
     fi
     if docker exec "seahorn_$filehash" /bin/bash -c \
-    "time sea pf "/host/$file_without_prefix" --inline -o0 --keep-temp --temp-dir=/tmp/repair/ --step=large --horn-cond-synthesis --horn-synth-cps=h1 --horn-read-file --horn-avoid-synthesis ${8:+--horn-use-grammar} \
+    "TIMEFORMAT=%R && time sea pf "/host/$file_without_prefix" --inline -o0 --keep-temp --temp-dir=/tmp/repair/ --step=large --horn-cond-synthesis --horn-synth-cps=h1 --horn-read-file --horn-avoid-synthesis ${8:+--horn-use-grammar} \
     && cp reverse.smt2 '/host/$(basename -- $1).reverse.smt2' && chmod 777 '/host/$(basename -- $1).reverse.smt2'\
     && cp nonhorn.sl '/host/$(basename -- $1).fwd.sl' && chmod 777 '/host/$(basename -- $1).fwd.sl'\
     && cp names.txt '/host/$(basename -- $1).names.txt' && chmod 777 '/host/$(basename -- $1).names.txt'\

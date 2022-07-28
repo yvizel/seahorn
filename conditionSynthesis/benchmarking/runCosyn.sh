@@ -12,7 +12,7 @@ echo "running CoSyn on file: $1"
 file_without_prefix="${1#$4}"
 mkdir -p "$2/$(dirname -- $file_without_prefix)"
 docker run --rm -v "$(realpath $4)":/host seahorn/seahorn-builder:bionic-llvm10 \
-/bin/bash -c "{ time z3 '/host/$file_without_prefix' -T:$3 -v:1 fp.xform.slice=false fp.xform.inline_linear=false fp.xform.inline_eager=false > '/host/${file_without_prefix%%.*}.cosyn.res' 2> '/host/${file_without_prefix%%.*}.cosyn.out' ; } 2> '/host/${file_without_prefix%%.*}.cosyn.time' && \
+/bin/bash -c "{ TIMEFORMAT=%R && time z3 '/host/$file_without_prefix' -T:$3 -v:1 fp.xform.slice=false fp.xform.inline_linear=false fp.xform.inline_eager=false > '/host/${file_without_prefix%%.*}.cosyn.res' 2> '/host/${file_without_prefix%%.*}.cosyn.out' ; } 2> '/host/${file_without_prefix%%.*}.cosyn.time' && \
 chmod a+w '/host/${file_without_prefix%%.*}.cosyn.time' '/host/${file_without_prefix%%.*}.cosyn.res' '/host/${file_without_prefix%%.*}.cosyn.out'"
 mv "$4/${file_without_prefix%%.*}.cosyn.res" "$2/${file_without_prefix%%.*}.cosyn.res" #2>/dev/null
 mv "$4/${file_without_prefix%%.*}.cosyn.out" "$2/${file_without_prefix%%.*}.cosyn.out" #2>/dev/null
