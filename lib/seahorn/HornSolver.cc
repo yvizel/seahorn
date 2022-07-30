@@ -140,52 +140,51 @@ bool HornSolver::runOnModule(Module &M) {
   auto &db = hm.getHornClauseDB();
 
   std::string branchPredLine;
-  std::string branchPredName;
+  std::map<std::string,std::pair<std::string,std::string>> branchToThenElseNames;
   std::string thenPredLine;
-  std::string thenPredName;
   std::string elsePredLine;
-  std::string elsePredName;
   std::ifstream namesFile("names.txt");
   if (namesFile.is_open()){
-          std::string conditionTitleLine;
+    std::string conditionTitleLine;
 	  std::getline (namesFile,conditionTitleLine);
-          while (conditionTitleLine != "") {
-            std::getline(namesFile, branchPredLine);
-            int strpos = branchPredLine.find(" ");
-            branchPredName = branchPredLine.substr(0, strpos);
-            std::getline(namesFile, thenPredLine);
-            strpos = thenPredLine.find(" ");
-            thenPredName = thenPredLine.substr(0, strpos);
-            std::getline(namesFile, elsePredLine);
-            strpos = elsePredLine.find(" ");
-            elsePredName = elsePredLine.substr(0, strpos);
-            // outs() << "branchname:" << branchPredName
-            //        << " thenname:" << thenPredName
-            //        << " elsename:" << elsePredName << "\n";
-            std::getline (namesFile,conditionTitleLine);
-          }
+    while (conditionTitleLine != "") {
+      std::getline(namesFile, branchPredLine);
+      int strpos = branchPredLine.find(" ");
+      std::string branchPredName = (branchPredLine.substr(0, strpos));
+      std::getline(namesFile, thenPredLine);
+      strpos = thenPredLine.find(" ");
+      std::string thenPredName = thenPredLine.substr(0, strpos);
+      std::getline(namesFile, elsePredLine);
+      strpos = elsePredLine.find(" ");
+      std::string elsePredName = elsePredLine.substr(0, strpos);
+      // outs() << "branchname:" << branchPredName
+      //        << " thenname:" << thenPredName
+      //        << " elsename:" << elsePredName << "\n";
+      branchToThenElseNames.insert(std::make_pair(branchPredName,std::make_pair(thenPredName,elsePredName)));
+      std::getline (namesFile,conditionTitleLine);
+    }
 	  namesFile.close();
   } else {
 	  errs() << "Unable to read from names file.\n";
   }
-  Expr branchFapp;
-  Expr thenFapp;
-  Expr elseFapp;
+  ExprVector branchFapps,thenFapps,elseFapps;
   for (seahorn::HornRule& rule : db.getRules()){
 	  std::ostringstream ss;
 	  ss << *bind::fname(bind::fname(rule.head())); // fapp -> fdecl -> fname
-	  if (ss.str() == branchPredName){
+	  if (branchToThenElseNames.count(ss.str()) > 0){
 		  // outs() << "found rule with branch as head!\n";
-		  branchFapp = rule.head();
+      const std::string& thenPredName = branchToThenElseNames.at(ss.str()).first;
+      const std::string& elsePredName = branchToThenElseNames.at(ss.str()).second;
+		  branchFapps.push_back(rule.head());
       Expr body = rule.body();
       assert(isOpX<AND>(body));
       assert(body->arity() == 2);
       Expr first = body->arg(0);
       assert(*bind::fname(bind::fname(first)) == thenPredName);
-      thenFapp = first;
+      thenFapps.push_back(first);
       Expr second = body->arg(1);
       assert(*bind::fname(bind::fname(second)) == elsePredName);
-		  elseFapp = second;
+		  elseFapps.push_back(second);
 	  } 
   }
 
@@ -232,15 +231,25 @@ bool HornSolver::runOnModule(Module &M) {
     m_result= fp.readFromFile("reverse.smt2");
     Stats::stop("Horn");
 
-    Expr branchInterp;
-    Expr thenInterp;
-    Expr elseInterp;
+    ExprVector branchInterps,thenInterps,elseInterps;
     if (!m_result){ //todo: add flag for when we want to use sygus
-        branchInterp = fp.getCoverDelta(branchFapp);
-        thenInterp = fp.getCoverDelta(thenFapp);
-        elseInterp = fp.getCoverDelta(elseFapp);
+        int num_conditions = branchFapps.size();
+        assert(thenFapps.size()==num_conditions);
+        assert(elseFapps.size()==num_conditions);
+        for (unsigned int i=0; i<num_conditions; i++){
+          std::cout << "before at for branch\n";
+          Expr branchFapp = branchFapps.at(i);
+          std::cout << "before at for then\n";
+          Expr thenFapp = thenFapps.at(i);
+          std::cout << "before at foe else\n";
+          Expr elseFapp = elseFapps.at(i);
+          branchInterps.push_back(fp.getCoverDelta(branchFapp));
+          thenInterps.push_back(fp.getCoverDelta(thenFapp));
+          elseInterps.push_back(fp.getCoverDelta(elseFapp));
+        }
     }
-    CondSynthesisSygus syg(branchFapp, thenFapp, elseFapp, branchInterp, thenInterp, elseInterp);
+    assert(branchFapps.size()>0);
+    CondSynthesisSygus syg(branchFapps, thenFapps, elseFapps, branchInterps, thenInterps, elseInterps, branchFapps.at(0)->getFactory());
     std::ofstream sygusFile("boundaries.sl");
     if (sygusFile.is_open())
     {

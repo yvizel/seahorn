@@ -21,6 +21,13 @@ class CondSynthesisSygus{
 
 	seahorn::EZ3 z3Translator; //bat
 
+	const ExprVector& branchFapps;
+	const ExprVector& thenFapps;
+	const ExprVector& elseFapps;
+	const ExprVector& branchInterps;
+	const ExprVector& thenInterps;
+	const ExprVector& elseInterps;
+
 	Expr branchFapp;
 	Expr branchFdecl;
 	Expr branchInterp;
@@ -35,6 +42,9 @@ class CondSynthesisSygus{
 	ExprPairVector elseVarsAndTypes;
 
 	std::string conditionName = "Condition";
+	int cond_index;
+
+	std::set<std::string> declaredVars;
 
 	void initializeVarsAndTypes(const Expr& fdecl, const Expr& fapp, ExprPairVector& v);
 	void dump(std::ostream& os, const std::string& s) const;
@@ -49,9 +59,11 @@ class CondSynthesisSygus{
 	void appendConstraints(std::ostream& os);
 	void appendClosure(std::ostream& os);
 	void appendVarList(std::ostream& os);
-
+	void initializeNewCondition(const Expr& branchFapp, const Expr& thenFapp, const Expr& elseFapp,
+		const Expr& branchInterp, const Expr& thenInterp, const Expr& elseInterp);
 public:
-	CondSynthesisSygus(Expr, Expr, Expr, Expr, Expr, Expr);
+	CondSynthesisSygus(const ExprVector&, const ExprVector&, const ExprVector&, 
+			const ExprVector&, const ExprVector&, const ExprVector&, ExprFactory&);
 	friend std::ostream& operator<<(std::ostream& os, CondSynthesisSygus& syg);
 };
 
