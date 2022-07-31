@@ -57,7 +57,7 @@ public:
 	void print_graph() const;
 	std::string get_root() const;
 	void collect_constraints(ExprVector& res);
-	ExprVector m_pred_declarations;
+	std::set<Expr> m_pred_declarations;
 
 private:
 	void mark_nodes_for_synthesis_aux(const std::string& node);
