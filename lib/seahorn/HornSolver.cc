@@ -236,12 +236,9 @@ bool HornSolver::runOnModule(Module &M) {
       int num_conditions = branchFapps.size();
       assert(thenFapps.size()==num_conditions);
       assert(elseFapps.size()==num_conditions);
-        for (unsigned int i=0; i<num_conditions; i++){
-          std::cout << "before at for branch\n";
+      for (int i=0; i<num_conditions; i++){
         Expr branchFapp = branchFapps.at(i);
-          std::cout << "before at for then\n";
         Expr thenFapp = thenFapps.at(i);
-          std::cout << "before at foe else\n";
         Expr elseFapp = elseFapps.at(i);
         branchInterps.push_back(fp.getCoverDelta(branchFapp));
         thenInterps.push_back(fp.getCoverDelta(thenFapp));
