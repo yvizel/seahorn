@@ -554,7 +554,7 @@ void HornifyConditionSynthesis::runOnFunction(Function &F) {
   outs() << "Printed SyGuS non-horn file\n";
 
   SygusForwardUnwinding unwd_sygus(fp_nonhorn);
-  // std::cout << unwd_sygus << "\n";
+  // std::cout << "Sygus unwinding:\n";
   unwd_sygus.build_graph_from_rules();
   // unwd_sygus.print_graph();
   // std::cout << "root is: " << unwd_sygus.get_root() << "\n";
