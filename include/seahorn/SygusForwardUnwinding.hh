@@ -51,7 +51,7 @@ class SygusForwardUnwinding{
 	node_info_map_t m_node_info_map;
 
 public:
-	SygusForwardUnwinding(ZFixedPoint<EZ3>& fp, const std::string& conditionEnding = "!_Cond") : m_fp(fp), m_conditionEnding(conditionEnding) {std::cout << "hi! I am sygus unwinding!!\n";}
+	SygusForwardUnwinding(ZFixedPoint<EZ3>& fp, const std::string& conditionEnding = "!_Cond") : m_fp(fp), m_conditionEnding(conditionEnding) {}
 	void build_graph_from_rules();
 	void mark_nodes_for_synthesis();
 	void print_graph() const;
