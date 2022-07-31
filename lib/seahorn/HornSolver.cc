@@ -233,32 +233,31 @@ bool HornSolver::runOnModule(Module &M) {
 
     ExprVector branchInterps,thenInterps,elseInterps;
     if (!m_result){ //todo: add flag for when we want to use sygus
-        int num_conditions = branchFapps.size();
-        assert(thenFapps.size()==num_conditions);
-        assert(elseFapps.size()==num_conditions);
+      int num_conditions = branchFapps.size();
+      assert(thenFapps.size()==num_conditions);
+      assert(elseFapps.size()==num_conditions);
         for (unsigned int i=0; i<num_conditions; i++){
           std::cout << "before at for branch\n";
-          Expr branchFapp = branchFapps.at(i);
+        Expr branchFapp = branchFapps.at(i);
           std::cout << "before at for then\n";
-          Expr thenFapp = thenFapps.at(i);
+        Expr thenFapp = thenFapps.at(i);
           std::cout << "before at foe else\n";
-          Expr elseFapp = elseFapps.at(i);
-          branchInterps.push_back(fp.getCoverDelta(branchFapp));
-          thenInterps.push_back(fp.getCoverDelta(thenFapp));
-          elseInterps.push_back(fp.getCoverDelta(elseFapp));
-        }
+        Expr elseFapp = elseFapps.at(i);
+        branchInterps.push_back(fp.getCoverDelta(branchFapp));
+        thenInterps.push_back(fp.getCoverDelta(thenFapp));
+        elseInterps.push_back(fp.getCoverDelta(elseFapp));
+      }
+      assert(branchFapps.size()>0);
+      CondSynthesisSygus syg(branchFapps, thenFapps, elseFapps, branchInterps, thenInterps, elseInterps, branchFapps.at(0)->getFactory());
+      std::ofstream sygusFile("boundaries.sl");
+      if (sygusFile.is_open())
+      {
+          sygusFile << syg;
+          sygusFile.close();
+          outs() << "Wrote to SyGuS file 'boundaries.sl'\n";
+      }
+      else errs() << "Unable to write to sygus file";
     }
-    assert(branchFapps.size()>0);
-    CondSynthesisSygus syg(branchFapps, thenFapps, elseFapps, branchInterps, thenInterps, elseInterps, branchFapps.at(0)->getFactory());
-    std::ofstream sygusFile("boundaries.sl");
-    if (sygusFile.is_open())
-    {
-        sygusFile << syg;
-        sygusFile.close();
-        outs() << "Wrote to SyGuS file 'boundaries.sl'\n";
-    }
-    else errs() << "Unable to write to sygus file";
-
   } else {
     db.loadZFixedPoint(fp, SkipConstraints);
 
