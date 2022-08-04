@@ -1,0 +1,4 @@
+/host/floppy_simpl3_synth_cil-2_unknown.sk:29:18: expecting an identifier, found ')'
+/host/floppy_simpl3_synth_cil-2_unknown.sk:35:5: expecting EOF, found 'return'
+    [0;31m[1659406333.0160 - ERROR] [SKETCH] Program Parse Error: could not parse program[0m
+    [0;32m[1659406333.0200 - DEBUG] [SKETCH] stack trace written to file: /root/.sketch/tmp/stacktrace.txt[0m

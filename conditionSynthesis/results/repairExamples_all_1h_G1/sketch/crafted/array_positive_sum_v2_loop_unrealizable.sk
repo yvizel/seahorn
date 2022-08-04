@@ -1,0 +1,104 @@
+void g()
+{
+}
+
+int positive_sum(int n, int[n] a)
+{
+  int sum = 0;
+  for (int i = 0; i < n; i++)
+  {
+    for (int i_shadow = 0; i_shadow < n; i_shadow++)
+    {
+      g();
+    }
+
+    if (main_generator_for_bit_13(1, n, sum, i))
+    {
+      g();
+      sum -= a[i];
+    }
+
+    for (int i_shadow = 0; i_shadow < n; i_shadow++)
+    {
+      g();
+    }
+
+  }
+
+  return sum;
+}
+
+int correct_positive_sum(int n, int[n] a)
+{
+  int sum = 0;
+  for (int i = 0; i < n; i++)
+  {
+    if (a[i] >= 0)
+    {
+      sum += a[i];
+    }
+
+  }
+
+  return sum;
+}
+
+harness int main()
+{
+  int[7] a;
+  for (int i = 0; i < 7; i++)
+  {
+    a[i] = getND();
+  }
+
+  int res1 = positive_sum(7, a);
+  int res2 = correct_positive_sum(7, a);
+  assert(res1 == res2);
+  return 0;
+}
+
+
+generator int base_generator_for_int_13(int n, int sum, int i) {
+    return {| n | sum | i |};
+}
+generator int main_generator_for_int_13(int bnd, int sk_n, int sk_sum, int sk_i) {
+    assert bnd > 0;
+    int t = ??(3);
+    int x = {| 50 | 100 | 300 | 600 | ?? | base_generator_for_int_13(sk_n, sk_sum, sk_i)  | main_generator_for_int_13(bnd - 1, sk_n, sk_sum, sk_i) |};
+    if(t == 0){return x;}
+    int y = {| 50 | 100 | 300 | 600 | ?? | base_generator_for_int_13(sk_n, sk_sum, sk_i)  | main_generator_for_int_13(bnd - 1, sk_n, sk_sum, sk_i) |};
+    if(t == 1){return x+y;}
+    if(t == 2){return x-y;}
+    if(t == 3){return x*y;}
+    if(t == 4){return x/y;}
+}
+generator bit main_generator_for_bit_13(int bnd, int sk_n, int sk_sum, int sk_i) {
+    assert bnd > 0;
+    int t = ??(6);
+    if(t==0) {
+        int y = main_generator_for_int_13(bnd, sk_n, sk_sum, sk_i);
+        int z = main_generator_for_int_13(bnd, sk_n, sk_sum, sk_i);
+        int t2 = ??(2);
+        if(t2 == 0) {return y < z;}
+        if(t2 == 1) {return y == z;}
+        if(t2 == 2) {return y <= z;}
+    }
+    bit x = {| ??(1)  | main_generator_for_bit_13(bnd - 1, sk_n, sk_sum, sk_i) |};
+    if(t == 3){return x;}
+    if(t == 4){return !x;}
+    bit y = {| ??(1)  | main_generator_for_bit_13(bnd - 1, sk_n, sk_sum, sk_i) |};
+    if(t == 5){return x&&y;}
+    if(t == 6){return x||y;}
+}
+int NDCNT=0;
+int getND_private(int i);
+int getND(){
+    //Every time this function is called
+    //it produces a new non-deterministic value.
+    return getND_private(NDCNT++);
+}
+int nd(){
+    //Every time this function is called
+    //it produces a new non-deterministic value.
+    return getND_private(NDCNT++);
+}

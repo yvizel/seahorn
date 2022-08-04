@@ -1,0 +1,4 @@
+(
+(define-fun Condition_0 ((vg1_0 Int) (vg2_0 Int)) Bool false)
+(define-fun Condition_1 ((vg1_0 Int) (vg2_0 Int)) Bool false)
+)

@@ -1,0 +1,98 @@
+void g()
+{
+}
+
+int sum(int w, int t)
+{
+  return w + t;
+}
+
+harness int main()
+{
+  int x = getND();
+  assume(x > 0);
+  int y = getND();
+  int z = getND();
+  if ((x + y) > 8)
+  {
+    z = sum(x, y);
+  }
+  else
+  {
+    z = 8;
+  }
+
+  int D = getND();
+  assume(D > 0);
+  while (1)
+  {
+    if (main_generator_for_bit_28(1, x, y, z, D))
+    {
+      g();
+      z += x;
+      x -= 3;
+    }
+
+    int pD = D - 1;
+    assume((D > pD) && (pD >= 0));
+    D = pD;
+    if (D == 0)
+      break;
+
+  }
+
+  if (z > 9)
+  {
+    g();
+    z--;
+  }
+
+  assert(z > 8);
+  return z;
+}
+
+
+generator int base_generator_for_int_28(int x, int y, int z, int D) {
+    return {| x | y | z | D |};
+}
+generator int main_generator_for_int_28(int bnd, int sk_x, int sk_y, int sk_z, int sk_D) {
+    assert bnd > 0;
+    int t = ??(3);
+    int x = {| 50 | 100 | 300 | 600 | ?? | base_generator_for_int_28(sk_x, sk_y, sk_z, sk_D)  | main_generator_for_int_28(bnd - 1, sk_x, sk_y, sk_z, sk_D) |};
+    if(t == 0){return x;}
+    int y = {| 50 | 100 | 300 | 600 | ?? | base_generator_for_int_28(sk_x, sk_y, sk_z, sk_D)  | main_generator_for_int_28(bnd - 1, sk_x, sk_y, sk_z, sk_D) |};
+    if(t == 1){return x+y;}
+    if(t == 2){return x-y;}
+    if(t == 3){return x*y;}
+    if(t == 4){return x/y;}
+}
+generator bit main_generator_for_bit_28(int bnd, int sk_x, int sk_y, int sk_z, int sk_D) {
+    assert bnd > 0;
+    int t = ??(6);
+    if(t==0) {
+        int y = main_generator_for_int_28(bnd, sk_x, sk_y, sk_z, sk_D);
+        int z = main_generator_for_int_28(bnd, sk_x, sk_y, sk_z, sk_D);
+        int t2 = ??(2);
+        if(t2 == 0) {return y < z;}
+        if(t2 == 1) {return y == z;}
+        if(t2 == 2) {return y <= z;}
+    }
+    bit x = {| ??(1)  | main_generator_for_bit_28(bnd - 1, sk_x, sk_y, sk_z, sk_D) |};
+    if(t == 3){return x;}
+    if(t == 4){return !x;}
+    bit y = {| ??(1)  | main_generator_for_bit_28(bnd - 1, sk_x, sk_y, sk_z, sk_D) |};
+    if(t == 5){return x&&y;}
+    if(t == 6){return x||y;}
+}
+int NDCNT=0;
+int getND_private(int i);
+int getND(){
+    //Every time this function is called
+    //it produces a new non-deterministic value.
+    return getND_private(NDCNT++);
+}
+int nd(){
+    //Every time this function is called
+    //it produces a new non-deterministic value.
+    return getND_private(NDCNT++);
+}

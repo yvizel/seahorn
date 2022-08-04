@@ -1,0 +1,3 @@
+(
+(define-fun Condition_0 ((vf_0 Int) (mainv%_1_0 Int)) Bool (not (>= mainv%_1_0 2)))
+)

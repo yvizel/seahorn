@@ -1,0 +1,20 @@
+{
+    "loop_count": 3,
+    "loop_lines": [
+        {
+            "column": 2,
+            "file": "../repairExamples/crafted/array_positive_sum_v1_loop_realizable.c",
+            "line": 9
+        },
+        {
+            "column": 2,
+            "file": "../repairExamples/crafted/array_positive_sum_v1_loop_realizable.c",
+            "line": 27
+        },
+        {
+            "column": 2,
+            "file": "../repairExamples/crafted/array_positive_sum_v1_loop_realizable.c",
+            "line": 37
+        }
+    ]
+}

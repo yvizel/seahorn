@@ -1,0 +1,715 @@
+(transform N7datalog13mk_coi_filterE...no-op 0s)
+(transform N7datalog25mk_interp_tail_simplifierE...10 rules 0.001s)
+(transform N7datalog27mk_quantifier_instantiationE...no-op 0s)
+(transform N7datalog8mk_scaleE...no-op 0s)
+(transform N7datalog18mk_karr_invariantsE...no-op 0s)
+(transform N7datalog14mk_array_blastE...no-op 0s)
+(transform N7datalog16mk_elim_term_iteE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...9 rules 0s)
+(transform N7datalog12mk_bit_blastE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog13mk_coi_filterE...no-op 0s)
+(transform N7datalog25mk_interp_tail_simplifierE...9 rules 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog13mk_coi_filterE...no-op 0s)
+(transform N7datalog25mk_interp_tail_simplifierE...9 rules 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+expand: query!0 (0, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 12.33 :after-memory 12.42)
+Entering level 1
+expand: query!0 (1, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (0, 1) FAR 1 U 0.00
+expand: main@entry!_BAD (0, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (1, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 12.42 :after-memory 12.53)
+Propagating: 0 1  ! 2 
+(spacer::context::propagate :time 0.00 :before-memory 12.53 :after-memory 12.62)
+Entering level 2
+expand: query!0 (2, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (1, 2) FAR 1 U 0.00
+expand: main@entry!_BAD (1, 0) FAR  w(0) 1.
+	create_child: main@entry (0, 2) FAR 1 U 0.00
+expand: main@entry (0, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (1, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (2, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 12.62 :after-memory 12.82)
+Propagating: 0 1 2  ! 3 
+(spacer::context::propagate :time 0.00 :before-memory 12.82 :after-memory 12.82)
+Entering level 3
+expand: query!0 (3, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (2, 3) FAR 1 U 0.00
+expand: main@entry!_BAD (2, 0) FAR  w(0) 1.
+	create_child: main@entry (1, 3) FAR 1 U 0.00
+expand: main@entry (1, 0) FAR  w(0) 1.
+	create_child: main@entry!_Cond (0, 3) FAR 2058 U 0.00
+expand: main@entry!_Cond (0, 0) FAR  w(0) 2058. F 0.00
+expand: main@entry (1, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (2, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (3, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 12.82 :after-memory 13.21)
+Propagating: 0 1 2 3  ! 4 
+(spacer::context::propagate :time 0.00 :before-memory 13.21 :after-memory 13.31)
+Entering level 4
+expand: query!0 (4, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (3, 4) FAR 1 U 0.00
+expand: main@entry!_BAD (3, 0) FAR  w(0) 1.
+	create_child: main@entry (2, 4) FAR 1 U 0.00
+expand: main@entry (2, 0) FAR  w(0) 1.
+	create_child: main@entry!_Cond (1, 4) FAR 2058 U 0.00
+expand: main@entry!_Cond (1, 0) FAR  w(0) 2058.
+	create_child: main@.lr.ph (0, 4) FAR 2979 U 0.00
+expand: main@.lr.ph (0, 0) FAR  w(0) 2979. F 0.00
+expand: main@entry!_Cond (1, 0) FAR  w(0) 2058. F 0.00
+expand: main@entry (2, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (3, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (4, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.01 :before-memory 13.31 :after-memory 13.80)
+Propagating: 0 1 2 3 4  ! 5 
+(spacer::context::propagate :time 0.00 :before-memory 13.80 :after-memory 13.80)
+Entering level 5
+expand: query!0 (5, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (4, 5) FAR 1 U 0.00
+expand: main@entry!_BAD (4, 0) FAR  w(0) 1.
+	create_child: main@entry (3, 5) FAR 1 U 0.00
+expand: main@entry (3, 0) FAR  w(0) 1.
+	create_child: main@entry!_Cond (2, 5) FAR 2058 U 0.00
+expand: main@entry!_Cond (2, 0) FAR  w(0) 2058.
+	create_child: main@.lr.ph (1, 5) FAR 2979 U 0.00
+expand: main@.lr.ph (1, 0) FAR  w(0) 2979.
+	create_child: main@_25 (0, 5) FAR 4182 U 0.00
+expand: main@_25 (0, 0) FAR  w(0) 4182. F 0.00
+expand: main@.lr.ph (1, 0) FAR  w(0) 2979. F 0.00
+expand: main@entry!_Cond (2, 0) FAR  w(0) 2058.
+	create_child: main@.lr.ph (1, 5) FAR 5047 U 0.00
+expand: main@.lr.ph (1, 0) FAR  w(0) 5047. F 0.00
+expand: main@entry!_Cond (2, 0) FAR  w(0) 2058
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.00
+expand: main@entry (3, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (4, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (5, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.02 :before-memory 13.80 :after-memory 14.67)
+Propagating: 0 1 2 3 4 5  ! 6 
+(spacer::context::propagate :time 0.00 :before-memory 14.67 :after-memory 14.77)
+Entering level 6
+expand: query!0 (6, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (5, 6) FAR 1 U 0.00
+expand: main@entry!_BAD (5, 0) FAR  w(0) 1.
+	create_child: main@entry (4, 6) FAR 1 U 0.00
+expand: main@entry (4, 0) FAR  w(0) 1.
+	create_child: main@entry!_Cond (3, 6) FAR 2058 U 0.00
+expand: main@entry!_Cond (3, 0) FAR  w(0) 2058.
+	create_child: main@.lr.ph (2, 6) FAR 2979 U 0.00
+expand: main@.lr.ph (2, 0) FAR  w(0) 2979.
+	create_child: main@_25 (1, 6) FAR 4182 U 0.00
+expand: main@_25 (1, 0) FAR  w(0) 4182.
+	create_child: main@_25!_Cond (0, 6) FAR 6198 U 0.00
+expand: main@_25!_Cond (0, 0) FAR  w(0) 6198. F 0.00
+expand: main@_25 (1, 0) FAR  w(0) 4182. F 0.00
+expand: main@.lr.ph (2, 0) FAR  w(0) 2979. F 0.00
+expand: main@entry!_Cond (3, 0) FAR  w(0) 2058.
+	create_child: main@.lr.ph (2, 6) FAR 5047 U 0.00
+expand: main@.lr.ph (2, 0) FAR  w(0) 5047. F 0.00
+expand: main@entry!_Cond (3, 0) FAR  w(0) 2058
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.00
+expand: main@entry (4, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (5, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (6, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.02 :before-memory 14.77 :after-memory 15.35)
+Propagating: 0 1 2 3 4 5 6  ! 7 8 
+(spacer::context::propagate :time 0.00 :before-memory 15.35 :after-memory 15.45)
+Entering level 7
+expand: query!0 (7, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 15.45 :after-memory 15.45)
+Propagating: 7  ! 8 
+(spacer::context::propagate :time 0.00 :before-memory 15.45 :after-memory 15.45)
+Entering level 8
+expand: query!0 (8, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (7, 8) FAR 1 U 0.00
+expand: main@entry!_BAD (7, 0) FAR  w(0) 1.
+	create_child: main@entry (6, 8) FAR 1 U 0.00
+expand: main@entry (6, 0) FAR  w(0) 1.
+	create_child: main@entry!_Cond (5, 8) FAR 2058 U 0.00
+expand: main@entry!_Cond (5, 0) FAR  w(0) 2058.
+	create_child: main@.lr.ph (4, 8) FAR 7731 U 0.00
+expand: main@.lr.ph (4, 0) FAR  w(0) 7731.
+	create_child: main@_25 (3, 8) FAR 7859 U 0.00
+expand: main@_25 (3, 0) FAR  w(0) 7859.
+	create_child: main@_25!_Cond (2, 8) FAR 7797 U 0.00
+expand: main@_25!_Cond (2, 0) FAR  w(0) 7797.
+	create_child: main@.lr.ph (1, 8) FAR 7987 U 0.00
+expand: main@.lr.ph (1, 0) FAR  w(0) 7987. F 0.00
+expand: main@_25!_Cond (2, 0) FAR  w(0) 7797. F 0.00
+expand: main@_25 (3, 0) FAR  w(0) 7859. F 0.00
+expand: main@.lr.ph (4, 0) FAR  w(0) 7731. F 0.01
+expand: main@entry!_Cond (5, 0) FAR  w(0) 2058.
+	create_child: main@.lr.ph (4, 8) FAR 2979 U 0.00
+expand: main@.lr.ph (4, 0) FAR  w(0) 2979.
+	create_child: main@_25 (3, 8) FAR 4182 U 0.00
+expand: main@_25 (3, 0) FAR  w(0) 4182.
+	create_child: main@_25!_Cond (2, 8) FAR 6198 U 0.00
+expand: main@_25!_Cond (2, 0) FAR  w(0) 6198. F 0.00
+expand: main@_25 (3, 0) FAR  w(0) 4182. F 0.00
+expand: main@.lr.ph (4, 0) FAR  w(0) 2979. F 0.01
+expand: main@entry!_Cond (5, 0) FAR  w(0) 2058.
+	create_child: main@.lr.ph (4, 8) FAR 9752 U 0.00
+expand: main@.lr.ph (4, 0) FAR  w(0) 9752.
+	create_child: main@_25 (3, 8) FAR 9973 U 0.00
+expand: main@_25 (3, 0) FAR  w(0) 9973.
+	create_child: main@_25!_Cond (2, 8) FAR 9830 U 0.00
+expand: main@_25!_Cond (2, 0) FAR  w(0) 9830.
+	create_child: main@.lr.ph (1, 8) FAR 10036 U 0.01
+expand: main@.lr.ph (1, 0) FAR  w(0) 10036.
+	create_child: main@binary_search.exit.i (0, 8) FAR 10169 U 0.00
+expand: main@binary_search.exit.i (0, 0) FAR  w(0) 10169. F 0.00
+expand: main@.lr.ph (1, 0) FAR  w(0) 10036. F 0.00
+expand: main@_25!_Cond (2, 0) FAR  w(0) 9830. F 0.01
+expand: main@_25 (3, 0) FAR  w(0) 9973. F 0.01
+expand: main@.lr.ph (4, 0) FAR  w(0) 9752. F 0.01
+expand: main@entry!_Cond (5, 0) FAR  w(0) 2058.
+	create_child: main@.lr.ph (4, 8) FAR 5047 U 0.00
+expand: main@.lr.ph (4, 0) FAR  w(0) 5047.
+	create_child: main@_25 (3, 8) FAR 11688 U 0.00
+expand: main@_25 (3, 0) FAR  w(0) 11688.
+	create_child: main@_25!_Cond (2, 8) FAR 11878 U 0.00
+expand: main@_25!_Cond (2, 0) FAR  w(0) 11878.
+	create_child: main@.lr.ph (1, 8) FAR 12100 U 0.00
+expand: main@.lr.ph (1, 0) FAR  w(0) 12100.
+	create_child: main@binary_search.exit.i (0, 8) FAR 12281 U 0.00
+expand: main@binary_search.exit.i (0, 0) FAR  w(0) 12281. F 0.00
+expand: main@.lr.ph (1, 0) FAR  w(0) 12100. F 0.00
+expand: main@_25!_Cond (2, 0) FAR  w(0) 11878. F 0.00
+expand: main@_25 (3, 0) FAR  w(0) 11688. F 0.00
+expand: main@.lr.ph (4, 0) FAR  w(0) 5047. F 0.00
+expand: main@entry!_Cond (5, 0) FAR  w(0) 2058.
+	create_child: main@.lr.ph (4, 8) FAR 13189 U 0.00
+expand: main@.lr.ph (4, 0) FAR  w(0) 13189.
+	create_child: main@_25 (3, 8) FAR 13000 U 0.00
+expand: main@_25 (3, 0) FAR  w(0) 13000.
+	create_child: main@_25!_Cond (2, 8) FAR 13313 U 0.00
+expand: main@_25!_Cond (2, 0) FAR  w(0) 13313.
+	create_child: main@.lr.ph (1, 8) FAR 13446 U 0.00
+expand: main@.lr.ph (1, 0) FAR  w(0) 13446. F 0.00
+expand: main@_25!_Cond (2, 0) FAR  w(0) 13313. F 0.01
+expand: main@_25 (3, 0) FAR  w(0) 13000. F 0.01
+expand: main@.lr.ph (4, 0) FAR  w(0) 13189. F 0.01
+expand: main@entry!_Cond (5, 0) FAR  w(0) 2058.
+	create_child: main@.lr.ph (4, 8) FAR 13918 U 0.00
+expand: main@.lr.ph (4, 0) FAR  w(0) 13918.
+	create_child: main@_25 (3, 8) FAR 14289 U 0.00
+expand: main@_25 (3, 0) FAR  w(0) 14289.
+	create_child: main@_25!_Cond (2, 8) FAR 14458 U 0.00
+expand: main@_25!_Cond (2, 0) FAR  w(0) 14458. F 0.00
+expand: main@_25 (3, 0) FAR  w(0) 14289. F 0.00
+expand: main@.lr.ph (4, 0) FAR  w(0) 13918. F 0.01
+expand: main@entry!_Cond (5, 0) FAR  w(0) 2058.
+	create_child: main@binary_search.exit.i (4, 8) FAR 14755 U 0.00
+expand: main@binary_search.exit.i (4, 0) FAR  w(0) 14755. F 0.00
+expand: main@entry!_Cond (5, 0) FAR  w(0) 2058
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.01
+expand: main@entry (6, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (7, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (8, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.19 :before-memory 15.45 :after-memory 18.17)
+Propagating: 0 1 2 3 4 5 6 7 8  ! 9 10 11 
+(spacer::context::propagate :time 0.03 :before-memory 18.17 :after-memory 19.26)
+Entering level 9
+expand: query!0 (9, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 19.26 :after-memory 19.26)
+Propagating: 9  ! 10 11 
+(spacer::context::propagate :time 0.00 :before-memory 19.26 :after-memory 19.26)
+Entering level 10
+expand: query!0 (10, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 19.26 :after-memory 19.26)
+Propagating: 10  ! 11 
+(spacer::context::propagate :time 0.00 :before-memory 19.26 :after-memory 19.26)
+Entering level 11
+expand: query!0 (11, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (10, 11) FAR 1 U 0.00
+expand: main@entry!_BAD (10, 0) FAR  w(0) 1.
+	create_child: main@entry (9, 11) FAR 1 U 0.00
+expand: main@entry (9, 0) FAR  w(0) 1.
+	create_child: main@entry!_Cond (8, 11) FAR 2058 U 0.00
+expand: main@entry!_Cond (8, 0) FAR  w(0) 2058.
+	create_child: main@.lr.ph (7, 11) FAR 2979 U 0.00
+expand: main@.lr.ph (7, 0) FAR  w(0) 2979.
+	create_child: main@_25 (6, 11) FAR 4182 U 0.00
+expand: main@_25 (6, 0) FAR  w(0) 4182.
+	create_child: main@_25!_Cond (5, 11) FAR 6198 U 0.00
+expand: main@_25!_Cond (5, 0) FAR  w(0) 6198.
+	create_child: main@.lr.ph (4, 11) FAR 19391 U 0.00
+expand: main@.lr.ph (4, 0) FAR  w(0) 19391.
+	create_child: main@_25 (3, 11) FAR 19395 U 0.00
+expand: main@_25 (3, 0) FAR  w(0) 19395.
+	create_child: main@_25!_Cond (2, 11) FAR 19458 U 0.00
+expand: main@_25!_Cond (2, 0) FAR  w(0) 19458.
+	create_child: main@.lr.ph (1, 11) FAR 19520 U 0.00
+expand: main@.lr.ph (1, 0) FAR  w(0) 19520.
+	create_child: main@binary_search.exit.i (0, 11) FAR 19739 U 0.00
+expand: main@binary_search.exit.i (0, 0) FAR  w(0) 19739. F 0.00
+expand: main@.lr.ph (1, 0) FAR  w(0) 19520. F 0.00
+expand: main@_25!_Cond (2, 0) FAR  w(0) 19458. F 0.00
+expand: main@_25 (3, 0) FAR  w(0) 19395. F 0.00
+expand: main@.lr.ph (4, 0) FAR  w(0) 19391. F 0.00
+expand: main@_25!_Cond (5, 0) FAR  w(0) 6198. F 0.00
+expand: main@_25 (6, 0) FAR  w(0) 4182. F 0.00
+expand: main@.lr.ph (7, 0) FAR  w(0) 2979. F 0.00
+expand: main@entry!_Cond (8, 0) FAR  w(0) 2058.
+	create_child: main@.lr.ph (7, 11) FAR 9752 U 0.00
+expand: main@.lr.ph (7, 0) FAR  w(0) 9752.
+	create_child: main@_25 (6, 11) FAR 9973 U 0.00
+expand: main@_25 (6, 0) FAR  w(0) 9973.
+	create_child: main@_25!_Cond (5, 11) FAR 9830 U 0.00
+expand: main@_25!_Cond (5, 0) FAR  w(0) 9830.
+	create_child: main@.lr.ph (4, 11) FAR 10036 U 0.00
+expand: main@.lr.ph (4, 0) FAR  w(0) 10036. F 0.01
+expand: main@_25!_Cond (5, 0) FAR  w(0) 9830. F 0.01
+expand: main@_25 (6, 0) FAR  w(0) 9973. F 0.01
+expand: main@.lr.ph (7, 0) FAR  w(0) 9752. F 0.01
+expand: main@entry!_Cond (8, 0) FAR  w(0) 2058.
+	create_child: main@.lr.ph (7, 11) FAR 7731 U 0.00
+expand: main@.lr.ph (7, 0) FAR  w(0) 7731.
+	create_child: main@_25 (6, 11) FAR 7859 U 0.00
+expand: main@_25 (6, 0) FAR  w(0) 7859.
+	create_child: main@_25!_Cond (5, 11) FAR 7797 U 0.00
+expand: main@_25!_Cond (5, 0) FAR  w(0) 7797.
+	create_child: main@.lr.ph (4, 11) FAR 7987 U 0.00
+expand: main@.lr.ph (4, 0) FAR  w(0) 7987.
+	create_child: main@_25 (3, 11) FAR 21214 U 0.00
+expand: main@_25 (3, 0) FAR  w(0) 21214.
+	create_child: main@_25!_Cond (2, 11) FAR 21174 U 0.00
+expand: main@_25!_Cond (2, 0) FAR  w(0) 21174.
+	create_child: main@.lr.ph (1, 11) FAR 21369 U 0.00
+expand: main@.lr.ph (1, 0) FAR  w(0) 21369.
+	create_child: main@binary_search.exit.i (0, 11) FAR 21200 U 0.00
+expand: main@binary_search.exit.i (0, 0) FAR  w(0) 21200. F 0.00
+expand: main@.lr.ph (1, 0) FAR  w(0) 21369. F 0.00
+expand: main@_25!_Cond (2, 0) FAR  w(0) 21174. F 0.00
+expand: main@_25 (3, 0) FAR  w(0) 21214. F 0.00
+expand: main@.lr.ph (4, 0) FAR  w(0) 7987. F 0.00
+expand: main@_25!_Cond (5, 0) FAR  w(0) 7797. F 0.00
+expand: main@_25 (6, 0) FAR  w(0) 7859. F 0.00
+expand: main@.lr.ph (7, 0) FAR  w(0) 7731. F 0.00
+expand: main@entry!_Cond (8, 0) FAR  w(0) 2058.
+	create_child: main@.lr.ph (7, 11) FAR 13189 U 0.00
+expand: main@.lr.ph (7, 0) FAR  w(0) 13189.
+	create_child: main@_25 (6, 11) FAR 13000 U 0.00
+expand: main@_25 (6, 0) FAR  w(0) 13000.
+	create_child: main@_25!_Cond (5, 11) FAR 13313 U 0.00
+expand: main@_25!_Cond (5, 0) FAR  w(0) 13313.
+	create_child: main@.lr.ph (4, 11) FAR 13446 U 0.00
+expand: main@.lr.ph (4, 0) FAR  w(0) 13446.
+	create_child: main@_25 (3, 11) FAR 22224 U 0.00
+expand: main@_25 (3, 0) FAR  w(0) 22224.
+	create_child: main@_25!_Cond (2, 11) FAR 22239 U 0.00
+expand: main@_25!_Cond (2, 0) FAR  w(0) 22239.
+	create_child: main@.lr.ph (1, 11) FAR 22383 U 0.00
+expand: main@.lr.ph (1, 0) FAR  w(0) 22383.
+	create_child: main@binary_search.exit.i (0, 11) FAR 22594 U 0.00
+expand: main@binary_search.exit.i (0, 0) FAR  w(0) 22594. F 0.00
+expand: main@.lr.ph (1, 0) FAR  w(0) 22383. F 0.00
+expand: main@_25!_Cond (2, 0) FAR  w(0) 22239. F 0.00
+expand: main@_25 (3, 0) FAR  w(0) 22224. F 0.00
+expand: main@.lr.ph (4, 0) FAR  w(0) 13446. F 0.00
+expand: main@_25!_Cond (5, 0) FAR  w(0) 13313. F 0.00
+expand: main@_25 (6, 0) FAR  w(0) 13000. F 0.00
+expand: main@.lr.ph (7, 0) FAR  w(0) 13189. F 0.00
+expand: main@entry!_Cond (8, 0) FAR  w(0) 2058.
+	create_child: main@.lr.ph (7, 11) FAR 5047 U 0.00
+expand: main@.lr.ph (7, 0) FAR  w(0) 5047.
+	create_child: main@_25 (6, 11) FAR 11688 U 0.00
+expand: main@_25 (6, 0) FAR  w(0) 11688.
+	create_child: main@_25!_Cond (5, 11) FAR 11878 U 0.00
+expand: main@_25!_Cond (5, 0) FAR  w(0) 11878. F 0.00
+expand: main@_25 (6, 0) FAR  w(0) 11688. F 0.00
+expand: main@.lr.ph (7, 0) FAR  w(0) 5047. F 0.00
+expand: main@entry!_Cond (8, 0) FAR  w(0) 2058.
+	create_child: main@.lr.ph (7, 11) FAR 13918 U 0.00
+expand: main@.lr.ph (7, 0) FAR  w(0) 13918.
+	create_child: main@_25 (6, 11) FAR 14289 U 0.00
+expand: main@_25 (6, 0) FAR  w(0) 14289.
+	create_child: main@_25!_Cond (5, 11) FAR 14458 U 0.00
+expand: main@_25!_Cond (5, 0) FAR  w(0) 14458.
+	create_child: main@.lr.ph (4, 11) FAR 23710 U 0.00
+expand: main@.lr.ph (4, 0) FAR  w(0) 23710.
+	create_child: main@_25 (3, 11) FAR 23472 U 0.00
+expand: main@_25 (3, 0) FAR  w(0) 23472.
+	create_child: main@_25!_Cond (2, 11) FAR 23728 U 0.00
+expand: main@_25!_Cond (2, 0) FAR  w(0) 23728.
+	create_child: main@.lr.ph (1, 11) FAR 23737 U 0.00
+expand: main@.lr.ph (1, 0) FAR  w(0) 23737.
+	create_child: main@binary_search.exit.i (0, 11) FAR 23738 U 0.00
+expand: main@binary_search.exit.i (0, 0) FAR  w(0) 23738. F 0.00
+expand: main@.lr.ph (1, 0) FAR  w(0) 23737. F 0.00
+expand: main@_25!_Cond (2, 0) FAR  w(0) 23728. F 0.00
+expand: main@_25 (3, 0) FAR  w(0) 23472. F 0.00
+expand: main@.lr.ph (4, 0) FAR  w(0) 23710. F 0.00
+expand: main@_25!_Cond (5, 0) FAR  w(0) 14458. F 0.00
+expand: main@_25 (6, 0) FAR  w(0) 14289. F 0.00
+expand: main@.lr.ph (7, 0) FAR  w(0) 13918. F 0.01
+expand: main@entry!_Cond (8, 0) FAR  w(0) 2058.
+	create_child: main@binary_search.exit.i (7, 11) FAR 24705 U 0.01
+expand: main@binary_search.exit.i (7, 0) FAR  w(0) 24705. F 0.00
+expand: main@entry!_Cond (8, 0) FAR  w(0) 2058.
+	create_child: main@binary_search.exit.i (7, 11) FAR 24791 U 0.00
+expand: main@binary_search.exit.i (7, 0) FAR  w(0) 24791. F 0.00
+expand: main@entry!_Cond (8, 0) FAR  w(0) 2058.
+	create_child: main@binary_search.exit.i (7, 11) FAR 24836 U 0.00
+expand: main@binary_search.exit.i (7, 0) FAR  w(0) 24836. F 0.00
+expand: main@entry!_Cond (8, 0) FAR  w(0) 2058.
+	create_child: main@binary_search.exit.i (7, 11) FAR 24831 U 0.00
+expand: main@binary_search.exit.i (7, 0) FAR  w(0) 24831. F 0.00
+expand: main@entry!_Cond (8, 0) FAR  w(0) 2058
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.01
+expand: main@entry (9, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (10, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (11, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.26 :before-memory 19.26 :after-memory 21.05)
+Propagating: 0 1 2 3 4 5 6 7 8 9 10 11  ! 12 13 14 
+(spacer::context::propagate :time 0.04 :before-memory 21.05 :after-memory 22.16)
+Entering level 12
+expand: query!0 (12, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 22.16 :after-memory 22.26)
+Propagating: 12  ! 13 14 
+(spacer::context::propagate :time 0.00 :before-memory 22.26 :after-memory 22.26)
+Entering level 13
+expand: query!0 (13, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 22.26 :after-memory 22.26)
+Propagating: 13  ! 14 
+(spacer::context::propagate :time 0.00 :before-memory 22.26 :after-memory 22.26)
+Entering level 14
+expand: query!0 (14, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (13, 14) FAR 1 U 0.00
+expand: main@entry!_BAD (13, 0) FAR  w(0) 1.
+	create_child: main@entry (12, 14) FAR 1 U 0.00
+expand: main@entry (12, 0) FAR  w(0) 1.
+	create_child: main@entry!_Cond (11, 14) FAR 2058 U 0.00
+expand: main@entry!_Cond (11, 0) FAR  w(0) 2058.
+	create_child: main@.lr.ph (10, 14) FAR 5047 U 0.00
+expand: main@.lr.ph (10, 0) FAR  w(0) 5047.
+	create_child: main@_25 (9, 14) FAR 11688 U 0.00
+expand: main@_25 (9, 0) FAR  w(0) 11688.
+	create_child: main@_25!_Cond (8, 14) FAR 11878 U 0.00
+expand: main@_25!_Cond (8, 0) FAR  w(0) 11878. F 0.00
+expand: main@_25 (9, 0) FAR  w(0) 11688. F 0.00
+expand: main@.lr.ph (10, 0) FAR  w(0) 5047. F 0.00
+expand: main@entry!_Cond (11, 0) FAR  w(0) 2058
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.01
+expand: main@entry (12, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (13, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (14, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.03 :before-memory 22.26 :after-memory 22.60)
+Propagating: 8 
+(spacer::context::propagate :time 0.00 :before-memory 22.60 :after-memory 22.60)
+(define-fun main@entry!_BAD () Bool
+  false)
+(define-fun main@entry!_Cond ((x!0 Int)
+ (x!1 Int)
+ (x!2 Int)
+ (x!3 Int)
+ (x!4 Int)
+ (x!5 Int)
+ (x!6 Int)
+ (x!7 (Array Int Int))
+ (x!8 Int)
+ (x!9 Int)
+ (x!10 Int)
+ (x!11 Int)
+ (x!12 Bool)) Bool
+  (let ((a!1 (+ x!4 (* (- 1) (select x!7 (+ 8 x!1)))))
+        (a!2 (not (>= (+ x!5 (* (- 1) x!4)) 0)))
+        (a!3 (not (>= (+ x!6 (* (- 1) x!5)) 0)))
+        (a!4 (not (>= (+ x!4 (* (- 1) x!3)) 0)))
+        (a!5 (not (>= (+ x!3 (* (- 1) x!2)) 0)))
+        (a!6 (<= (+ x!2 (* (- 1) (select x!7 x!1))) 0)))
+    (or (not (= x!9 2))
+        (not (= x!10 0))
+        (not x!12)
+        (not (<= a!1 0))
+        a!2
+        a!3
+        a!4
+        a!5
+        (not a!6))))
+(define-fun main@entry ((x!0 Int) (x!1 Int)) Bool
+  false)
+(define-fun main@_25 ((x!0 Int)
+ (x!1 Int)
+ (x!2 Int)
+ (x!3 Int)
+ (x!4 Int)
+ (x!5 Int)
+ (x!6 Int)
+ (x!7 Int)
+ (x!8 Int)
+ (x!9 Int)
+ (x!10 (Array Int Int))) Bool
+  (let ((a!1 (not (>= (+ x!2 (* (- 1) x!0)) 0)))
+        (a!2 (not (>= (+ x!3 (* (- 1) x!2)) 0)))
+        (a!4 (not (>= (+ x!5 (* (- 1) x!4)) 0)))
+        (a!6 (<= (+ x!0 (* (- 1) (select x!10 x!9))) 0)))
+  (let ((a!3 (or a!1
+                 (<= (+ x!1 (* (- 1) x!3)) 0)
+                 (<= (+ x!1 (* (- 1) x!4)) 0)
+                 (<= (+ x!1 (* (- 1) x!5)) 0)
+                 a!2))
+        (a!5 (or (<= (+ x!4 (* (- 1) x!1)) 0)
+                 (<= (+ x!1 (* (- 1) x!0)) 0)
+                 (<= (+ x!2 (* (- 1) x!1)) 0)
+                 a!4
+                 a!2))
+        (a!7 (or (<= (+ x!4 (* (- 1) x!1)) 0)
+                 (<= (+ x!5 (* (- 1) x!1)) 0)
+                 (<= (+ x!2 (* (- 1) x!1)) 0)
+                 (not (= x!7 0))
+                 (not (= x!6 1))
+                 (<= (+ x!0 (* (- 1) x!1)) 0)
+                 a!2
+                 (not a!6)))
+        (a!8 (or (<= (+ x!4 (* (- 1) x!1)) 0)
+                 (<= (+ x!3 (* (- 1) x!1)) 0)
+                 (<= (+ x!1 (* (- 1) x!2)) 0)
+                 a!1
+                 a!4))
+        (a!9 (or (<= (+ x!5 (* (- 1) x!1)) 0)
+                 a!1
+                 (<= (+ x!1 (* (- 1) x!3)) 0)
+                 (<= (+ x!1 (* (- 1) x!4)) 0)
+                 a!2))
+        (a!10 (or (<= (+ x!4 (* (- 1) x!1)) 0)
+                  a!1
+                  (<= (+ x!1 (* (- 1) x!3)) 0)
+                  a!4
+                  a!2)))
+    (and a!3 a!5 a!7 a!8 a!9 a!10))))
+(define-fun main@.lr.ph ((x!0 Int)
+ (x!1 Int)
+ (x!2 Int)
+ (x!3 Int)
+ (x!4 Int)
+ (x!5 Int)
+ (x!6 Int)
+ (x!7 Int)
+ (x!8 Int)
+ (x!9 Int)
+ (x!10 Int)
+ (x!11 (Array Int Int))) Bool
+  (let ((a!1 (not (>= (+ x!3 (* (- 1) x!2)) 0)))
+        (a!2 (not (>= (+ x!2 (* (- 1) x!0)) 0)))
+        (a!4 (not (>= (+ x!5 (* (- 1) x!4)) 0)))
+        (a!6 (<= (+ x!0 (* (- 1) (select x!11 x!10))) 0))
+        (a!8 (+ x!3 (* (- 1) (select x!11 (+ 8 x!10))))))
+  (let ((a!3 (or (<= (+ x!1 (* (- 1) x!5)) 0)
+                 a!1
+                 (<= (+ x!1 (* (- 1) x!3)) 0)
+                 (<= (+ x!1 (* (- 1) x!4)) 0)
+                 a!2))
+        (a!5 (or a!1
+                 (<= (+ x!2 (* (- 1) x!1)) 0)
+                 a!4
+                 (<= (+ x!4 (* (- 1) x!1)) 0)
+                 (<= (+ x!1 (* (- 1) x!0)) 0)))
+        (a!7 (or (<= (+ x!5 (* (- 1) x!1)) 0)
+                 (<= (+ x!2 (* (- 1) x!1)) 0)
+                 (<= (+ x!0 (* (- 1) x!1)) 0)
+                 (not (>= x!8 0))
+                 (not a!6)
+                 (<= (+ x!3 (* (- 1) x!1)) 0)
+                 (<= (+ x!4 (* (- 1) x!1)) 0)
+                 (not (= x!7 0))))
+        (a!9 (or a!1
+                 (<= (+ x!2 (* (- 1) x!1)) 0)
+                 (<= (+ x!0 (* (- 1) x!1)) 0)
+                 a!4
+                 (not (= x!8 0))
+                 (not a!6)
+                 (not (<= a!8 0))
+                 (not (= x!7 2))
+                 (<= (+ x!4 (* (- 1) x!1)) 0)))
+        (a!10 (or a!2
+                  a!4
+                  (<= (+ x!1 (* (- 1) x!2)) 0)
+                  (<= (+ x!3 (* (- 1) x!1)) 0)
+                  (<= (+ x!4 (* (- 1) x!1)) 0)))
+        (a!11 (or a!1
+                  (<= (+ x!5 (* (- 1) x!1)) 0)
+                  (<= (+ x!1 (* (- 1) x!3)) 0)
+                  (<= (+ x!1 (* (- 1) x!4)) 0)
+                  a!2))
+        (a!12 (or a!1
+                  (<= (+ x!1 (* (- 1) x!3)) 0)
+                  a!2
+                  a!4
+                  (<= (+ x!4 (* (- 1) x!1)) 0))))
+    (and a!3 a!5 a!7 a!9 a!10 a!11 a!12))))
+(define-fun main@_25!_Cond ((x!0 Int)
+ (x!1 Int)
+ (x!2 Int)
+ (x!3 Int)
+ (x!4 Int)
+ (x!5 Int)
+ (x!6 Int)
+ (x!7 (Array Int Int))
+ (x!8 Int)
+ (x!9 Int)
+ (x!10 Int)
+ (x!11 Int)
+ (x!12 Bool)) Bool
+  (let ((a!1 (not (>= (+ x!3 (* (- 1) x!2)) 0)))
+        (a!2 (not (>= (+ x!4 (* (- 1) x!3)) 0)))
+        (a!3 (not (>= (+ x!6 (* (- 1) x!5)) 0)))
+        (a!6 (<= (+ x!2 (* (- 1) (select x!7 x!1))) 0)))
+  (let ((a!4 (or (<= (+ x!5 (* (- 1) x!8)) 0)
+                 a!1
+                 (<= (+ x!8 (* (- 1) x!4)) 0)
+                 a!2
+                 a!3))
+        (a!5 (or (<= (+ x!5 (* (- 1) x!8)) 0)
+                 (<= (+ x!3 (* (- 1) x!8)) 0)
+                 (<= (+ x!8 (* (- 1) x!2)) 0)
+                 a!2
+                 a!3))
+        (a!7 (or (<= (+ x!5 (* (- 1) x!8)) 0)
+                 (<= (+ x!6 (* (- 1) x!8)) 0)
+                 (<= (+ x!3 (* (- 1) x!8)) 0)
+                 (not (= x!9 0))
+                 (<= (+ x!2 (* (- 1) x!8)) 0)
+                 a!2
+                 (not a!6)
+                 (not (>= x!10 0))))
+        (a!8 (or (<= (+ x!5 (* (- 1) x!8)) 0)
+                 (<= (+ x!4 (* (- 1) x!8)) 0)
+                 (<= (+ x!8 (* (- 1) x!3)) 0)
+                 a!1
+                 a!3))
+        (a!9 (or (<= (+ x!6 (* (- 1) x!8)) 0)
+                 a!1
+                 (<= (+ x!8 (* (- 1) x!4)) 0)
+                 (<= (+ x!8 (* (- 1) x!5)) 0)
+                 a!2))
+        (a!10 (or a!1
+                  (<= (+ x!8 (* (- 1) x!4)) 0)
+                  (<= (+ x!8 (* (- 1) x!5)) 0)
+                  (<= (+ x!8 (* (- 1) x!6)) 0)
+                  a!2)))
+    (and a!4 a!5 a!7 a!8 a!9 a!10))))
+(define-fun main@binary_search.exit.i ((x!0 Int)
+ (x!1 Int)
+ (x!2 Int)
+ (x!3 Int)
+ (x!4 Int)
+ (x!5 Int)
+ (x!6 Bool)) Bool
+  (let ((a!1 (not (= (+ x!1 (* (- 1) x!5)) 0)))
+        (a!2 (or x!6
+                 (<= (+ x!0 (* (- 1) x!1)) 0)
+                 (>= (+ x!1 (* (- 1) x!5)) 0)
+                 (>= (+ x!1 (* (- 1) x!4)) 0)
+                 (>= (+ x!1 (* (- 1) x!3)) 0)
+                 (>= (+ x!1 (* (- 1) x!2)) 0)))
+        (a!3 (or x!6
+                 (>= (+ x!0 (* (- 1) x!1)) 0)
+                 (>= (+ x!1 (* (- 1) x!5)) 0)
+                 (>= (+ x!1 (* (- 1) x!4)) 0)
+                 (<= (+ x!1 (* (- 1) x!3)) 0)
+                 (<= (+ x!1 (* (- 1) x!2)) 0)))
+        (a!4 (not (= (+ x!1 (* (- 1) x!3)) 0)))
+        (a!5 (or x!6
+                 (>= (+ x!0 (* (- 1) x!1)) 0)
+                 (>= (+ x!1 (* (- 1) x!5)) 0)
+                 (>= (+ x!1 (* (- 1) x!4)) 0)
+                 (>= (+ x!1 (* (- 1) x!3)) 0)
+                 (>= (+ x!1 (* (- 1) x!2)) 0)))
+        (a!6 (or x!6
+                 (>= (+ x!0 (* (- 1) x!1)) 0)
+                 (>= (+ x!1 (* (- 1) x!5)) 0)
+                 (>= (+ x!1 (* (- 1) x!4)) 0)
+                 (>= (+ x!1 (* (- 1) x!3)) 0)
+                 (<= (+ x!1 (* (- 1) x!2)) 0)))
+        (a!7 (or x!6
+                 (>= (+ x!0 (* (- 1) x!1)) 0)
+                 (>= (+ x!1 (* (- 1) x!5)) 0)
+                 (<= (+ x!1 (* (- 1) x!4)) 0)
+                 (<= (+ x!1 (* (- 1) x!3)) 0)
+                 (<= (+ x!1 (* (- 1) x!2)) 0)))
+        (a!8 (or x!6
+                 (>= (+ x!0 (* (- 1) x!1)) 0)
+                 (<= (+ x!1 (* (- 1) x!5)) 0)
+                 (<= (+ x!1 (* (- 1) x!4)) 0)
+                 (<= (+ x!1 (* (- 1) x!3)) 0)
+                 (<= (+ x!1 (* (- 1) x!2)) 0)))
+        (a!9 (not (= (+ x!0 (* (- 1) x!1)) 0)))
+        (a!10 (not (= (+ x!1 (* (- 1) x!2)) 0)))
+        (a!11 (not (= (+ x!1 (* (- 1) x!4)) 0))))
+    (and (or (not x!6) a!1)
+         a!2
+         a!3
+         (or (not x!6) a!4)
+         a!5
+         a!6
+         a!7
+         a!8
+         (or (not x!6) a!9)
+         (or (not x!6) a!10)
+         (or (not x!6) a!11))))

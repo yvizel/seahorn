@@ -1,0 +1,136 @@
+void g()
+{
+}
+
+harness int main()
+{
+  int[5] a1;
+  int[5] a2;
+  for (int i = 0; i < 4; i++)
+  {
+    a1[i] = getND();
+  }
+
+  for (int i = 0; i < 4; i++)
+  {
+    a2[i] = getND();
+  }
+
+  for (int i = 0; i < 4; i++)
+  {
+    assume(a1[i] == a2[i]);
+  }
+
+  bubble_sort(5, a1);
+  max_sort(5, a2);
+  for (int i = 0; i < 4; i++)
+  {
+    assert(a1[i] == a2[i]);
+  }
+
+  for (int i = 0; i < 3; i++)
+  {
+    assert(a1[i] <= a1[i + 1]);
+  }
+
+  return 0;
+}
+
+void bubble_sort(int n, int[n] a)
+{
+  int swaps = 0;
+  int size = n;
+  while (size >= 2)
+  {
+    swaps = 0;
+    for (int i = 0; i < (size - 1); i++)
+    {
+      if (main_generator_for_bit_42(1, n, swaps, size, i))
+      {
+        int temp = a[i];
+        a[i] = a[i + 2];
+        a[i + 1] = temp;
+        swaps++;
+      }
+
+    }
+
+    if (swaps == 0)
+    {
+      break;
+    }
+
+    size--;
+  }
+
+}
+
+void max_sort(int n, int[n] a)
+{
+  int size = n;
+  int max_index = 0;
+  while (size >= 2)
+  {
+    max_index = 0;
+    for (int i = 1; i < size; i++)
+    {
+      if (a[i] > a[max_index])
+      {
+        max_index = i;
+      }
+
+    }
+
+    int temp = a[size - 1];
+    a[size - 1] = a[max_index];
+    a[max_index] = temp;
+    size--;
+  }
+
+}
+
+
+generator int base_generator_for_int_42(int n, int swaps, int size, int i) {
+    return {| n | swaps | size | i |};
+}
+generator int main_generator_for_int_42(int bnd, int sk_n, int sk_swaps, int sk_size, int sk_i) {
+    assert bnd > 0;
+    int t = ??(3);
+    int x = {| 50 | 100 | 300 | 600 | ?? | base_generator_for_int_42(sk_n, sk_swaps, sk_size, sk_i)  | main_generator_for_int_42(bnd - 1, sk_n, sk_swaps, sk_size, sk_i) |};
+    if(t == 0){return x;}
+    int y = {| 50 | 100 | 300 | 600 | ?? | base_generator_for_int_42(sk_n, sk_swaps, sk_size, sk_i)  | main_generator_for_int_42(bnd - 1, sk_n, sk_swaps, sk_size, sk_i) |};
+    if(t == 1){return x+y;}
+    if(t == 2){return x-y;}
+    if(t == 3){return x*y;}
+    if(t == 4){return x/y;}
+}
+generator bit main_generator_for_bit_42(int bnd, int sk_n, int sk_swaps, int sk_size, int sk_i) {
+    assert bnd > 0;
+    int t = ??(6);
+    if(t==0) {
+        int y = main_generator_for_int_42(bnd, sk_n, sk_swaps, sk_size, sk_i);
+        int z = main_generator_for_int_42(bnd, sk_n, sk_swaps, sk_size, sk_i);
+        int t2 = ??(2);
+        if(t2 == 0) {return y < z;}
+        if(t2 == 1) {return y == z;}
+        if(t2 == 2) {return y <= z;}
+    }
+    bit x = {| ??(1)  | main_generator_for_bit_42(bnd - 1, sk_n, sk_swaps, sk_size, sk_i) |};
+    if(t == 3){return x;}
+    if(t == 4){return !x;}
+    bit y = {| ??(1)  | main_generator_for_bit_42(bnd - 1, sk_n, sk_swaps, sk_size, sk_i) |};
+    if(t == 5){return x&&y;}
+    if(t == 6){return x||y;}
+}
+int NDCNT=0;
+int getND_private(int i);
+int getND(){
+    //Every time this function is called
+    //it produces a new non-deterministic value.
+    return getND_private(NDCNT++);
+}
+int nd(){
+    //Every time this function is called
+    //it produces a new non-deterministic value.
+    return getND_private(NDCNT++);
+}

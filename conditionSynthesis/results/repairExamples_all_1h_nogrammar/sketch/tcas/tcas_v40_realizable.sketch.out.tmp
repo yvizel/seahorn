@@ -1,0 +1,3 @@
+    [0;31m[1659420813.6740 - ERROR] [SKETCH] Error at node: Parameter sk_need_upward_RA to main_generator_for_bit_161 is used without first being initialized. (at tcas_v4..izable.sk:311) (at tcas_v4..izable.sk:105)[0m
+    [0;32m[1659420813.6780 - DEBUG] [SKETCH] stack trace written to file: /root/.sketch/tmp/stacktrace.txt[0m
+    [0;32m[1659420813.6920 - DEBUG] [SKETCH] Last good program, from before stage PreprocessStage, dumped to:  /root/.sketch/tmp/error-last-program.txt[0m

@@ -1,0 +1,40 @@
+{
+    "loop_count": 7,
+    "loop_lines": [
+        {
+            "column": 2,
+            "file": "../repairExamples/crafted/bubble_max_sort_v2_unrealizable.c",
+            "line": 14
+        },
+        {
+            "column": 2,
+            "file": "../repairExamples/crafted/bubble_max_sort_v2_unrealizable.c",
+            "line": 17
+        },
+        {
+            "column": 2,
+            "file": "../repairExamples/crafted/bubble_max_sort_v2_unrealizable.c",
+            "line": 21
+        },
+        {
+            "column": 2,
+            "file": "../repairExamples/crafted/bubble_max_sort_v2_unrealizable.c",
+            "line": 27
+        },
+        {
+            "column": 2,
+            "file": "../repairExamples/crafted/bubble_max_sort_v2_unrealizable.c",
+            "line": 31
+        },
+        {
+            "column": 2,
+            "file": "../repairExamples/crafted/bubble_max_sort_v2_unrealizable.c",
+            "line": 39
+        },
+        {
+            "column": 2,
+            "file": "../repairExamples/crafted/bubble_max_sort_v2_unrealizable.c",
+            "line": 59
+        }
+    ]
+}

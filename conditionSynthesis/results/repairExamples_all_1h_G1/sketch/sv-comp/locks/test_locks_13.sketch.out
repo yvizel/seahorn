@@ -1,0 +1,7 @@
+/host/test_locks_13.sk:303:3: unexpected token: out
+/host/test_locks_13.sk:306:3: unexpected token: ERROR
+    [0;31m[1659399168.6740 - ERROR] [SKETCH] Program Parse Error: could not parse program[0m
+    [0;32m[1659399168.6790 - DEBUG] [SKETCH] stack trace written to file: /root/.sketch/tmp/stacktrace.txt[0m
+SKETCH version 1.7.6
+Benchmark = /host/test_locks_13.sk
+Total time = 248

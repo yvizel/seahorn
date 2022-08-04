@@ -1,0 +1,10 @@
+{
+    "loop_count": 1,
+    "loop_lines": [
+        {
+            "column": 3,
+            "file": "../repairExamples/crafted/loop_with_assert_realizable.c",
+            "line": 13
+        }
+    ]
+}

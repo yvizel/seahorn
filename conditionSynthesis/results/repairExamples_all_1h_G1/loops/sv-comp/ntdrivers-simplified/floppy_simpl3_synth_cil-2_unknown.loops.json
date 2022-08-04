@@ -1,0 +1,10 @@
+{
+    "loop_count": 1,
+    "loop_lines": [
+        {
+            "column": 7,
+            "file": "../repairExamples/sv-comp/ntdrivers-simplified/floppy_simpl3_synth_cil-2_unknown.c",
+            "line": 554
+        }
+    ]
+}

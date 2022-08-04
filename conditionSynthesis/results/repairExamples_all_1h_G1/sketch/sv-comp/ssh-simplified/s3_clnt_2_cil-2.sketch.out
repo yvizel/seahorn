@@ -1,0 +1,67 @@
+/host/s3_clnt_2_cil-2.sk:40:17: unexpected token: tmp
+/host/s3_clnt_2_cil-2.sk:41:17: unexpected token: l
+/host/s3_clnt_2_cil-2.sk:60:17: unexpected token: __cil_tmp56
+/host/s3_clnt_2_cil-2.sk:104:9: unexpected token: while_0_continue
+/host/s3_clnt_2_cil-2.sk:309:77: unexpected token: switch_1_12292
+/host/s3_clnt_2_cil-2.sk:314:77: unexpected token: switch_1_16384
+/host/s3_clnt_2_cil-2.sk:317:77: unexpected token: switch_1_4096
+/host/s3_clnt_2_cil-2.sk:320:77: unexpected token: switch_1_20480
+/host/s3_clnt_2_cil-2.sk:323:77: unexpected token: switch_1_4099
+/host/s3_clnt_2_cil-2.sk:374:77: unexpected token: switch_1_4368
+/host/s3_clnt_2_cil-2.sk:377:77: unexpected token: switch_1_4369
+/host/s3_clnt_2_cil-2.sk:406:77: unexpected token: switch_1_4384
+/host/s3_clnt_2_cil-2.sk:409:77: unexpected token: switch_1_4385
+/host/s3_clnt_2_cil-2.sk:433:77: unexpected token: switch_1_4400
+/host/s3_clnt_2_cil-2.sk:436:77: unexpected token: switch_1_4401
+/host/s3_clnt_2_cil-2.sk:440:79: unexpected token: __cil_tmp56
+/host/s3_clnt_2_cil-2.sk:440:93: unexpected token: (
+/host/s3_clnt_2_cil-2.sk:440:107: unexpected token: )
+/host/s3_clnt_2_cil-2.sk:441:104: unexpected token: 256
+/host/s3_clnt_2_cil-2.sk:464:77: unexpected token: switch_1_4416
+/host/s3_clnt_2_cil-2.sk:467:77: unexpected token: switch_1_4417
+/host/s3_clnt_2_cil-2.sk:489:77: unexpected token: switch_1_4432
+/host/s3_clnt_2_cil-2.sk:492:77: unexpected token: switch_1_4433
+/host/s3_clnt_2_cil-2.sk:508:77: unexpected token: switch_1_4448
+/host/s3_clnt_2_cil-2.sk:511:77: unexpected token: switch_1_4449
+/host/s3_clnt_2_cil-2.sk:530:77: unexpected token: switch_1_4464
+/host/s3_clnt_2_cil-2.sk:533:77: unexpected token: switch_1_4465
+/host/s3_clnt_2_cil-2.sk:536:77: unexpected token: switch_1_4466
+/host/s3_clnt_2_cil-2.sk:539:77: unexpected token: switch_1_4467
+/host/s3_clnt_2_cil-2.sk:550:77: unexpected token: switch_1_4480
+/host/s3_clnt_2_cil-2.sk:553:77: unexpected token: switch_1_4481
+/host/s3_clnt_2_cil-2.sk:561:77: unexpected token: l
+/host/s3_clnt_2_cil-2.sk:561:81: unexpected token: (
+/host/s3_clnt_2_cil-2.sk:561:95: unexpected token: )
+/host/s3_clnt_2_cil-2.sk:574:77: unexpected token: switch_1_4496
+/host/s3_clnt_2_cil-2.sk:577:77: unexpected token: switch_1_4497
+/host/s3_clnt_2_cil-2.sk:589:77: unexpected token: switch_1_4512
+/host/s3_clnt_2_cil-2.sk:592:77: unexpected token: switch_1_4513
+/host/s3_clnt_2_cil-2.sk:625:77: unexpected token: switch_1_4528
+/host/s3_clnt_2_cil-2.sk:628:77: unexpected token: switch_1_4529
+/host/s3_clnt_2_cil-2.sk:645:106: unexpected token: 2
+/host/s3_clnt_2_cil-2.sk:649:83: unexpected token: __cil_tmp61
+/host/s3_clnt_2_cil-2.sk:649:97: unexpected token: __cil_tmp60
+/host/s3_clnt_2_cil-2.sk:649:111: unexpected token: 4
+/host/s3_clnt_2_cil-2.sk:663:77: unexpected token: switch_1_4560
+/host/s3_clnt_2_cil-2.sk:666:77: unexpected token: switch_1_4561
+/host/s3_clnt_2_cil-2.sk:685:77: unexpected token: switch_1_4352
+/host/s3_clnt_2_cil-2.sk:688:97: unexpected token: 0
+/host/s3_clnt_2_cil-2.sk:694:102: unexpected token: 0
+/host/s3_clnt_2_cil-2.sk:708:77: unexpected token: switch_1_3
+/host/s3_clnt_2_cil-2.sk:717:79: unexpected token: __cil_tmp65
+/host/s3_clnt_2_cil-2.sk:717:93: unexpected token: __cil_tmp64
+/host/s3_clnt_2_cil-2.sk:717:105: unexpected token: -
+/host/s3_clnt_2_cil-2.sk:717:107: unexpected token: 4
+/host/s3_clnt_2_cil-2.sk:737:77: unexpected token: switch_1_default
+/host/s3_clnt_2_cil-2.sk:744:77: unexpected token: switch_1_break
+/host/s3_clnt_2_cil-2.sk:848:7: unexpected token: while_0_break
+/host/s3_clnt_2_cil-2.sk:852:5: unexpected token: end
+/host/s3_clnt_2_cil-2.sk:860:5: unexpected token: ERROR
+/host/s3_clnt_2_cil-2.sk:867:22: expecting an identifier, found ')'
+/host/s3_clnt_2_cil-2.sk:869:8: expecting RPAREN, found ';'
+/host/s3_clnt_2_cil-2.sk:877:3: expecting EOF, found 'return'
+    [0;31m[1659406338.1640 - ERROR] [SKETCH] Program Parse Error: could not parse program[0m
+    [0;32m[1659406338.1680 - DEBUG] [SKETCH] stack trace written to file: /root/.sketch/tmp/stacktrace.txt[0m
+SKETCH version 1.7.6
+Benchmark = /host/s3_clnt_2_cil-2.sk
+Total time = 223

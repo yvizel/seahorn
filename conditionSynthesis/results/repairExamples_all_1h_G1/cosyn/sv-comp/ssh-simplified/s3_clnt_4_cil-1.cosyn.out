@@ -1,0 +1,590 @@
+(transform N7datalog13mk_coi_filterE...no-op 0s)
+(transform N7datalog25mk_interp_tail_simplifierE...15 rules 0.015s)
+(transform N7datalog27mk_quantifier_instantiationE...no-op 0s)
+(transform N7datalog8mk_scaleE...no-op 0s)
+(transform N7datalog18mk_karr_invariantsE...no-op 0s)
+(transform N7datalog14mk_array_blastE...no-op 0s)
+(transform N7datalog16mk_elim_term_iteE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...13 rules 0s)
+(transform N7datalog12mk_bit_blastE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog13mk_coi_filterE...no-op 0s)
+(transform N7datalog25mk_interp_tail_simplifierE...13 rules 0.001s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog13mk_coi_filterE...no-op 0s)
+(transform N7datalog25mk_interp_tail_simplifierE...13 rules 0.001s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+expand: query!0 (0, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 16.01 :after-memory 16.21)
+Entering level 1
+expand: query!0 (1, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (0, 1) FAR 1 U 0.00
+expand: main@entry!_BAD (0, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (1, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 16.21 :after-memory 16.40)
+Propagating: 0 1  ! 2 
+(spacer::context::propagate :time 0.00 :before-memory 16.40 :after-memory 16.40)
+Entering level 2
+expand: query!0 (2, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (1, 2) FAR 1 U 0.00
+expand: main@entry!_BAD (1, 0) FAR  w(0) 1.
+	create_child: main@entry (0, 2) FAR 1 U 0.00
+expand: main@entry (0, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (1, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (2, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 16.40 :after-memory 16.69)
+Propagating: 0 1 2  ! 3 
+(spacer::context::propagate :time 0.00 :before-memory 16.69 :after-memory 16.69)
+Entering level 3
+expand: query!0 (3, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (2, 3) FAR 1 U 0.00
+expand: main@entry!_BAD (2, 0) FAR  w(0) 1.
+	create_child: main@entry (1, 3) FAR 1 U 0.00
+expand: main@entry (1, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (0, 3) FAR 12146 U 0.00
+expand: main@empty.loop (0, 0) FAR  w(0) 12146. F 0.00
+expand: main@entry (1, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (2, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (3, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 16.69 :after-memory 17.20)
+Propagating: 0 1 2 3  ! 4 
+(spacer::context::propagate :time 0.00 :before-memory 17.20 :after-memory 17.20)
+Entering level 4
+expand: query!0 (4, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (3, 4) FAR 1 U 0.00
+expand: main@entry!_BAD (3, 0) FAR  w(0) 1.
+	create_child: main@entry (2, 4) FAR 1 U 0.00
+expand: main@entry (2, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (1, 4) FAR 12146 U 0.00
+expand: main@empty.loop (1, 0) FAR  w(0) 12146.
+	create_child: main@NodeBlock86.i.i.outer (0, 4) FAR 12852 U 0.00
+expand: main@NodeBlock86.i.i.outer (0, 0) FAR  w(0) 12852. F 0.00
+expand: main@empty.loop (1, 0) FAR  w(0) 12146. F 0.00
+expand: main@entry (2, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (3, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (4, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 17.20 :after-memory 17.91)
+Propagating: 0 1 2 3 4  ! 5 
+(spacer::context::propagate :time 0.00 :before-memory 17.91 :after-memory 17.91)
+Entering level 5
+expand: query!0 (5, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (4, 5) FAR 1 U 0.00
+expand: main@entry!_BAD (4, 0) FAR  w(0) 1.
+	create_child: main@entry (3, 5) FAR 1 U 0.00
+expand: main@entry (3, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (2, 5) FAR 12146 U 0.00
+expand: main@empty.loop (2, 0) FAR  w(0) 12146.
+	create_child: main@NodeBlock86.i.i.outer (1, 5) FAR 12852 U 0.00
+expand: main@NodeBlock86.i.i.outer (1, 0) FAR  w(0) 12852.
+	create_child: main@NodeBlock86.i.i (0, 5) FAR 14316 U 0.00
+expand: main@NodeBlock86.i.i (0, 0) FAR  w(0) 14316. F 0.01
+expand: main@NodeBlock86.i.i.outer (1, 0) FAR  w(0) 12852. F 0.00
+expand: main@empty.loop (2, 0) FAR  w(0) 12146. F 0.00
+expand: main@entry (3, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (4, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (5, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.02 :before-memory 17.91 :after-memory 21.26)
+Propagating: 0 1 2 3 4 5  ! 6 
+(spacer::context::propagate :time 0.00 :before-memory 21.26 :after-memory 21.36)
+Entering level 6
+expand: query!0 (6, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (5, 6) FAR 1 U 0.00
+expand: main@entry!_BAD (5, 0) FAR  w(0) 1.
+	create_child: main@entry (4, 6) FAR 1 U 0.00
+expand: main@entry (4, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (3, 6) FAR 12146 U 0.00
+expand: main@empty.loop (3, 0) FAR  w(0) 12146.
+	create_child: main@NodeBlock86.i.i.outer (2, 6) FAR 12852 U 0.00
+expand: main@NodeBlock86.i.i.outer (2, 0) FAR  w(0) 12852.
+	create_child: main@NodeBlock86.i.i (1, 6) FAR 14316 U 0.00
+expand: main@NodeBlock86.i.i (1, 0) FAR  w(0) 14316. F 0.01
+expand: main@NodeBlock86.i.i.outer (2, 0) FAR  w(0) 12852. F 0.00
+expand: main@empty.loop (3, 0) FAR  w(0) 12146. F 0.00
+expand: main@entry (4, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (5, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (6, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.01 :before-memory 21.36 :after-memory 21.68)
+Propagating: 1 2 3 4 5 6  ! 7 
+(spacer::context::propagate :time 0.00 :before-memory 21.68 :after-memory 21.68)
+Entering level 7
+expand: query!0 (7, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (6, 7) FAR 1 U 0.00
+expand: main@entry!_BAD (6, 0) FAR  w(0) 1.
+	create_child: main@entry (5, 7) FAR 1 U 0.00
+expand: main@entry (5, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (4, 7) FAR 12146 U 0.00
+expand: main@empty.loop (4, 0) FAR  w(0) 12146.
+	create_child: main@NodeBlock86.i.i.outer (3, 7) FAR 12852 U 0.00
+expand: main@NodeBlock86.i.i.outer (3, 0) FAR  w(0) 12852.
+	create_child: main@NodeBlock86.i.i (2, 7) FAR 14316 U 0.00
+expand: main@NodeBlock86.i.i (2, 0) FAR  w(0) 14316. F 0.01
+expand: main@NodeBlock86.i.i.outer (3, 0) FAR  w(0) 12852. F 0.00
+expand: main@empty.loop (4, 0) FAR  w(0) 12146. F 0.00
+expand: main@entry (5, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (4, 7) FAR 26052 U 0.00
+expand: main@empty.loop (4, 0) FAR  w(0) 26052.
+	create_child: main@NodeBlock86.i.i.outer (3, 7) FAR 26102 U 0.00
+expand: main@NodeBlock86.i.i.outer (3, 0) FAR  w(0) 26102.
+	create_child: main@NodeBlock86.i.i (2, 7) FAR 26145 U 0.00
+expand: main@NodeBlock86.i.i (2, 0) FAR  w(0) 26145. F 0.01
+expand: main@NodeBlock86.i.i.outer (3, 0) FAR  w(0) 26102. F 0.00
+expand: main@empty.loop (4, 0) FAR  w(0) 26052. F 0.00
+expand: main@entry (5, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (6, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (7, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.04 :before-memory 21.68 :after-memory 22.04)
+Propagating: 2 3 4 5 6 7  ! 8 
+(spacer::context::propagate :time 0.00 :before-memory 22.04 :after-memory 22.32)
+Entering level 8
+expand: query!0 (8, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (7, 8) FAR 1 U 0.00
+expand: main@entry!_BAD (7, 0) FAR  w(0) 1.
+	create_child: main@entry (6, 8) FAR 1 U 0.00
+expand: main@entry (6, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (5, 8) FAR 26052 U 0.00
+expand: main@empty.loop (5, 0) FAR  w(0) 26052.
+	create_child: main@NodeBlock86.i.i.outer (4, 8) FAR 26102 U 0.00
+expand: main@NodeBlock86.i.i.outer (4, 0) FAR  w(0) 26102.
+	create_child: main@NodeBlock86.i.i (3, 8) FAR 26145 U 0.00
+expand: main@NodeBlock86.i.i (3, 0) FAR  w(0) 26145.
+	create_child: main@NodeBlock86.i.i.outer (2, 8) FAR 27725 U 0.00
+expand: main@NodeBlock86.i.i.outer (2, 0) FAR  w(0) 27725.
+	create_child: main@NodeBlock86.i.i (1, 8) FAR 27758 U 0.00
+expand: main@NodeBlock86.i.i (1, 0) FAR  w(0) 27758.
+	create_child: main@_65 (0, 8) FAR 27655 U 0.00
+expand: main@_65 (0, 0) FAR  w(0) 27655. F 0.00
+expand: main@NodeBlock86.i.i (1, 0) FAR  w(0) 27758. F 0.00
+expand: main@NodeBlock86.i.i.outer (2, 0) FAR  w(0) 27725. F 0.00
+expand: main@NodeBlock86.i.i (3, 0) FAR  w(0) 26145. F 0.01
+expand: main@NodeBlock86.i.i.outer (4, 0) FAR  w(0) 26102. F 0.00
+expand: main@empty.loop (5, 0) FAR  w(0) 26052. F 0.00
+expand: main@entry (6, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (7, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (8, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.03 :before-memory 22.32 :after-memory 23.40)
+Propagating: 0 1 2 3 4 5 6 7 8  ! 9 
+(spacer::context::propagate :time 0.00 :before-memory 23.40 :after-memory 23.40)
+Entering level 9
+expand: query!0 (9, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (8, 9) FAR 1 U 0.00
+expand: main@entry!_BAD (8, 0) FAR  w(0) 1.
+	create_child: main@entry (7, 9) FAR 1 U 0.00
+expand: main@entry (7, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (6, 9) FAR 26052 U 0.00
+expand: main@empty.loop (6, 0) FAR  w(0) 26052.
+	create_child: main@NodeBlock86.i.i.outer (5, 9) FAR 26102 U 0.00
+expand: main@NodeBlock86.i.i.outer (5, 0) FAR  w(0) 26102.
+	create_child: main@NodeBlock86.i.i (4, 9) FAR 26145 U 0.00
+expand: main@NodeBlock86.i.i (4, 0) FAR  w(0) 26145.
+	create_child: main@NodeBlock86.i.i.outer (3, 9) FAR 27725 U 0.00
+expand: main@NodeBlock86.i.i.outer (3, 0) FAR  w(0) 27725.
+	create_child: main@NodeBlock86.i.i (2, 9) FAR 27758 U 0.00
+expand: main@NodeBlock86.i.i (2, 0) FAR  w(0) 27758.
+	create_child: main@NodeBlock86.i.i.outer (1, 9) FAR 29660 U 0.00
+expand: main@NodeBlock86.i.i.outer (1, 0) FAR  w(0) 29660.
+	create_child: main@NodeBlock86.i.i (0, 9) FAR 29582 U 0.00
+expand: main@NodeBlock86.i.i (0, 0) FAR  w(0) 29582. F 0.00
+expand: main@NodeBlock86.i.i.outer (1, 0) FAR  w(0) 29660. F 0.00
+expand: main@NodeBlock86.i.i (2, 0) FAR  w(0) 27758.
+	create_child: main@_65 (1, 9) FAR 27655 U 0.00
+expand: main@_65 (1, 0) FAR  w(0) 27655.
+	create_child: main@_65!_Cond (0, 9) FAR 30269 U 0.00
+expand: main@_65!_Cond (0, 0) FAR  w(0) 30269. F 0.00
+expand: main@_65 (1, 0) FAR  w(0) 27655. F 0.00
+expand: main@NodeBlock86.i.i (2, 0) FAR  w(0) 27758. F 0.01
+expand: main@NodeBlock86.i.i.outer (3, 0) FAR  w(0) 27725. F 0.00
+expand: main@NodeBlock86.i.i (4, 0) FAR  w(0) 26145. F 0.01
+expand: main@NodeBlock86.i.i.outer (5, 0) FAR  w(0) 26102. F 0.00
+expand: main@empty.loop (6, 0) FAR  w(0) 26052. F 0.00
+expand: main@entry (7, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (8, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (9, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.05 :before-memory 23.40 :after-memory 24.43)
+Propagating: 0 1 2 3 4 5 6 7 8 9  ! 10 
+(spacer::context::propagate :time 0.00 :before-memory 24.43 :after-memory 24.43)
+Entering level 10
+expand: query!0 (10, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (9, 10) FAR 1 U 0.00
+expand: main@entry!_BAD (9, 0) FAR  w(0) 1.
+	create_child: main@entry (8, 10) FAR 1 U 0.00
+expand: main@entry (8, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (7, 10) FAR 26052 U 0.00
+expand: main@empty.loop (7, 0) FAR  w(0) 26052.
+	create_child: main@NodeBlock86.i.i.outer (6, 10) FAR 26102 U 0.00
+expand: main@NodeBlock86.i.i.outer (6, 0) FAR  w(0) 26102.
+	create_child: main@NodeBlock86.i.i (5, 10) FAR 26145 U 0.00
+expand: main@NodeBlock86.i.i (5, 0) FAR  w(0) 26145.
+	create_child: main@NodeBlock86.i.i.outer (4, 10) FAR 27725 U 0.00
+expand: main@NodeBlock86.i.i.outer (4, 0) FAR  w(0) 27725.
+	create_child: main@NodeBlock86.i.i (3, 10) FAR 27758 U 0.00
+expand: main@NodeBlock86.i.i (3, 0) FAR  w(0) 27758.
+	create_child: main@_65 (2, 10) FAR 27655 U 0.00
+expand: main@_65 (2, 0) FAR  w(0) 27655.
+	create_child: main@_65!_Cond (1, 10) FAR 30269 U 0.00
+expand: main@_65!_Cond (1, 0) FAR  w(0) 30269.
+	create_child: main@_68 (0, 10) FAR 33426 U 0.00
+expand: main@_68 (0, 0) FAR  w(0) 33426. F 0.00
+expand: main@_65!_Cond (1, 0) FAR  w(0) 30269. F 0.00
+expand: main@_65 (2, 0) FAR  w(0) 27655. F 0.00
+expand: main@NodeBlock86.i.i (3, 0) FAR  w(0) 27758. F 0.01
+expand: main@NodeBlock86.i.i.outer (4, 0) FAR  w(0) 27725. F 0.00
+expand: main@NodeBlock86.i.i (5, 0) FAR  w(0) 26145. F 0.01
+expand: main@NodeBlock86.i.i.outer (6, 0) FAR  w(0) 26102. F 0.00
+expand: main@empty.loop (7, 0) FAR  w(0) 26052. F 0.00
+expand: main@entry (8, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (9, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (10, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.04 :before-memory 24.43 :after-memory 25.33)
+Propagating: 0 1 2 3 4 5 6 7 8 9 10  ! 11 
+(spacer::context::propagate :time 0.01 :before-memory 25.33 :after-memory 25.43)
+Entering level 11
+expand: query!0 (11, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (10, 11) FAR 1 U 0.00
+expand: main@entry!_BAD (10, 0) FAR  w(0) 1.
+	create_child: main@entry (9, 11) FAR 1 U 0.00
+expand: main@entry (9, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (8, 11) FAR 26052 U 0.00
+expand: main@empty.loop (8, 0) FAR  w(0) 26052.
+	create_child: main@NodeBlock86.i.i.outer (7, 11) FAR 26102 U 0.00
+expand: main@NodeBlock86.i.i.outer (7, 0) FAR  w(0) 26102.
+	create_child: main@NodeBlock86.i.i (6, 11) FAR 26145 U 0.00
+expand: main@NodeBlock86.i.i (6, 0) FAR  w(0) 26145.
+	create_child: main@NodeBlock86.i.i.outer (5, 11) FAR 27725 U 0.00
+expand: main@NodeBlock86.i.i.outer (5, 0) FAR  w(0) 27725.
+	create_child: main@NodeBlock86.i.i (4, 11) FAR 27758 U 0.00
+expand: main@NodeBlock86.i.i (4, 0) FAR  w(0) 27758.
+	create_child: main@NodeBlock86.i.i.outer (3, 11) FAR 29660 U 0.00
+expand: main@NodeBlock86.i.i.outer (3, 0) FAR  w(0) 29660.
+	create_child: main@NodeBlock86.i.i (2, 11) FAR 29582 U 0.00
+expand: main@NodeBlock86.i.i (2, 0) FAR  w(0) 29582.
+	create_child: main@NodeBlock86.i.i.outer (1, 11) FAR 35736 U 0.00
+expand: main@NodeBlock86.i.i.outer (1, 0) FAR  w(0) 35736.
+	create_child: main@NodeBlock86.i.i (0, 11) FAR 35650 U 0.00
+expand: main@NodeBlock86.i.i (0, 0) FAR  w(0) 35650. F 0.00
+expand: main@NodeBlock86.i.i.outer (1, 0) FAR  w(0) 35736. F 0.00
+expand: main@NodeBlock86.i.i (2, 0) FAR  w(0) 29582. F 0.01
+expand: main@NodeBlock86.i.i.outer (3, 0) FAR  w(0) 29660. F 0.00
+expand: main@NodeBlock86.i.i (4, 0) FAR  w(0) 27758. F 0.01
+expand: main@NodeBlock86.i.i.outer (5, 0) FAR  w(0) 27725. F 0.00
+expand: main@NodeBlock86.i.i (6, 0) FAR  w(0) 26145. F 0.01
+expand: main@NodeBlock86.i.i.outer (7, 0) FAR  w(0) 26102. F 0.00
+expand: main@empty.loop (8, 0) FAR  w(0) 26052. F 0.00
+expand: main@entry (9, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (10, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (11, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.06 :before-memory 25.43 :after-memory 25.60)
+Propagating: 0 1 2 3 4 5 6 7 8 9 10 11  ! 12 
+(spacer::context::propagate :time 0.01 :before-memory 25.60 :after-memory 25.60)
+Entering level 12
+expand: query!0 (12, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (11, 12) FAR 1 U 0.00
+expand: main@entry!_BAD (11, 0) FAR  w(0) 1.
+	create_child: main@entry (10, 12) FAR 1 U 0.00
+expand: main@entry (10, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (9, 12) FAR 26052 U 0.00
+expand: main@empty.loop (9, 0) FAR  w(0) 26052.
+	create_child: main@NodeBlock86.i.i.outer (8, 12) FAR 26102 U 0.00
+expand: main@NodeBlock86.i.i.outer (8, 0) FAR  w(0) 26102.
+	create_child: main@NodeBlock86.i.i (7, 12) FAR 26145 U 0.00
+expand: main@NodeBlock86.i.i (7, 0) FAR  w(0) 26145.
+	create_child: main@NodeBlock86.i.i.outer (6, 12) FAR 27725 U 0.01
+expand: main@NodeBlock86.i.i.outer (6, 0) FAR  w(0) 27725.
+	create_child: main@NodeBlock86.i.i (5, 12) FAR 27758 U 0.00
+expand: main@NodeBlock86.i.i (5, 0) FAR  w(0) 27758.
+	create_child: main@_65 (4, 12) FAR 27655 U 0.00
+expand: main@_65 (4, 0) FAR  w(0) 27655.
+	create_child: main@_65!_Cond (3, 12) FAR 30269 U 0.00
+expand: main@_65!_Cond (3, 0) FAR  w(0) 30269.
+	create_child: main@_68 (2, 12) FAR 33426 U 0.00
+expand: main@_68 (2, 0) FAR  w(0) 33426. F 0.00
+expand: main@_65!_Cond (3, 0) FAR  w(0) 30269. F 0.00
+expand: main@_65 (4, 0) FAR  w(0) 27655. F 0.00
+expand: main@NodeBlock86.i.i (5, 0) FAR  w(0) 27758. F 0.01
+expand: main@NodeBlock86.i.i.outer (6, 0) FAR  w(0) 27725. F 0.00
+expand: main@NodeBlock86.i.i (7, 0) FAR  w(0) 26145. F 0.02
+expand: main@NodeBlock86.i.i.outer (8, 0) FAR  w(0) 26102. F 0.00
+expand: main@empty.loop (9, 0) FAR  w(0) 26052. F 0.00
+expand: main@entry (10, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (11, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (12, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.07 :before-memory 25.60 :after-memory 25.81)
+Propagating: 2 3 4 5 6 7 8 9 10 11 12  ! 13 
+(spacer::context::propagate :time 0.01 :before-memory 25.81 :after-memory 25.81)
+Entering level 13
+expand: query!0 (13, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (12, 13) FAR 1 U 0.00
+expand: main@entry!_BAD (12, 0) FAR  w(0) 1.
+	create_child: main@entry (11, 13) FAR 1 U 0.00
+expand: main@entry (11, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (10, 13) FAR 26052 U 0.00
+expand: main@empty.loop (10, 0) FAR  w(0) 26052.
+	create_child: main@NodeBlock86.i.i.outer (9, 13) FAR 26102 U 0.00
+expand: main@NodeBlock86.i.i.outer (9, 0) FAR  w(0) 26102.
+	create_child: main@NodeBlock86.i.i (8, 13) FAR 26145 U 0.00
+expand: main@NodeBlock86.i.i (8, 0) FAR  w(0) 26145.
+	create_child: main@NodeBlock86.i.i.outer (7, 13) FAR 27725 U 0.00
+expand: main@NodeBlock86.i.i.outer (7, 0) FAR  w(0) 27725.
+	create_child: main@NodeBlock86.i.i (6, 13) FAR 27758 U 0.03
+expand: main@NodeBlock86.i.i (6, 0) FAR  w(0) 27758.
+	create_child: main@NodeBlock86.i.i.outer (5, 13) FAR 29660 U 0.01
+expand: main@NodeBlock86.i.i.outer (5, 0) FAR  w(0) 29660.
+	create_child: main@NodeBlock86.i.i (4, 13) FAR 29582 U 0.00
+expand: main@NodeBlock86.i.i (4, 0) FAR  w(0) 29582.
+	create_child: main@NodeBlock86.i.i.outer (3, 13) FAR 35736 U 0.01
+expand: main@NodeBlock86.i.i.outer (3, 0) FAR  w(0) 35736.
+	create_child: main@NodeBlock86.i.i (2, 13) FAR 35650 U 0.00
+expand: main@NodeBlock86.i.i (2, 0) FAR  w(0) 35650. F 0.01
+expand: main@NodeBlock86.i.i.outer (3, 0) FAR  w(0) 35736. F 0.00
+expand: main@NodeBlock86.i.i (4, 0) FAR  w(0) 29582. F 0.01
+expand: main@NodeBlock86.i.i.outer (5, 0) FAR  w(0) 29660. F 0.00
+expand: main@NodeBlock86.i.i (6, 0) FAR  w(0) 27758. F 0.01
+expand: main@NodeBlock86.i.i.outer (7, 0) FAR  w(0) 27725. F 0.00
+expand: main@NodeBlock86.i.i (8, 0) FAR  w(0) 26145. F 0.02
+expand: main@NodeBlock86.i.i.outer (9, 0) FAR  w(0) 26102. F 0.00
+expand: main@empty.loop (10, 0) FAR  w(0) 26052. F 0.00
+expand: main@entry (11, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (10, 13) FAR 42901 U 0.00
+expand: main@empty.loop (10, 0) FAR  w(0) 42901.
+	create_child: main@NodeBlock86.i.i.outer (9, 13) FAR 43007 U 0.00
+expand: main@NodeBlock86.i.i.outer (9, 0) FAR  w(0) 43007.
+	create_child: main@NodeBlock86.i.i (8, 13) FAR 43071 U 0.00
+expand: main@NodeBlock86.i.i (8, 0) FAR  w(0) 43071.
+	create_child: main@NodeBlock86.i.i.outer (7, 13) FAR 43218 U 0.00
+expand: main@NodeBlock86.i.i.outer (7, 0) FAR  w(0) 43218.
+	create_child: main@NodeBlock86.i.i (6, 13) FAR 43270 U 0.00
+expand: main@NodeBlock86.i.i (6, 0) FAR  w(0) 43270.
+	create_child: main@NodeBlock86.i.i.outer (5, 13) FAR 43362 U 0.00
+expand: main@NodeBlock86.i.i.outer (5, 0) FAR  w(0) 43362.
+	create_child: main@NodeBlock86.i.i (4, 13) FAR 43334 U 0.00
+expand: main@NodeBlock86.i.i (4, 0) FAR  w(0) 43334.
+	create_child: main@NodeBlock86.i.i.outer (3, 13) FAR 43371 U 0.00
+expand: main@NodeBlock86.i.i.outer (3, 0) FAR  w(0) 43371.
+	create_child: main@NodeBlock86.i.i (2, 13) FAR 43250 U 0.00
+expand: main@NodeBlock86.i.i (2, 0) FAR  w(0) 43250.
+	create_child: main@NodeBlock86.i.i.outer (1, 13) FAR 43382 U 0.00
+expand: main@NodeBlock86.i.i.outer (1, 0) FAR  w(0) 43382.
+	create_child: main@NodeBlock86.i.i (0, 13) FAR 43317 U 0.00
+expand: main@NodeBlock86.i.i (0, 0) FAR  w(0) 43317. F 0.00
+expand: main@NodeBlock86.i.i.outer (1, 0) FAR  w(0) 43382. F 0.00
+expand: main@NodeBlock86.i.i (2, 0) FAR  w(0) 43250. F 0.01
+expand: main@NodeBlock86.i.i.outer (3, 0) FAR  w(0) 43371. F 0.00
+expand: main@NodeBlock86.i.i (4, 0) FAR  w(0) 43334. F 0.01
+expand: main@NodeBlock86.i.i.outer (5, 0) FAR  w(0) 43362. F 0.00
+expand: main@NodeBlock86.i.i (6, 0) FAR  w(0) 43270. F 0.01
+expand: main@NodeBlock86.i.i.outer (7, 0) FAR  w(0) 43218. F 0.00
+expand: main@NodeBlock86.i.i (8, 0) FAR  w(0) 43071. F 0.01
+expand: main@NodeBlock86.i.i.outer (9, 0) FAR  w(0) 43007. F 0.00
+expand: main@empty.loop (10, 0) FAR  w(0) 42901. F 0.00
+expand: main@entry (11, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (12, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (13, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.21 :before-memory 25.81 :after-memory 26.86)
+Propagating: 0 1 2 3 4 5 6 7 8 9 10 11 12 13  ! 14 
+(spacer::context::propagate :time 0.02 :before-memory 26.86 :after-memory 27.26)
+Entering level 14
+expand: query!0 (14, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (13, 14) FAR 1 U 0.00
+expand: main@entry!_BAD (13, 0) FAR  w(0) 1.
+	create_child: main@entry (12, 14) FAR 1 U 0.00
+expand: main@entry (12, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (11, 14) FAR 42901 U 0.00
+expand: main@empty.loop (11, 0) FAR  w(0) 42901.
+	create_child: main@NodeBlock86.i.i.outer (10, 14) FAR 43007 U 0.00
+expand: main@NodeBlock86.i.i.outer (10, 0) FAR  w(0) 43007.
+	create_child: main@NodeBlock86.i.i (9, 14) FAR 43071 U 0.00
+expand: main@NodeBlock86.i.i (9, 0) FAR  w(0) 43071.
+	create_child: main@NodeBlock86.i.i.outer (8, 14) FAR 43218 U 0.00
+expand: main@NodeBlock86.i.i.outer (8, 0) FAR  w(0) 43218.
+	create_child: main@NodeBlock86.i.i (7, 14) FAR 43270 U 0.00
+expand: main@NodeBlock86.i.i (7, 0) FAR  w(0) 43270.
+	create_child: main@NodeBlock86.i.i.outer (6, 14) FAR 43362 U 0.00
+expand: main@NodeBlock86.i.i.outer (6, 0) FAR  w(0) 43362.
+	create_child: main@NodeBlock86.i.i (5, 14) FAR 43334 U 0.00
+expand: main@NodeBlock86.i.i (5, 0) FAR  w(0) 43334.
+	create_child: main@_65 (4, 14) FAR 46669 U 0.00
+expand: main@_65 (4, 0) FAR  w(0) 46669.
+	create_child: main@_65!_Cond (3, 14) FAR 43233 U 0.00
+expand: main@_65!_Cond (3, 0) FAR  w(0) 43233.
+	create_child: main@_68 (2, 14) FAR 46459 U 0.00
+expand: main@_68 (2, 0) FAR  w(0) 46459. F 0.00
+expand: main@_65!_Cond (3, 0) FAR  w(0) 43233. F 0.00
+expand: main@_65 (4, 0) FAR  w(0) 46669. F 0.00
+expand: main@NodeBlock86.i.i (5, 0) FAR  w(0) 43334. F 0.01
+expand: main@NodeBlock86.i.i.outer (6, 0) FAR  w(0) 43362. F 0.00
+expand: main@NodeBlock86.i.i (7, 0) FAR  w(0) 43270. F 0.01
+expand: main@NodeBlock86.i.i.outer (8, 0) FAR  w(0) 43218. F 0.00
+expand: main@NodeBlock86.i.i (9, 0) FAR  w(0) 43071. F 0.01
+expand: main@NodeBlock86.i.i.outer (10, 0) FAR  w(0) 43007. F 0.00
+expand: main@empty.loop (11, 0) FAR  w(0) 42901. F 0.00
+expand: main@entry (12, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (13, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (14, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.06 :before-memory 27.26 :after-memory 28.11)
+Propagating: 2 3 4 5 6 7 8 9 10 11 12 13 14  ! 15 
+(spacer::context::propagate :time 0.03 :before-memory 28.11 :after-memory 29.47)
+Entering level 15
+expand: query!0 (15, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (14, 15) FAR 1 U 0.00
+expand: main@entry!_BAD (14, 0) FAR  w(0) 1.
+	create_child: main@entry (13, 15) FAR 1 U 0.00
+expand: main@entry (13, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (12, 15) FAR 42901 U 0.00
+expand: main@empty.loop (12, 0) FAR  w(0) 42901.
+	create_child: main@NodeBlock86.i.i.outer (11, 15) FAR 43007 U 0.00
+expand: main@NodeBlock86.i.i.outer (11, 0) FAR  w(0) 43007.
+	create_child: main@NodeBlock86.i.i (10, 15) FAR 43071 U 0.00
+expand: main@NodeBlock86.i.i (10, 0) FAR  w(0) 43071.
+	create_child: main@NodeBlock86.i.i.outer (9, 15) FAR 43218 U 0.00
+expand: main@NodeBlock86.i.i.outer (9, 0) FAR  w(0) 43218.
+	create_child: main@NodeBlock86.i.i (8, 15) FAR 43270 U 0.00
+expand: main@NodeBlock86.i.i (8, 0) FAR  w(0) 43270.
+	create_child: main@NodeBlock86.i.i.outer (7, 15) FAR 43362 U 0.00
+expand: main@NodeBlock86.i.i.outer (7, 0) FAR  w(0) 43362.
+	create_child: main@NodeBlock86.i.i (6, 15) FAR 43334 U 0.00
+expand: main@NodeBlock86.i.i (6, 0) FAR  w(0) 43334.
+	create_child: main@NodeBlock86.i.i.outer (5, 15) FAR 43371 U 0.00
+expand: main@NodeBlock86.i.i.outer (5, 0) FAR  w(0) 43371.
+	create_child: main@NodeBlock86.i.i (4, 15) FAR 43250 U 0.00
+expand: main@NodeBlock86.i.i (4, 0) FAR  w(0) 43250.
+	create_child: main@NodeBlock86.i.i.outer (3, 15) FAR 43382 U 0.00
+expand: main@NodeBlock86.i.i.outer (3, 0) FAR  w(0) 43382.
+	create_child: main@NodeBlock86.i.i (2, 15) FAR 43317 U 0.00
+expand: main@NodeBlock86.i.i (2, 0) FAR  w(0) 43317.
+	create_child: main@NodeBlock86.i.i.outer (1, 15) FAR 49936 U 0.00
+expand: main@NodeBlock86.i.i.outer (1, 0) FAR  w(0) 49936.
+	create_child: main@NodeBlock86.i.i (0, 15) FAR 49980 U 0.00
+expand: main@NodeBlock86.i.i (0, 0) FAR  w(0) 49980. F 0.00
+expand: main@NodeBlock86.i.i.outer (1, 0) FAR  w(0) 49936. F 0.00
+expand: main@NodeBlock86.i.i (2, 0) FAR  w(0) 43317. F 0.01
+expand: main@NodeBlock86.i.i.outer (3, 0) FAR  w(0) 43382. F 0.00
+expand: main@NodeBlock86.i.i (4, 0) FAR  w(0) 43250. F 0.01
+expand: main@NodeBlock86.i.i.outer (5, 0) FAR  w(0) 43371. F 0.00
+expand: main@NodeBlock86.i.i (6, 0) FAR  w(0) 43334. F 0.01
+expand: main@NodeBlock86.i.i.outer (7, 0) FAR  w(0) 43362. F 0.00
+expand: main@NodeBlock86.i.i (8, 0) FAR  w(0) 43270. F 0.01
+expand: main@NodeBlock86.i.i.outer (9, 0) FAR  w(0) 43218. F 0.00
+expand: main@NodeBlock86.i.i (10, 0) FAR  w(0) 43071. F 0.01
+expand: main@NodeBlock86.i.i.outer (11, 0) FAR  w(0) 43007. F 0.00
+expand: main@empty.loop (12, 0) FAR  w(0) 42901. F 0.00
+expand: main@entry (13, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (14, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (15, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.09 :before-memory 29.47 :after-memory 29.83)
+Propagating: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15  ! 16 
+(spacer::context::propagate :time 0.02 :before-memory 29.83 :after-memory 29.83)
+Entering level 16
+expand: query!0 (16, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (15, 16) FAR 1 U 0.00
+expand: main@entry!_BAD (15, 0) FAR  w(0) 1.
+	create_child: main@entry (14, 16) FAR 1 U 0.00
+expand: main@entry (14, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (13, 16) FAR 42901 U 0.00
+expand: main@empty.loop (13, 0) FAR  w(0) 42901.
+	create_child: main@NodeBlock86.i.i.outer (12, 16) FAR 43007 U 0.00
+expand: main@NodeBlock86.i.i.outer (12, 0) FAR  w(0) 43007.
+	create_child: main@NodeBlock86.i.i (11, 16) FAR 43071 U 0.00
+expand: main@NodeBlock86.i.i (11, 0) FAR  w(0) 43071.
+	create_child: main@NodeBlock86.i.i.outer (10, 16) FAR 43218 U 0.00
+expand: main@NodeBlock86.i.i.outer (10, 0) FAR  w(0) 43218.
+	create_child: main@NodeBlock86.i.i (9, 16) FAR 43270 U 0.00
+expand: main@NodeBlock86.i.i (9, 0) FAR  w(0) 43270.
+	create_child: main@NodeBlock86.i.i.outer (8, 16) FAR 43362 U 0.00
+expand: main@NodeBlock86.i.i.outer (8, 0) FAR  w(0) 43362.
+	create_child: main@NodeBlock86.i.i (7, 16) FAR 43334 U 0.00
+expand: main@NodeBlock86.i.i (7, 0) FAR  w(0) 43334.
+	create_child: main@NodeBlock86.i.i.outer (6, 16) FAR 43371 U 0.00
+expand: main@NodeBlock86.i.i.outer (6, 0) FAR  w(0) 43371.
+	create_child: main@NodeBlock86.i.i (5, 16) FAR 43250 U 0.00
+expand: main@NodeBlock86.i.i (5, 0) FAR  w(0) 43250.
+	create_child: main@_65 (4, 16) FAR 52906 U 0.00
+expand: main@_65 (4, 0) FAR  w(0) 52906.
+	create_child: main@_65!_Cond (3, 16) FAR 52995 U 0.00
+expand: main@_65!_Cond (3, 0) FAR  w(0) 52995.
+	create_child: main@_68 (2, 16) FAR 53160 U 0.00
+expand: main@_68 (2, 0) FAR  w(0) 53160. F 0.00
+expand: main@_65!_Cond (3, 0) FAR  w(0) 52995. F 0.00
+expand: main@_65 (4, 0) FAR  w(0) 52906. F 0.00
+expand: main@NodeBlock86.i.i (5, 0) FAR  w(0) 43250. F 0.01
+expand: main@NodeBlock86.i.i.outer (6, 0) FAR  w(0) 43371. F 0.00
+expand: main@NodeBlock86.i.i (7, 0) FAR  w(0) 43334. F 0.01
+expand: main@NodeBlock86.i.i.outer (8, 0) FAR  w(0) 43362. F 0.00
+expand: main@NodeBlock86.i.i (9, 0) FAR  w(0) 43270. F 0.01
+expand: main@NodeBlock86.i.i.outer (10, 0) FAR  w(0) 43218. F 0.00
+expand: main@NodeBlock86.i.i (11, 0) FAR  w(0) 43071. F 0.01
+expand: main@NodeBlock86.i.i.outer (12, 0) FAR  w(0) 43007. F 0.00
+expand: main@empty.loop (13, 0) FAR  w(0) 42901. F 0.00
+expand: main@entry (14, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (15, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (16, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.07 :before-memory 29.83 :after-memory 30.07)
+Propagating: 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16  ! 17 18 19 
+(spacer::context::propagate :time 0.04 :before-memory 30.07 :after-memory 30.45)
+Entering level 17
+expand: query!0 (17, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (16, 17) FAR 1 U 0.00
+expand: main@entry!_BAD (16, 0) FAR  w(0) 1.
+	create_child: main@entry (15, 17) FAR 1 U 0.00
+expand: main@entry (15, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (14, 17) FAR 42901 U 0.00
+expand: main@empty.loop (14, 0) FAR  w(0) 42901.
+	create_child: main@NodeBlock86.i.i.outer (13, 17) FAR 43007 U 0.00
+expand: main@NodeBlock86.i.i.outer (13, 0) FAR  w(0) 43007.
+	create_child: main@NodeBlock86.i.i (12, 17) FAR 43071 U 0.00
+expand: main@NodeBlock86.i.i (12, 0) FAR  w(0) 43071.
+	create_child: main@NodeBlock86.i.i.outer (11, 17) FAR 43218 U 0.00
+expand: main@NodeBlock86.i.i.outer (11, 0) FAR  w(0) 43218.
+	create_child: main@NodeBlock86.i.i (10, 17) FAR 43270 U 0.00
+expand: main@NodeBlock86.i.i (10, 0) FAR  w(0) 43270.
+	create_child: main@NodeBlock86.i.i.outer (9, 17) FAR 43362 U 0.00
+expand: main@NodeBlock86.i.i.outer (9, 0) FAR  w(0) 43362.
+	create_child: main@NodeBlock86.i.i (8, 17) FAR 43334 U 0.00
+expand: main@NodeBlock86.i.i (8, 0) FAR  w(0) 43334.
+	create_child: main@NodeBlock86.i.i.outer (7, 17) FAR 43371 U 0.00
+expand: main@NodeBlock86.i.i.outer (7, 0) FAR  w(0) 43371.
+	create_child: main@NodeBlock86.i.i (6, 17) FAR 43250 U 0.00
+expand: main@NodeBlock86.i.i (6, 0) FAR  w(0) 43250.
+	create_child: main@NodeBlock86.i.i.outer (5, 17) FAR 43382 U 0.00
+expand: main@NodeBlock86.i.i.outer (5, 0) FAR  w(0) 43382.
+	create_child: main@NodeBlock86.i.i (4, 17) FAR 43317 U 0.00
+expand: main@NodeBlock86.i.i (4, 0) FAR  w(0) 43317.
+	create_child: main@NodeBlock86.i.i.outer (3, 17) FAR 49936 U 0.00
+expand: main@NodeBlock86.i.i.outer (3, 0) FAR  w(0) 49936.
+	create_child: main@NodeBlock86.i.i (2, 17) FAR 49980 U 0.00
+expand: main@NodeBlock86.i.i (2, 0) FAR  w(0) 49980.
+	create_child: main@NodeBlock86.i.i.outer (1, 17) FAR 60453 U 0.00
+expand: main@NodeBlock86.i.i.outer (1, 0) FAR  w(0) 60453. T 0.00
+is-reachable: main@NodeBlock86.i.i (2, 0) FAR 49980 F 0.00
+expand: main@NodeBlock86.i.i (2, 0) FAR  w(1) 49980. T 0.00
+is-reachable: main@NodeBlock86.i.i.outer (3, 0) FAR 49936 T 0.00
+is-reachable: main@NodeBlock86.i.i (4, 0) FAR 43317 F 0.00
+Deleting closed node: main@NodeBlock86.i.i.outer(3, 17) 49936
+expand: main@NodeBlock86.i.i (4, 0) FAR  w(1) 43317. T 0.00
+is-reachable: main@NodeBlock86.i.i.outer (5, 0) FAR 43382 T 0.00
+is-reachable: main@NodeBlock86.i.i (6, 0) FAR 43250 F 0.00
+Deleting closed node: main@NodeBlock86.i.i.outer(5, 17) 43382
+expand: main@NodeBlock86.i.i (6, 0) FAR  w(1) 43250. T 0.00
+is-reachable: main@NodeBlock86.i.i.outer (7, 0) FAR 43371 T 0.00
+is-reachable: main@NodeBlock86.i.i (8, 0) FAR 43334 F 0.00
+Deleting closed node: main@NodeBlock86.i.i.outer(7, 17) 43371
+expand: main@NodeBlock86.i.i (8, 0) FAR  w(1) 43334. T 0.00
+is-reachable: main@NodeBlock86.i.i.outer (9, 0) FAR 43362 T 0.00
+is-reachable: main@NodeBlock86.i.i (10, 0) FAR 43270 F 0.00
+Deleting closed node: main@NodeBlock86.i.i.outer(9, 17) 43362
+expand: main@NodeBlock86.i.i (10, 0) FAR  w(1) 43270. T 0.00
+is-reachable: main@NodeBlock86.i.i.outer (11, 0) FAR 43218 T 0.00
+is-reachable: main@NodeBlock86.i.i (12, 0) FAR 43071 F 0.00
+Deleting closed node: main@NodeBlock86.i.i.outer(11, 17) 43218
+expand: main@NodeBlock86.i.i (12, 0) FAR  w(1) 43071. T 0.00
+is-reachable: main@NodeBlock86.i.i.outer (13, 0) FAR 43007 T 0.00
+is-reachable: main@empty.loop (14, 0) FAR 42901 T 0.00
+is-reachable: main@entry (15, 0) FAR 1 T 0.00
+is-reachable: main@entry!_BAD (16, 0) FAR 1 T 0.00
+is-reachable: query!0 (17, 0) FAR 1 T 0.00
+(spacer::context::check_reachability :time 0.09 :before-memory 30.45 :after-memory 33.22)

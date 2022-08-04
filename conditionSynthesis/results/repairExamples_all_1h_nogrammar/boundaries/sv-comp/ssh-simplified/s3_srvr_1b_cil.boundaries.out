@@ -1,0 +1,7 @@
+(
+(define-fun Condition_0 ((mainv%SwitchLeaf8.i_0 Bool) (mainv%_7_0 Int) (vfind_condition_0 Int) (mainv%loop.bound_0 Int) (mainv%loop.bound1_0 Int) (mainv%loop.bound2_0 Int) (mainv%_4_0 Bool) (mainv%spec.select6.i_0 Int) (mainv%.0.i2_0 Int) (mainv%.02.i1_0 Int)) Bool true)
+(define-fun Condition_1 ((vfind_condition_0 Int) (mainv%loop.bound_0 Int) (mainv%loop.bound1_0 Int) (mainv%loop.bound2_0 Int) (mainv%_4_0 Bool) (mainv%spec.select6.i_0 Int) (mainv%.0.i2_0 Int) (mainv%.02.i1_0 Int)) Bool true)
+(define-fun Condition_2 ((vfind_condition_0 Int) (mainv%loop.bound_0 Int) (mainv%loop.bound1_0 Int) (mainv%loop.bound2_0 Int) (mainv%_4_0 Bool) (mainv%spec.select6.i_0 Int) (mainv%.0.i2_0 Int) (mainv%.02.i1_0 Int)) Bool true)
+(define-fun Condition_3 ((vfind_condition_0 Int) (mainv%loop.bound_0 Int) (mainv%loop.bound1_0 Int) (mainv%loop.bound2_0 Int) (mainv%_4_0 Bool) (mainv%spec.select6.i_0 Int) (mainv%.0.i2_1 Int) (mainv%.02.i1_1 Int)) Bool true)
+(define-fun Condition_4 ((vfind_condition_0 Int) (mainv%loop.bound_0 Int) (mainv%loop.bound1_0 Int) (mainv%loop.bound2_0 Int) (mainv%_4_0 Bool) (mainv%spec.select6.i_0 Int) (mainv%.0.i2_0 Int) (mainv%.02.i1_0 Int)) Bool true)
+)

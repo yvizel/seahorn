@@ -1,0 +1,3 @@
+(
+(define-fun Condition_0 ((v__VERIFIER_nondet_int_0 Int) (vfind_condition_0 Int) (mainv%loop.bound_0 Int)) Bool false)
+)

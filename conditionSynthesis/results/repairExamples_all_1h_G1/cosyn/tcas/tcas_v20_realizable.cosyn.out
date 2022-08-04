@@ -1,0 +1,373 @@
+(transform N7datalog13mk_coi_filterE...no-op 0s)
+(transform N7datalog25mk_interp_tail_simplifierE...9 rules 0.029s)
+(transform N7datalog27mk_quantifier_instantiationE...no-op 0s)
+(transform N7datalog8mk_scaleE...no-op 0s)
+(transform N7datalog18mk_karr_invariantsE...no-op 0s)
+(transform N7datalog14mk_array_blastE...no-op 0s)
+(transform N7datalog16mk_elim_term_iteE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...8 rules 0.005s)
+(transform N7datalog12mk_bit_blastE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog13mk_coi_filterE...no-op 0s)
+(transform N7datalog25mk_interp_tail_simplifierE...8 rules 0.001s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog13mk_coi_filterE...no-op 0s)
+(transform N7datalog25mk_interp_tail_simplifierE...8 rules 0.001s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+expand: query!0 (0, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 13.78 :after-memory 13.98)
+Entering level 1
+expand: query!0 (1, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (0, 1) FAR 1 U 0.00
+expand: main@entry!_BAD (0, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (1, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 13.98 :after-memory 15.15)
+Propagating: 0 1  ! 2 
+(spacer::context::propagate :time 0.00 :before-memory 15.15 :after-memory 15.44)
+Entering level 2
+expand: query!0 (2, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (1, 2) FAR 1 U 0.00
+expand: main@entry!_BAD (1, 0) FAR  w(0) 1.
+	create_child: main@entry (0, 2) FAR 1 U 0.00
+expand: main@entry (0, 0) FAR  w(0) 1. F 0.01
+expand: main@entry!_BAD (1, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (2, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.01 :before-memory 15.44 :after-memory 17.33)
+Propagating: 0 1 2  ! 3 
+(spacer::context::propagate :time 0.00 :before-memory 17.33 :after-memory 17.52)
+Entering level 3
+expand: query!0 (3, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (2, 3) FAR 1 U 0.00
+expand: main@entry!_BAD (2, 0) FAR  w(0) 1.
+	create_child: main@entry (1, 3) FAR 1 U 0.00
+expand: main@entry (1, 0) FAR  w(0) 1.
+	create_child: main@_58 (0, 3) FAR 25356 U 0.00
+expand: main@_58 (0, 0) FAR  w(0) 25356. F 0.00
+expand: main@entry (1, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (2, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (3, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.01 :before-memory 17.52 :after-memory 18.21)
+Propagating: 0 1 2 3  ! 4 
+(spacer::context::propagate :time 0.00 :before-memory 18.21 :after-memory 18.21)
+Entering level 4
+expand: query!0 (4, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (3, 4) FAR 1 U 0.00
+expand: main@entry!_BAD (3, 0) FAR  w(0) 1.
+	create_child: main@entry (2, 4) FAR 1 U 0.00
+expand: main@entry (2, 0) FAR  w(0) 1.
+	create_child: main@_58 (1, 4) FAR 25356 U 0.00
+expand: main@_58 (1, 0) FAR  w(0) 25356.
+	create_child: main@_58!_Cond (0, 4) FAR 26871 U 0.00
+expand: main@_58!_Cond (0, 0) FAR  w(0) 26871. F 0.01
+expand: main@_58 (1, 0) FAR  w(0) 25356. F 0.00
+expand: main@entry (2, 0) FAR  w(0) 1. F 0.01
+expand: main@entry!_BAD (3, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (4, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.03 :before-memory 18.21 :after-memory 21.33)
+Propagating: 0 1 2 3 4  ! 5 
+(spacer::context::propagate :time 0.00 :before-memory 21.33 :after-memory 21.89)
+Entering level 5
+expand: query!0 (5, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (4, 5) FAR 1 U 0.00
+expand: main@entry!_BAD (4, 0) FAR  w(0) 1.
+	create_child: main@entry (3, 5) FAR 1 U 0.00
+expand: main@entry (3, 0) FAR  w(0) 1.
+	create_child: main@_58 (2, 5) FAR 25356 U 0.00
+expand: main@_58 (2, 0) FAR  w(0) 25356.
+	create_child: main@_58!_Cond (1, 5) FAR 26871 U 0.00
+expand: main@_58!_Cond (1, 0) FAR  w(0) 26871(smt.stats :restarts  :decisions   :clauses/bin    :simplify   :memory)
+(smt.stats      :conflicts  :propagations   :lemmas     :deletions   )
+(smt.stats    0    103   5032  17581  4476/0   180     0    0   22.78)
+(smt.stats    1    204  10320  32650  4835/0   633     0    0   24.14)
+.
+	create_child: main@.critedge.i.i.i (0, 5) FAR 44878 UNDEF 0.09
+expand: main@.critedge.i.i.i (0, 0) FAR  w(0) 44878. UNDEF 0.02
+expand: main@.critedge.i.i.i (0, 0) FAR  w(1) 44878.
+	create_child: main@_71 (0, 5) FAR 44917 X 0.02
+expand: main@_71 (0, 0) FAR  w(0) 44917. F 0.02
+expand: main@_58!_Cond (1, 0) FAR  w(0) 26871.
+	create_child: main@.critedge.i.i.i (0, 5) FAR 58987 UNDEF 0.01
+expand: main@.critedge.i.i.i (0, 0) FAR  w(0) 58987.
+	create_child: main@_71 (0, 5) FAR 59006 X 0.01
+expand: main@_71 (0, 0) FAR  w(0) 59006. F 0.01
+expand: main@_58!_Cond (1, 0) FAR  w(0) 26871.
+	create_child: main@.critedge.i.i.i (0, 5) FAR 60099 UNDEF 0.01
+expand: main@.critedge.i.i.i (0, 0) FAR  w(0) 60099. F 0.06
+expand: main@_58!_Cond (1, 0) FAR  w(0) 26871.
+	create_child: main@.critedge.i.i.i (0, 5) FAR 64166 UNDEF 0.01
+expand: main@.critedge.i.i.i (0, 0) FAR  w(0) 64166. F 0.04
+expand: main@_58!_Cond (1, 0) FAR  w(0) 26871.
+	create_child: main@.critedge.i.i.i (0, 5) FAR 66259 U 0.01
+expand: main@.critedge.i.i.i (0, 0) FAR  w(0) 66259. F 0.05
+expand: main@_58!_Cond (1, 0) FAR  w(0) 26871. F 0.04
+expand: main@_58 (2, 0) FAR  w(0) 25356. F 0.01
+expand: main@entry (3, 0) FAR  w(0) 1.
+	create_child: main@_58 (2, 5) FAR 67613 U 0.01
+expand: main@_58 (2, 0) FAR  w(0) 67613.
+	create_child: main@_58!_Cond (1, 5) FAR 68080 U 0.00
+expand: main@_58!_Cond (1, 0) FAR  w(0) 68080.
+	create_child: main@.critedge.i.i.i (0, 5) FAR 68758 UNDEF 0.01
+expand: main@.critedge.i.i.i (0, 0) FAR  w(0) 68758. F 0.04
+expand: main@_58!_Cond (1, 0) FAR  w(0) 68080.
+	create_child: main@.critedge.i.i.i (0, 5) FAR 69094 UNDEF 0.01
+expand: main@.critedge.i.i.i (0, 0) FAR  w(0) 69094. F 0.05
+expand: main@_58!_Cond (1, 0) FAR  w(0) 68080.
+	create_child: main@.critedge.i.i.i (0, 5) FAR 70355 U 0.01
+expand: main@.critedge.i.i.i (0, 0) FAR  w(0) 70355. F 0.05
+expand: main@_58!_Cond (1, 0) FAR  w(0) 68080. F 0.04
+expand: main@_58 (2, 0) FAR  w(0) 67613
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.01
+expand: main@entry (3, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (4, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (5, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.67 :before-memory 21.89 :after-memory 36.13)
+Propagating: 0 1 2 
+(spacer::context::propagate :time 0.00 :before-memory 36.13 :after-memory 36.13)
+(define-fun main@entry!_BAD () Bool
+  false)
+(define-fun main@_71 ((x!0 (Array Int Int))
+ (x!1 Int)
+ (x!2 Int)
+ (x!3 (Array Int Int))
+ (x!4 Int)
+ (x!5 (Array Int Int))
+ (x!6 Int)
+ (x!7 (Array Int Int))
+ (x!8 Int)
+ (x!9 (Array Int Int))
+ (x!10 (Array Int Int))
+ (x!11 Int)
+ (x!12 (Array Int Int))
+ (x!13 Int)
+ (x!14 (Array Int Int))
+ (x!15 Int)
+ (x!16 (Array Int Int))
+ (x!17 Int)
+ (x!18 (Array Int Int))
+ (x!19 Int)
+ (x!20 (Array Int Int))
+ (x!21 Int)
+ (x!22 (Array Int Int))
+ (x!23 Int)
+ (x!24 (Array Int Int))
+ (x!25 Int)) Bool
+  (let ((a!1 (>= (+ (select x!20 x!21) (* (- 1) (select x!18 x!19))) 100))
+        (a!2 (<= (+ (select x!24 x!25) (* (- 1) (select x!22 x!23))) 0))
+        (a!3 (>= (+ (select x!20 x!21) (* (- 1) (select x!18 x!19))) 0)))
+  (let ((a!4 (or (not (= (select x!16 x!17) 0)) a!2 (not a!3))))
+    (and (or (not a!1) a!2) a!4))))
+(define-fun main@entry ((x!0 Int) (x!1 Int) (x!2 (Array Int Int)) (x!3 Int)) Bool
+  false)
+(define-fun main@.critedge.i.i.i ((x!0 (Array Int Int))
+ (x!1 Int)
+ (x!2 Int)
+ (x!3 (Array Int Int))
+ (x!4 Int)
+ (x!5 (Array Int Int))
+ (x!6 Int)
+ (x!7 (Array Int Int))
+ (x!8 Int)
+ (x!9 (Array Int Int))
+ (x!10 (Array Int Int))
+ (x!11 Int)
+ (x!12 (Array Int Int))
+ (x!13 Int)
+ (x!14 (Array Int Int))
+ (x!15 Int)
+ (x!16 (Array Int Int))
+ (x!17 Int)
+ (x!18 (Array Int Int))
+ (x!19 Int)
+ (x!20 (Array Int Int))
+ (x!21 Int)
+ (x!22 Int)
+ (x!23 (Array Int Int))
+ (x!24 Int)
+ (x!25 (Array Int Int))
+ (x!26 Int)) Bool
+  (let ((a!1 (<= (+ (select x!25 x!26) (* (- 1) (select x!23 x!24))) 0))
+        (a!2 (not (= (select x!9 (+ 4 x!2)) 500)))
+        (a!3 (not (= (select x!9 (+ 8 x!2)) 640)))
+        (a!4 (not (= (select x!9 (+ 12 x!2)) 740)))
+        (a!6 (>= (+ (select x!18 x!19) (* (- 1) (select x!20 x!21))) (- 99)))
+        (a!8 (<= (+ (select x!18 x!19) (* (- 1) (select x!20 x!21))) 0))
+        (a!12 (>= (+ (select x!20 x!21) (* (- 1) (select x!18 x!19))) 0)))
+  (let ((a!5 (or (not a!1)
+                 (not (>= (select x!14 x!15) 601))
+                 (not (<= (select x!12 x!13) 600))
+                 a!2
+                 a!3
+                 a!4
+                 (not (= (select x!9 x!2) 400))
+                 (<= (select x!10 x!11) 0)
+                 (<= (select x!7 x!8) 0)
+                 (not (= (select x!5 x!6) 0))))
+        (a!7 (or (not (>= (select x!14 x!15) 601))
+                 (not (<= (select x!12 x!13) 600))
+                 (not a!6)
+                 (<= (select x!16 x!17) 0)
+                 a!2
+                 a!3
+                 a!4
+                 (not (= (select x!9 x!2) 400))
+                 (not (<= (select x!3 x!4) 0))
+                 (<= (select x!10 x!11) 0)))
+        (a!9 (or (not (>= (select x!14 x!15) 601))
+                 (not (<= (select x!12 x!13) 600))
+                 a!2
+                 a!3
+                 a!4
+                 (not (= (select x!9 x!2) 400))
+                 (not (<= (select x!3 x!4) 0))
+                 (<= (select x!10 x!11) 0)
+                 a!8))
+        (a!10 (or (not a!1)
+                  (not (>= (select x!14 x!15) 601))
+                  (not (<= (select x!12 x!13) 600))
+                  a!2
+                  a!3
+                  a!4
+                  (not (= (select x!9 x!2) 400))
+                  (not (<= (select x!3 x!4) 0))
+                  (<= (select x!10 x!11) 0)))
+        (a!11 (or (not (>= (select x!14 x!15) 601))
+                  (not (<= (select x!12 x!13) 600))
+                  (not a!6)
+                  (<= (select x!16 x!17) 0)
+                  a!2
+                  a!3
+                  a!4
+                  (not (= (select x!9 x!2) 400))
+                  (<= (select x!10 x!11) 0)
+                  (<= (select x!7 x!8) 0)
+                  (not (= (select x!5 x!6) 0))))
+        (a!13 (or (not (>= (select x!14 x!15) 601))
+                  (not (<= (select x!12 x!13) 600))
+                  a!2
+                  a!3
+                  a!4
+                  (not (= (select x!9 x!2) 400))
+                  (<= (select x!10 x!11) 0)
+                  a!12
+                  (<= (select x!7 x!8) 0)
+                  (not (= (select x!5 x!6) 0)))))
+    (and a!5 a!7 a!9 a!10 a!11 a!13))))
+(define-fun main@_58 ((x!0 (Array Int Int))
+ (x!1 Int)
+ (x!2 Int)
+ (x!3 (Array Int Int))
+ (x!4 Int)
+ (x!5 (Array Int Int))
+ (x!6 Int)
+ (x!7 (Array Int Int))
+ (x!8 Int)
+ (x!9 (Array Int Int))
+ (x!10 (Array Int Int))
+ (x!11 Int)
+ (x!12 (Array Int Int))
+ (x!13 Int)
+ (x!14 (Array Int Int))
+ (x!15 Int)
+ (x!16 (Array Int Int))
+ (x!17 Int)
+ (x!18 (Array Int Int))
+ (x!19 Int)
+ (x!20 (Array Int Int))
+ (x!21 Int)
+ (x!22 Int)
+ (x!23 (Array Int Int))
+ (x!24 Int)
+ (x!25 (Array Int Int))
+ (x!26 Int)
+ (x!27 Int)) Bool
+  (let ((a!1 (not (= (select x!9 (+ 4 x!2)) 500)))
+        (a!2 (not (= (select x!9 (+ 12 x!2)) 740)))
+        (a!3 (not (= (select x!9 (+ 8 x!2)) 640))))
+  (let ((a!4 (or (<= (select x!10 x!11) 0)
+                 (<= (select x!7 x!8) 0)
+                 (not (= (select x!9 x!2) 400))
+                 a!1
+                 (not (>= (select x!16 x!17) 0))
+                 (not (>= (select x!14 x!15) 601))
+                 (not (<= (select x!12 x!13) 600))
+                 a!2
+                 a!3
+                 (not (= (select x!5 x!6) 0))))
+        (a!5 (or (<= (select x!10 x!11) 0)
+                 (not (= (select x!9 x!2) 400))
+                 a!1
+                 (not (>= (select x!16 x!17) 0))
+                 (not (>= (select x!14 x!15) 601))
+                 (not (<= (select x!12 x!13) 600))
+                 (not (<= (select x!3 x!4) 0))
+                 a!2
+                 a!3)))
+    (and a!4 a!5))))
+(define-fun main@_58!_Cond ((x!0 Int)
+ (x!1 Int)
+ (x!2 Int)
+ (x!3 Int)
+ (x!4 Int)
+ (x!5 Int)
+ (x!6 Int)
+ (x!7 Int)
+ (x!8 Int)
+ (x!9 Int)
+ (x!10 Int)
+ (x!11 Int)
+ (x!12 Int)
+ (x!13 Int)
+ (x!14 (Array Int Int))
+ (x!15 (Array Int Int))
+ (x!16 (Array Int Int))
+ (x!17 (Array Int Int))
+ (x!18 (Array Int Int))
+ (x!19 (Array Int Int))
+ (x!20 (Array Int Int))
+ (x!21 (Array Int Int))
+ (x!22 (Array Int Int))
+ (x!23 (Array Int Int))
+ (x!24 (Array Int Int))
+ (x!25 (Array Int Int))
+ (x!26 (Array Int Int))) Bool
+  (let ((a!1 (not (= (select x!26 (+ 12 x!1)) 740)))
+        (a!2 (not (= (select x!26 (+ 8 x!1)) 640)))
+        (a!3 (not (= (select x!26 (+ 4 x!1)) 500))))
+  (let ((a!4 (or (<= (select x!16 x!12) 0)
+                 (<= (select x!15 x!9) 0)
+                 a!1
+                 (not (= (select x!26 x!1) 400))
+                 a!2
+                 a!3
+                 (not (>= (select x!14 x!6) 601))
+                 (not (>= (select x!25 x!3) 0))
+                 (not (<= (select x!18 x!10) 600))
+                 (not (= (select x!23 x!13) 0))))
+        (a!5 (or (<= (select x!15 x!9) 0)
+                 a!1
+                 (not (= (select x!26 x!1) 400))
+                 a!2
+                 a!3
+                 (not (>= (select x!14 x!6) 601))
+                 (not (>= (select x!25 x!3) 0))
+                 (not (<= (select x!18 x!10) 600))
+                 (not (<= (select x!24 x!11) 0)))))
+    (and a!4 a!5))))

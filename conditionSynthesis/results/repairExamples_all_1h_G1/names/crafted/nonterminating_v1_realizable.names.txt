@@ -1,0 +1,8 @@
+condition location:
+main@entry!_Cond @find_condition_0 main@%loop.bound_0 main@%_2_0
+main@.lr.ph.preheader main@%_2_0 main@%loop.bound_0 @find_condition_0
+main@._crit_edge
+condition location:
+main@_7!_Cond @find_condition_0 main@%loop.bound_0 main@%_2_0 main@%_8_0
+main@._crit_edge
+main@.lr.ph main@%_8_0 main@%_2_0 main@%loop.bound_0 @find_condition_0

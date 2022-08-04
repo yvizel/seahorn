@@ -1,0 +1,4 @@
+(
+(define-fun Condition_0 ((vg_0 Int) (vfind_condition_0 Int) (mainv%loop.bound_0 Int) (mainv%_2_0 Int)) Bool (and (or (not (>= mainv%_2_0 8)) (not (= mainv%loop.bound_0 5)) (not (>= mainv%_2_0 3))) (or (not (>= mainv%_2_0 9)) (not (>= mainv%loop.bound_0 (- 8))) (and (>= mainv%loop.bound_0 3) (or (>= mainv%loop.bound_0 8) (not (>= vfind_condition_0 5)))))))
+(define-fun Condition_1 ((vg_0 Int) (mainv%loop.bound_0 Int) (mainv%_2_0 Int) (mainv%.0.i_1 Int)) Bool (or (not (>= mainv%.0.i_1 9)) (not (>= mainv%_2_0 (- 8))) (and (>= mainv%_2_0 3) (or (>= mainv%_2_0 8) (not (>= mainv%loop.bound_0 5))))))
+)

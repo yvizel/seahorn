@@ -1,0 +1,13 @@
+./repairExamples_02-08-01-11-57/forwardSl//crafted/4-A-synthesis_realizable.fwd.sl:1.9: No set-logic command was given before this point.
+./repairExamples_02-08-01-11-57/forwardSl//crafted/4-A-synthesis_realizable.fwd.sl:1.9: cvc5 will make all theories available.
+./repairExamples_02-08-01-11-57/forwardSl//crafted/4-A-synthesis_realizable.fwd.sl:1.9: Consider setting a stricter logic for (likely) better performance.
+./repairExamples_02-08-01-11-57/forwardSl//crafted/4-A-synthesis_realizable.fwd.sl:1.9: To suppress this warning in the future use (set-logic ALL).
+(
+(define-fun verifier.error ((x0 Bool) (x1 Bool) (x2 Bool)) Bool true)
+(define-fun mainventry ((x0 Int) (x1 Int) (x2 Int)) Bool true)
+(define-fun mainv_6 ((x0 Int) (x1 Int)) Bool (<= 3 x1))
+(define-fun mainv_4 ((x0 Int) (x1 Int)) Bool (<= x1 3))
+(define-fun mainvAllRepair_correct_main.exit.i.split () Bool false)
+(define-fun mainventry!_BAD () Bool true)
+(define-fun mainventry!_Cond ((x0 Int) (x1 Int)) Bool (<= 3 x1))
+)

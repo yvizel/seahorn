@@ -1,0 +1,367 @@
+harness int main()
+{
+  int s__state = getND();
+  int s__hit = __VERIFIER_nondet_int();
+  int s__verify_mode = __VERIFIER_nondet_int();
+  int s__session__peer = __VERIFIER_nondet_int();
+  unsigned long s__s3__tmp__new_cipher__algorithms = __VERIFIER_nondet_long();
+  int buf = getND();
+  int cb = getND();
+  int blastFlag = getND();
+  int tmp___1 = getND();
+  s__state = 8466;
+  blastFlag = 0;
+  while (1)
+  {
+    if ((s__state <= 8512) && (blastFlag > 2))
+    {
+      goto ERROR;
+    }
+
+    {
+      {
+        {
+          {
+            {
+              if (s__state == 8466)
+              {
+                goto switch_1_8466;
+              }
+              else
+              {
+                if (s__state == 8496)
+                {
+                  goto switch_1_8496;
+                }
+                else
+                {
+                  {
+                    if (s__state == 8512)
+                    {
+                      goto switch_1_8512;
+                    }
+                    else
+                    {
+                      {
+                        if (s__state == 8528)
+                        {
+                          goto switch_1_8528;
+                        }
+                        else
+                        {
+                          {
+                            if (s__state == 8544)
+                            {
+                              goto switch_1_8544;
+                            }
+                            else
+                            {
+                              {
+                                if (s__state == 8560)
+                                {
+                                  goto switch_1_8560;
+                                }
+                                else
+                                {
+                                  {
+                                    if (s__state == 8576)
+                                    {
+                                      goto switch_1_8576;
+                                    }
+                                    else
+                                    {
+                                      {
+                                        if (s__state == 8592)
+                                        {
+                                          goto switch_1_8592;
+                                        }
+                                        else
+                                        {
+                                          {
+                                            if (s__state == 8608)
+                                            {
+                                              goto switch_1_8608;
+                                            }
+                                            else
+                                            {
+                                              {
+                                                if (s__state == 8640)
+                                                {
+                                                  goto switch_1_8640;
+                                                }
+                                                else
+                                                {
+                                                  {
+                                                    if (s__state == 8656)
+                                                    {
+                                                      goto switch_1_8656;
+                                                    }
+                                                    else
+                                                    {
+                                                      {
+                                                        if (s__state == 8672)
+                                                        {
+                                                          goto switch_1_8672;
+                                                        }
+                                                        else
+                                                        {
+                                                          goto end;
+                                                          switch_1_8466:
+                                                          if (blastFlag == 0)
+                                                          {
+                                                            blastFlag = 1;
+                                                          }
+
+
+                                                          s__state = 8496;
+                                                          goto switch_1_break;
+                                                          switch_1_8496:
+                                                          if (blastFlag == 1)
+                                                          {
+                                                            blastFlag = 2;
+                                                          }
+
+
+                                                          if ((s__hit != 0))
+                                                          {
+                                                            s__state = 8656;
+                                                          }
+                                                          else
+                                                          {
+                                                            s__state = 8512;
+                                                          }
+
+                                                          goto switch_1_break;
+                                                          switch_1_8512:
+                                                          s__state = 8528;
+
+                                                          goto switch_1_break;
+                                                          switch_1_8528:
+                                                          s__state = 8544;
+
+                                                          goto switch_1_break;
+                                                          switch_1_8544:
+                                                          if ((s__verify_mode != 0) + 1)
+                                                          {
+                                                            if (s__session__peer != 0)
+                                                            {
+                                                              if ((s__verify_mode != 0) + 4)
+                                                              {
+                                                                s__state = 8560;
+                                                              }
+                                                              else
+                                                              {
+                                                                goto _L___2;
+                                                              }
+
+                                                            }
+                                                            else
+                                                            {
+                                                              _L___2:
+                                                              if ((s__s3__tmp__new_cipher__algorithms != 0) + 256UL)
+                                                              {
+                                                                if ((s__verify_mode != 0) + 2)
+                                                                {
+                                                                  goto _L___1;
+                                                                }
+                                                                else
+                                                                {
+                                                                  s__state = 8560;
+                                                                }
+
+                                                              }
+                                                              else
+                                                              {
+                                                                _L___1:
+                                                                s__state = 8576;
+
+                                                              }
+
+
+                                                            }
+
+                                                          }
+                                                          else
+                                                          {
+                                                            s__state = 8560;
+                                                          }
+
+
+                                                          goto switch_1_break;
+                                                          switch_1_8560:
+                                                          s__state = 8576;
+
+                                                          goto switch_1_break;
+                                                          switch_1_8576:
+                                                          tmp___1 = __VERIFIER_nondet_int();
+
+                                                          if (tmp___1 == 2)
+                                                          {
+                                                            s__state = 8466;
+                                                          }
+                                                          else
+                                                          {
+                                                            s__state = 8592;
+                                                          }
+
+                                                          goto switch_1_break;
+                                                          switch_1_8592:
+                                                          s__state = 8608;
+
+                                                          goto switch_1_break;
+                                                          switch_1_8608:
+                                                          s__state = 8640;
+
+                                                          goto switch_1_break;
+                                                          switch_1_8640:
+                                                          if (blastFlag == 3)
+                                                          {
+                                                            blastFlag = 4;
+                                                          }
+
+
+                                                          if ((s__hit != 0))
+                                                          {
+                                                            goto end;
+                                                          }
+                                                          else
+                                                          {
+                                                            s__state = 8656;
+                                                          }
+
+                                                          goto switch_1_break;
+                                                          switch_1_8656:
+                                                          if (blastFlag == 2)
+                                                          {
+                                                            blastFlag = 3;
+                                                          }
+
+
+                                                          s__state = 8672;
+                                                          goto switch_1_break;
+                                                          switch_1_8672:
+                                                          if (main_generator_for_bit_171(1, s__state, s__hit, s__verify_mode, s__session__peer, buf, cb, blastFlag, tmp___1))
+                                                          {
+                                                            blastFlag = 5;
+                                                          }
+                                                          else
+                                                          {
+                                                            if (blastFlag == 5)
+                                                            {
+                                                              goto ERROR;
+                                                            }
+
+                                                          }
+
+
+                                                          if ((s__hit != 0))
+                                                          {
+                                                            s__state = 8640;
+                                                          }
+                                                          else
+                                                          {
+                                                            goto end;
+                                                          }
+
+                                                          goto switch_1_break;
+                                                        }
+
+                                                      }
+                                                    }
+
+                                                  }
+                                                }
+
+                                              }
+                                            }
+
+                                          }
+                                        }
+
+                                      }
+                                    }
+
+                                  }
+                                }
+
+                              }
+                            }
+
+                          }
+                        }
+
+                      }
+                    }
+
+                  }
+                }
+
+              }
+
+            }
+          }
+        }
+      }
+    }
+    switch_1_break:
+    ;
+
+  }
+
+  end:
+  return -1;
+
+  ERROR:
+  __VERIFIER_error();
+
+  return -1;
+}
+
+
+generator int base_generator_for_int_171(int s__state, int s__hit, int s__verify_mode, int s__session__peer, int buf, int cb, int blastFlag, int tmp___1) {
+    return {| s__state | s__hit | s__verify_mode | s__session__peer | buf | cb | blastFlag | tmp___1 |};
+}
+generator unsigned base_generator_for_unsigned_171(unsigned s__s3__tmp__new_cipher__algorithms) {
+    return {| s__s3__tmp__new_cipher__algorithms |};
+}
+generator int main_generator_for_int_171(int bnd, int sk_s__state, int sk_s__hit, int sk_s__verify_mode, int sk_s__session__peer, int sk_buf, int sk_cb, int sk_blastFlag, int sk_tmp___1) {
+    assert bnd > 0;
+    int t = ??(3);
+    int x = {| 50 | 100 | 300 | 600 | ?? | base_generator_for_int_171(sk_s__state, sk_s__hit, sk_s__verify_mode, sk_s__session__peer, sk_buf, sk_cb, sk_blastFlag, sk_tmp___1)  | main_generator_for_int_171(bnd - 1, sk_s__state, sk_s__hit, sk_s__verify_mode, sk_s__session__peer, sk_buf, sk_cb, sk_blastFlag, sk_tmp___1) |};
+    if(t == 0){return x;}
+    int y = {| 50 | 100 | 300 | 600 | ?? | base_generator_for_int_171(sk_s__state, sk_s__hit, sk_s__verify_mode, sk_s__session__peer, sk_buf, sk_cb, sk_blastFlag, sk_tmp___1)  | main_generator_for_int_171(bnd - 1, sk_s__state, sk_s__hit, sk_s__verify_mode, sk_s__session__peer, sk_buf, sk_cb, sk_blastFlag, sk_tmp___1) |};
+    if(t == 1){return x+y;}
+    if(t == 2){return x-y;}
+    if(t == 3){return x*y;}
+    if(t == 4){return x/y;}
+}
+generator bit main_generator_for_bit_171(int bnd, int sk_s__state, int sk_s__hit, int sk_s__verify_mode, int sk_s__session__peer, int sk_buf, int sk_cb, int sk_blastFlag, int sk_tmp___1) {
+    assert bnd > 0;
+    int t = ??(6);
+    if(t==0) {
+        int y = main_generator_for_int_171(bnd, sk_s__state, sk_s__hit, sk_s__verify_mode, sk_s__session__peer, sk_buf, sk_cb, sk_blastFlag, sk_tmp___1);
+        int z = main_generator_for_int_171(bnd, sk_s__state, sk_s__hit, sk_s__verify_mode, sk_s__session__peer, sk_buf, sk_cb, sk_blastFlag, sk_tmp___1);
+        int t2 = ??(2);
+        if(t2 == 0) {return y < z;}
+        if(t2 == 1) {return y == z;}
+        if(t2 == 2) {return y <= z;}
+    }
+    bit x = {| ??(1)  | main_generator_for_bit_171(bnd - 1, sk_s__state, sk_s__hit, sk_s__verify_mode, sk_s__session__peer, sk_buf, sk_cb, sk_blastFlag, sk_tmp___1) |};
+    if(t == 3){return x;}
+    if(t == 4){return !x;}
+    bit y = {| ??(1)  | main_generator_for_bit_171(bnd - 1, sk_s__state, sk_s__hit, sk_s__verify_mode, sk_s__session__peer, sk_buf, sk_cb, sk_blastFlag, sk_tmp___1) |};
+    if(t == 5){return x&&y;}
+    if(t == 6){return x||y;}
+}
+int NDCNT=0;
+int getND_private(int i);
+int getND(){
+    //Every time this function is called
+    //it produces a new non-deterministic value.
+    return getND_private(NDCNT++);
+}
+int nd(){
+    //Every time this function is called
+    //it produces a new non-deterministic value.
+    return getND_private(NDCNT++);
+}

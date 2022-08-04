@@ -1,0 +1,10 @@
+{
+    "loop_count": 1,
+    "loop_lines": [
+        {
+            "column": 7,
+            "file": "../repairExamples/sv-comp/ntdrivers-simplified/diskperf_simpl1_synth_cil_unknown.c",
+            "line": 404
+        }
+    ]
+}

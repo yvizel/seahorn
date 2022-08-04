@@ -1,0 +1,12 @@
+  UNSATISFIABLE ASSERTION Assert at loop_v1..izable.sk:10 (2)
+
+*** Rejected
+    [0;31m[1659399162.3310 - ERROR] [SKETCH] Sketch Not Resolved Error:   UNSATISFIABLE ASSERTION Assert at loop_v1..izable.sk:10 (2)
+
+*** Rejected
+The sketch could not be resolved.[0m
+    [0;32m[1659399162.3340 - DEBUG] [SKETCH] stack trace written to file: /root/.sketch/tmp/stacktrace.txt[0m
+    [0;32m[1659399162.3350 - DEBUG] Backend solver input file at /root/.sketch/tmp/loop_v1_unrealizable.sk/input0.tmp[0m
+SKETCH version 1.7.6
+Benchmark = /host/loop_v1_unrealizable.sk
+Total time = 3596

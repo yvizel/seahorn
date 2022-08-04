@@ -1,0 +1,2 @@
+    [0;31m[1659417202.8730 - ERROR] [SKETCH] SketchSolverException: Break statement not yet supported bat_bug..izable.sk:36[0m
+    [0;32m[1659417202.8770 - DEBUG] [SKETCH] stack trace written to file: /root/.sketch/tmp/stacktrace.txt[0m

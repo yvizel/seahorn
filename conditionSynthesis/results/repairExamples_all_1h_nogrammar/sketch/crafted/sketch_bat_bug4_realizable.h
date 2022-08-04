@@ -1,0 +1,21 @@
+#ifndef SKETCH_BAT_BUG4_REALIZABLE_H
+#define SKETCH_BAT_BUG4_REALIZABLE_H
+
+#include <cstring>
+
+#include "vops.h"
+
+namespace ANONYMOUS{
+}
+namespace ANONYMOUS{
+extern void main__Wrapper();
+extern void main__WrapperNospec();
+extern void glblInit_NDCNT__ANONYMOUS_s59(int& NDCNT__ANONYMOUS_s58);
+extern void _main(int& _out, int& NDCNT__ANONYMOUS_s56);
+extern void getND(int& _out, int& NDCNT__ANONYMOUS_s54);
+extern void sum(int w, int t, int& _out);
+extern void g();
+extern void getND_private(int i, int& _out);
+}
+
+#endif

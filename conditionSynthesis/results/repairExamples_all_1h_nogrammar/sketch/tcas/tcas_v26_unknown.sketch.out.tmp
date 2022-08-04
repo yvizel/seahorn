@@ -1,0 +1,3 @@
+    [0;31m[1659424398.0590 - ERROR] [SKETCH] Error at node: Parameter sk_enabled to main_generator_for_bit_148 is used without first being initialized. (at tcas_v2..nknown.sk:268) (at tcas_v2..nknown.sk:90)[0m
+    [0;32m[1659424398.0670 - DEBUG] [SKETCH] stack trace written to file: /root/.sketch/tmp/stacktrace.txt[0m
+    [0;32m[1659424398.0760 - DEBUG] [SKETCH] Last good program, from before stage PreprocessStage, dumped to:  /root/.sketch/tmp/error-last-program.txt[0m

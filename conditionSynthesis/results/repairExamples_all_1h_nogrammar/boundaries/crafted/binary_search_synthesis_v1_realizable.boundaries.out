@@ -1,0 +1,5 @@
+(error "Parse Error: ./repairExamples_02-08-01-11-57/boundariesSl//crafted/binary_search_synthesis_v1_realizable.boundaries.sl:229.23: Symbol 'mainv.lr.ph' previously declared as a variable
+
+  (define-fun mainv.lr.ph ((mainv%_3_0 Int) (mainv%_18_0 Int) (mainv%_6_...
+              ^
+")

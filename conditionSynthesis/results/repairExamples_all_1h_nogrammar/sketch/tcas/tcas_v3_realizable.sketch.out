@@ -1,0 +1,6 @@
+    [0;31m[1659420829.3410 - ERROR] [SKETCH] Error at node: Parameter sk_intent_not_known to main_generator_for_bit_150 is used without first being initialized. (at tcas_v3..izable.sk:268) (at tcas_v3..izable.sk:92)[0m
+    [0;32m[1659420829.3450 - DEBUG] [SKETCH] stack trace written to file: /root/.sketch/tmp/stacktrace.txt[0m
+    [0;32m[1659420829.3570 - DEBUG] [SKETCH] Last good program, from before stage PreprocessStage, dumped to:  /root/.sketch/tmp/error-last-program.txt[0m
+SKETCH version 1.7.6
+Benchmark = /host/tcas_v3_realizable.sk
+Total time = 391

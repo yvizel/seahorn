@@ -1,0 +1,10 @@
+{
+    "loop_count": 1,
+    "loop_lines": [
+        {
+            "column": 3,
+            "file": "../repairExamples/crafted/loop_v1_unrealizable.c",
+            "line": 9
+        }
+    ]
+}

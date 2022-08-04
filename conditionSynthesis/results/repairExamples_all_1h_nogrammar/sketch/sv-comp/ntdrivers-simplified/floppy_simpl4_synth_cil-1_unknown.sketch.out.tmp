@@ -1,0 +1,5 @@
+/host/floppy_simpl4_synth_cil-1_unknown.sk:25:22: expecting an identifier, found ')'
+/host/floppy_simpl4_synth_cil-1_unknown.sk:28:17: expecting RPAREN, found ';'
+/host/floppy_simpl4_synth_cil-1_unknown.sk:30:5: expecting EOF, found 'DC'
+    [0;31m[1659420786.6800 - ERROR] [SKETCH] Program Parse Error: could not parse program[0m
+    [0;32m[1659420786.6840 - DEBUG] [SKETCH] stack trace written to file: /root/.sketch/tmp/stacktrace.txt[0m

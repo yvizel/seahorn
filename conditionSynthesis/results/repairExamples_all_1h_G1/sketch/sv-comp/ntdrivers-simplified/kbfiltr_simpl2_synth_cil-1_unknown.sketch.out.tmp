@@ -1,0 +1,5 @@
+/host/kbfiltr_simpl2_synth_cil-1_unknown.sk:24:27: expecting an identifier, found ')'
+/host/kbfiltr_simpl2_synth_cil-1_unknown.sk:27:11: expecting RPAREN, found ';'
+/host/kbfiltr_simpl2_synth_cil-1_unknown.sk:29:5: expecting EOF, found 'compFptr'
+    [0;31m[1659402734.4600 - ERROR] [SKETCH] Program Parse Error: could not parse program[0m
+    [0;32m[1659402734.4650 - DEBUG] [SKETCH] stack trace written to file: /root/.sketch/tmp/stacktrace.txt[0m

@@ -1,0 +1,7 @@
+/host/diskperf_simpl1_synth_cil_unknown.sk:22:18: expecting an identifier, found ')'
+/host/diskperf_simpl1_synth_cil_unknown.sk:28:5: expecting EOF, found 'return'
+    [0;31m[1659402734.2080 - ERROR] [SKETCH] Program Parse Error: could not parse program[0m
+    [0;32m[1659402734.2120 - DEBUG] [SKETCH] stack trace written to file: /root/.sketch/tmp/stacktrace.txt[0m
+SKETCH version 1.7.6
+Benchmark = /host/diskperf_simpl1_synth_cil_unknown.sk
+Total time = 244

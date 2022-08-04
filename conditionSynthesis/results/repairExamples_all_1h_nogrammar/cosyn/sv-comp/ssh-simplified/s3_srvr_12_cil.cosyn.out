@@ -1,0 +1,2906 @@
+(transform N7datalog13mk_coi_filterE...no-op 0s)
+(transform N7datalog25mk_interp_tail_simplifierE...14 rules 0.068s)
+(transform N7datalog27mk_quantifier_instantiationE...no-op 0s)
+(transform N7datalog8mk_scaleE...no-op 0s)
+(transform N7datalog18mk_karr_invariantsE...no-op 0s)
+(transform N7datalog14mk_array_blastE...no-op 0s)
+(transform N7datalog16mk_elim_term_iteE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...12 rules 0s)
+(transform N7datalog12mk_bit_blastE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog13mk_coi_filterE...no-op 0s)
+(transform N7datalog25mk_interp_tail_simplifierE...12 rules 0.003s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog13mk_coi_filterE...no-op 0s)
+(transform N7datalog25mk_interp_tail_simplifierE...12 rules 0.003s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+expand: query!0 (0, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 16.95 :after-memory 17.16)
+Entering level 1
+expand: query!0 (1, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (0, 1) FAR 1 U 0.00
+expand: main@entry!_BAD (0, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (1, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 17.16 :after-memory 17.47)
+Propagating: 0 1  ! 2 
+(spacer::context::propagate :time 0.00 :before-memory 17.47 :after-memory 17.47)
+Entering level 2
+expand: query!0 (2, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (1, 2) FAR 1 U 0.00
+expand: main@entry!_BAD (1, 0) FAR  w(0) 1.
+	create_child: main@entry (0, 2) FAR 1 U 0.00
+expand: main@entry (0, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (1, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (2, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 17.47 :after-memory 17.92)
+Propagating: 0 1 2  ! 3 
+(spacer::context::propagate :time 0.00 :before-memory 17.92 :after-memory 17.92)
+Entering level 3
+expand: query!0 (3, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (2, 3) FAR 1 U 0.00
+expand: main@entry!_BAD (2, 0) FAR  w(0) 1.
+	create_child: main@entry (1, 3) FAR 1 U 0.00
+expand: main@entry (1, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (0, 3) FAR 23943 U 0.00
+expand: main@empty.loop (0, 0) FAR  w(0) 23943. F 0.00
+expand: main@entry (1, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (2, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (3, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 17.92 :after-memory 18.74)
+Propagating: 0 1 2 3  ! 4 
+(spacer::context::propagate :time 0.00 :before-memory 18.74 :after-memory 18.83)
+Entering level 4
+expand: query!0 (4, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (3, 4) FAR 1 U 0.00
+expand: main@entry!_BAD (3, 0) FAR  w(0) 1.
+	create_child: main@entry (2, 4) FAR 1 U 0.00
+expand: main@entry (2, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (1, 4) FAR 23943 U 0.00
+expand: main@empty.loop (1, 0) FAR  w(0) 23943.
+	create_child: main@NodeBlock120.i.i (0, 4) FAR 25934 U 0.00
+expand: main@NodeBlock120.i.i (0, 0) FAR  w(0) 25934. F 0.03
+expand: main@empty.loop (1, 0) FAR  w(0) 23943. F 0.00
+expand: main@entry (2, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (3, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (4, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.03 :before-memory 18.83 :after-memory 25.43)
+Propagating: 0 1 2 3 4  ! 5 
+(spacer::context::propagate :time 0.01 :before-memory 25.43 :after-memory 26.11)
+Entering level 5
+expand: query!0 (5, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (4, 5) FAR 1 U 0.00
+expand: main@entry!_BAD (4, 0) FAR  w(0) 1.
+	create_child: main@entry (3, 5) FAR 1 U 0.00
+expand: main@entry (3, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (2, 5) FAR 23943 U 0.00
+expand: main@empty.loop (2, 0) FAR  w(0) 23943.
+	create_child: main@NodeBlock120.i.i (1, 5) FAR 25934 U 0.00
+expand: main@NodeBlock120.i.i (1, 0) FAR  w(0) 25934.
+	create_child: main@NodeBlock120.i.i.backedge (0, 5) FAR 49792 U 0.01
+expand: main@NodeBlock120.i.i.backedge (0, 0) FAR  w(0) 49792. F 0.00
+expand: main@NodeBlock120.i.i (1, 0) FAR  w(0) 25934.
+	create_child: main@_138 (0, 5) FAR 50279 U 0.01
+expand: main@_138 (0, 0) FAR  w(0) 50279. F 0.00
+expand: main@NodeBlock120.i.i (1, 0) FAR  w(0) 25934. F 0.00
+expand: main@empty.loop (2, 0) FAR  w(0) 23943. F 0.00
+expand: main@entry (3, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (4, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (5, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.03 :before-memory 26.11 :after-memory 28.77)
+Propagating: 0 1 2 3 4 5  ! 6 
+(spacer::context::propagate :time 0.00 :before-memory 28.77 :after-memory 28.77)
+Entering level 6
+expand: query!0 (6, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (5, 6) FAR 1 U 0.00
+expand: main@entry!_BAD (5, 0) FAR  w(0) 1.
+	create_child: main@entry (4, 6) FAR 1 U 0.00
+expand: main@entry (4, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (3, 6) FAR 23943 U 0.00
+expand: main@empty.loop (3, 0) FAR  w(0) 23943.
+	create_child: main@NodeBlock120.i.i (2, 6) FAR 25934 U 0.00
+expand: main@NodeBlock120.i.i (2, 0) FAR  w(0) 25934.
+	create_child: main@NodeBlock120.i.i.backedge (1, 6) FAR 49792 U 0.01
+expand: main@NodeBlock120.i.i.backedge (1, 0) FAR  w(0) 49792. F 0.00
+expand: main@NodeBlock120.i.i (2, 0) FAR  w(0) 25934.
+	create_child: main@NodeBlock120.i.i.backedge (1, 6) FAR 51243 U 0.01
+expand: main@NodeBlock120.i.i.backedge (1, 0) FAR  w(0) 51243.
+	create_child: main@NodeBlock120.i.i (0, 6) FAR 51265 U 0.00
+expand: main@NodeBlock120.i.i (0, 0) FAR  w(0) 51265. F 0.00
+expand: main@NodeBlock120.i.i.backedge (1, 0) FAR  w(0) 51243. F 0.00
+expand: main@NodeBlock120.i.i (2, 0) FAR  w(0) 25934.
+	create_child: main@_138 (1, 6) FAR 50279 U 0.01
+expand: main@_138 (1, 0) FAR  w(0) 50279.
+	create_child: main@_138!_Cond (0, 6) FAR 51923 U 0.00
+expand: main@_138!_Cond (0, 0) FAR  w(0) 51923. F 0.00
+expand: main@_138 (1, 0) FAR  w(0) 50279. F 0.00
+expand: main@NodeBlock120.i.i (2, 0) FAR  w(0) 25934. F 0.02
+expand: main@empty.loop (3, 0) FAR  w(0) 23943. F 0.00
+expand: main@entry (4, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (5, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (6, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.05 :before-memory 28.77 :after-memory 30.20)
+Propagating: 0 1 2 3 4 5 6  ! 7 8 
+(spacer::context::propagate :time 0.01 :before-memory 30.20 :after-memory 30.30)
+Entering level 7
+expand: query!0 (7, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 30.30 :after-memory 30.40)
+Propagating: 7  ! 8 
+(spacer::context::propagate :time 0.00 :before-memory 30.40 :after-memory 30.40)
+Entering level 8
+expand: query!0 (8, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (7, 8) FAR 1 U 0.00
+expand: main@entry!_BAD (7, 0) FAR  w(0) 1.
+	create_child: main@entry (6, 8) FAR 1 U 0.00
+expand: main@entry (6, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (5, 8) FAR 23943 U 0.00
+expand: main@empty.loop (5, 0) FAR  w(0) 23943.
+	create_child: main@NodeBlock120.i.i (4, 8) FAR 25934 U 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 25934.
+	create_child: main@NodeBlock120.i.i.backedge (3, 8) FAR 51243 U 0.01
+expand: main@NodeBlock120.i.i.backedge (3, 0) FAR  w(0) 51243.
+	create_child: main@NodeBlock120.i.i (2, 8) FAR 51265 U 0.00
+expand: main@NodeBlock120.i.i (2, 0) FAR  w(0) 51265.
+	create_child: main@NodeBlock120.i.i.backedge (1, 8) FAR 55617 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (1, 0) FAR  w(0) 55617.
+	create_child: main@NodeBlock120.i.i (0, 8) FAR 55712 U 0.00
+expand: main@NodeBlock120.i.i (0, 0) FAR  w(0) 55712. F 0.00
+expand: main@NodeBlock120.i.i.backedge (1, 0) FAR  w(0) 55617. F 0.00
+expand: main@NodeBlock120.i.i (2, 0) FAR  w(0) 51265. F 0.01
+expand: main@NodeBlock120.i.i.backedge (3, 0) FAR  w(0) 51243. F 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 25934.
+	create_child: main@_138 (3, 8) FAR 50279 U 0.01
+expand: main@_138 (3, 0) FAR  w(0) 50279.
+	create_child: main@_138!_Cond (2, 8) FAR 51923 U 0.00
+expand: main@_138!_Cond (2, 0) FAR  w(0) 51923. F 0.00
+expand: main@_138 (3, 0) FAR  w(0) 50279. F 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 25934.
+	create_child: main@_138 (3, 8) FAR 56436 U 0.01
+expand: main@_138 (3, 0) FAR  w(0) 56436.
+	create_child: main@_138!_Cond (2, 8) FAR 56502 U 0.00
+expand: main@_138!_Cond (2, 0) FAR  w(0) 56502. F 0.00
+expand: main@_138 (3, 0) FAR  w(0) 56436. F 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 25934. F 0.02
+expand: main@empty.loop (5, 0) FAR  w(0) 23943. F 0.00
+expand: main@entry (6, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (7, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (8, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.07 :before-memory 30.40 :after-memory 30.87)
+Propagating: 0 1 2 3 4 5 6 7 8  ! 9 10 
+(spacer::context::propagate :time 0.02 :before-memory 30.87 :after-memory 30.97)
+Entering level 9
+expand: query!0 (9, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 30.97 :after-memory 31.06)
+Propagating: 9  ! 10 
+(spacer::context::propagate :time 0.00 :before-memory 31.06 :after-memory 31.06)
+Entering level 10
+expand: query!0 (10, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (9, 10) FAR 1 U 0.00
+expand: main@entry!_BAD (9, 0) FAR  w(0) 1.
+	create_child: main@entry (8, 10) FAR 1 U 0.00
+expand: main@entry (8, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (7, 10) FAR 23943 U 0.00
+expand: main@empty.loop (7, 0) FAR  w(0) 23943.
+	create_child: main@NodeBlock120.i.i (6, 10) FAR 25934 U 0.00
+expand: main@NodeBlock120.i.i (6, 0) FAR  w(0) 25934.
+	create_child: main@NodeBlock120.i.i.backedge (5, 10) FAR 51243 U 0.01
+expand: main@NodeBlock120.i.i.backedge (5, 0) FAR  w(0) 51243.
+	create_child: main@NodeBlock120.i.i (4, 10) FAR 51265 U 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 51265.
+	create_child: main@NodeBlock120.i.i.backedge (3, 10) FAR 55617 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (3, 0) FAR  w(0) 55617.
+	create_child: main@NodeBlock120.i.i (2, 10) FAR 55712 U 0.00
+expand: main@NodeBlock120.i.i (2, 0) FAR  w(0) 55712.
+	create_child: main@NodeBlock120.i.i.backedge (1, 10) FAR 60302 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (1, 0) FAR  w(0) 60302.
+	create_child: main@NodeBlock120.i.i (0, 10) FAR 60231 U 0.00
+expand: main@NodeBlock120.i.i (0, 0) FAR  w(0) 60231. F 0.00
+expand: main@NodeBlock120.i.i.backedge (1, 0) FAR  w(0) 60302. F 0.00
+expand: main@NodeBlock120.i.i (2, 0) FAR  w(0) 55712. F 0.01
+expand: main@NodeBlock120.i.i.backedge (3, 0) FAR  w(0) 55617. F 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 51265.
+	create_child: main@_138 (3, 10) FAR 61131 U 0.01
+expand: main@_138 (3, 0) FAR  w(0) 61131.
+	create_child: main@_138!_Cond (2, 10) FAR 61095 U 0.00
+expand: main@_138!_Cond (2, 0) FAR  w(0) 61095. F 0.00
+expand: main@_138 (3, 0) FAR  w(0) 61131. F 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 51265. F 0.01
+expand: main@NodeBlock120.i.i.backedge (5, 0) FAR  w(0) 51243. F 0.00
+expand: main@NodeBlock120.i.i (6, 0) FAR  w(0) 25934. F 0.01
+expand: main@empty.loop (7, 0) FAR  w(0) 23943. F 0.00
+expand: main@entry (8, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (9, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (10, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.07 :before-memory 31.06 :after-memory 31.77)
+Propagating: 0 1 2 3 4 5 6 7 8 9 10  ! 11 12 
+(spacer::context::propagate :time 0.02 :before-memory 31.77 :after-memory 32.82)
+Entering level 11
+expand: query!0 (11, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 32.82 :after-memory 32.82)
+Propagating: 11  ! 12 
+(spacer::context::propagate :time 0.00 :before-memory 32.82 :after-memory 32.82)
+Entering level 12
+expand: query!0 (12, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (11, 12) FAR 1 U 0.00
+expand: main@entry!_BAD (11, 0) FAR  w(0) 1.
+	create_child: main@entry (10, 12) FAR 1 U 0.00
+expand: main@entry (10, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (9, 12) FAR 23943 U 0.00
+expand: main@empty.loop (9, 0) FAR  w(0) 23943.
+	create_child: main@NodeBlock120.i.i (8, 12) FAR 25934 U 0.00
+expand: main@NodeBlock120.i.i (8, 0) FAR  w(0) 25934.
+	create_child: main@NodeBlock120.i.i.backedge (7, 12) FAR 63612 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (7, 0) FAR  w(0) 63612.
+	create_child: main@NodeBlock120.i.i (6, 12) FAR 63635 U 0.00
+expand: main@NodeBlock120.i.i (6, 0) FAR  w(0) 63635.
+	create_child: main@NodeBlock120.i.i.backedge (5, 12) FAR 63595 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (5, 0) FAR  w(0) 63595.
+	create_child: main@NodeBlock120.i.i (4, 12) FAR 63765 U 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 63765.
+	create_child: main@NodeBlock120.i.i.backedge (3, 12) FAR 63535 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (3, 0) FAR  w(0) 63535.
+	create_child: main@NodeBlock120.i.i (2, 12) FAR 63686 U 0.00
+expand: main@NodeBlock120.i.i (2, 0) FAR  w(0) 63686.
+	create_child: main@NodeBlock120.i.i.backedge (1, 12) FAR 63797 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (1, 0) FAR  w(0) 63797.
+	create_child: main@NodeBlock120.i.i (0, 12) FAR 63764 U 0.00
+expand: main@NodeBlock120.i.i (0, 0) FAR  w(0) 63764. F 0.00
+expand: main@NodeBlock120.i.i.backedge (1, 0) FAR  w(0) 63797. F 0.00
+expand: main@NodeBlock120.i.i (2, 0) FAR  w(0) 63686. F 0.01
+expand: main@NodeBlock120.i.i.backedge (3, 0) FAR  w(0) 63535. F 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 63765.
+	create_child: main@_138 (3, 12) FAR 63981 U 0.01
+expand: main@_138 (3, 0) FAR  w(0) 63981.
+	create_child: main@_138!_Cond (2, 12) FAR 64032 U 0.00
+expand: main@_138!_Cond (2, 0) FAR  w(0) 64032. F 0.00
+expand: main@_138 (3, 0) FAR  w(0) 63981. F 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 63765. F 0.01
+expand: main@NodeBlock120.i.i.backedge (5, 0) FAR  w(0) 63595. F 0.00
+expand: main@NodeBlock120.i.i (6, 0) FAR  w(0) 63635. F 0.01
+expand: main@NodeBlock120.i.i.backedge (7, 0) FAR  w(0) 63612. F 0.00
+expand: main@NodeBlock120.i.i (8, 0) FAR  w(0) 25934. F 0.01
+expand: main@empty.loop (9, 0) FAR  w(0) 23943. F 0.00
+expand: main@entry (10, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (11, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (12, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.09 :before-memory 32.82 :after-memory 33.77)
+Propagating: 0 1 2 3 4 5 6 7 8 9 10 11 12  ! 13 14 
+(spacer::context::propagate :time 0.03 :before-memory 33.77 :after-memory 33.87)
+Entering level 13
+expand: query!0 (13, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 33.87 :after-memory 33.96)
+Propagating: 13  ! 14 
+(spacer::context::propagate :time 0.00 :before-memory 33.96 :after-memory 33.96)
+Entering level 14
+expand: query!0 (14, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (13, 14) FAR 1 U 0.00
+expand: main@entry!_BAD (13, 0) FAR  w(0) 1.
+	create_child: main@entry (12, 14) FAR 1 U 0.00
+expand: main@entry (12, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (11, 14) FAR 23943 U 0.00
+expand: main@empty.loop (11, 0) FAR  w(0) 23943.
+	create_child: main@NodeBlock120.i.i (10, 14) FAR 25934 U 0.00
+expand: main@NodeBlock120.i.i (10, 0) FAR  w(0) 25934.
+	create_child: main@NodeBlock120.i.i.backedge (9, 14) FAR 63612 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (9, 0) FAR  w(0) 63612.
+	create_child: main@NodeBlock120.i.i (8, 14) FAR 63635 U 0.00
+expand: main@NodeBlock120.i.i (8, 0) FAR  w(0) 63635.
+	create_child: main@NodeBlock120.i.i.backedge (7, 14) FAR 63595 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (7, 0) FAR  w(0) 63595.
+	create_child: main@NodeBlock120.i.i (6, 14) FAR 63765 U 0.00
+expand: main@NodeBlock120.i.i (6, 0) FAR  w(0) 63765.
+	create_child: main@NodeBlock120.i.i.backedge (5, 14) FAR 63535 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (5, 0) FAR  w(0) 63535.
+	create_child: main@NodeBlock120.i.i (4, 14) FAR 63686 U 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 63686.
+	create_child: main@NodeBlock120.i.i.backedge (3, 14) FAR 67644 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (3, 0) FAR  w(0) 67644.
+	create_child: main@NodeBlock120.i.i (2, 14) FAR 67342 U 0.00
+expand: main@NodeBlock120.i.i (2, 0) FAR  w(0) 67342.
+	create_child: main@NodeBlock120.i.i.backedge (1, 14) FAR 67551 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (1, 0) FAR  w(0) 67551.
+	create_child: main@NodeBlock120.i.i (0, 14) FAR 67513 U 0.00
+expand: main@NodeBlock120.i.i (0, 0) FAR  w(0) 67513. F 0.01
+expand: main@NodeBlock120.i.i.backedge (1, 0) FAR  w(0) 67551. F 0.00
+expand: main@NodeBlock120.i.i (2, 0) FAR  w(0) 67342. F 0.01
+expand: main@NodeBlock120.i.i.backedge (3, 0) FAR  w(0) 67644. F 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 63686.
+	create_child: main@_138 (3, 14) FAR 68255 U 0.01
+expand: main@_138 (3, 0) FAR  w(0) 68255.
+	create_child: main@_138!_Cond (2, 14) FAR 68226 U 0.00
+expand: main@_138!_Cond (2, 0) FAR  w(0) 68226. F 0.00
+expand: main@_138 (3, 0) FAR  w(0) 68255. F 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 63686. F 0.01
+expand: main@NodeBlock120.i.i.backedge (5, 0) FAR  w(0) 63535. F 0.00
+expand: main@NodeBlock120.i.i (6, 0) FAR  w(0) 63765. F 0.01
+expand: main@NodeBlock120.i.i.backedge (7, 0) FAR  w(0) 63595. F 0.00
+expand: main@NodeBlock120.i.i (8, 0) FAR  w(0) 63635. F 0.01
+expand: main@NodeBlock120.i.i.backedge (9, 0) FAR  w(0) 63612. F 0.00
+expand: main@NodeBlock120.i.i (10, 0) FAR  w(0) 25934. F 0.01
+expand: main@empty.loop (11, 0) FAR  w(0) 23943. F 0.00
+expand: main@entry (12, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (13, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (14, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.11 :before-memory 33.96 :after-memory 34.20)
+Propagating: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14  ! 15 16 
+(spacer::context::propagate :time 0.03 :before-memory 34.20 :after-memory 34.39)
+Entering level 15
+expand: query!0 (15, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 34.39 :after-memory 34.39)
+Propagating: 15  ! 16 
+(spacer::context::propagate :time 0.00 :before-memory 34.39 :after-memory 34.39)
+Entering level 16
+expand: query!0 (16, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (15, 16) FAR 1 U 0.00
+expand: main@entry!_BAD (15, 0) FAR  w(0) 1.
+	create_child: main@entry (14, 16) FAR 1 U 0.00
+expand: main@entry (14, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (13, 16) FAR 23943 U 0.00
+expand: main@empty.loop (13, 0) FAR  w(0) 23943.
+	create_child: main@NodeBlock120.i.i (12, 16) FAR 25934 U 0.00
+expand: main@NodeBlock120.i.i (12, 0) FAR  w(0) 25934.
+	create_child: main@NodeBlock120.i.i.backedge (11, 16) FAR 63612 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (11, 0) FAR  w(0) 63612.
+	create_child: main@NodeBlock120.i.i (10, 16) FAR 63635 U 0.00
+expand: main@NodeBlock120.i.i (10, 0) FAR  w(0) 63635.
+	create_child: main@NodeBlock120.i.i.backedge (9, 16) FAR 63595 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (9, 0) FAR  w(0) 63595.
+	create_child: main@NodeBlock120.i.i (8, 16) FAR 63765 U 0.00
+expand: main@NodeBlock120.i.i (8, 0) FAR  w(0) 63765.
+	create_child: main@NodeBlock120.i.i.backedge (7, 16) FAR 63535 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (7, 0) FAR  w(0) 63535.
+	create_child: main@NodeBlock120.i.i (6, 16) FAR 63686 U 0.00
+expand: main@NodeBlock120.i.i (6, 0) FAR  w(0) 63686.
+	create_child: main@NodeBlock120.i.i.backedge (5, 16) FAR 63797 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (5, 0) FAR  w(0) 63797.
+	create_child: main@NodeBlock120.i.i (4, 16) FAR 63764 U 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 63764.
+	create_child: main@NodeBlock120.i.i.backedge (3, 16) FAR 72217 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (3, 0) FAR  w(0) 72217.
+	create_child: main@NodeBlock120.i.i (2, 16) FAR 72118 U 0.00
+expand: main@NodeBlock120.i.i (2, 0) FAR  w(0) 72118.
+	create_child: main@NodeBlock120.i.i.backedge (1, 16) FAR 72358 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (1, 0) FAR  w(0) 72358.
+	create_child: main@NodeBlock120.i.i (0, 16) FAR 72310 U 0.00
+expand: main@NodeBlock120.i.i (0, 0) FAR  w(0) 72310. F 0.00
+expand: main@NodeBlock120.i.i.backedge (1, 0) FAR  w(0) 72358. F 0.00
+expand: main@NodeBlock120.i.i (2, 0) FAR  w(0) 72118. F 0.02
+expand: main@NodeBlock120.i.i.backedge (3, 0) FAR  w(0) 72217. F 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 63764.
+	create_child: main@_138 (3, 16) FAR 72886 U 0.01
+expand: main@_138 (3, 0) FAR  w(0) 72886.
+	create_child: main@_138!_Cond (2, 16) FAR 72849 U 0.00
+expand: main@_138!_Cond (2, 0) FAR  w(0) 72849. F 0.00
+expand: main@_138 (3, 0) FAR  w(0) 72886. F 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 63764. F 0.02
+expand: main@NodeBlock120.i.i.backedge (5, 0) FAR  w(0) 63797. F 0.00
+expand: main@NodeBlock120.i.i (6, 0) FAR  w(0) 63686. F 0.01
+expand: main@NodeBlock120.i.i.backedge (7, 0) FAR  w(0) 63535. F 0.00
+expand: main@NodeBlock120.i.i (8, 0) FAR  w(0) 63765. F 0.01
+expand: main@NodeBlock120.i.i.backedge (9, 0) FAR  w(0) 63595. F 0.00
+expand: main@NodeBlock120.i.i (10, 0) FAR  w(0) 63635. F 0.01
+expand: main@NodeBlock120.i.i.backedge (11, 0) FAR  w(0) 63612. F 0.00
+expand: main@NodeBlock120.i.i (12, 0) FAR  w(0) 25934. F 0.01
+expand: main@empty.loop (13, 0) FAR  w(0) 23943. F 0.00
+expand: main@entry (14, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (15, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (16, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.14 :before-memory 34.39 :after-memory 34.71)
+Propagating: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16  ! 17 18 
+(spacer::context::propagate :time 0.05 :before-memory 34.71 :after-memory 34.90)
+Entering level 17
+expand: query!0 (17, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 34.90 :after-memory 34.90)
+Propagating: 17  ! 18 
+(spacer::context::propagate :time 0.00 :before-memory 34.90 :after-memory 34.90)
+Entering level 18
+expand: query!0 (18, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (17, 18) FAR 1 U 0.00
+expand: main@entry!_BAD (17, 0) FAR  w(0) 1.
+	create_child: main@entry (16, 18) FAR 1 U 0.00
+expand: main@entry (16, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (15, 18) FAR 23943 U 0.00
+expand: main@empty.loop (15, 0) FAR  w(0) 23943.
+	create_child: main@NodeBlock120.i.i (14, 18) FAR 25934 U 0.00
+expand: main@NodeBlock120.i.i (14, 0) FAR  w(0) 25934.
+	create_child: main@NodeBlock120.i.i.backedge (13, 18) FAR 63612 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (13, 0) FAR  w(0) 63612.
+	create_child: main@NodeBlock120.i.i (12, 18) FAR 63635 U 0.00
+expand: main@NodeBlock120.i.i (12, 0) FAR  w(0) 63635.
+	create_child: main@NodeBlock120.i.i.backedge (11, 18) FAR 63595 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (11, 0) FAR  w(0) 63595.
+	create_child: main@NodeBlock120.i.i (10, 18) FAR 63765 U 0.00
+expand: main@NodeBlock120.i.i (10, 0) FAR  w(0) 63765.
+	create_child: main@NodeBlock120.i.i.backedge (9, 18) FAR 63535 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (9, 0) FAR  w(0) 63535.
+	create_child: main@NodeBlock120.i.i (8, 18) FAR 63686 U 0.00
+expand: main@NodeBlock120.i.i (8, 0) FAR  w(0) 63686.
+	create_child: main@NodeBlock120.i.i.backedge (7, 18) FAR 77563 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (7, 0) FAR  w(0) 77563.
+	create_child: main@NodeBlock120.i.i (6, 18) FAR 77470 U 0.00
+expand: main@NodeBlock120.i.i (6, 0) FAR  w(0) 77470.
+	create_child: main@NodeBlock120.i.i.backedge (5, 18) FAR 77545 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (5, 0) FAR  w(0) 77545.
+	create_child: main@NodeBlock120.i.i (4, 18) FAR 77458 U 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 77458.
+	create_child: main@NodeBlock120.i.i.backedge (3, 18) FAR 77376 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (3, 0) FAR  w(0) 77376.
+	create_child: main@NodeBlock120.i.i (2, 18) FAR 77421 U 0.00
+expand: main@NodeBlock120.i.i (2, 0) FAR  w(0) 77421.
+	create_child: main@NodeBlock120.i.i.backedge (1, 18) FAR 77558 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (1, 0) FAR  w(0) 77558.
+	create_child: main@NodeBlock120.i.i (0, 18) FAR 77658 U 0.00
+expand: main@NodeBlock120.i.i (0, 0) FAR  w(0) 77658. F 0.00
+expand: main@NodeBlock120.i.i.backedge (1, 0) FAR  w(0) 77558. F 0.00
+expand: main@NodeBlock120.i.i (2, 0) FAR  w(0) 77421.
+	create_child: main@NodeBlock120.i.i.backedge (1, 18) FAR 77745 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (1, 0) FAR  w(0) 77745.
+	create_child: main@NodeBlock120.i.i (0, 18) FAR 77841 U 0.00
+expand: main@NodeBlock120.i.i (0, 0) FAR  w(0) 77841. F 0.00
+expand: main@NodeBlock120.i.i.backedge (1, 0) FAR  w(0) 77745. F 0.00
+expand: main@NodeBlock120.i.i (2, 0) FAR  w(0) 77421. F 0.01
+expand: main@NodeBlock120.i.i.backedge (3, 0) FAR  w(0) 77376. F 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 77458.
+	create_child: main@_138 (3, 18) FAR 78398 U 0.01
+expand: main@_138 (3, 0) FAR  w(0) 78398.
+	create_child: main@_138!_Cond (2, 18) FAR 78280 U 0.00
+expand: main@_138!_Cond (2, 0) FAR  w(0) 78280. F 0.00
+expand: main@_138 (3, 0) FAR  w(0) 78398. F 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 77458. F 0.03
+expand: main@NodeBlock120.i.i.backedge (5, 0) FAR  w(0) 77545. F 0.00
+expand: main@NodeBlock120.i.i (6, 0) FAR  w(0) 77470. F 0.01
+expand: main@NodeBlock120.i.i.backedge (7, 0) FAR  w(0) 77563. F 0.00
+expand: main@NodeBlock120.i.i (8, 0) FAR  w(0) 63686. F 0.01
+expand: main@NodeBlock120.i.i.backedge (9, 0) FAR  w(0) 63535. F 0.00
+expand: main@NodeBlock120.i.i (10, 0) FAR  w(0) 63765. F 0.01
+expand: main@NodeBlock120.i.i.backedge (11, 0) FAR  w(0) 63595. F 0.00
+expand: main@NodeBlock120.i.i (12, 0) FAR  w(0) 63635. F 0.01
+expand: main@NodeBlock120.i.i.backedge (13, 0) FAR  w(0) 63612. F 0.00
+expand: main@NodeBlock120.i.i (14, 0) FAR  w(0) 25934. F 0.01
+expand: main@empty.loop (15, 0) FAR  w(0) 23943. F 0.00
+expand: main@entry (16, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (17, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (18, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.17 :before-memory 34.90 :after-memory 35.31)
+Propagating: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18  ! 19 20 
+(spacer::context::propagate :time 0.06 :before-memory 35.31 :after-memory 35.60)
+Entering level 19
+expand: query!0 (19, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 35.60 :after-memory 35.60)
+Propagating: 19  ! 20 
+(spacer::context::propagate :time 0.00 :before-memory 35.60 :after-memory 35.60)
+Entering level 20
+expand: query!0 (20, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (19, 20) FAR 1 U 0.00
+expand: main@entry!_BAD (19, 0) FAR  w(0) 1.
+	create_child: main@entry (18, 20) FAR 1 U 0.00
+expand: main@entry (18, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (17, 20) FAR 23943 U 0.00
+expand: main@empty.loop (17, 0) FAR  w(0) 23943.
+	create_child: main@NodeBlock120.i.i (16, 20) FAR 25934 U 0.00
+expand: main@NodeBlock120.i.i (16, 0) FAR  w(0) 25934.
+	create_child: main@NodeBlock120.i.i.backedge (15, 20) FAR 63612 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (15, 0) FAR  w(0) 63612.
+	create_child: main@NodeBlock120.i.i (14, 20) FAR 63635 U 0.00
+expand: main@NodeBlock120.i.i (14, 0) FAR  w(0) 63635.
+	create_child: main@NodeBlock120.i.i.backedge (13, 20) FAR 63595 U 0.01
+expand: main@NodeBlock120.i.i.backedge (13, 0) FAR  w(0) 63595.
+	create_child: main@NodeBlock120.i.i (12, 20) FAR 63765 U 0.00
+expand: main@NodeBlock120.i.i (12, 0) FAR  w(0) 63765.
+	create_child: main@NodeBlock120.i.i.backedge (11, 20) FAR 63535 U 0.01
+expand: main@NodeBlock120.i.i.backedge (11, 0) FAR  w(0) 63535.
+	create_child: main@NodeBlock120.i.i (10, 20) FAR 63686 U 0.00
+expand: main@NodeBlock120.i.i (10, 0) FAR  w(0) 63686.
+	create_child: main@NodeBlock120.i.i.backedge (9, 20) FAR 63797 U 0.01
+expand: main@NodeBlock120.i.i.backedge (9, 0) FAR  w(0) 63797.
+	create_child: main@NodeBlock120.i.i (8, 20) FAR 63764 U 0.00
+expand: main@NodeBlock120.i.i (8, 0) FAR  w(0) 63764.
+	create_child: main@NodeBlock120.i.i.backedge (7, 20) FAR 83909 U 0.01
+expand: main@NodeBlock120.i.i.backedge (7, 0) FAR  w(0) 83909.
+	create_child: main@NodeBlock120.i.i (6, 20) FAR 84016 U 0.00
+expand: main@NodeBlock120.i.i (6, 0) FAR  w(0) 84016.
+	create_child: main@NodeBlock120.i.i.backedge (5, 20) FAR 84184 U 0.01
+expand: main@NodeBlock120.i.i.backedge (5, 0) FAR  w(0) 84184.
+	create_child: main@NodeBlock120.i.i (4, 20) FAR 84105 U 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 84105.
+	create_child: main@NodeBlock120.i.i.backedge (3, 20) FAR 84245 U 0.01
+expand: main@NodeBlock120.i.i.backedge (3, 0) FAR  w(0) 84245.
+	create_child: main@NodeBlock120.i.i (2, 20) FAR 84127 U 0.00
+expand: main@NodeBlock120.i.i (2, 0) FAR  w(0) 84127.
+	create_child: main@NodeBlock120.i.i.backedge (1, 20) FAR 84268 U 0.01
+expand: main@NodeBlock120.i.i.backedge (1, 0) FAR  w(0) 84268.
+	create_child: main@NodeBlock120.i.i (0, 20) FAR 83904 U 0.00
+expand: main@NodeBlock120.i.i (0, 0) FAR  w(0) 83904. F 0.00
+expand: main@NodeBlock120.i.i.backedge (1, 0) FAR  w(0) 84268. F 0.00
+expand: main@NodeBlock120.i.i (2, 0) FAR  w(0) 84127. F 0.01
+expand: main@NodeBlock120.i.i.backedge (3, 0) FAR  w(0) 84245. F 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 84105.
+	create_child: main@_138 (3, 20) FAR 84593 U 0.01
+expand: main@_138 (3, 0) FAR  w(0) 84593.
+	create_child: main@_138!_Cond (2, 20) FAR 84495 U 0.00
+expand: main@_138!_Cond (2, 0) FAR  w(0) 84495. F 0.00
+expand: main@_138 (3, 0) FAR  w(0) 84593. F 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 84105. F 0.01
+expand: main@NodeBlock120.i.i.backedge (5, 0) FAR  w(0) 84184. F 0.00
+expand: main@NodeBlock120.i.i (6, 0) FAR  w(0) 84016. F 0.02
+expand: main@NodeBlock120.i.i.backedge (7, 0) FAR  w(0) 83909. F 0.00
+expand: main@NodeBlock120.i.i (8, 0) FAR  w(0) 63764.
+	create_child: main@_138 (7, 20) FAR 72886 U 0.01
+expand: main@_138 (7, 0) FAR  w(0) 72886.
+	create_child: main@_138!_Cond (6, 20) FAR 72849 U 0.00
+expand: main@_138!_Cond (6, 0) FAR  w(0) 72849. F 0.00
+expand: main@_138 (7, 0) FAR  w(0) 72886. F 0.00
+expand: main@NodeBlock120.i.i (8, 0) FAR  w(0) 63764. F 0.01
+expand: main@NodeBlock120.i.i.backedge (9, 0) FAR  w(0) 63797. F 0.00
+expand: main@NodeBlock120.i.i (10, 0) FAR  w(0) 63686. F 0.01
+expand: main@NodeBlock120.i.i.backedge (11, 0) FAR  w(0) 63535. F 0.00
+expand: main@NodeBlock120.i.i (12, 0) FAR  w(0) 63765. F 0.01
+expand: main@NodeBlock120.i.i.backedge (13, 0) FAR  w(0) 63595. F 0.00
+expand: main@NodeBlock120.i.i (14, 0) FAR  w(0) 63635. F 0.01
+expand: main@NodeBlock120.i.i.backedge (15, 0) FAR  w(0) 63612. F 0.00
+expand: main@NodeBlock120.i.i (16, 0) FAR  w(0) 25934. F 0.01
+expand: main@empty.loop (17, 0) FAR  w(0) 23943. F 0.00
+expand: main@entry (18, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (19, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (20, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.19 :before-memory 35.60 :after-memory 35.99)
+Propagating: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20  ! 21 22 
+(spacer::context::propagate :time 0.08 :before-memory 35.99 :after-memory 36.27)
+Entering level 21
+expand: query!0 (21, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 36.27 :after-memory 36.27)
+Propagating: 21  ! 22 
+(spacer::context::propagate :time 0.00 :before-memory 36.27 :after-memory 36.27)
+Entering level 22
+expand: query!0 (22, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (21, 22) FAR 1 U 0.00
+expand: main@entry!_BAD (21, 0) FAR  w(0) 1.
+	create_child: main@entry (20, 22) FAR 1 U 0.00
+expand: main@entry (20, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (19, 22) FAR 23943 U 0.00
+expand: main@empty.loop (19, 0) FAR  w(0) 23943.
+	create_child: main@NodeBlock120.i.i (18, 22) FAR 25934 U 0.00
+expand: main@NodeBlock120.i.i (18, 0) FAR  w(0) 25934.
+	create_child: main@NodeBlock120.i.i.backedge (17, 22) FAR 63612 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (17, 0) FAR  w(0) 63612.
+	create_child: main@NodeBlock120.i.i (16, 22) FAR 63635 U 0.00
+expand: main@NodeBlock120.i.i (16, 0) FAR  w(0) 63635.
+	create_child: main@NodeBlock120.i.i.backedge (15, 22) FAR 63595 U 0.01
+expand: main@NodeBlock120.i.i.backedge (15, 0) FAR  w(0) 63595.
+	create_child: main@NodeBlock120.i.i (14, 22) FAR 63765 U 0.00
+expand: main@NodeBlock120.i.i (14, 0) FAR  w(0) 63765.
+	create_child: main@NodeBlock120.i.i.backedge (13, 22) FAR 63535 U 0.01
+expand: main@NodeBlock120.i.i.backedge (13, 0) FAR  w(0) 63535.
+	create_child: main@NodeBlock120.i.i (12, 22) FAR 63686 U 0.00
+expand: main@NodeBlock120.i.i (12, 0) FAR  w(0) 63686.
+	create_child: main@NodeBlock120.i.i.backedge (11, 22) FAR 77563 U 0.01
+expand: main@NodeBlock120.i.i.backedge (11, 0) FAR  w(0) 77563.
+	create_child: main@NodeBlock120.i.i (10, 22) FAR 77470 U 0.00
+expand: main@NodeBlock120.i.i (10, 0) FAR  w(0) 77470.
+	create_child: main@NodeBlock120.i.i.backedge (9, 22) FAR 77545 U 0.01
+expand: main@NodeBlock120.i.i.backedge (9, 0) FAR  w(0) 77545.
+	create_child: main@NodeBlock120.i.i (8, 22) FAR 77458 U 0.00
+expand: main@NodeBlock120.i.i (8, 0) FAR  w(0) 77458.
+	create_child: main@NodeBlock120.i.i.backedge (7, 22) FAR 77376 U 0.01
+expand: main@NodeBlock120.i.i.backedge (7, 0) FAR  w(0) 77376.
+	create_child: main@NodeBlock120.i.i (6, 22) FAR 77421 U 0.00
+expand: main@NodeBlock120.i.i (6, 0) FAR  w(0) 77421.
+	create_child: main@NodeBlock120.i.i.backedge (5, 22) FAR 77745 U 0.01
+expand: main@NodeBlock120.i.i.backedge (5, 0) FAR  w(0) 77745.
+	create_child: main@NodeBlock120.i.i (4, 22) FAR 77841 U 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 77841.
+	create_child: main@NodeBlock120.i.i.backedge (3, 22) FAR 91348 U 0.01
+expand: main@NodeBlock120.i.i.backedge (3, 0) FAR  w(0) 91348.
+	create_child: main@NodeBlock120.i.i (2, 22) FAR 90896 U 0.00
+expand: main@NodeBlock120.i.i (2, 0) FAR  w(0) 90896.
+	create_child: main@NodeBlock120.i.i.backedge (1, 22) FAR 91212 U 0.01
+expand: main@NodeBlock120.i.i.backedge (1, 0) FAR  w(0) 91212.
+	create_child: main@NodeBlock120.i.i (0, 22) FAR 91050 U 0.00
+expand: main@NodeBlock120.i.i (0, 0) FAR  w(0) 91050. F 0.00
+expand: main@NodeBlock120.i.i.backedge (1, 0) FAR  w(0) 91212. F 0.00
+expand: main@NodeBlock120.i.i (2, 0) FAR  w(0) 90896. F 0.01
+expand: main@NodeBlock120.i.i.backedge (3, 0) FAR  w(0) 91348. F 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 77841.
+	create_child: main@_138 (3, 22) FAR 92374 U 0.01
+expand: main@_138 (3, 0) FAR  w(0) 92374.
+	create_child: main@_138!_Cond (2, 22) FAR 92624 U 0.00
+expand: main@_138!_Cond (2, 0) FAR  w(0) 92624. F 0.00
+expand: main@_138 (3, 0) FAR  w(0) 92374. F 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 77841. F 0.02
+expand: main@NodeBlock120.i.i.backedge (5, 0) FAR  w(0) 77745. F 0.00
+expand: main@NodeBlock120.i.i (6, 0) FAR  w(0) 77421. F 0.01
+expand: main@NodeBlock120.i.i.backedge (7, 0) FAR  w(0) 77376. F 0.00
+expand: main@NodeBlock120.i.i (8, 0) FAR  w(0) 77458. F 0.02
+expand: main@NodeBlock120.i.i.backedge (9, 0) FAR  w(0) 77545. F 0.00
+expand: main@NodeBlock120.i.i (10, 0) FAR  w(0) 77470.
+	create_child: main@_138 (9, 22) FAR 90664 U 0.01
+expand: main@_138 (9, 0) FAR  w(0) 90664.
+	create_child: main@_138!_Cond (8, 22) FAR 92256 U 0.00
+expand: main@_138!_Cond (8, 0) FAR  w(0) 92256. F 0.00
+expand: main@_138 (9, 0) FAR  w(0) 90664. F 0.00
+expand: main@NodeBlock120.i.i (10, 0) FAR  w(0) 77470. F 0.01
+expand: main@NodeBlock120.i.i.backedge (11, 0) FAR  w(0) 77563. F 0.00
+expand: main@NodeBlock120.i.i (12, 0) FAR  w(0) 63686. F 0.01
+expand: main@NodeBlock120.i.i.backedge (13, 0) FAR  w(0) 63535. F 0.00
+expand: main@NodeBlock120.i.i (14, 0) FAR  w(0) 63765. F 0.01
+expand: main@NodeBlock120.i.i.backedge (15, 0) FAR  w(0) 63595. F 0.00
+expand: main@NodeBlock120.i.i (16, 0) FAR  w(0) 63635. F 0.01
+expand: main@NodeBlock120.i.i.backedge (17, 0) FAR  w(0) 63612. F 0.00
+expand: main@NodeBlock120.i.i (18, 0) FAR  w(0) 25934. F 0.01
+expand: main@empty.loop (19, 0) FAR  w(0) 23943. F 0.00
+expand: main@entry (20, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (21, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (22, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.22 :before-memory 36.27 :after-memory 39.28)
+Propagating: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22  ! 23 24 
+(spacer::context::propagate :time 0.14 :before-memory 39.28 :after-memory 42.25)
+Entering level 23
+expand: query!0 (23, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 42.25 :after-memory 42.25)
+Propagating: 23  ! 24 
+(spacer::context::propagate :time 0.00 :before-memory 42.25 :after-memory 42.25)
+Entering level 24
+expand: query!0 (24, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (23, 24) FAR 1 U 0.00
+expand: main@entry!_BAD (23, 0) FAR  w(0) 1.
+	create_child: main@entry (22, 24) FAR 1 U 0.00
+expand: main@entry (22, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (21, 24) FAR 23943 U 0.00
+expand: main@empty.loop (21, 0) FAR  w(0) 23943.
+	create_child: main@NodeBlock120.i.i (20, 24) FAR 25934 U 0.00
+expand: main@NodeBlock120.i.i (20, 0) FAR  w(0) 25934.
+	create_child: main@NodeBlock120.i.i.backedge (19, 24) FAR 63612 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (19, 0) FAR  w(0) 63612.
+	create_child: main@NodeBlock120.i.i (18, 24) FAR 63635 U 0.00
+expand: main@NodeBlock120.i.i (18, 0) FAR  w(0) 63635.
+	create_child: main@NodeBlock120.i.i.backedge (17, 24) FAR 63595 U 0.01
+expand: main@NodeBlock120.i.i.backedge (17, 0) FAR  w(0) 63595.
+	create_child: main@NodeBlock120.i.i (16, 24) FAR 63765 U 0.00
+expand: main@NodeBlock120.i.i (16, 0) FAR  w(0) 63765.
+	create_child: main@NodeBlock120.i.i.backedge (15, 24) FAR 63535 U 0.01
+expand: main@NodeBlock120.i.i.backedge (15, 0) FAR  w(0) 63535.
+	create_child: main@NodeBlock120.i.i (14, 24) FAR 63686 U 0.00
+expand: main@NodeBlock120.i.i (14, 0) FAR  w(0) 63686.
+	create_child: main@NodeBlock120.i.i.backedge (13, 24) FAR 77563 U 0.01
+expand: main@NodeBlock120.i.i.backedge (13, 0) FAR  w(0) 77563.
+	create_child: main@NodeBlock120.i.i (12, 24) FAR 77470 U 0.00
+expand: main@NodeBlock120.i.i (12, 0) FAR  w(0) 77470.
+	create_child: main@NodeBlock120.i.i.backedge (11, 24) FAR 77545 U 0.01
+expand: main@NodeBlock120.i.i.backedge (11, 0) FAR  w(0) 77545.
+	create_child: main@NodeBlock120.i.i (10, 24) FAR 77458 U 0.00
+expand: main@NodeBlock120.i.i (10, 0) FAR  w(0) 77458.
+	create_child: main@NodeBlock120.i.i.backedge (9, 24) FAR 77376 U 0.01
+expand: main@NodeBlock120.i.i.backedge (9, 0) FAR  w(0) 77376.
+	create_child: main@NodeBlock120.i.i (8, 24) FAR 77421 U 0.00
+expand: main@NodeBlock120.i.i (8, 0) FAR  w(0) 77421.
+	create_child: main@NodeBlock120.i.i.backedge (7, 24) FAR 77745 U 0.01
+expand: main@NodeBlock120.i.i.backedge (7, 0) FAR  w(0) 77745.
+	create_child: main@NodeBlock120.i.i (6, 24) FAR 77841 U 0.00
+expand: main@NodeBlock120.i.i (6, 0) FAR  w(0) 77841.
+	create_child: main@NodeBlock120.i.i.backedge (5, 24) FAR 91348 U 0.01
+expand: main@NodeBlock120.i.i.backedge (5, 0) FAR  w(0) 91348.
+	create_child: main@NodeBlock120.i.i (4, 24) FAR 90896 U 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 90896.
+	create_child: main@NodeBlock120.i.i.backedge (3, 24) FAR 91212 U 0.02
+expand: main@NodeBlock120.i.i.backedge (3, 0) FAR  w(0) 91212.
+	create_child: main@NodeBlock120.i.i (2, 24) FAR 91050 U 0.00
+expand: main@NodeBlock120.i.i (2, 0) FAR  w(0) 91050.
+	create_child: main@NodeBlock120.i.i.backedge (1, 24) FAR 98750 U 0.01
+expand: main@NodeBlock120.i.i.backedge (1, 0) FAR  w(0) 98750.
+	create_child: main@NodeBlock120.i.i (0, 24) FAR 98182 U 0.00
+expand: main@NodeBlock120.i.i (0, 0) FAR  w(0) 98182. F 0.00
+expand: main@NodeBlock120.i.i.backedge (1, 0) FAR  w(0) 98750. F 0.00
+expand: main@NodeBlock120.i.i (2, 0) FAR  w(0) 91050. F 0.01
+expand: main@NodeBlock120.i.i.backedge (3, 0) FAR  w(0) 91212. F 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 90896.
+	create_child: main@_138 (3, 24) FAR 98885 U 0.01
+expand: main@_138 (3, 0) FAR  w(0) 98885.
+	create_child: main@_138!_Cond (2, 24) FAR 98361 U 0.00
+expand: main@_138!_Cond (2, 0) FAR  w(0) 98361. F 0.00
+expand: main@_138 (3, 0) FAR  w(0) 98885. F 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 90896. F 0.02
+expand: main@NodeBlock120.i.i.backedge (5, 0) FAR  w(0) 91348. F 0.00
+expand: main@NodeBlock120.i.i (6, 0) FAR  w(0) 77841. F 0.01
+expand: main@NodeBlock120.i.i.backedge (7, 0) FAR  w(0) 77745. F 0.00
+expand: main@NodeBlock120.i.i (8, 0) FAR  w(0) 77421. F 0.01
+expand: main@NodeBlock120.i.i.backedge (9, 0) FAR  w(0) 77376. F 0.00
+expand: main@NodeBlock120.i.i (10, 0) FAR  w(0) 77458. F 0.02
+expand: main@NodeBlock120.i.i.backedge (11, 0) FAR  w(0) 77545. F 0.00
+expand: main@NodeBlock120.i.i (12, 0) FAR  w(0) 77470.
+	create_child: main@_138 (11, 24) FAR 90664 U 0.01
+expand: main@_138 (11, 0) FAR  w(0) 90664.
+	create_child: main@_138!_Cond (10, 24) FAR 92256 U 0.00
+expand: main@_138!_Cond (10, 0) FAR  w(0) 92256. F 0.00
+expand: main@_138 (11, 0) FAR  w(0) 90664. F 0.00
+expand: main@NodeBlock120.i.i (12, 0) FAR  w(0) 77470. F 0.01
+expand: main@NodeBlock120.i.i.backedge (13, 0) FAR  w(0) 77563. F 0.00
+expand: main@NodeBlock120.i.i (14, 0) FAR  w(0) 63686. F 0.01
+expand: main@NodeBlock120.i.i.backedge (15, 0) FAR  w(0) 63535. F 0.00
+expand: main@NodeBlock120.i.i (16, 0) FAR  w(0) 63765. F 0.01
+expand: main@NodeBlock120.i.i.backedge (17, 0) FAR  w(0) 63595. F 0.00
+expand: main@NodeBlock120.i.i (18, 0) FAR  w(0) 63635. F 0.01
+expand: main@NodeBlock120.i.i.backedge (19, 0) FAR  w(0) 63612. F 0.00
+expand: main@NodeBlock120.i.i (20, 0) FAR  w(0) 25934. F 0.01
+expand: main@empty.loop (21, 0) FAR  w(0) 23943. F 0.00
+expand: main@entry (22, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (23, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (24, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.26 :before-memory 42.25 :after-memory 43.05)
+Propagating: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24  ! 25 26 
+(spacer::context::propagate :time 0.10 :before-memory 43.05 :after-memory 43.34)
+Entering level 25
+expand: query!0 (25, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 43.34 :after-memory 43.36)
+Propagating: 25  ! 26 
+(spacer::context::propagate :time 0.00 :before-memory 43.36 :after-memory 43.36)
+Entering level 26
+expand: query!0 (26, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (25, 26) FAR 1 U 0.00
+expand: main@entry!_BAD (25, 0) FAR  w(0) 1.
+	create_child: main@entry (24, 26) FAR 1 U 0.00
+expand: main@entry (24, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (23, 26) FAR 23943 U 0.00
+expand: main@empty.loop (23, 0) FAR  w(0) 23943.
+	create_child: main@NodeBlock120.i.i (22, 26) FAR 25934 U 0.00
+expand: main@NodeBlock120.i.i (22, 0) FAR  w(0) 25934.
+	create_child: main@NodeBlock120.i.i.backedge (21, 26) FAR 63612 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (21, 0) FAR  w(0) 63612.
+	create_child: main@NodeBlock120.i.i (20, 26) FAR 63635 U 0.00
+expand: main@NodeBlock120.i.i (20, 0) FAR  w(0) 63635.
+	create_child: main@NodeBlock120.i.i.backedge (19, 26) FAR 63595 U 0.01
+expand: main@NodeBlock120.i.i.backedge (19, 0) FAR  w(0) 63595.
+	create_child: main@NodeBlock120.i.i (18, 26) FAR 63765 U 0.00
+expand: main@NodeBlock120.i.i (18, 0) FAR  w(0) 63765.
+	create_child: main@NodeBlock120.i.i.backedge (17, 26) FAR 63535 U 0.01
+expand: main@NodeBlock120.i.i.backedge (17, 0) FAR  w(0) 63535.
+	create_child: main@NodeBlock120.i.i (16, 26) FAR 63686 U 0.00
+expand: main@NodeBlock120.i.i (16, 0) FAR  w(0) 63686.
+	create_child: main@NodeBlock120.i.i.backedge (15, 26) FAR 77563 U 0.01
+expand: main@NodeBlock120.i.i.backedge (15, 0) FAR  w(0) 77563.
+	create_child: main@NodeBlock120.i.i (14, 26) FAR 77470 U 0.00
+expand: main@NodeBlock120.i.i (14, 0) FAR  w(0) 77470.
+	create_child: main@NodeBlock120.i.i.backedge (13, 26) FAR 77545 U 0.01
+expand: main@NodeBlock120.i.i.backedge (13, 0) FAR  w(0) 77545.
+	create_child: main@NodeBlock120.i.i (12, 26) FAR 77458 U 0.00
+expand: main@NodeBlock120.i.i (12, 0) FAR  w(0) 77458.
+	create_child: main@NodeBlock120.i.i.backedge (11, 26) FAR 77376 U 0.01
+expand: main@NodeBlock120.i.i.backedge (11, 0) FAR  w(0) 77376.
+	create_child: main@NodeBlock120.i.i (10, 26) FAR 77421 U 0.00
+expand: main@NodeBlock120.i.i (10, 0) FAR  w(0) 77421.
+	create_child: main@NodeBlock120.i.i.backedge (9, 26) FAR 77745 U 0.01
+expand: main@NodeBlock120.i.i.backedge (9, 0) FAR  w(0) 77745.
+	create_child: main@NodeBlock120.i.i (8, 26) FAR 77841 U 0.00
+expand: main@NodeBlock120.i.i (8, 0) FAR  w(0) 77841.
+	create_child: main@NodeBlock120.i.i.backedge (7, 26) FAR 91348 U 0.01
+expand: main@NodeBlock120.i.i.backedge (7, 0) FAR  w(0) 91348.
+	create_child: main@NodeBlock120.i.i (6, 26) FAR 90896 U 0.00
+expand: main@NodeBlock120.i.i (6, 0) FAR  w(0) 90896.
+	create_child: main@NodeBlock120.i.i.backedge (5, 26) FAR 91212 U 0.01
+expand: main@NodeBlock120.i.i.backedge (5, 0) FAR  w(0) 91212.
+	create_child: main@NodeBlock120.i.i (4, 26) FAR 91050 U 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 91050.
+	create_child: main@NodeBlock120.i.i.backedge (3, 26) FAR 98750 U 0.01
+expand: main@NodeBlock120.i.i.backedge (3, 0) FAR  w(0) 98750.
+	create_child: main@NodeBlock120.i.i (2, 26) FAR 98182 U 0.00
+expand: main@NodeBlock120.i.i (2, 0) FAR  w(0) 98182.
+	create_child: main@NodeBlock120.i.i.backedge (1, 26) FAR 106357 U 0.01
+expand: main@NodeBlock120.i.i.backedge (1, 0) FAR  w(0) 106357.
+	create_child: main@NodeBlock120.i.i (0, 26) FAR 106498 U 0.00
+expand: main@NodeBlock120.i.i (0, 0) FAR  w(0) 106498. F 0.00
+expand: main@NodeBlock120.i.i.backedge (1, 0) FAR  w(0) 106357. F 0.00
+expand: main@NodeBlock120.i.i (2, 0) FAR  w(0) 98182. F 0.01
+expand: main@NodeBlock120.i.i.backedge (3, 0) FAR  w(0) 98750. F 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 91050.
+	create_child: main@_138 (3, 26) FAR 106770 U 0.01
+expand: main@_138 (3, 0) FAR  w(0) 106770.
+	create_child: main@_138!_Cond (2, 26) FAR 106599 U 0.00
+expand: main@_138!_Cond (2, 0) FAR  w(0) 106599. F 0.00
+expand: main@_138 (3, 0) FAR  w(0) 106770. F 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 91050. F 0.02
+expand: main@NodeBlock120.i.i.backedge (5, 0) FAR  w(0) 91212. F 0.00
+expand: main@NodeBlock120.i.i (6, 0) FAR  w(0) 90896. F 0.01
+expand: main@NodeBlock120.i.i.backedge (7, 0) FAR  w(0) 91348. F 0.00
+expand: main@NodeBlock120.i.i (8, 0) FAR  w(0) 77841. F 0.01
+expand: main@NodeBlock120.i.i.backedge (9, 0) FAR  w(0) 77745. F 0.00
+expand: main@NodeBlock120.i.i (10, 0) FAR  w(0) 77421. F 0.01
+expand: main@NodeBlock120.i.i.backedge (11, 0) FAR  w(0) 77376. F 0.00
+expand: main@NodeBlock120.i.i (12, 0) FAR  w(0) 77458. F 0.02
+expand: main@NodeBlock120.i.i.backedge (13, 0) FAR  w(0) 77545. F 0.00
+expand: main@NodeBlock120.i.i (14, 0) FAR  w(0) 77470.
+	create_child: main@_138 (13, 26) FAR 90664 U 0.01
+expand: main@_138 (13, 0) FAR  w(0) 90664.
+	create_child: main@_138!_Cond (12, 26) FAR 92256 U 0.00
+expand: main@_138!_Cond (12, 0) FAR  w(0) 92256. F 0.00
+expand: main@_138 (13, 0) FAR  w(0) 90664. F 0.00
+expand: main@NodeBlock120.i.i (14, 0) FAR  w(0) 77470. F 0.01
+expand: main@NodeBlock120.i.i.backedge (15, 0) FAR  w(0) 77563. F 0.00
+expand: main@NodeBlock120.i.i (16, 0) FAR  w(0) 63686. F 0.01
+expand: main@NodeBlock120.i.i.backedge (17, 0) FAR  w(0) 63535. F 0.00
+expand: main@NodeBlock120.i.i (18, 0) FAR  w(0) 63765. F 0.01
+expand: main@NodeBlock120.i.i.backedge (19, 0) FAR  w(0) 63595. F 0.00
+expand: main@NodeBlock120.i.i (20, 0) FAR  w(0) 63635. F 0.01
+expand: main@NodeBlock120.i.i.backedge (21, 0) FAR  w(0) 63612. F 0.00
+expand: main@NodeBlock120.i.i (22, 0) FAR  w(0) 25934. F 0.01
+expand: main@empty.loop (23, 0) FAR  w(0) 23943. F 0.00
+expand: main@entry (24, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (25, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (26, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.28 :before-memory 43.36 :after-memory 43.81)
+Propagating: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26  ! 27 28 
+(spacer::context::propagate :time 0.10 :before-memory 43.81 :after-memory 44.20)
+Entering level 27
+expand: query!0 (27, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 44.20 :after-memory 44.20)
+Propagating: 27  ! 28 
+(spacer::context::propagate :time 0.00 :before-memory 44.20 :after-memory 44.20)
+Entering level 28
+expand: query!0 (28, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (27, 28) FAR 1 U 0.00
+expand: main@entry!_BAD (27, 0) FAR  w(0) 1.
+	create_child: main@entry (26, 28) FAR 1 U 0.00
+expand: main@entry (26, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (25, 28) FAR 23943 U 0.00
+expand: main@empty.loop (25, 0) FAR  w(0) 23943.
+	create_child: main@NodeBlock120.i.i (24, 28) FAR 25934 U 0.00
+expand: main@NodeBlock120.i.i (24, 0) FAR  w(0) 25934.
+	create_child: main@NodeBlock120.i.i.backedge (23, 28) FAR 63612 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (23, 0) FAR  w(0) 63612.
+	create_child: main@NodeBlock120.i.i (22, 28) FAR 63635 U 0.00
+expand: main@NodeBlock120.i.i (22, 0) FAR  w(0) 63635.
+	create_child: main@NodeBlock120.i.i.backedge (21, 28) FAR 63595 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (21, 0) FAR  w(0) 63595.
+	create_child: main@NodeBlock120.i.i (20, 28) FAR 63765 U 0.00
+expand: main@NodeBlock120.i.i (20, 0) FAR  w(0) 63765.
+	create_child: main@NodeBlock120.i.i.backedge (19, 28) FAR 63535 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (19, 0) FAR  w(0) 63535.
+	create_child: main@NodeBlock120.i.i (18, 28) FAR 63686 U 0.00
+expand: main@NodeBlock120.i.i (18, 0) FAR  w(0) 63686.
+	create_child: main@NodeBlock120.i.i.backedge (17, 28) FAR 77563 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (17, 0) FAR  w(0) 77563.
+	create_child: main@NodeBlock120.i.i (16, 28) FAR 77470 U 0.00
+expand: main@NodeBlock120.i.i (16, 0) FAR  w(0) 77470.
+	create_child: main@NodeBlock120.i.i.backedge (15, 28) FAR 77545 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (15, 0) FAR  w(0) 77545.
+	create_child: main@NodeBlock120.i.i (14, 28) FAR 77458 U 0.00
+expand: main@NodeBlock120.i.i (14, 0) FAR  w(0) 77458.
+	create_child: main@NodeBlock120.i.i.backedge (13, 28) FAR 77376 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (13, 0) FAR  w(0) 77376.
+	create_child: main@NodeBlock120.i.i (12, 28) FAR 77421 U 0.00
+expand: main@NodeBlock120.i.i (12, 0) FAR  w(0) 77421.
+	create_child: main@NodeBlock120.i.i.backedge (11, 28) FAR 77745 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (11, 0) FAR  w(0) 77745.
+	create_child: main@NodeBlock120.i.i (10, 28) FAR 77841 U 0.00
+expand: main@NodeBlock120.i.i (10, 0) FAR  w(0) 77841.
+	create_child: main@NodeBlock120.i.i.backedge (9, 28) FAR 91348 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (9, 0) FAR  w(0) 91348.
+	create_child: main@NodeBlock120.i.i (8, 28) FAR 90896 U 0.00
+expand: main@NodeBlock120.i.i (8, 0) FAR  w(0) 90896.
+	create_child: main@NodeBlock120.i.i.backedge (7, 28) FAR 91212 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (7, 0) FAR  w(0) 91212.
+	create_child: main@NodeBlock120.i.i (6, 28) FAR 91050 U 0.00
+expand: main@NodeBlock120.i.i (6, 0) FAR  w(0) 91050.
+	create_child: main@NodeBlock120.i.i.backedge (5, 28) FAR 98750 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (5, 0) FAR  w(0) 98750.
+	create_child: main@NodeBlock120.i.i (4, 28) FAR 98182 U 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 98182.
+	create_child: main@_138 (3, 28) FAR 115798 U 0.01
+expand: main@_138 (3, 0) FAR  w(0) 115798.
+	create_child: main@_138!_Cond (2, 28) FAR 115780 U 0.00
+expand: main@_138!_Cond (2, 0) FAR  w(0) 115780. F 0.00
+expand: main@_138 (3, 0) FAR  w(0) 115798. F 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 98182. F 0.02
+expand: main@NodeBlock120.i.i.backedge (5, 0) FAR  w(0) 98750. F 0.00
+expand: main@NodeBlock120.i.i (6, 0) FAR  w(0) 91050. F 0.01
+expand: main@NodeBlock120.i.i.backedge (7, 0) FAR  w(0) 91212. F 0.00
+expand: main@NodeBlock120.i.i (8, 0) FAR  w(0) 90896. F 0.01
+expand: main@NodeBlock120.i.i.backedge (9, 0) FAR  w(0) 91348. F 0.00
+expand: main@NodeBlock120.i.i (10, 0) FAR  w(0) 77841. F 0.01
+expand: main@NodeBlock120.i.i.backedge (11, 0) FAR  w(0) 77745. F 0.00
+expand: main@NodeBlock120.i.i (12, 0) FAR  w(0) 77421. F 0.01
+expand: main@NodeBlock120.i.i.backedge (13, 0) FAR  w(0) 77376. F 0.00
+expand: main@NodeBlock120.i.i (14, 0) FAR  w(0) 77458. F 0.02
+expand: main@NodeBlock120.i.i.backedge (15, 0) FAR  w(0) 77545. F 0.00
+expand: main@NodeBlock120.i.i (16, 0) FAR  w(0) 77470.
+	create_child: main@_138 (15, 28) FAR 90664 U 0.01
+expand: main@_138 (15, 0) FAR  w(0) 90664.
+	create_child: main@_138!_Cond (14, 28) FAR 92256 U 0.00
+expand: main@_138!_Cond (14, 0) FAR  w(0) 92256. F 0.00
+expand: main@_138 (15, 0) FAR  w(0) 90664. F 0.00
+expand: main@NodeBlock120.i.i (16, 0) FAR  w(0) 77470. F 0.01
+expand: main@NodeBlock120.i.i.backedge (17, 0) FAR  w(0) 77563. F 0.00
+expand: main@NodeBlock120.i.i (18, 0) FAR  w(0) 63686. F 0.01
+expand: main@NodeBlock120.i.i.backedge (19, 0) FAR  w(0) 63535. F 0.00
+expand: main@NodeBlock120.i.i (20, 0) FAR  w(0) 63765. F 0.01
+expand: main@NodeBlock120.i.i.backedge (21, 0) FAR  w(0) 63595. F 0.00
+expand: main@NodeBlock120.i.i (22, 0) FAR  w(0) 63635. F 0.01
+expand: main@NodeBlock120.i.i.backedge (23, 0) FAR  w(0) 63612. F 0.00
+expand: main@NodeBlock120.i.i (24, 0) FAR  w(0) 25934. F 0.01
+expand: main@empty.loop (25, 0) FAR  w(0) 23943. F 0.00
+expand: main@entry (26, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (27, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (28, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.26 :before-memory 44.20 :after-memory 44.71)
+Propagating: 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28  ! 29 30 
+(spacer::context::propagate :time 0.11 :before-memory 44.71 :after-memory 45.11)
+Entering level 29
+expand: query!0 (29, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 45.11 :after-memory 45.11)
+Propagating: 29  ! 30 
+(spacer::context::propagate :time 0.00 :before-memory 45.11 :after-memory 45.11)
+Entering level 30
+expand: query!0 (30, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (29, 30) FAR 1 U 0.00
+expand: main@entry!_BAD (29, 0) FAR  w(0) 1.
+	create_child: main@entry (28, 30) FAR 1 U 0.00
+expand: main@entry (28, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (27, 30) FAR 23943 U 0.00
+expand: main@empty.loop (27, 0) FAR  w(0) 23943.
+	create_child: main@NodeBlock120.i.i (26, 30) FAR 25934 U 0.00
+expand: main@NodeBlock120.i.i (26, 0) FAR  w(0) 25934.
+	create_child: main@NodeBlock120.i.i.backedge (25, 30) FAR 63612 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (25, 0) FAR  w(0) 63612.
+	create_child: main@NodeBlock120.i.i (24, 30) FAR 63635 U 0.00
+expand: main@NodeBlock120.i.i (24, 0) FAR  w(0) 63635.
+	create_child: main@NodeBlock120.i.i.backedge (23, 30) FAR 63595 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (23, 0) FAR  w(0) 63595.
+	create_child: main@NodeBlock120.i.i (22, 30) FAR 63765 U 0.00
+expand: main@NodeBlock120.i.i (22, 0) FAR  w(0) 63765.
+	create_child: main@NodeBlock120.i.i.backedge (21, 30) FAR 63535 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (21, 0) FAR  w(0) 63535.
+	create_child: main@NodeBlock120.i.i (20, 30) FAR 63686 U 0.00
+expand: main@NodeBlock120.i.i (20, 0) FAR  w(0) 63686.
+	create_child: main@NodeBlock120.i.i.backedge (19, 30) FAR 77563 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (19, 0) FAR  w(0) 77563.
+	create_child: main@NodeBlock120.i.i (18, 30) FAR 77470 U 0.00
+expand: main@NodeBlock120.i.i (18, 0) FAR  w(0) 77470.
+	create_child: main@NodeBlock120.i.i.backedge (17, 30) FAR 77545 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (17, 0) FAR  w(0) 77545.
+	create_child: main@NodeBlock120.i.i (16, 30) FAR 77458 U 0.00
+expand: main@NodeBlock120.i.i (16, 0) FAR  w(0) 77458.
+	create_child: main@NodeBlock120.i.i.backedge (15, 30) FAR 77376 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (15, 0) FAR  w(0) 77376.
+	create_child: main@NodeBlock120.i.i (14, 30) FAR 77421 U 0.00
+expand: main@NodeBlock120.i.i (14, 0) FAR  w(0) 77421.
+	create_child: main@NodeBlock120.i.i.backedge (13, 30) FAR 77745 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (13, 0) FAR  w(0) 77745.
+	create_child: main@NodeBlock120.i.i (12, 30) FAR 77841 U 0.00
+expand: main@NodeBlock120.i.i (12, 0) FAR  w(0) 77841.
+	create_child: main@NodeBlock120.i.i.backedge (11, 30) FAR 91348 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (11, 0) FAR  w(0) 91348.
+	create_child: main@NodeBlock120.i.i (10, 30) FAR 90896 U 0.00
+expand: main@NodeBlock120.i.i (10, 0) FAR  w(0) 90896.
+	create_child: main@NodeBlock120.i.i.backedge (9, 30) FAR 91212 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (9, 0) FAR  w(0) 91212.
+	create_child: main@NodeBlock120.i.i (8, 30) FAR 91050 U 0.00
+expand: main@NodeBlock120.i.i (8, 0) FAR  w(0) 91050.
+	create_child: main@NodeBlock120.i.i.backedge (7, 30) FAR 98750 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (7, 0) FAR  w(0) 98750.
+	create_child: main@NodeBlock120.i.i (6, 30) FAR 98182 U 0.00
+expand: main@NodeBlock120.i.i (6, 0) FAR  w(0) 98182.
+	create_child: main@NodeBlock120.i.i.backedge (5, 30) FAR 106357 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (5, 0) FAR  w(0) 106357.
+	create_child: main@NodeBlock120.i.i (4, 30) FAR 106498 U 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 106498.
+	create_child: main@NodeBlock120.i.i.backedge (3, 30) FAR 124380 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (3, 0) FAR  w(0) 124380.
+	create_child: main@NodeBlock120.i.i (2, 30) FAR 123876 U 0.00
+expand: main@NodeBlock120.i.i (2, 0) FAR  w(0) 123876.
+	create_child: main@NodeBlock120.i.i.backedge (1, 30) FAR 124377 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (1, 0) FAR  w(0) 124377.
+	create_child: main@NodeBlock120.i.i (0, 30) FAR 124538 U 0.00
+expand: main@NodeBlock120.i.i (0, 0) FAR  w(0) 124538. F 0.00
+expand: main@NodeBlock120.i.i.backedge (1, 0) FAR  w(0) 124377. F 0.00
+expand: main@NodeBlock120.i.i (2, 0) FAR  w(0) 123876. F 0.02
+expand: main@NodeBlock120.i.i.backedge (3, 0) FAR  w(0) 124380. F 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 106498. F 0.01
+expand: main@NodeBlock120.i.i.backedge (5, 0) FAR  w(0) 106357. F 0.00
+expand: main@NodeBlock120.i.i (6, 0) FAR  w(0) 98182. F 0.01
+expand: main@NodeBlock120.i.i.backedge (7, 0) FAR  w(0) 98750. F 0.00
+expand: main@NodeBlock120.i.i (8, 0) FAR  w(0) 91050. F 0.01
+expand: main@NodeBlock120.i.i.backedge (9, 0) FAR  w(0) 91212. F 0.00
+expand: main@NodeBlock120.i.i (10, 0) FAR  w(0) 90896. F 0.01
+expand: main@NodeBlock120.i.i.backedge (11, 0) FAR  w(0) 91348. F 0.00
+expand: main@NodeBlock120.i.i (12, 0) FAR  w(0) 77841. F 0.01
+expand: main@NodeBlock120.i.i.backedge (13, 0) FAR  w(0) 77745. F 0.00
+expand: main@NodeBlock120.i.i (14, 0) FAR  w(0) 77421. F 0.01
+expand: main@NodeBlock120.i.i.backedge (15, 0) FAR  w(0) 77376. F 0.00
+expand: main@NodeBlock120.i.i (16, 0) FAR  w(0) 77458. F 0.03
+expand: main@NodeBlock120.i.i.backedge (17, 0) FAR  w(0) 77545. F 0.00
+expand: main@NodeBlock120.i.i (18, 0) FAR  w(0) 77470.
+	create_child: main@_138 (17, 30) FAR 90664 U 0.01
+expand: main@_138 (17, 0) FAR  w(0) 90664.
+	create_child: main@_138!_Cond (16, 30) FAR 92256 U 0.00
+expand: main@_138!_Cond (16, 0) FAR  w(0) 92256. F 0.00
+expand: main@_138 (17, 0) FAR  w(0) 90664. F 0.00
+expand: main@NodeBlock120.i.i (18, 0) FAR  w(0) 77470. F 0.01
+expand: main@NodeBlock120.i.i.backedge (19, 0) FAR  w(0) 77563. F 0.01
+expand: main@NodeBlock120.i.i (20, 0) FAR  w(0) 63686. F 0.01
+expand: main@NodeBlock120.i.i.backedge (21, 0) FAR  w(0) 63535. F 0.00
+expand: main@NodeBlock120.i.i (22, 0) FAR  w(0) 63765. F 0.01
+expand: main@NodeBlock120.i.i.backedge (23, 0) FAR  w(0) 63595. F 0.00
+expand: main@NodeBlock120.i.i (24, 0) FAR  w(0) 63635. F 0.01
+expand: main@NodeBlock120.i.i.backedge (25, 0) FAR  w(0) 63612. F 0.00
+expand: main@NodeBlock120.i.i (26, 0) FAR  w(0) 25934. F 0.01
+expand: main@empty.loop (27, 0) FAR  w(0) 23943. F 0.00
+expand: main@entry (28, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (29, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (30, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.35 :before-memory 45.11 :after-memory 45.49)
+Propagating: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30  ! 31 32 
+(spacer::context::propagate :time 0.15 :before-memory 45.49 :after-memory 45.89)
+Entering level 31
+expand: query!0 (31, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 45.89 :after-memory 45.90)
+Propagating: 31  ! 32 
+(spacer::context::propagate :time 0.00 :before-memory 45.90 :after-memory 45.90)
+Entering level 32
+expand: query!0 (32, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (31, 32) FAR 1 U 0.00
+expand: main@entry!_BAD (31, 0) FAR  w(0) 1.
+	create_child: main@entry (30, 32) FAR 1 U 0.00
+expand: main@entry (30, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (29, 32) FAR 23943 U 0.00
+expand: main@empty.loop (29, 0) FAR  w(0) 23943.
+	create_child: main@NodeBlock120.i.i (28, 32) FAR 25934 U 0.01
+expand: main@NodeBlock120.i.i (28, 0) FAR  w(0) 25934.
+	create_child: main@NodeBlock120.i.i.backedge (27, 32) FAR 63612 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (27, 0) FAR  w(0) 63612.
+	create_child: main@NodeBlock120.i.i (26, 32) FAR 63635 U 0.00
+expand: main@NodeBlock120.i.i (26, 0) FAR  w(0) 63635.
+	create_child: main@NodeBlock120.i.i.backedge (25, 32) FAR 63595 U 0.01
+expand: main@NodeBlock120.i.i.backedge (25, 0) FAR  w(0) 63595.
+	create_child: main@NodeBlock120.i.i (24, 32) FAR 63765 U 0.00
+expand: main@NodeBlock120.i.i (24, 0) FAR  w(0) 63765.
+	create_child: main@NodeBlock120.i.i.backedge (23, 32) FAR 63535 U 0.01
+expand: main@NodeBlock120.i.i.backedge (23, 0) FAR  w(0) 63535.
+	create_child: main@NodeBlock120.i.i (22, 32) FAR 63686 U 0.00
+expand: main@NodeBlock120.i.i (22, 0) FAR  w(0) 63686.
+	create_child: main@NodeBlock120.i.i.backedge (21, 32) FAR 63797 U 0.01
+expand: main@NodeBlock120.i.i.backedge (21, 0) FAR  w(0) 63797.
+	create_child: main@NodeBlock120.i.i (20, 32) FAR 63764 U 0.00
+expand: main@NodeBlock120.i.i (20, 0) FAR  w(0) 63764.
+	create_child: main@NodeBlock120.i.i.backedge (19, 32) FAR 72217 U 0.01
+expand: main@NodeBlock120.i.i.backedge (19, 0) FAR  w(0) 72217.
+	create_child: main@NodeBlock120.i.i (18, 32) FAR 72118 U 0.00
+expand: main@NodeBlock120.i.i (18, 0) FAR  w(0) 72118.
+	create_child: main@NodeBlock120.i.i.backedge (17, 32) FAR 72358 U 0.01
+expand: main@NodeBlock120.i.i.backedge (17, 0) FAR  w(0) 72358.
+	create_child: main@NodeBlock120.i.i (16, 32) FAR 72310 U 0.00
+expand: main@NodeBlock120.i.i (16, 0) FAR  w(0) 72310.
+	create_child: main@NodeBlock120.i.i.backedge (15, 32) FAR 133883 U 0.01
+expand: main@NodeBlock120.i.i.backedge (15, 0) FAR  w(0) 133883.
+	create_child: main@NodeBlock120.i.i (14, 32) FAR 133864 U 0.00
+expand: main@NodeBlock120.i.i (14, 0) FAR  w(0) 133864.
+	create_child: main@NodeBlock120.i.i.backedge (13, 32) FAR 133835 U 0.01
+expand: main@NodeBlock120.i.i.backedge (13, 0) FAR  w(0) 133835.
+	create_child: main@NodeBlock120.i.i (12, 32) FAR 133988 U 0.00
+expand: main@NodeBlock120.i.i (12, 0) FAR  w(0) 133988.
+	create_child: main@NodeBlock120.i.i.backedge (11, 32) FAR 134163 U 0.01
+expand: main@NodeBlock120.i.i.backedge (11, 0) FAR  w(0) 134163.
+	create_child: main@NodeBlock120.i.i (10, 32) FAR 134152 U 0.00
+expand: main@NodeBlock120.i.i (10, 0) FAR  w(0) 134152.
+	create_child: main@NodeBlock120.i.i.backedge (9, 32) FAR 134028 U 0.01
+expand: main@NodeBlock120.i.i.backedge (9, 0) FAR  w(0) 134028.
+	create_child: main@NodeBlock120.i.i (8, 32) FAR 134168 U 0.00
+expand: main@NodeBlock120.i.i (8, 0) FAR  w(0) 134168.
+	create_child: main@NodeBlock120.i.i.backedge (7, 32) FAR 133972 U 0.01
+expand: main@NodeBlock120.i.i.backedge (7, 0) FAR  w(0) 133972.
+	create_child: main@NodeBlock120.i.i (6, 32) FAR 133974 U 0.00
+expand: main@NodeBlock120.i.i (6, 0) FAR  w(0) 133974.
+	create_child: main@NodeBlock120.i.i.backedge (5, 32) FAR 134132 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (5, 0) FAR  w(0) 134132.
+	create_child: main@NodeBlock120.i.i (4, 32) FAR 133808 U 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 133808.
+	create_child: main@NodeBlock120.i.i.backedge (3, 32) FAR 133925 U 0.01
+expand: main@NodeBlock120.i.i.backedge (3, 0) FAR  w(0) 133925.
+	create_child: main@NodeBlock120.i.i (2, 32) FAR 133462 U 0.00
+expand: main@NodeBlock120.i.i (2, 0) FAR  w(0) 133462.
+	create_child: main@NodeBlock120.i.i.backedge (1, 32) FAR 133968 U 0.02
+expand: main@NodeBlock120.i.i.backedge (1, 0) FAR  w(0) 133968.
+	create_child: main@NodeBlock120.i.i (0, 32) FAR 133669 U 0.00
+expand: main@NodeBlock120.i.i (0, 0) FAR  w(0) 133669. F 0.00
+expand: main@NodeBlock120.i.i.backedge (1, 0) FAR  w(0) 133968. F 0.00
+expand: main@NodeBlock120.i.i (2, 0) FAR  w(0) 133462. F 0.01
+expand: main@NodeBlock120.i.i.backedge (3, 0) FAR  w(0) 133925. F 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 133808.
+	create_child: main@_138 (3, 32) FAR 134376 U 0.01
+expand: main@_138 (3, 0) FAR  w(0) 134376.
+	create_child: main@_138!_Cond (2, 32) FAR 134151 U 0.00
+expand: main@_138!_Cond (2, 0) FAR  w(0) 134151. F 0.00
+expand: main@_138 (3, 0) FAR  w(0) 134376. F 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 133808. F 0.03
+expand: main@NodeBlock120.i.i.backedge (5, 0) FAR  w(0) 134132. F 0.00
+expand: main@NodeBlock120.i.i (6, 0) FAR  w(0) 133974. F 0.02
+expand: main@NodeBlock120.i.i.backedge (7, 0) FAR  w(0) 133972. F 0.00
+expand: main@NodeBlock120.i.i (8, 0) FAR  w(0) 134168. F 0.01
+expand: main@NodeBlock120.i.i.backedge (9, 0) FAR  w(0) 134028. F 0.00
+expand: main@NodeBlock120.i.i (10, 0) FAR  w(0) 134152. F 0.02
+expand: main@NodeBlock120.i.i.backedge (11, 0) FAR  w(0) 134163. F 0.00
+expand: main@NodeBlock120.i.i (12, 0) FAR  w(0) 133988. F 0.02
+expand: main@NodeBlock120.i.i.backedge (13, 0) FAR  w(0) 133835. F 0.00
+expand: main@NodeBlock120.i.i (14, 0) FAR  w(0) 133864. F 0.01
+expand: main@NodeBlock120.i.i.backedge (15, 0) FAR  w(0) 133883. F 0.00
+expand: main@NodeBlock120.i.i (16, 0) FAR  w(0) 72310. F 0.01
+expand: main@NodeBlock120.i.i.backedge (17, 0) FAR  w(0) 72358. F 0.00
+expand: main@NodeBlock120.i.i (18, 0) FAR  w(0) 72118. F 0.02
+expand: main@NodeBlock120.i.i.backedge (19, 0) FAR  w(0) 72217. F 0.00
+expand: main@NodeBlock120.i.i (20, 0) FAR  w(0) 63764.
+	create_child: main@_138 (19, 32) FAR 72886 U 0.02
+expand: main@_138 (19, 0) FAR  w(0) 72886.
+	create_child: main@_138!_Cond (18, 32) FAR 72849 U 0.00
+expand: main@_138!_Cond (18, 0) FAR  w(0) 72849. F 0.00
+expand: main@_138 (19, 0) FAR  w(0) 72886. F 0.00
+expand: main@NodeBlock120.i.i (20, 0) FAR  w(0) 63764. F 0.01
+expand: main@NodeBlock120.i.i.backedge (21, 0) FAR  w(0) 63797. F 0.00
+expand: main@NodeBlock120.i.i (22, 0) FAR  w(0) 63686. F 0.01
+expand: main@NodeBlock120.i.i.backedge (23, 0) FAR  w(0) 63535. F 0.00
+expand: main@NodeBlock120.i.i (24, 0) FAR  w(0) 63765. F 0.01
+expand: main@NodeBlock120.i.i.backedge (25, 0) FAR  w(0) 63595. F 0.00
+expand: main@NodeBlock120.i.i (26, 0) FAR  w(0) 63635. F 0.01
+expand: main@NodeBlock120.i.i.backedge (27, 0) FAR  w(0) 63612. F 0.00
+expand: main@NodeBlock120.i.i (28, 0) FAR  w(0) 25934. F 0.01
+expand: main@empty.loop (29, 0) FAR  w(0) 23943. F 0.00
+expand: main@entry (30, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (31, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (32, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.45 :before-memory 45.90 :after-memory 46.35)
+Propagating: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32  ! 33 34 
+(spacer::context::propagate :time 0.15 :before-memory 46.35 :after-memory 49.39)
+Entering level 33
+expand: query!0 (33, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 49.39 :after-memory 49.40)
+Propagating: 33  ! 34 
+(spacer::context::propagate :time 0.00 :before-memory 49.40 :after-memory 49.40)
+Entering level 34
+expand: query!0 (34, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (33, 34) FAR 1 U 0.00
+expand: main@entry!_BAD (33, 0) FAR  w(0) 1.
+	create_child: main@entry (32, 34) FAR 1 U 0.00
+expand: main@entry (32, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (31, 34) FAR 23943 U 0.00
+expand: main@empty.loop (31, 0) FAR  w(0) 23943.
+	create_child: main@NodeBlock120.i.i (30, 34) FAR 25934 U 0.00
+expand: main@NodeBlock120.i.i (30, 0) FAR  w(0) 25934.
+	create_child: main@NodeBlock120.i.i.backedge (29, 34) FAR 63612 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (29, 0) FAR  w(0) 63612.
+	create_child: main@NodeBlock120.i.i (28, 34) FAR 63635 U 0.00
+expand: main@NodeBlock120.i.i (28, 0) FAR  w(0) 63635.
+	create_child: main@NodeBlock120.i.i.backedge (27, 34) FAR 63595 U 0.01
+expand: main@NodeBlock120.i.i.backedge (27, 0) FAR  w(0) 63595.
+	create_child: main@NodeBlock120.i.i (26, 34) FAR 63765 U 0.00
+expand: main@NodeBlock120.i.i (26, 0) FAR  w(0) 63765.
+	create_child: main@NodeBlock120.i.i.backedge (25, 34) FAR 63535 U 0.01
+expand: main@NodeBlock120.i.i.backedge (25, 0) FAR  w(0) 63535.
+	create_child: main@NodeBlock120.i.i (24, 34) FAR 63686 U 0.00
+expand: main@NodeBlock120.i.i (24, 0) FAR  w(0) 63686.
+	create_child: main@NodeBlock120.i.i.backedge (23, 34) FAR 77563 U 0.01
+expand: main@NodeBlock120.i.i.backedge (23, 0) FAR  w(0) 77563.
+	create_child: main@NodeBlock120.i.i (22, 34) FAR 77470 U 0.00
+expand: main@NodeBlock120.i.i (22, 0) FAR  w(0) 77470.
+	create_child: main@NodeBlock120.i.i.backedge (21, 34) FAR 77545 U 0.01
+expand: main@NodeBlock120.i.i.backedge (21, 0) FAR  w(0) 77545.
+	create_child: main@NodeBlock120.i.i (20, 34) FAR 77458 U 0.00
+expand: main@NodeBlock120.i.i (20, 0) FAR  w(0) 77458.
+	create_child: main@NodeBlock120.i.i.backedge (19, 34) FAR 77376 U 0.01
+expand: main@NodeBlock120.i.i.backedge (19, 0) FAR  w(0) 77376.
+	create_child: main@NodeBlock120.i.i (18, 34) FAR 77421 U 0.00
+expand: main@NodeBlock120.i.i (18, 0) FAR  w(0) 77421.
+	create_child: main@NodeBlock120.i.i.backedge (17, 34) FAR 77745 U 0.01
+expand: main@NodeBlock120.i.i.backedge (17, 0) FAR  w(0) 77745.
+	create_child: main@NodeBlock120.i.i (16, 34) FAR 77841 U 0.00
+expand: main@NodeBlock120.i.i (16, 0) FAR  w(0) 77841.
+	create_child: main@NodeBlock120.i.i.backedge (15, 34) FAR 91348 U 0.01
+expand: main@NodeBlock120.i.i.backedge (15, 0) FAR  w(0) 91348.
+	create_child: main@NodeBlock120.i.i (14, 34) FAR 90896 U 0.00
+expand: main@NodeBlock120.i.i (14, 0) FAR  w(0) 90896.
+	create_child: main@NodeBlock120.i.i.backedge (13, 34) FAR 91212 U 0.01
+expand: main@NodeBlock120.i.i.backedge (13, 0) FAR  w(0) 91212.
+	create_child: main@NodeBlock120.i.i (12, 34) FAR 91050 U 0.00
+expand: main@NodeBlock120.i.i (12, 0) FAR  w(0) 91050.
+	create_child: main@NodeBlock120.i.i.backedge (11, 34) FAR 98750 U 0.01
+expand: main@NodeBlock120.i.i.backedge (11, 0) FAR  w(0) 98750.
+	create_child: main@NodeBlock120.i.i (10, 34) FAR 98182 U 0.00
+expand: main@NodeBlock120.i.i (10, 0) FAR  w(0) 98182.
+	create_child: main@NodeBlock120.i.i.backedge (9, 34) FAR 106357 U 0.01
+expand: main@NodeBlock120.i.i.backedge (9, 0) FAR  w(0) 106357.
+	create_child: main@NodeBlock120.i.i (8, 34) FAR 106498 U 0.00
+expand: main@NodeBlock120.i.i (8, 0) FAR  w(0) 106498.
+	create_child: main@NodeBlock120.i.i.backedge (7, 34) FAR 124380 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (7, 0) FAR  w(0) 124380.
+	create_child: main@NodeBlock120.i.i (6, 34) FAR 123876 U 0.00
+expand: main@NodeBlock120.i.i (6, 0) FAR  w(0) 123876.
+	create_child: main@NodeBlock120.i.i.backedge (5, 34) FAR 124377 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (5, 0) FAR  w(0) 124377.
+	create_child: main@NodeBlock120.i.i (4, 34) FAR 124538 U 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 124538.
+	create_child: main@NodeBlock120.i.i.backedge (3, 34) FAR 143706 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (3, 0) FAR  w(0) 143706.
+	create_child: main@NodeBlock120.i.i (2, 34) FAR 143782 U 0.00
+expand: main@NodeBlock120.i.i (2, 0) FAR  w(0) 143782.
+	create_child: main@NodeBlock120.i.i.backedge (1, 34) FAR 143978 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (1, 0) FAR  w(0) 143978.
+	create_child: main@NodeBlock120.i.i (0, 34) FAR 143859 U 0.00
+expand: main@NodeBlock120.i.i (0, 0) FAR  w(0) 143859. F 0.00
+expand: main@NodeBlock120.i.i.backedge (1, 0) FAR  w(0) 143978. F 0.00
+expand: main@NodeBlock120.i.i (2, 0) FAR  w(0) 143782. F 0.01
+expand: main@NodeBlock120.i.i.backedge (3, 0) FAR  w(0) 143706. F 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 124538.
+	create_child: main@_138 (3, 34) FAR 144949 U 0.01
+expand: main@_138 (3, 0) FAR  w(0) 144949.
+	create_child: main@_138!_Cond (2, 34) FAR 144422 U 0.00
+expand: main@_138!_Cond (2, 0) FAR  w(0) 144422. F 0.00
+expand: main@_138 (3, 0) FAR  w(0) 144949. F 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 124538. F 0.02
+expand: main@NodeBlock120.i.i.backedge (5, 0) FAR  w(0) 124377. F 0.00
+expand: main@NodeBlock120.i.i (6, 0) FAR  w(0) 123876. F 0.03
+expand: main@NodeBlock120.i.i.backedge (7, 0) FAR  w(0) 124380. F 0.00
+expand: main@NodeBlock120.i.i (8, 0) FAR  w(0) 106498.
+	create_child: main@_138 (7, 34) FAR 147562 UNDEF 0.01
+expand: main@_138 (7, 0) FAR  w(0) 147562.
+	create_child: main@_138!_Cond (6, 34) FAR 147069 U 0.00
+expand: main@_138!_Cond (6, 0) FAR  w(0) 147069. F 0.00
+expand: main@_138 (7, 0) FAR  w(0) 147562. F 0.00
+expand: main@NodeBlock120.i.i (8, 0) FAR  w(0) 106498. F 0.02
+expand: main@NodeBlock120.i.i.backedge (9, 0) FAR  w(0) 106357. F 0.00
+expand: main@NodeBlock120.i.i (10, 0) FAR  w(0) 98182. F 0.01
+expand: main@NodeBlock120.i.i.backedge (11, 0) FAR  w(0) 98750. F 0.00
+expand: main@NodeBlock120.i.i (12, 0) FAR  w(0) 91050. F 0.02
+expand: main@NodeBlock120.i.i.backedge (13, 0) FAR  w(0) 91212. F 0.00
+expand: main@NodeBlock120.i.i (14, 0) FAR  w(0) 90896. F 0.01
+expand: main@NodeBlock120.i.i.backedge (15, 0) FAR  w(0) 91348. F 0.00
+expand: main@NodeBlock120.i.i (16, 0) FAR  w(0) 77841. F 0.01
+expand: main@NodeBlock120.i.i.backedge (17, 0) FAR  w(0) 77745. F 0.00
+expand: main@NodeBlock120.i.i (18, 0) FAR  w(0) 77421. F 0.01
+expand: main@NodeBlock120.i.i.backedge (19, 0) FAR  w(0) 77376. F 0.00
+expand: main@NodeBlock120.i.i (20, 0) FAR  w(0) 77458. F 0.02
+expand: main@NodeBlock120.i.i.backedge (21, 0) FAR  w(0) 77545. F 0.00
+expand: main@NodeBlock120.i.i (22, 0) FAR  w(0) 77470.
+	create_child: main@_138 (21, 34) FAR 90664 U 0.01
+expand: main@_138 (21, 0) FAR  w(0) 90664.
+	create_child: main@_138!_Cond (20, 34) FAR 92256 U 0.00
+expand: main@_138!_Cond (20, 0) FAR  w(0) 92256. F 0.00
+expand: main@_138 (21, 0) FAR  w(0) 90664. F 0.00
+expand: main@NodeBlock120.i.i (22, 0) FAR  w(0) 77470. F 0.01
+expand: main@NodeBlock120.i.i.backedge (23, 0) FAR  w(0) 77563. F 0.00
+expand: main@NodeBlock120.i.i (24, 0) FAR  w(0) 63686. F 0.01
+expand: main@NodeBlock120.i.i.backedge (25, 0) FAR  w(0) 63535. F 0.00
+expand: main@NodeBlock120.i.i (26, 0) FAR  w(0) 63765. F 0.01
+expand: main@NodeBlock120.i.i.backedge (27, 0) FAR  w(0) 63595. F 0.00
+expand: main@NodeBlock120.i.i (28, 0) FAR  w(0) 63635. F 0.01
+expand: main@NodeBlock120.i.i.backedge (29, 0) FAR  w(0) 63612. F 0.00
+expand: main@NodeBlock120.i.i (30, 0) FAR  w(0) 25934. F 0.01
+expand: main@empty.loop (31, 0) FAR  w(0) 23943. F 0.00
+expand: main@entry (32, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (33, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (34, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.44 :before-memory 49.40 :after-memory 52.05)
+Propagating: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34  ! 35 36 
+(spacer::context::propagate :time 0.18 :before-memory 52.05 :after-memory 52.47)
+Entering level 35
+expand: query!0 (35, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 52.47 :after-memory 52.59)
+Propagating: 35  ! 36 
+(spacer::context::propagate :time 0.00 :before-memory 52.59 :after-memory 52.59)
+Entering level 36
+expand: query!0 (36, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (35, 36) FAR 1 U 0.00
+expand: main@entry!_BAD (35, 0) FAR  w(0) 1.
+	create_child: main@entry (34, 36) FAR 1 U 0.00
+expand: main@entry (34, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (33, 36) FAR 23943 U 0.00
+expand: main@empty.loop (33, 0) FAR  w(0) 23943.
+	create_child: main@NodeBlock120.i.i (32, 36) FAR 25934 U 0.00
+expand: main@NodeBlock120.i.i (32, 0) FAR  w(0) 25934.
+	create_child: main@NodeBlock120.i.i.backedge (31, 36) FAR 63612 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (31, 0) FAR  w(0) 63612.
+	create_child: main@NodeBlock120.i.i (30, 36) FAR 63635 U 0.00
+expand: main@NodeBlock120.i.i (30, 0) FAR  w(0) 63635.
+	create_child: main@NodeBlock120.i.i.backedge (29, 36) FAR 63595 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (29, 0) FAR  w(0) 63595.
+	create_child: main@NodeBlock120.i.i (28, 36) FAR 63765 U 0.00
+expand: main@NodeBlock120.i.i (28, 0) FAR  w(0) 63765.
+	create_child: main@NodeBlock120.i.i.backedge (27, 36) FAR 63535 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (27, 0) FAR  w(0) 63535.
+	create_child: main@NodeBlock120.i.i (26, 36) FAR 63686 U 0.00
+expand: main@NodeBlock120.i.i (26, 0) FAR  w(0) 63686.
+	create_child: main@NodeBlock120.i.i.backedge (25, 36) FAR 77563 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (25, 0) FAR  w(0) 77563.
+	create_child: main@NodeBlock120.i.i (24, 36) FAR 77470 U 0.00
+expand: main@NodeBlock120.i.i (24, 0) FAR  w(0) 77470.
+	create_child: main@NodeBlock120.i.i.backedge (23, 36) FAR 77545 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (23, 0) FAR  w(0) 77545.
+	create_child: main@NodeBlock120.i.i (22, 36) FAR 77458 U 0.00
+expand: main@NodeBlock120.i.i (22, 0) FAR  w(0) 77458.
+	create_child: main@NodeBlock120.i.i.backedge (21, 36) FAR 77376 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (21, 0) FAR  w(0) 77376.
+	create_child: main@NodeBlock120.i.i (20, 36) FAR 77421 U 0.00
+expand: main@NodeBlock120.i.i (20, 0) FAR  w(0) 77421.
+	create_child: main@NodeBlock120.i.i.backedge (19, 36) FAR 77745 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (19, 0) FAR  w(0) 77745.
+	create_child: main@NodeBlock120.i.i (18, 36) FAR 77841 U 0.00
+expand: main@NodeBlock120.i.i (18, 0) FAR  w(0) 77841.
+	create_child: main@NodeBlock120.i.i.backedge (17, 36) FAR 91348 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (17, 0) FAR  w(0) 91348.
+	create_child: main@NodeBlock120.i.i (16, 36) FAR 90896 U 0.00
+expand: main@NodeBlock120.i.i (16, 0) FAR  w(0) 90896.
+	create_child: main@NodeBlock120.i.i.backedge (15, 36) FAR 91212 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (15, 0) FAR  w(0) 91212.
+	create_child: main@NodeBlock120.i.i (14, 36) FAR 91050 U 0.00
+expand: main@NodeBlock120.i.i (14, 0) FAR  w(0) 91050.
+	create_child: main@NodeBlock120.i.i.backedge (13, 36) FAR 98750 UNDEF 0.03
+expand: main@NodeBlock120.i.i.backedge (13, 0) FAR  w(0) 98750.
+	create_child: main@NodeBlock120.i.i (12, 36) FAR 98182 U 0.00
+expand: main@NodeBlock120.i.i (12, 0) FAR  w(0) 98182.
+	create_child: main@NodeBlock120.i.i.backedge (11, 36) FAR 106357 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (11, 0) FAR  w(0) 106357.
+	create_child: main@NodeBlock120.i.i (10, 36) FAR 106498 U 0.00
+expand: main@NodeBlock120.i.i (10, 0) FAR  w(0) 106498.
+	create_child: main@NodeBlock120.i.i.backedge (9, 36) FAR 124380 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (9, 0) FAR  w(0) 124380.
+	create_child: main@NodeBlock120.i.i (8, 36) FAR 123876 U 0.00
+expand: main@NodeBlock120.i.i (8, 0) FAR  w(0) 123876.
+	create_child: main@NodeBlock120.i.i.backedge (7, 36) FAR 124377 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (7, 0) FAR  w(0) 124377.
+	create_child: main@NodeBlock120.i.i (6, 36) FAR 124538 U 0.00
+expand: main@NodeBlock120.i.i (6, 0) FAR  w(0) 124538.
+	create_child: main@NodeBlock120.i.i.backedge (5, 36) FAR 143706 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (5, 0) FAR  w(0) 143706.
+	create_child: main@NodeBlock120.i.i (4, 36) FAR 143782 U 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 143782.
+	create_child: main@_138 (3, 36) FAR 155803 UNDEF 0.01
+expand: main@_138 (3, 0) FAR  w(0) 155803.
+	create_child: main@_138!_Cond (2, 36) FAR 155785 U 0.00
+expand: main@_138!_Cond (2, 0) FAR  w(0) 155785. F 0.00
+expand: main@_138 (3, 0) FAR  w(0) 155803. F 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 143782. F 0.02
+expand: main@NodeBlock120.i.i.backedge (5, 0) FAR  w(0) 143706. F 0.00
+expand: main@NodeBlock120.i.i (6, 0) FAR  w(0) 124538. F 0.01
+expand: main@NodeBlock120.i.i.backedge (7, 0) FAR  w(0) 124377. F 0.00
+expand: main@NodeBlock120.i.i (8, 0) FAR  w(0) 123876. F 0.02
+expand: main@NodeBlock120.i.i.backedge (9, 0) FAR  w(0) 124380. F 0.00
+expand: main@NodeBlock120.i.i (10, 0) FAR  w(0) 106498.
+	create_child: main@_138 (9, 36) FAR 147562 UNDEF 0.01
+expand: main@_138 (9, 0) FAR  w(0) 147562.
+	create_child: main@_138!_Cond (8, 36) FAR 147069 U 0.00
+expand: main@_138!_Cond (8, 0) FAR  w(0) 147069. F 0.00
+expand: main@_138 (9, 0) FAR  w(0) 147562. F 0.00
+expand: main@NodeBlock120.i.i (10, 0) FAR  w(0) 106498. F 0.01
+expand: main@NodeBlock120.i.i.backedge (11, 0) FAR  w(0) 106357. F 0.00
+expand: main@NodeBlock120.i.i (12, 0) FAR  w(0) 98182. F 0.01
+expand: main@NodeBlock120.i.i.backedge (13, 0) FAR  w(0) 98750. F 0.00
+expand: main@NodeBlock120.i.i (14, 0) FAR  w(0) 91050. F 0.02
+expand: main@NodeBlock120.i.i.backedge (15, 0) FAR  w(0) 91212. F 0.00
+expand: main@NodeBlock120.i.i (16, 0) FAR  w(0) 90896. F 0.01
+expand: main@NodeBlock120.i.i.backedge (17, 0) FAR  w(0) 91348. F 0.00
+expand: main@NodeBlock120.i.i (18, 0) FAR  w(0) 77841. F 0.01
+expand: main@NodeBlock120.i.i.backedge (19, 0) FAR  w(0) 77745. F 0.00
+expand: main@NodeBlock120.i.i (20, 0) FAR  w(0) 77421. F 0.01
+expand: main@NodeBlock120.i.i.backedge (21, 0) FAR  w(0) 77376. F 0.00
+expand: main@NodeBlock120.i.i (22, 0) FAR  w(0) 77458. F 0.02
+expand: main@NodeBlock120.i.i.backedge (23, 0) FAR  w(0) 77545. F 0.00
+expand: main@NodeBlock120.i.i (24, 0) FAR  w(0) 77470.
+	create_child: main@_138 (23, 36) FAR 90664 UNDEF 0.01
+expand: main@_138 (23, 0) FAR  w(0) 90664.
+	create_child: main@_138!_Cond (22, 36) FAR 92256 U 0.00
+expand: main@_138!_Cond (22, 0) FAR  w(0) 92256. F 0.00
+expand: main@_138 (23, 0) FAR  w(0) 90664. F 0.00
+expand: main@NodeBlock120.i.i (24, 0) FAR  w(0) 77470. F 0.01
+expand: main@NodeBlock120.i.i.backedge (25, 0) FAR  w(0) 77563. F 0.00
+expand: main@NodeBlock120.i.i (26, 0) FAR  w(0) 63686. F 0.01
+expand: main@NodeBlock120.i.i.backedge (27, 0) FAR  w(0) 63535. F 0.00
+expand: main@NodeBlock120.i.i (28, 0) FAR  w(0) 63765. F 0.01
+expand: main@NodeBlock120.i.i.backedge (29, 0) FAR  w(0) 63595. F 0.00
+expand: main@NodeBlock120.i.i (30, 0) FAR  w(0) 63635. F 0.01
+expand: main@NodeBlock120.i.i.backedge (31, 0) FAR  w(0) 63612. F 0.00
+expand: main@NodeBlock120.i.i (32, 0) FAR  w(0) 25934. F 0.01
+expand: main@empty.loop (33, 0) FAR  w(0) 23943. F 0.00
+expand: main@entry (34, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (35, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (36, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.46 :before-memory 52.59 :after-memory 53.00)
+Propagating: 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36  ! 37 38 
+(spacer::context::propagate :time 0.17 :before-memory 53.00 :after-memory 53.30)
+Entering level 37
+expand: query!0 (37, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 53.30 :after-memory 53.40)
+Propagating: 37  ! 38 
+(spacer::context::propagate :time 0.00 :before-memory 53.40 :after-memory 53.40)
+Entering level 38
+expand: query!0 (38, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (37, 38) FAR 1 U 0.00
+expand: main@entry!_BAD (37, 0) FAR  w(0) 1.
+	create_child: main@entry (36, 38) FAR 1 U 0.00
+expand: main@entry (36, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (35, 38) FAR 23943 U 0.00
+expand: main@empty.loop (35, 0) FAR  w(0) 23943.
+	create_child: main@NodeBlock120.i.i (34, 38) FAR 25934 U 0.00
+expand: main@NodeBlock120.i.i (34, 0) FAR  w(0) 25934.
+	create_child: main@NodeBlock120.i.i.backedge (33, 38) FAR 63612 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (33, 0) FAR  w(0) 63612.
+	create_child: main@NodeBlock120.i.i (32, 38) FAR 63635 U 0.00
+expand: main@NodeBlock120.i.i (32, 0) FAR  w(0) 63635.
+	create_child: main@NodeBlock120.i.i.backedge (31, 38) FAR 63595 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (31, 0) FAR  w(0) 63595.
+	create_child: main@NodeBlock120.i.i (30, 38) FAR 63765 U 0.00
+expand: main@NodeBlock120.i.i (30, 0) FAR  w(0) 63765.
+	create_child: main@NodeBlock120.i.i.backedge (29, 38) FAR 63535 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (29, 0) FAR  w(0) 63535.
+	create_child: main@NodeBlock120.i.i (28, 38) FAR 63686 U 0.00
+expand: main@NodeBlock120.i.i (28, 0) FAR  w(0) 63686.
+	create_child: main@NodeBlock120.i.i.backedge (27, 38) FAR 77563 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (27, 0) FAR  w(0) 77563.
+	create_child: main@NodeBlock120.i.i (26, 38) FAR 77470 U 0.00
+expand: main@NodeBlock120.i.i (26, 0) FAR  w(0) 77470.
+	create_child: main@NodeBlock120.i.i.backedge (25, 38) FAR 77545 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (25, 0) FAR  w(0) 77545.
+	create_child: main@NodeBlock120.i.i (24, 38) FAR 77458 U 0.00
+expand: main@NodeBlock120.i.i (24, 0) FAR  w(0) 77458.
+	create_child: main@NodeBlock120.i.i.backedge (23, 38) FAR 77376 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (23, 0) FAR  w(0) 77376.
+	create_child: main@NodeBlock120.i.i (22, 38) FAR 77421 U 0.00
+expand: main@NodeBlock120.i.i (22, 0) FAR  w(0) 77421.
+	create_child: main@NodeBlock120.i.i.backedge (21, 38) FAR 77745 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (21, 0) FAR  w(0) 77745.
+	create_child: main@NodeBlock120.i.i (20, 38) FAR 77841 U 0.00
+expand: main@NodeBlock120.i.i (20, 0) FAR  w(0) 77841.
+	create_child: main@NodeBlock120.i.i.backedge (19, 38) FAR 91348 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (19, 0) FAR  w(0) 91348.
+	create_child: main@NodeBlock120.i.i (18, 38) FAR 90896 U 0.00
+expand: main@NodeBlock120.i.i (18, 0) FAR  w(0) 90896.
+	create_child: main@NodeBlock120.i.i.backedge (17, 38) FAR 91212 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (17, 0) FAR  w(0) 91212.
+	create_child: main@NodeBlock120.i.i (16, 38) FAR 91050 U 0.00
+expand: main@NodeBlock120.i.i (16, 0) FAR  w(0) 91050.
+	create_child: main@NodeBlock120.i.i.backedge (15, 38) FAR 98750 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (15, 0) FAR  w(0) 98750.
+	create_child: main@NodeBlock120.i.i (14, 38) FAR 98182 U 0.00
+expand: main@NodeBlock120.i.i (14, 0) FAR  w(0) 98182.
+	create_child: main@NodeBlock120.i.i.backedge (13, 38) FAR 106357 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (13, 0) FAR  w(0) 106357.
+	create_child: main@NodeBlock120.i.i (12, 38) FAR 106498 U 0.00
+expand: main@NodeBlock120.i.i (12, 0) FAR  w(0) 106498.
+	create_child: main@NodeBlock120.i.i.backedge (11, 38) FAR 124380 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (11, 0) FAR  w(0) 124380.
+	create_child: main@NodeBlock120.i.i (10, 38) FAR 123876 U 0.00
+expand: main@NodeBlock120.i.i (10, 0) FAR  w(0) 123876.
+	create_child: main@NodeBlock120.i.i.backedge (9, 38) FAR 124377 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (9, 0) FAR  w(0) 124377.
+	create_child: main@NodeBlock120.i.i (8, 38) FAR 124538 U 0.00
+expand: main@NodeBlock120.i.i (8, 0) FAR  w(0) 124538.
+	create_child: main@NodeBlock120.i.i.backedge (7, 38) FAR 143706 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (7, 0) FAR  w(0) 143706.
+	create_child: main@NodeBlock120.i.i (6, 38) FAR 143782 U 0.00
+expand: main@NodeBlock120.i.i (6, 0) FAR  w(0) 143782.
+	create_child: main@NodeBlock120.i.i.backedge (5, 38) FAR 143978 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (5, 0) FAR  w(0) 143978.
+	create_child: main@NodeBlock120.i.i (4, 38) FAR 143859 U 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 143859.
+	create_child: main@NodeBlock120.i.i.backedge (3, 38) FAR 166524 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (3, 0) FAR  w(0) 166524.
+	create_child: main@NodeBlock120.i.i (2, 38) FAR 165932 U 0.00
+expand: main@NodeBlock120.i.i (2, 0) FAR  w(0) 165932.
+	create_child: main@NodeBlock120.i.i.backedge (1, 38) FAR 166532 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (1, 0) FAR  w(0) 166532.
+	create_child: main@NodeBlock120.i.i (0, 38) FAR 166143 U 0.00
+expand: main@NodeBlock120.i.i (0, 0) FAR  w(0) 166143. F 0.00
+expand: main@NodeBlock120.i.i.backedge (1, 0) FAR  w(0) 166532. F 0.00
+expand: main@NodeBlock120.i.i (2, 0) FAR  w(0) 165932. F 0.03
+expand: main@NodeBlock120.i.i.backedge (3, 0) FAR  w(0) 166524. F 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 143859. F 0.02
+expand: main@NodeBlock120.i.i.backedge (5, 0) FAR  w(0) 143978. F 0.00
+expand: main@NodeBlock120.i.i (6, 0) FAR  w(0) 143782. F 0.01
+expand: main@NodeBlock120.i.i.backedge (7, 0) FAR  w(0) 143706. F 0.00
+expand: main@NodeBlock120.i.i (8, 0) FAR  w(0) 124538. F 0.01
+expand: main@NodeBlock120.i.i.backedge (9, 0) FAR  w(0) 124377. F 0.00
+expand: main@NodeBlock120.i.i (10, 0) FAR  w(0) 123876. F 0.02
+expand: main@NodeBlock120.i.i.backedge (11, 0) FAR  w(0) 124380. F 0.00
+expand: main@NodeBlock120.i.i (12, 0) FAR  w(0) 106498.
+	create_child: main@_138 (11, 38) FAR 147562 UNDEF 0.02
+expand: main@_138 (11, 0) FAR  w(0) 147562.
+	create_child: main@_138!_Cond (10, 38) FAR 147069 U 0.00
+expand: main@_138!_Cond (10, 0) FAR  w(0) 147069. F 0.00
+expand: main@_138 (11, 0) FAR  w(0) 147562. F 0.00
+expand: main@NodeBlock120.i.i (12, 0) FAR  w(0) 106498. F 0.02
+expand: main@NodeBlock120.i.i.backedge (13, 0) FAR  w(0) 106357. F 0.01
+expand: main@NodeBlock120.i.i (14, 0) FAR  w(0) 98182. F 0.02
+expand: main@NodeBlock120.i.i.backedge (15, 0) FAR  w(0) 98750. F 0.00
+expand: main@NodeBlock120.i.i (16, 0) FAR  w(0) 91050. F 0.02
+expand: main@NodeBlock120.i.i.backedge (17, 0) FAR  w(0) 91212. F 0.00
+expand: main@NodeBlock120.i.i (18, 0) FAR  w(0) 90896. F 0.01
+expand: main@NodeBlock120.i.i.backedge (19, 0) FAR  w(0) 91348. F 0.00
+expand: main@NodeBlock120.i.i (20, 0) FAR  w(0) 77841. F 0.01
+expand: main@NodeBlock120.i.i.backedge (21, 0) FAR  w(0) 77745. F 0.00
+expand: main@NodeBlock120.i.i (22, 0) FAR  w(0) 77421. F 0.01
+expand: main@NodeBlock120.i.i.backedge (23, 0) FAR  w(0) 77376. F 0.00
+expand: main@NodeBlock120.i.i (24, 0) FAR  w(0) 77458. F 0.02
+expand: main@NodeBlock120.i.i.backedge (25, 0) FAR  w(0) 77545. F 0.00
+expand: main@NodeBlock120.i.i (26, 0) FAR  w(0) 77470.
+	create_child: main@_138 (25, 38) FAR 90664 UNDEF 0.01
+expand: main@_138 (25, 0) FAR  w(0) 90664.
+	create_child: main@_138!_Cond (24, 38) FAR 92256 U 0.00
+expand: main@_138!_Cond (24, 0) FAR  w(0) 92256. F 0.00
+expand: main@_138 (25, 0) FAR  w(0) 90664. F 0.00
+expand: main@NodeBlock120.i.i (26, 0) FAR  w(0) 77470. F 0.01
+expand: main@NodeBlock120.i.i.backedge (27, 0) FAR  w(0) 77563. F 0.00
+expand: main@NodeBlock120.i.i (28, 0) FAR  w(0) 63686. F 0.01
+expand: main@NodeBlock120.i.i.backedge (29, 0) FAR  w(0) 63535. F 0.00
+expand: main@NodeBlock120.i.i (30, 0) FAR  w(0) 63765. F 0.01
+expand: main@NodeBlock120.i.i.backedge (31, 0) FAR  w(0) 63595. F 0.00
+expand: main@NodeBlock120.i.i (32, 0) FAR  w(0) 63635. F 0.01
+expand: main@NodeBlock120.i.i.backedge (33, 0) FAR  w(0) 63612. F 0.00
+expand: main@NodeBlock120.i.i (34, 0) FAR  w(0) 25934. F 0.01
+expand: main@empty.loop (35, 0) FAR  w(0) 23943. F 0.00
+expand: main@entry (36, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (37, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (38, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.56 :before-memory 53.40 :after-memory 53.75)
+Propagating: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38  ! 39 40 
+(spacer::context::propagate :time 0.20 :before-memory 53.75 :after-memory 54.38)
+Entering level 39
+expand: query!0 (39, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 54.38 :after-memory 54.36)
+Propagating: 39  ! 40 
+(spacer::context::propagate :time 0.00 :before-memory 54.36 :after-memory 54.36)
+Entering level 40
+expand: query!0 (40, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (39, 40) FAR 1 U 0.00
+expand: main@entry!_BAD (39, 0) FAR  w(0) 1.
+	create_child: main@entry (38, 40) FAR 1 U 0.00
+expand: main@entry (38, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (37, 40) FAR 23943 U 0.00
+expand: main@empty.loop (37, 0) FAR  w(0) 23943.
+	create_child: main@NodeBlock120.i.i (36, 40) FAR 25934 U 0.00
+expand: main@NodeBlock120.i.i (36, 0) FAR  w(0) 25934.
+	create_child: main@NodeBlock120.i.i.backedge (35, 40) FAR 63612 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (35, 0) FAR  w(0) 63612.
+	create_child: main@NodeBlock120.i.i (34, 40) FAR 63635 U 0.00
+expand: main@NodeBlock120.i.i (34, 0) FAR  w(0) 63635.
+	create_child: main@NodeBlock120.i.i.backedge (33, 40) FAR 63595 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (33, 0) FAR  w(0) 63595.
+	create_child: main@NodeBlock120.i.i (32, 40) FAR 63765 U 0.00
+expand: main@NodeBlock120.i.i (32, 0) FAR  w(0) 63765.
+	create_child: main@NodeBlock120.i.i.backedge (31, 40) FAR 63535 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (31, 0) FAR  w(0) 63535.
+	create_child: main@NodeBlock120.i.i (30, 40) FAR 63686 U 0.00
+expand: main@NodeBlock120.i.i (30, 0) FAR  w(0) 63686.
+	create_child: main@NodeBlock120.i.i.backedge (29, 40) FAR 77563 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (29, 0) FAR  w(0) 77563.
+	create_child: main@NodeBlock120.i.i (28, 40) FAR 77470 U 0.00
+expand: main@NodeBlock120.i.i (28, 0) FAR  w(0) 77470.
+	create_child: main@NodeBlock120.i.i.backedge (27, 40) FAR 77545 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (27, 0) FAR  w(0) 77545.
+	create_child: main@NodeBlock120.i.i (26, 40) FAR 77458 U 0.00
+expand: main@NodeBlock120.i.i (26, 0) FAR  w(0) 77458.
+	create_child: main@NodeBlock120.i.i.backedge (25, 40) FAR 77376 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (25, 0) FAR  w(0) 77376.
+	create_child: main@NodeBlock120.i.i (24, 40) FAR 77421 U 0.00
+expand: main@NodeBlock120.i.i (24, 0) FAR  w(0) 77421.
+	create_child: main@NodeBlock120.i.i.backedge (23, 40) FAR 77745 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (23, 0) FAR  w(0) 77745.
+	create_child: main@NodeBlock120.i.i (22, 40) FAR 77841 U 0.00
+expand: main@NodeBlock120.i.i (22, 0) FAR  w(0) 77841.
+	create_child: main@NodeBlock120.i.i.backedge (21, 40) FAR 91348 UNDEF 0.02
+expand: main@NodeBlock120.i.i.backedge (21, 0) FAR  w(0) 91348.
+	create_child: main@NodeBlock120.i.i (20, 40) FAR 90896 U 0.01
+expand: main@NodeBlock120.i.i (20, 0) FAR  w(0) 90896.
+	create_child: main@NodeBlock120.i.i.backedge (19, 40) FAR 91212 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (19, 0) FAR  w(0) 91212.
+	create_child: main@NodeBlock120.i.i (18, 40) FAR 91050 U 0.00
+expand: main@NodeBlock120.i.i (18, 0) FAR  w(0) 91050.
+	create_child: main@NodeBlock120.i.i.backedge (17, 40) FAR 98750 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (17, 0) FAR  w(0) 98750.
+	create_child: main@NodeBlock120.i.i (16, 40) FAR 98182 U 0.00
+expand: main@NodeBlock120.i.i (16, 0) FAR  w(0) 98182.
+	create_child: main@NodeBlock120.i.i.backedge (15, 40) FAR 106357 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (15, 0) FAR  w(0) 106357.
+	create_child: main@NodeBlock120.i.i (14, 40) FAR 106498 U 0.00
+expand: main@NodeBlock120.i.i (14, 0) FAR  w(0) 106498.
+	create_child: main@NodeBlock120.i.i.backedge (13, 40) FAR 124380 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (13, 0) FAR  w(0) 124380.
+	create_child: main@NodeBlock120.i.i (12, 40) FAR 123876 U 0.00
+expand: main@NodeBlock120.i.i (12, 0) FAR  w(0) 123876.
+	create_child: main@NodeBlock120.i.i.backedge (11, 40) FAR 124377 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (11, 0) FAR  w(0) 124377.
+	create_child: main@NodeBlock120.i.i (10, 40) FAR 124538 U 0.00
+expand: main@NodeBlock120.i.i (10, 0) FAR  w(0) 124538.
+	create_child: main@NodeBlock120.i.i.backedge (9, 40) FAR 143706 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (9, 0) FAR  w(0) 143706.
+	create_child: main@NodeBlock120.i.i (8, 40) FAR 143782 U 0.00
+expand: main@NodeBlock120.i.i (8, 0) FAR  w(0) 143782.
+	create_child: main@NodeBlock120.i.i.backedge (7, 40) FAR 143978 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (7, 0) FAR  w(0) 143978.
+	create_child: main@NodeBlock120.i.i (6, 40) FAR 143859 U 0.00
+expand: main@NodeBlock120.i.i (6, 0) FAR  w(0) 143859.
+	create_child: main@NodeBlock120.i.i.backedge (5, 40) FAR 166524 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (5, 0) FAR  w(0) 166524.
+	create_child: main@NodeBlock120.i.i (4, 40) FAR 165932 U 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 165932.
+	create_child: main@NodeBlock120.i.i.backedge (3, 40) FAR 166532 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (3, 0) FAR  w(0) 166532.
+	create_child: main@NodeBlock120.i.i (2, 40) FAR 166143 U 0.01
+expand: main@NodeBlock120.i.i (2, 0) FAR  w(0) 166143.
+	create_child: main@NodeBlock120.i.i.backedge (1, 40) FAR 177866 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (1, 0) FAR  w(0) 177866.
+	create_child: main@NodeBlock120.i.i (0, 40) FAR 177543 U 0.00
+expand: main@NodeBlock120.i.i (0, 0) FAR  w(0) 177543. F 0.00
+expand: main@NodeBlock120.i.i.backedge (1, 0) FAR  w(0) 177866. F 0.00
+expand: main@NodeBlock120.i.i (2, 0) FAR  w(0) 166143. F 0.01
+expand: main@NodeBlock120.i.i.backedge (3, 0) FAR  w(0) 166532. F 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 165932.
+	create_child: main@_138 (3, 40) FAR 178352 UNDEF 0.01
+expand: main@_138 (3, 0) FAR  w(0) 178352.
+	create_child: main@_138!_Cond (2, 40) FAR 178097 U 0.00
+expand: main@_138!_Cond (2, 0) FAR  w(0) 178097. F 0.00
+expand: main@_138 (3, 0) FAR  w(0) 178352. F 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 165932. F 0.03
+expand: main@NodeBlock120.i.i.backedge (5, 0) FAR  w(0) 166524. F 0.00
+expand: main@NodeBlock120.i.i (6, 0) FAR  w(0) 143859. F 0.02
+expand: main@NodeBlock120.i.i.backedge (7, 0) FAR  w(0) 143978. F 0.00
+expand: main@NodeBlock120.i.i (8, 0) FAR  w(0) 143782. F 0.01
+expand: main@NodeBlock120.i.i.backedge (9, 0) FAR  w(0) 143706. F 0.00
+expand: main@NodeBlock120.i.i (10, 0) FAR  w(0) 124538. F 0.01
+expand: main@NodeBlock120.i.i.backedge (11, 0) FAR  w(0) 124377. F 0.00
+expand: main@NodeBlock120.i.i (12, 0) FAR  w(0) 123876. F 0.02
+expand: main@NodeBlock120.i.i.backedge (13, 0) FAR  w(0) 124380. F 0.01
+expand: main@NodeBlock120.i.i (14, 0) FAR  w(0) 106498.
+	create_child: main@_138 (13, 40) FAR 147562 UNDEF 0.01
+expand: main@_138 (13, 0) FAR  w(0) 147562.
+	create_child: main@_138!_Cond (12, 40) FAR 147069 U 0.00
+expand: main@_138!_Cond (12, 0) FAR  w(0) 147069. F 0.00
+expand: main@_138 (13, 0) FAR  w(0) 147562. F 0.00
+expand: main@NodeBlock120.i.i (14, 0) FAR  w(0) 106498. F 0.01
+expand: main@NodeBlock120.i.i.backedge (15, 0) FAR  w(0) 106357. F 0.00
+expand: main@NodeBlock120.i.i (16, 0) FAR  w(0) 98182. F 0.01
+expand: main@NodeBlock120.i.i.backedge (17, 0) FAR  w(0) 98750. F 0.00
+expand: main@NodeBlock120.i.i (18, 0) FAR  w(0) 91050. F 0.02
+expand: main@NodeBlock120.i.i.backedge (19, 0) FAR  w(0) 91212. F 0.00
+expand: main@NodeBlock120.i.i (20, 0) FAR  w(0) 90896. F 0.01
+expand: main@NodeBlock120.i.i.backedge (21, 0) FAR  w(0) 91348. F 0.00
+expand: main@NodeBlock120.i.i (22, 0) FAR  w(0) 77841. F 0.01
+expand: main@NodeBlock120.i.i.backedge (23, 0) FAR  w(0) 77745. F 0.00
+expand: main@NodeBlock120.i.i (24, 0) FAR  w(0) 77421. F 0.01
+expand: main@NodeBlock120.i.i.backedge (25, 0) FAR  w(0) 77376. F 0.00
+expand: main@NodeBlock120.i.i (26, 0) FAR  w(0) 77458. F 0.02
+expand: main@NodeBlock120.i.i.backedge (27, 0) FAR  w(0) 77545. F 0.00
+expand: main@NodeBlock120.i.i (28, 0) FAR  w(0) 77470.
+	create_child: main@_138 (27, 40) FAR 90664 UNDEF 0.01
+expand: main@_138 (27, 0) FAR  w(0) 90664.
+	create_child: main@_138!_Cond (26, 40) FAR 92256 U 0.00
+expand: main@_138!_Cond (26, 0) FAR  w(0) 92256. F 0.00
+expand: main@_138 (27, 0) FAR  w(0) 90664. F 0.00
+expand: main@NodeBlock120.i.i (28, 0) FAR  w(0) 77470. F 0.01
+expand: main@NodeBlock120.i.i.backedge (29, 0) FAR  w(0) 77563. F 0.00
+expand: main@NodeBlock120.i.i (30, 0) FAR  w(0) 63686. F 0.01
+expand: main@NodeBlock120.i.i.backedge (31, 0) FAR  w(0) 63535. F 0.00
+expand: main@NodeBlock120.i.i (32, 0) FAR  w(0) 63765. F 0.01
+expand: main@NodeBlock120.i.i.backedge (33, 0) FAR  w(0) 63595. F 0.00
+expand: main@NodeBlock120.i.i (34, 0) FAR  w(0) 63635. F 0.01
+expand: main@NodeBlock120.i.i.backedge (35, 0) FAR  w(0) 63612. F 0.00
+expand: main@NodeBlock120.i.i (36, 0) FAR  w(0) 25934. F 0.01
+expand: main@empty.loop (37, 0) FAR  w(0) 23943. F 0.00
+expand: main@entry (38, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (39, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (40, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.57 :before-memory 54.36 :after-memory 55.00)
+Propagating: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40  ! 41 42 
+(spacer::context::propagate :time 0.20 :before-memory 55.00 :after-memory 55.53)
+Entering level 41
+expand: query!0 (41, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 55.53 :after-memory 55.63)
+Propagating: 41  ! 42 
+(spacer::context::propagate :time 0.00 :before-memory 55.63 :after-memory 55.63)
+Entering level 42
+expand: query!0 (42, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (41, 42) FAR 1 U 0.00
+expand: main@entry!_BAD (41, 0) FAR  w(0) 1.
+	create_child: main@entry (40, 42) FAR 1 U 0.00
+expand: main@entry (40, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (39, 42) FAR 23943 U 0.00
+expand: main@empty.loop (39, 0) FAR  w(0) 23943.
+	create_child: main@NodeBlock120.i.i (38, 42) FAR 25934 U 0.00
+expand: main@NodeBlock120.i.i (38, 0) FAR  w(0) 25934.
+	create_child: main@NodeBlock120.i.i.backedge (37, 42) FAR 51243 U 0.01
+expand: main@NodeBlock120.i.i.backedge (37, 0) FAR  w(0) 51243.
+	create_child: main@NodeBlock120.i.i (36, 42) FAR 51265 U 0.00
+expand: main@NodeBlock120.i.i (36, 0) FAR  w(0) 51265.
+	create_child: main@NodeBlock120.i.i.backedge (35, 42) FAR 55617 U 0.01
+expand: main@NodeBlock120.i.i.backedge (35, 0) FAR  w(0) 55617.
+	create_child: main@NodeBlock120.i.i (34, 42) FAR 55712 U 0.00
+expand: main@NodeBlock120.i.i (34, 0) FAR  w(0) 55712.
+	create_child: main@NodeBlock120.i.i.backedge (33, 42) FAR 60302 U 0.01
+expand: main@NodeBlock120.i.i.backedge (33, 0) FAR  w(0) 60302.
+	create_child: main@NodeBlock120.i.i (32, 42) FAR 60231 U 0.00
+expand: main@NodeBlock120.i.i (32, 0) FAR  w(0) 60231.
+	create_child: main@NodeBlock120.i.i.backedge (31, 42) FAR 190417 U 0.01
+expand: main@NodeBlock120.i.i.backedge (31, 0) FAR  w(0) 190417.
+	create_child: main@NodeBlock120.i.i (30, 42) FAR 190629 U 0.00
+expand: main@NodeBlock120.i.i (30, 0) FAR  w(0) 190629.
+	create_child: main@NodeBlock120.i.i.backedge (29, 42) FAR 190546 U 0.01
+expand: main@NodeBlock120.i.i.backedge (29, 0) FAR  w(0) 190546.
+	create_child: main@NodeBlock120.i.i (28, 42) FAR 190524 U 0.00
+expand: main@NodeBlock120.i.i (28, 0) FAR  w(0) 190524.
+	create_child: main@NodeBlock120.i.i.backedge (27, 42) FAR 190553 U 0.01
+expand: main@NodeBlock120.i.i.backedge (27, 0) FAR  w(0) 190553.
+	create_child: main@NodeBlock120.i.i (26, 42) FAR 190333 U 0.00
+expand: main@NodeBlock120.i.i (26, 0) FAR  w(0) 190333.
+	create_child: main@NodeBlock120.i.i.backedge (25, 42) FAR 190639 U 0.01
+expand: main@NodeBlock120.i.i.backedge (25, 0) FAR  w(0) 190639.
+	create_child: main@NodeBlock120.i.i (24, 42) FAR 190398 U 0.00
+expand: main@NodeBlock120.i.i (24, 0) FAR  w(0) 190398.
+	create_child: main@NodeBlock120.i.i.backedge (23, 42) FAR 190689 U 0.01
+expand: main@NodeBlock120.i.i.backedge (23, 0) FAR  w(0) 190689.
+	create_child: main@NodeBlock120.i.i (22, 42) FAR 190598 U 0.00
+expand: main@NodeBlock120.i.i (22, 0) FAR  w(0) 190598.
+	create_child: main@NodeBlock120.i.i.backedge (21, 42) FAR 190383 U 0.02
+expand: main@NodeBlock120.i.i.backedge (21, 0) FAR  w(0) 190383.
+	create_child: main@NodeBlock120.i.i (20, 42) FAR 190532 U 0.00
+expand: main@NodeBlock120.i.i (20, 0) FAR  w(0) 190532.
+	create_child: main@NodeBlock120.i.i.backedge (19, 42) FAR 190390 U 0.01
+expand: main@NodeBlock120.i.i.backedge (19, 0) FAR  w(0) 190390.
+	create_child: main@NodeBlock120.i.i (18, 42) FAR 190716 U 0.00
+expand: main@NodeBlock120.i.i (18, 0) FAR  w(0) 190716.
+	create_child: main@NodeBlock120.i.i.backedge (17, 42) FAR 190656 U 0.01
+expand: main@NodeBlock120.i.i.backedge (17, 0) FAR  w(0) 190656.
+	create_child: main@NodeBlock120.i.i (16, 42) FAR 190671 U 0.00
+expand: main@NodeBlock120.i.i (16, 0) FAR  w(0) 190671.
+	create_child: main@NodeBlock120.i.i.backedge (15, 42) FAR 190033 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (15, 0) FAR  w(0) 190033.
+	create_child: main@NodeBlock120.i.i (14, 42) FAR 190661 U 0.00
+expand: main@NodeBlock120.i.i (14, 0) FAR  w(0) 190661.
+	create_child: main@NodeBlock120.i.i.backedge (13, 42) FAR 183604 U 0.01
+expand: main@NodeBlock120.i.i.backedge (13, 0) FAR  w(0) 183604.
+	create_child: main@NodeBlock120.i.i (12, 42) FAR 190201 U 0.00
+expand: main@NodeBlock120.i.i (12, 0) FAR  w(0) 190201.
+	create_child: main@NodeBlock120.i.i.backedge (11, 42) FAR 190686 U 0.01
+expand: main@NodeBlock120.i.i.backedge (11, 0) FAR  w(0) 190686.
+	create_child: main@NodeBlock120.i.i (10, 42) FAR 190568 U 0.00
+expand: main@NodeBlock120.i.i (10, 0) FAR  w(0) 190568.
+	create_child: main@NodeBlock120.i.i.backedge (9, 42) FAR 190791 U 0.01
+expand: main@NodeBlock120.i.i.backedge (9, 0) FAR  w(0) 190791.
+	create_child: main@NodeBlock120.i.i (8, 42) FAR 190167 U 0.00
+expand: main@NodeBlock120.i.i (8, 0) FAR  w(0) 190167.
+	create_child: main@NodeBlock120.i.i.backedge (7, 42) FAR 190183 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (7, 0) FAR  w(0) 190183.
+	create_child: main@NodeBlock120.i.i (6, 42) FAR 190355 U 0.00
+expand: main@NodeBlock120.i.i (6, 0) FAR  w(0) 190355.
+	create_child: main@NodeBlock120.i.i.backedge (5, 42) FAR 190726 U 0.01
+expand: main@NodeBlock120.i.i.backedge (5, 0) FAR  w(0) 190726.
+	create_child: main@NodeBlock120.i.i (4, 42) FAR 190408 U 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 190408.
+	create_child: main@NodeBlock120.i.i.backedge (3, 42) FAR 190650 U 0.01
+expand: main@NodeBlock120.i.i.backedge (3, 0) FAR  w(0) 190650.
+	create_child: main@NodeBlock120.i.i (2, 42) FAR 190833 U 0.00
+expand: main@NodeBlock120.i.i (2, 0) FAR  w(0) 190833.
+	create_child: main@NodeBlock120.i.i.backedge (1, 42) FAR 190859 U 0.01
+expand: main@NodeBlock120.i.i.backedge (1, 0) FAR  w(0) 190859.
+	create_child: main@NodeBlock120.i.i (0, 42) FAR 190817 U 0.00
+expand: main@NodeBlock120.i.i (0, 0) FAR  w(0) 190817. F 0.00
+expand: main@NodeBlock120.i.i.backedge (1, 0) FAR  w(0) 190859. F 0.00
+expand: main@NodeBlock120.i.i (2, 0) FAR  w(0) 190833. F 0.01
+expand: main@NodeBlock120.i.i.backedge (3, 0) FAR  w(0) 190650. F 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 190408.
+	create_child: main@_138 (3, 42) FAR 190787 U 0.01
+expand: main@_138 (3, 0) FAR  w(0) 190787.
+	create_child: main@_138!_Cond (2, 42) FAR 191383 U 0.00
+expand: main@_138!_Cond (2, 0) FAR  w(0) 191383. F 0.00
+expand: main@_138 (3, 0) FAR  w(0) 190787. F 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 190408. F 0.02
+expand: main@NodeBlock120.i.i.backedge (5, 0) FAR  w(0) 190726. F 0.00
+expand: main@NodeBlock120.i.i (6, 0) FAR  w(0) 190355. F 0.02
+expand: main@NodeBlock120.i.i.backedge (7, 0) FAR  w(0) 190183. F 0.00
+expand: main@NodeBlock120.i.i (8, 0) FAR  w(0) 190167.
+	create_child: main@_138 (7, 42) FAR 193661 UNDEF 0.01
+expand: main@_138 (7, 0) FAR  w(0) 193661.
+	create_child: main@_138!_Cond (6, 42) FAR 193530 U 0.00
+expand: main@_138!_Cond (6, 0) FAR  w(0) 193530. F 0.00
+expand: main@_138 (7, 0) FAR  w(0) 193661. F 0.00
+expand: main@NodeBlock120.i.i (8, 0) FAR  w(0) 190167. F 0.01
+expand: main@NodeBlock120.i.i.backedge (9, 0) FAR  w(0) 190791. F 0.00
+expand: main@NodeBlock120.i.i (10, 0) FAR  w(0) 190568. F 0.01
+expand: main@NodeBlock120.i.i.backedge (11, 0) FAR  w(0) 190686. F 0.00
+expand: main@NodeBlock120.i.i (12, 0) FAR  w(0) 190201. F 0.01
+expand: main@NodeBlock120.i.i.backedge (13, 0) FAR  w(0) 183604. F 0.00
+expand: main@NodeBlock120.i.i (14, 0) FAR  w(0) 190661. F 0.02
+expand: main@NodeBlock120.i.i.backedge (15, 0) FAR  w(0) 190033. F 0.00
+expand: main@NodeBlock120.i.i (16, 0) FAR  w(0) 190671.
+	create_child: main@_138 (15, 42) FAR 190759 UNDEF 0.01
+expand: main@_138 (15, 0) FAR  w(0) 190759.
+	create_child: main@_138!_Cond (14, 42) FAR 192184 U 0.00
+expand: main@_138!_Cond (14, 0) FAR  w(0) 192184. F 0.00
+expand: main@_138 (15, 0) FAR  w(0) 190759. F 0.00
+expand: main@NodeBlock120.i.i (16, 0) FAR  w(0) 190671. F 0.01
+expand: main@NodeBlock120.i.i.backedge (17, 0) FAR  w(0) 190656. F 0.00
+expand: main@NodeBlock120.i.i (18, 0) FAR  w(0) 190716. F 0.01
+expand: main@NodeBlock120.i.i.backedge (19, 0) FAR  w(0) 190390. F 0.00
+expand: main@NodeBlock120.i.i (20, 0) FAR  w(0) 190532. F 0.02
+expand: main@NodeBlock120.i.i.backedge (21, 0) FAR  w(0) 190383. F 0.00
+expand: main@NodeBlock120.i.i (22, 0) FAR  w(0) 190598. F 0.02
+expand: main@NodeBlock120.i.i.backedge (23, 0) FAR  w(0) 190689. F 0.00
+expand: main@NodeBlock120.i.i (24, 0) FAR  w(0) 190398. F 0.02
+expand: main@NodeBlock120.i.i.backedge (25, 0) FAR  w(0) 190639. F 0.00
+expand: main@NodeBlock120.i.i (26, 0) FAR  w(0) 190333. F 0.01
+expand: main@NodeBlock120.i.i.backedge (27, 0) FAR  w(0) 190553. F 0.00
+expand: main@NodeBlock120.i.i (28, 0) FAR  w(0) 190524. F 0.02
+expand: main@NodeBlock120.i.i.backedge (29, 0) FAR  w(0) 190546. F 0.00
+expand: main@NodeBlock120.i.i (30, 0) FAR  w(0) 190629.
+	create_child: main@_138 (29, 42) FAR 194258 U 0.01
+expand: main@_138 (29, 0) FAR  w(0) 194258.
+	create_child: main@_138!_Cond (28, 42) FAR 192683 U 0.00
+expand: main@_138!_Cond (28, 0) FAR  w(0) 192683. F 0.00
+expand: main@_138 (29, 0) FAR  w(0) 194258. F 0.00
+expand: main@NodeBlock120.i.i (30, 0) FAR  w(0) 190629. F 0.01
+expand: main@NodeBlock120.i.i.backedge (31, 0) FAR  w(0) 190417. F 0.00
+expand: main@NodeBlock120.i.i (32, 0) FAR  w(0) 60231. F 0.01
+expand: main@NodeBlock120.i.i.backedge (33, 0) FAR  w(0) 60302. F 0.00
+expand: main@NodeBlock120.i.i (34, 0) FAR  w(0) 55712. F 0.01
+expand: main@NodeBlock120.i.i.backedge (35, 0) FAR  w(0) 55617. F 0.00
+expand: main@NodeBlock120.i.i (36, 0) FAR  w(0) 51265. F 0.01
+expand: main@NodeBlock120.i.i.backedge (37, 0) FAR  w(0) 51243. F 0.00
+expand: main@NodeBlock120.i.i (38, 0) FAR  w(0) 25934. F 0.01
+expand: main@empty.loop (39, 0) FAR  w(0) 23943. F 0.00
+expand: main@entry (40, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (41, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (42, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.59 :before-memory 55.63 :after-memory 56.09)
+Propagating: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42  ! 43 44 
+(spacer::context::propagate :time 0.30 :before-memory 56.09 :after-memory 61.75)
+Entering level 43
+expand: query!0 (43, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 61.75 :after-memory 61.77)
+Propagating: 43  ! 44 
+(spacer::context::propagate :time 0.00 :before-memory 61.77 :after-memory 61.77)
+Entering level 44
+expand: query!0 (44, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (43, 44) FAR 1 U 0.00
+expand: main@entry!_BAD (43, 0) FAR  w(0) 1.
+	create_child: main@entry (42, 44) FAR 1 U 0.00
+expand: main@entry (42, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (41, 44) FAR 23943 U 0.00
+expand: main@empty.loop (41, 0) FAR  w(0) 23943.
+	create_child: main@NodeBlock120.i.i (40, 44) FAR 25934 U 0.00
+expand: main@NodeBlock120.i.i (40, 0) FAR  w(0) 25934.
+	create_child: main@NodeBlock120.i.i.backedge (39, 44) FAR 51243 U 0.01
+expand: main@NodeBlock120.i.i.backedge (39, 0) FAR  w(0) 51243.
+	create_child: main@NodeBlock120.i.i (38, 44) FAR 51265 U 0.00
+expand: main@NodeBlock120.i.i (38, 0) FAR  w(0) 51265.
+	create_child: main@NodeBlock120.i.i.backedge (37, 44) FAR 55617 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (37, 0) FAR  w(0) 55617.
+	create_child: main@NodeBlock120.i.i (36, 44) FAR 55712 U 0.00
+expand: main@NodeBlock120.i.i (36, 0) FAR  w(0) 55712.
+	create_child: main@NodeBlock120.i.i.backedge (35, 44) FAR 60302 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (35, 0) FAR  w(0) 60302.
+	create_child: main@NodeBlock120.i.i (34, 44) FAR 60231 U 0.00
+expand: main@NodeBlock120.i.i (34, 0) FAR  w(0) 60231.
+	create_child: main@NodeBlock120.i.i.backedge (33, 44) FAR 204474 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (33, 0) FAR  w(0) 204474.
+	create_child: main@NodeBlock120.i.i (32, 44) FAR 204382 U 0.00
+expand: main@NodeBlock120.i.i (32, 0) FAR  w(0) 204382.
+	create_child: main@NodeBlock120.i.i.backedge (31, 44) FAR 204554 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (31, 0) FAR  w(0) 204554.
+	create_child: main@NodeBlock120.i.i (30, 44) FAR 204486 U 0.00
+expand: main@NodeBlock120.i.i (30, 0) FAR  w(0) 204486.
+	create_child: main@NodeBlock120.i.i.backedge (29, 44) FAR 204127 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (29, 0) FAR  w(0) 204127.
+	create_child: main@NodeBlock120.i.i (28, 44) FAR 204402 U 0.00
+expand: main@NodeBlock120.i.i (28, 0) FAR  w(0) 204402.
+	create_child: main@NodeBlock120.i.i.backedge (27, 44) FAR 204665 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (27, 0) FAR  w(0) 204665.
+	create_child: main@NodeBlock120.i.i (26, 44) FAR 204555 U 0.00
+expand: main@NodeBlock120.i.i (26, 0) FAR  w(0) 204555.
+	create_child: main@NodeBlock120.i.i.backedge (25, 44) FAR 204545 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (25, 0) FAR  w(0) 204545.
+	create_child: main@NodeBlock120.i.i (24, 44) FAR 204699 U 0.00
+expand: main@NodeBlock120.i.i (24, 0) FAR  w(0) 204699.
+	create_child: main@NodeBlock120.i.i.backedge (23, 44) FAR 204399 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (23, 0) FAR  w(0) 204399.
+	create_child: main@NodeBlock120.i.i (22, 44) FAR 204694 U 0.00
+expand: main@NodeBlock120.i.i (22, 0) FAR  w(0) 204694.
+	create_child: main@NodeBlock120.i.i.backedge (21, 44) FAR 204682 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (21, 0) FAR  w(0) 204682.
+	create_child: main@NodeBlock120.i.i (20, 44) FAR 204601 U 0.00
+expand: main@NodeBlock120.i.i (20, 0) FAR  w(0) 204601.
+	create_child: main@NodeBlock120.i.i.backedge (19, 44) FAR 204716 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (19, 0) FAR  w(0) 204716.
+	create_child: main@NodeBlock120.i.i (18, 44) FAR 204729 U 0.00
+expand: main@NodeBlock120.i.i (18, 0) FAR  w(0) 204729.
+	create_child: main@NodeBlock120.i.i.backedge (17, 44) FAR 204750 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (17, 0) FAR  w(0) 204750.
+	create_child: main@NodeBlock120.i.i (16, 44) FAR 204749 U 0.00
+expand: main@NodeBlock120.i.i (16, 0) FAR  w(0) 204749.
+	create_child: main@NodeBlock120.i.i.backedge (15, 44) FAR 204723 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (15, 0) FAR  w(0) 204723.
+	create_child: main@NodeBlock120.i.i (14, 44) FAR 204671 U 0.00
+expand: main@NodeBlock120.i.i (14, 0) FAR  w(0) 204671.
+	create_child: main@NodeBlock120.i.i.backedge (13, 44) FAR 204234 UNDEF 0.02
+expand: main@NodeBlock120.i.i.backedge (13, 0) FAR  w(0) 204234.
+	create_child: main@NodeBlock120.i.i (12, 44) FAR 204507 U 0.00
+expand: main@NodeBlock120.i.i (12, 0) FAR  w(0) 204507.
+	create_child: main@NodeBlock120.i.i.backedge (11, 44) FAR 204400 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (11, 0) FAR  w(0) 204400.
+	create_child: main@NodeBlock120.i.i (10, 44) FAR 204669 U 0.00
+expand: main@NodeBlock120.i.i (10, 0) FAR  w(0) 204669.
+	create_child: main@NodeBlock120.i.i.backedge (9, 44) FAR 204235 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (9, 0) FAR  w(0) 204235.
+	create_child: main@NodeBlock120.i.i (8, 44) FAR 204734 U 0.00
+expand: main@NodeBlock120.i.i (8, 0) FAR  w(0) 204734.
+	create_child: main@NodeBlock120.i.i.backedge (7, 44) FAR 204528 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (7, 0) FAR  w(0) 204528.
+	create_child: main@NodeBlock120.i.i (6, 44) FAR 204596 U 0.00
+expand: main@NodeBlock120.i.i (6, 0) FAR  w(0) 204596.
+	create_child: main@NodeBlock120.i.i.backedge (5, 44) FAR 204765 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (5, 0) FAR  w(0) 204765.
+	create_child: main@NodeBlock120.i.i (4, 44) FAR 204690 U 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 204690.
+	create_child: main@_138 (3, 44) FAR 204808 UNDEF 0.01
+expand: main@_138 (3, 0) FAR  w(0) 204808.
+	create_child: main@_138!_Cond (2, 44) FAR 204479 U 0.00
+expand: main@_138!_Cond (2, 0) FAR  w(0) 204479. F 0.00
+expand: main@_138 (3, 0) FAR  w(0) 204808. F 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 204690. F 0.02
+expand: main@NodeBlock120.i.i.backedge (5, 0) FAR  w(0) 204765. F 0.00
+expand: main@NodeBlock120.i.i (6, 0) FAR  w(0) 204596. F 0.01
+expand: main@NodeBlock120.i.i.backedge (7, 0) FAR  w(0) 204528. F 0.00
+expand: main@NodeBlock120.i.i (8, 0) FAR  w(0) 204734. F 0.03
+expand: main@NodeBlock120.i.i.backedge (9, 0) FAR  w(0) 204235. F 0.00
+expand: main@NodeBlock120.i.i (10, 0) FAR  w(0) 204669.
+	create_child: main@_138 (9, 44) FAR 206467 UNDEF 0.01
+expand: main@_138 (9, 0) FAR  w(0) 206467.
+	create_child: main@_138!_Cond (8, 44) FAR 204067 U 0.00
+expand: main@_138!_Cond (8, 0) FAR  w(0) 204067. F 0.00
+expand: main@_138 (9, 0) FAR  w(0) 206467. F 0.00
+expand: main@NodeBlock120.i.i (10, 0) FAR  w(0) 204669. F 0.01
+expand: main@NodeBlock120.i.i.backedge (11, 0) FAR  w(0) 204400. F 0.00
+expand: main@NodeBlock120.i.i (12, 0) FAR  w(0) 204507. F 0.01
+expand: main@NodeBlock120.i.i.backedge (13, 0) FAR  w(0) 204234. F 0.00
+expand: main@NodeBlock120.i.i (14, 0) FAR  w(0) 204671. F 0.01
+expand: main@NodeBlock120.i.i.backedge (15, 0) FAR  w(0) 204723. F 0.00
+expand: main@NodeBlock120.i.i (16, 0) FAR  w(0) 204749. F 0.03
+expand: main@NodeBlock120.i.i.backedge (17, 0) FAR  w(0) 204750. F 0.00
+expand: main@NodeBlock120.i.i (18, 0) FAR  w(0) 204729.
+	create_child: main@_138 (17, 44) FAR 206551 UNDEF 0.01
+expand: main@_138 (17, 0) FAR  w(0) 206551.
+	create_child: main@_138!_Cond (16, 44) FAR 206900 U 0.00
+expand: main@_138!_Cond (16, 0) FAR  w(0) 206900. F 0.00
+expand: main@_138 (17, 0) FAR  w(0) 206551. F 0.00
+expand: main@NodeBlock120.i.i (18, 0) FAR  w(0) 204729. F 0.01
+expand: main@NodeBlock120.i.i.backedge (19, 0) FAR  w(0) 204716. F 0.00
+expand: main@NodeBlock120.i.i (20, 0) FAR  w(0) 204601. F 0.02
+expand: main@NodeBlock120.i.i.backedge (21, 0) FAR  w(0) 204682. F 0.00
+expand: main@NodeBlock120.i.i (22, 0) FAR  w(0) 204694. F 0.02
+expand: main@NodeBlock120.i.i.backedge (23, 0) FAR  w(0) 204399. F 0.00
+expand: main@NodeBlock120.i.i (24, 0) FAR  w(0) 204699. F 0.02
+expand: main@NodeBlock120.i.i.backedge (25, 0) FAR  w(0) 204545. F 0.00
+expand: main@NodeBlock120.i.i (26, 0) FAR  w(0) 204555. F 0.02
+expand: main@NodeBlock120.i.i.backedge (27, 0) FAR  w(0) 204665. F 0.00
+expand: main@NodeBlock120.i.i (28, 0) FAR  w(0) 204402. F 0.02
+expand: main@NodeBlock120.i.i.backedge (29, 0) FAR  w(0) 204127. F 0.00
+expand: main@NodeBlock120.i.i (30, 0) FAR  w(0) 204486. F 0.03
+expand: main@NodeBlock120.i.i.backedge (31, 0) FAR  w(0) 204554. F 0.00
+expand: main@NodeBlock120.i.i (32, 0) FAR  w(0) 204382.
+	create_child: main@_138 (31, 44) FAR 207497 UNDEF 0.01
+expand: main@_138 (31, 0) FAR  w(0) 207497.
+	create_child: main@_138!_Cond (30, 44) FAR 207785 U 0.00
+expand: main@_138!_Cond (30, 0) FAR  w(0) 207785. F 0.00
+expand: main@_138 (31, 0) FAR  w(0) 207497. F 0.00
+expand: main@NodeBlock120.i.i (32, 0) FAR  w(0) 204382. F 0.02
+expand: main@NodeBlock120.i.i.backedge (33, 0) FAR  w(0) 204474. F 0.00
+expand: main@NodeBlock120.i.i (34, 0) FAR  w(0) 60231. F 0.01
+expand: main@NodeBlock120.i.i.backedge (35, 0) FAR  w(0) 60302. F 0.00
+expand: main@NodeBlock120.i.i (36, 0) FAR  w(0) 55712. F 0.01
+expand: main@NodeBlock120.i.i.backedge (37, 0) FAR  w(0) 55617. F 0.00
+expand: main@NodeBlock120.i.i (38, 0) FAR  w(0) 51265. F 0.01
+expand: main@NodeBlock120.i.i.backedge (39, 0) FAR  w(0) 51243. F 0.00
+expand: main@NodeBlock120.i.i (40, 0) FAR  w(0) 25934. F 0.01
+expand: main@empty.loop (41, 0) FAR  w(0) 23943. F 0.00
+expand: main@entry (42, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (43, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (44, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.64 :before-memory 61.77 :after-memory 68.12)
+Propagating: 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44  ! 45 46 
+(spacer::context::propagate :time 0.27 :before-memory 68.12 :after-memory 69.19)
+Entering level 45
+expand: query!0 (45, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 69.19 :after-memory 69.21)
+Propagating: 45  ! 46 
+(spacer::context::propagate :time 0.00 :before-memory 69.21 :after-memory 69.21)
+Entering level 46
+expand: query!0 (46, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (45, 46) FAR 1 U 0.00
+expand: main@entry!_BAD (45, 0) FAR  w(0) 1.
+	create_child: main@entry (44, 46) FAR 1 U 0.00
+expand: main@entry (44, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (43, 46) FAR 23943 U 0.00
+expand: main@empty.loop (43, 0) FAR  w(0) 23943.
+	create_child: main@NodeBlock120.i.i (42, 46) FAR 25934 U 0.00
+expand: main@NodeBlock120.i.i (42, 0) FAR  w(0) 25934.
+	create_child: main@NodeBlock120.i.i.backedge (41, 46) FAR 51243 U 0.01
+expand: main@NodeBlock120.i.i.backedge (41, 0) FAR  w(0) 51243.
+	create_child: main@NodeBlock120.i.i (40, 46) FAR 51265 U 0.00
+expand: main@NodeBlock120.i.i (40, 0) FAR  w(0) 51265.
+	create_child: main@NodeBlock120.i.i.backedge (39, 46) FAR 55617 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (39, 0) FAR  w(0) 55617.
+	create_child: main@NodeBlock120.i.i (38, 46) FAR 55712 U 0.00
+expand: main@NodeBlock120.i.i (38, 0) FAR  w(0) 55712.
+	create_child: main@NodeBlock120.i.i.backedge (37, 46) FAR 60302 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (37, 0) FAR  w(0) 60302.
+	create_child: main@NodeBlock120.i.i (36, 46) FAR 60231 U 0.00
+expand: main@NodeBlock120.i.i (36, 0) FAR  w(0) 60231.
+	create_child: main@NodeBlock120.i.i.backedge (35, 46) FAR 204474 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (35, 0) FAR  w(0) 204474.
+	create_child: main@NodeBlock120.i.i (34, 46) FAR 204382 U 0.00
+expand: main@NodeBlock120.i.i (34, 0) FAR  w(0) 204382.
+	create_child: main@NodeBlock120.i.i.backedge (33, 46) FAR 204554 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (33, 0) FAR  w(0) 204554.
+	create_child: main@NodeBlock120.i.i (32, 46) FAR 204486 U 0.00
+expand: main@NodeBlock120.i.i (32, 0) FAR  w(0) 204486.
+	create_child: main@NodeBlock120.i.i.backedge (31, 46) FAR 204127 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (31, 0) FAR  w(0) 204127.
+	create_child: main@NodeBlock120.i.i (30, 46) FAR 204402 U 0.00
+expand: main@NodeBlock120.i.i (30, 0) FAR  w(0) 204402.
+	create_child: main@NodeBlock120.i.i.backedge (29, 46) FAR 204665 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (29, 0) FAR  w(0) 204665.
+	create_child: main@NodeBlock120.i.i (28, 46) FAR 204555 U 0.00
+expand: main@NodeBlock120.i.i (28, 0) FAR  w(0) 204555.
+	create_child: main@NodeBlock120.i.i.backedge (27, 46) FAR 204545 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (27, 0) FAR  w(0) 204545.
+	create_child: main@NodeBlock120.i.i (26, 46) FAR 204699 U 0.00
+expand: main@NodeBlock120.i.i (26, 0) FAR  w(0) 204699.
+	create_child: main@NodeBlock120.i.i.backedge (25, 46) FAR 204399 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (25, 0) FAR  w(0) 204399.
+	create_child: main@NodeBlock120.i.i (24, 46) FAR 204694 U 0.00
+expand: main@NodeBlock120.i.i (24, 0) FAR  w(0) 204694.
+	create_child: main@NodeBlock120.i.i.backedge (23, 46) FAR 204682 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (23, 0) FAR  w(0) 204682.
+	create_child: main@NodeBlock120.i.i (22, 46) FAR 204601 U 0.00
+expand: main@NodeBlock120.i.i (22, 0) FAR  w(0) 204601.
+	create_child: main@NodeBlock120.i.i.backedge (21, 46) FAR 204716 UNDEF 0.02
+expand: main@NodeBlock120.i.i.backedge (21, 0) FAR  w(0) 204716.
+	create_child: main@NodeBlock120.i.i (20, 46) FAR 204729 U 0.00
+expand: main@NodeBlock120.i.i (20, 0) FAR  w(0) 204729.
+	create_child: main@NodeBlock120.i.i.backedge (19, 46) FAR 204750 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (19, 0) FAR  w(0) 204750.
+	create_child: main@NodeBlock120.i.i (18, 46) FAR 204749 U 0.00
+expand: main@NodeBlock120.i.i (18, 0) FAR  w(0) 204749.
+	create_child: main@NodeBlock120.i.i.backedge (17, 46) FAR 204723 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (17, 0) FAR  w(0) 204723.
+	create_child: main@NodeBlock120.i.i (16, 46) FAR 204671 U 0.00
+expand: main@NodeBlock120.i.i (16, 0) FAR  w(0) 204671.
+	create_child: main@NodeBlock120.i.i.backedge (15, 46) FAR 204234 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (15, 0) FAR  w(0) 204234.
+	create_child: main@NodeBlock120.i.i (14, 46) FAR 204507 U 0.00
+expand: main@NodeBlock120.i.i (14, 0) FAR  w(0) 204507.
+	create_child: main@NodeBlock120.i.i.backedge (13, 46) FAR 204400 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (13, 0) FAR  w(0) 204400.
+	create_child: main@NodeBlock120.i.i (12, 46) FAR 204669 U 0.00
+expand: main@NodeBlock120.i.i (12, 0) FAR  w(0) 204669.
+	create_child: main@NodeBlock120.i.i.backedge (11, 46) FAR 204235 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (11, 0) FAR  w(0) 204235.
+	create_child: main@NodeBlock120.i.i (10, 46) FAR 204734 U 0.00
+expand: main@NodeBlock120.i.i (10, 0) FAR  w(0) 204734.
+	create_child: main@NodeBlock120.i.i.backedge (9, 46) FAR 204528 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (9, 0) FAR  w(0) 204528.
+	create_child: main@NodeBlock120.i.i (8, 46) FAR 204596 U 0.00
+expand: main@NodeBlock120.i.i (8, 0) FAR  w(0) 204596.
+	create_child: main@NodeBlock120.i.i.backedge (7, 46) FAR 204765 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (7, 0) FAR  w(0) 204765.
+	create_child: main@NodeBlock120.i.i (6, 46) FAR 204690 U 0.00
+expand: main@NodeBlock120.i.i (6, 0) FAR  w(0) 204690.
+	create_child: main@NodeBlock120.i.i.backedge (5, 46) FAR 217577 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (5, 0) FAR  w(0) 217577.
+	create_child: main@NodeBlock120.i.i (4, 46) FAR 217813 U 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 217813.
+	create_child: main@NodeBlock120.i.i.backedge (3, 46) FAR 217875 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (3, 0) FAR  w(0) 217875.
+	create_child: main@NodeBlock120.i.i (2, 46) FAR 217493 U 0.00
+expand: main@NodeBlock120.i.i (2, 0) FAR  w(0) 217493.
+	create_child: main@NodeBlock120.i.i.backedge (1, 46) FAR 217802 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (1, 0) FAR  w(0) 217802.
+	create_child: main@NodeBlock120.i.i (0, 46) FAR 217731 U 0.00
+expand: main@NodeBlock120.i.i (0, 0) FAR  w(0) 217731. F 0.00
+expand: main@NodeBlock120.i.i.backedge (1, 0) FAR  w(0) 217802. F 0.00
+expand: main@NodeBlock120.i.i (2, 0) FAR  w(0) 217493. F 0.02
+expand: main@NodeBlock120.i.i.backedge (3, 0) FAR  w(0) 217875. F 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 217813. F 0.02
+expand: main@NodeBlock120.i.i.backedge (5, 0) FAR  w(0) 217577. F 0.00
+expand: main@NodeBlock120.i.i (6, 0) FAR  w(0) 204690. F 0.01
+expand: main@NodeBlock120.i.i.backedge (7, 0) FAR  w(0) 204765. F 0.00
+expand: main@NodeBlock120.i.i (8, 0) FAR  w(0) 204596. F 0.01
+expand: main@NodeBlock120.i.i.backedge (9, 0) FAR  w(0) 204528. F 0.00
+expand: main@NodeBlock120.i.i (10, 0) FAR  w(0) 204734. F 0.03
+expand: main@NodeBlock120.i.i.backedge (11, 0) FAR  w(0) 204235. F 0.00
+expand: main@NodeBlock120.i.i (12, 0) FAR  w(0) 204669.
+	create_child: main@_138 (11, 46) FAR 206467 UNDEF 0.01
+expand: main@_138 (11, 0) FAR  w(0) 206467.
+	create_child: main@_138!_Cond (10, 46) FAR 204067 U 0.00
+expand: main@_138!_Cond (10, 0) FAR  w(0) 204067. F 0.00
+expand: main@_138 (11, 0) FAR  w(0) 206467. F 0.00
+expand: main@NodeBlock120.i.i (12, 0) FAR  w(0) 204669. F 0.01
+expand: main@NodeBlock120.i.i.backedge (13, 0) FAR  w(0) 204400. F 0.00
+expand: main@NodeBlock120.i.i (14, 0) FAR  w(0) 204507. F 0.01
+expand: main@NodeBlock120.i.i.backedge (15, 0) FAR  w(0) 204234. F 0.00
+expand: main@NodeBlock120.i.i (16, 0) FAR  w(0) 204671. F 0.02
+expand: main@NodeBlock120.i.i.backedge (17, 0) FAR  w(0) 204723. F 0.00
+expand: main@NodeBlock120.i.i (18, 0) FAR  w(0) 204749. F 0.03
+expand: main@NodeBlock120.i.i.backedge (19, 0) FAR  w(0) 204750. F 0.00
+expand: main@NodeBlock120.i.i (20, 0) FAR  w(0) 204729.
+	create_child: main@_138 (19, 46) FAR 206551 UNDEF 0.01
+expand: main@_138 (19, 0) FAR  w(0) 206551.
+	create_child: main@_138!_Cond (18, 46) FAR 206900 U 0.00
+expand: main@_138!_Cond (18, 0) FAR  w(0) 206900. F 0.00
+expand: main@_138 (19, 0) FAR  w(0) 206551. F 0.00
+expand: main@NodeBlock120.i.i (20, 0) FAR  w(0) 204729. F 0.01
+expand: main@NodeBlock120.i.i.backedge (21, 0) FAR  w(0) 204716. F 0.00
+expand: main@NodeBlock120.i.i (22, 0) FAR  w(0) 204601. F 0.02
+expand: main@NodeBlock120.i.i.backedge (23, 0) FAR  w(0) 204682. F 0.00
+expand: main@NodeBlock120.i.i (24, 0) FAR  w(0) 204694. F 0.02
+expand: main@NodeBlock120.i.i.backedge (25, 0) FAR  w(0) 204399. F 0.00
+expand: main@NodeBlock120.i.i (26, 0) FAR  w(0) 204699. F 0.02
+expand: main@NodeBlock120.i.i.backedge (27, 0) FAR  w(0) 204545. F 0.00
+expand: main@NodeBlock120.i.i (28, 0) FAR  w(0) 204555. F 0.02
+expand: main@NodeBlock120.i.i.backedge (29, 0) FAR  w(0) 204665. F 0.00
+expand: main@NodeBlock120.i.i (30, 0) FAR  w(0) 204402. F 0.01
+expand: main@NodeBlock120.i.i.backedge (31, 0) FAR  w(0) 204127. F 0.00
+expand: main@NodeBlock120.i.i (32, 0) FAR  w(0) 204486. F 0.03
+expand: main@NodeBlock120.i.i.backedge (33, 0) FAR  w(0) 204554. F 0.00
+expand: main@NodeBlock120.i.i (34, 0) FAR  w(0) 204382.
+	create_child: main@_138 (33, 46) FAR 207497 UNDEF 0.01
+expand: main@_138 (33, 0) FAR  w(0) 207497.
+	create_child: main@_138!_Cond (32, 46) FAR 207785 U 0.00
+expand: main@_138!_Cond (32, 0) FAR  w(0) 207785. F 0.00
+expand: main@_138 (33, 0) FAR  w(0) 207497. F 0.00
+expand: main@NodeBlock120.i.i (34, 0) FAR  w(0) 204382. F 0.02
+expand: main@NodeBlock120.i.i.backedge (35, 0) FAR  w(0) 204474. F 0.00
+expand: main@NodeBlock120.i.i (36, 0) FAR  w(0) 60231. F 0.01
+expand: main@NodeBlock120.i.i.backedge (37, 0) FAR  w(0) 60302. F 0.00
+expand: main@NodeBlock120.i.i (38, 0) FAR  w(0) 55712. F 0.01
+expand: main@NodeBlock120.i.i.backedge (39, 0) FAR  w(0) 55617. F 0.00
+expand: main@NodeBlock120.i.i (40, 0) FAR  w(0) 51265. F 0.01
+expand: main@NodeBlock120.i.i.backedge (41, 0) FAR  w(0) 51243. F 0.00
+expand: main@NodeBlock120.i.i (42, 0) FAR  w(0) 25934. F 0.01
+expand: main@empty.loop (43, 0) FAR  w(0) 23943. F 0.00
+expand: main@entry (44, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (45, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (46, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.71 :before-memory 69.21 :after-memory 70.50)
+Propagating: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46  ! 47 48 
+(spacer::context::propagate :time 0.27 :before-memory 70.50 :after-memory 71.16)
+Entering level 47
+expand: query!0 (47, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 71.16 :after-memory 71.16)
+Propagating: 47  ! 48 
+(spacer::context::propagate :time 0.00 :before-memory 71.16 :after-memory 71.16)
+Entering level 48
+expand: query!0 (48, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (47, 48) FAR 1 U 0.00
+expand: main@entry!_BAD (47, 0) FAR  w(0) 1.
+	create_child: main@entry (46, 48) FAR 1 U 0.00
+expand: main@entry (46, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (45, 48) FAR 23943 U 0.00
+expand: main@empty.loop (45, 0) FAR  w(0) 23943.
+	create_child: main@NodeBlock120.i.i (44, 48) FAR 25934 U 0.00
+expand: main@NodeBlock120.i.i (44, 0) FAR  w(0) 25934.
+	create_child: main@NodeBlock120.i.i.backedge (43, 48) FAR 51243 U 0.01
+expand: main@NodeBlock120.i.i.backedge (43, 0) FAR  w(0) 51243.
+	create_child: main@NodeBlock120.i.i (42, 48) FAR 51265 U 0.00
+expand: main@NodeBlock120.i.i (42, 0) FAR  w(0) 51265.
+	create_child: main@NodeBlock120.i.i.backedge (41, 48) FAR 55617 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (41, 0) FAR  w(0) 55617.
+	create_child: main@NodeBlock120.i.i (40, 48) FAR 55712 U 0.00
+expand: main@NodeBlock120.i.i (40, 0) FAR  w(0) 55712.
+	create_child: main@NodeBlock120.i.i.backedge (39, 48) FAR 60302 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (39, 0) FAR  w(0) 60302.
+	create_child: main@NodeBlock120.i.i (38, 48) FAR 60231 U 0.00
+expand: main@NodeBlock120.i.i (38, 0) FAR  w(0) 60231.
+	create_child: main@NodeBlock120.i.i.backedge (37, 48) FAR 204474 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (37, 0) FAR  w(0) 204474.
+	create_child: main@NodeBlock120.i.i (36, 48) FAR 204382 U 0.00
+expand: main@NodeBlock120.i.i (36, 0) FAR  w(0) 204382.
+	create_child: main@NodeBlock120.i.i.backedge (35, 48) FAR 204554 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (35, 0) FAR  w(0) 204554.
+	create_child: main@NodeBlock120.i.i (34, 48) FAR 204486 U 0.00
+expand: main@NodeBlock120.i.i (34, 0) FAR  w(0) 204486.
+	create_child: main@NodeBlock120.i.i.backedge (33, 48) FAR 204127 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (33, 0) FAR  w(0) 204127.
+	create_child: main@NodeBlock120.i.i (32, 48) FAR 204402 U 0.00
+expand: main@NodeBlock120.i.i (32, 0) FAR  w(0) 204402.
+	create_child: main@NodeBlock120.i.i.backedge (31, 48) FAR 204665 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (31, 0) FAR  w(0) 204665.
+	create_child: main@NodeBlock120.i.i (30, 48) FAR 204555 U 0.00
+expand: main@NodeBlock120.i.i (30, 0) FAR  w(0) 204555.
+	create_child: main@NodeBlock120.i.i.backedge (29, 48) FAR 204545 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (29, 0) FAR  w(0) 204545.
+	create_child: main@NodeBlock120.i.i (28, 48) FAR 204699 U 0.00
+expand: main@NodeBlock120.i.i (28, 0) FAR  w(0) 204699.
+	create_child: main@NodeBlock120.i.i.backedge (27, 48) FAR 204399 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (27, 0) FAR  w(0) 204399.
+	create_child: main@NodeBlock120.i.i (26, 48) FAR 204694 U 0.00
+expand: main@NodeBlock120.i.i (26, 0) FAR  w(0) 204694.
+	create_child: main@NodeBlock120.i.i.backedge (25, 48) FAR 204682 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (25, 0) FAR  w(0) 204682.
+	create_child: main@NodeBlock120.i.i (24, 48) FAR 204601 U 0.00
+expand: main@NodeBlock120.i.i (24, 0) FAR  w(0) 204601.
+	create_child: main@NodeBlock120.i.i.backedge (23, 48) FAR 204716 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (23, 0) FAR  w(0) 204716.
+	create_child: main@NodeBlock120.i.i (22, 48) FAR 204729 U 0.00
+expand: main@NodeBlock120.i.i (22, 0) FAR  w(0) 204729.
+	create_child: main@NodeBlock120.i.i.backedge (21, 48) FAR 204750 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (21, 0) FAR  w(0) 204750.
+	create_child: main@NodeBlock120.i.i (20, 48) FAR 204749 U 0.00
+expand: main@NodeBlock120.i.i (20, 0) FAR  w(0) 204749.
+	create_child: main@NodeBlock120.i.i.backedge (19, 48) FAR 204723 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (19, 0) FAR  w(0) 204723.
+	create_child: main@NodeBlock120.i.i (18, 48) FAR 204671 U 0.00
+expand: main@NodeBlock120.i.i (18, 0) FAR  w(0) 204671.
+	create_child: main@NodeBlock120.i.i.backedge (17, 48) FAR 204234 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (17, 0) FAR  w(0) 204234.
+	create_child: main@NodeBlock120.i.i (16, 48) FAR 204507 U 0.00
+expand: main@NodeBlock120.i.i (16, 0) FAR  w(0) 204507.
+	create_child: main@NodeBlock120.i.i.backedge (15, 48) FAR 204400 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (15, 0) FAR  w(0) 204400.
+	create_child: main@NodeBlock120.i.i (14, 48) FAR 204669 U 0.00
+expand: main@NodeBlock120.i.i (14, 0) FAR  w(0) 204669.
+	create_child: main@NodeBlock120.i.i.backedge (13, 48) FAR 204235 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (13, 0) FAR  w(0) 204235.
+	create_child: main@NodeBlock120.i.i (12, 48) FAR 204734 U 0.00
+expand: main@NodeBlock120.i.i (12, 0) FAR  w(0) 204734.
+	create_child: main@NodeBlock120.i.i.backedge (11, 48) FAR 204528 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (11, 0) FAR  w(0) 204528.
+	create_child: main@NodeBlock120.i.i (10, 48) FAR 204596 U 0.00
+expand: main@NodeBlock120.i.i (10, 0) FAR  w(0) 204596.
+	create_child: main@NodeBlock120.i.i.backedge (9, 48) FAR 204765 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (9, 0) FAR  w(0) 204765.
+	create_child: main@NodeBlock120.i.i (8, 48) FAR 204690 U 0.00
+expand: main@NodeBlock120.i.i (8, 0) FAR  w(0) 204690.
+	create_child: main@NodeBlock120.i.i.backedge (7, 48) FAR 217577 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (7, 0) FAR  w(0) 217577.
+	create_child: main@NodeBlock120.i.i (6, 48) FAR 217813 U 0.00
+expand: main@NodeBlock120.i.i (6, 0) FAR  w(0) 217813.
+	create_child: main@NodeBlock120.i.i.backedge (5, 48) FAR 217875 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (5, 0) FAR  w(0) 217875.
+	create_child: main@NodeBlock120.i.i (4, 48) FAR 217493 U 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 217493.
+	create_child: main@NodeBlock120.i.i.backedge (3, 48) FAR 217802 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (3, 0) FAR  w(0) 217802.
+	create_child: main@NodeBlock120.i.i (2, 48) FAR 217731 U 0.00
+expand: main@NodeBlock120.i.i (2, 0) FAR  w(0) 217731.
+	create_child: main@NodeBlock120.i.i.backedge (1, 48) FAR 231776 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (1, 0) FAR  w(0) 231776.
+	create_child: main@NodeBlock120.i.i (0, 48) FAR 231569 U 0.00
+expand: main@NodeBlock120.i.i (0, 0) FAR  w(0) 231569. F 0.00
+expand: main@NodeBlock120.i.i.backedge (1, 0) FAR  w(0) 231776. F 0.00
+expand: main@NodeBlock120.i.i (2, 0) FAR  w(0) 217731. F 0.01
+expand: main@NodeBlock120.i.i.backedge (3, 0) FAR  w(0) 217802. F 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 217493.
+	create_child: main@_138 (3, 48) FAR 231657 UNDEF 0.01
+expand: main@_138 (3, 0) FAR  w(0) 231657.
+	create_child: main@_138!_Cond (2, 48) FAR 233345 U 0.00
+expand: main@_138!_Cond (2, 0) FAR  w(0) 233345. F 0.00
+expand: main@_138 (3, 0) FAR  w(0) 231657. F 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 217493. F 0.03
+expand: main@NodeBlock120.i.i.backedge (5, 0) FAR  w(0) 217875. F 0.00
+expand: main@NodeBlock120.i.i (6, 0) FAR  w(0) 217813. F 0.03
+expand: main@NodeBlock120.i.i.backedge (7, 0) FAR  w(0) 217577. F 0.00
+expand: main@NodeBlock120.i.i (8, 0) FAR  w(0) 204690. F 0.01
+expand: main@NodeBlock120.i.i.backedge (9, 0) FAR  w(0) 204765. F 0.00
+expand: main@NodeBlock120.i.i (10, 0) FAR  w(0) 204596. F 0.01
+expand: main@NodeBlock120.i.i.backedge (11, 0) FAR  w(0) 204528. F 0.00
+expand: main@NodeBlock120.i.i (12, 0) FAR  w(0) 204734. F 0.02
+expand: main@NodeBlock120.i.i.backedge (13, 0) FAR  w(0) 204235. F 0.00
+expand: main@NodeBlock120.i.i (14, 0) FAR  w(0) 204669.
+	create_child: main@_138 (13, 48) FAR 206467 UNDEF 0.01
+expand: main@_138 (13, 0) FAR  w(0) 206467.
+	create_child: main@_138!_Cond (12, 48) FAR 204067 U 0.00
+expand: main@_138!_Cond (12, 0) FAR  w(0) 204067. F 0.00
+expand: main@_138 (13, 0) FAR  w(0) 206467. F 0.00
+expand: main@NodeBlock120.i.i (14, 0) FAR  w(0) 204669. F 0.01
+expand: main@NodeBlock120.i.i.backedge (15, 0) FAR  w(0) 204400. F 0.00
+expand: main@NodeBlock120.i.i (16, 0) FAR  w(0) 204507. F 0.01
+expand: main@NodeBlock120.i.i.backedge (17, 0) FAR  w(0) 204234. F 0.00
+expand: main@NodeBlock120.i.i (18, 0) FAR  w(0) 204671. F 0.01
+expand: main@NodeBlock120.i.i.backedge (19, 0) FAR  w(0) 204723. F 0.00
+expand: main@NodeBlock120.i.i (20, 0) FAR  w(0) 204749. F 0.03
+expand: main@NodeBlock120.i.i.backedge (21, 0) FAR  w(0) 204750. F 0.00
+expand: main@NodeBlock120.i.i (22, 0) FAR  w(0) 204729.
+	create_child: main@_138 (21, 48) FAR 206551 UNDEF 0.01
+expand: main@_138 (21, 0) FAR  w(0) 206551.
+	create_child: main@_138!_Cond (20, 48) FAR 206900 U 0.00
+expand: main@_138!_Cond (20, 0) FAR  w(0) 206900. F 0.00
+expand: main@_138 (21, 0) FAR  w(0) 206551. F 0.00
+expand: main@NodeBlock120.i.i (22, 0) FAR  w(0) 204729. F 0.02
+expand: main@NodeBlock120.i.i.backedge (23, 0) FAR  w(0) 204716. F 0.00
+expand: main@NodeBlock120.i.i (24, 0) FAR  w(0) 204601. F 0.01
+expand: main@NodeBlock120.i.i.backedge (25, 0) FAR  w(0) 204682. F 0.00
+expand: main@NodeBlock120.i.i (26, 0) FAR  w(0) 204694. F 0.02
+expand: main@NodeBlock120.i.i.backedge (27, 0) FAR  w(0) 204399. F 0.00
+expand: main@NodeBlock120.i.i (28, 0) FAR  w(0) 204699. F 0.02
+expand: main@NodeBlock120.i.i.backedge (29, 0) FAR  w(0) 204545. F 0.00
+expand: main@NodeBlock120.i.i (30, 0) FAR  w(0) 204555. F 0.02
+expand: main@NodeBlock120.i.i.backedge (31, 0) FAR  w(0) 204665. F 0.00
+expand: main@NodeBlock120.i.i (32, 0) FAR  w(0) 204402. F 0.02
+expand: main@NodeBlock120.i.i.backedge (33, 0) FAR  w(0) 204127. F 0.00
+expand: main@NodeBlock120.i.i (34, 0) FAR  w(0) 204486. F 0.03
+expand: main@NodeBlock120.i.i.backedge (35, 0) FAR  w(0) 204554. F 0.00
+expand: main@NodeBlock120.i.i (36, 0) FAR  w(0) 204382.
+	create_child: main@_138 (35, 48) FAR 207497 U 0.01
+expand: main@_138 (35, 0) FAR  w(0) 207497.
+	create_child: main@_138!_Cond (34, 48) FAR 207785 U 0.00
+expand: main@_138!_Cond (34, 0) FAR  w(0) 207785. F 0.00
+expand: main@_138 (35, 0) FAR  w(0) 207497. F 0.00
+expand: main@NodeBlock120.i.i (36, 0) FAR  w(0) 204382. F 0.01
+expand: main@NodeBlock120.i.i.backedge (37, 0) FAR  w(0) 204474. F 0.00
+expand: main@NodeBlock120.i.i (38, 0) FAR  w(0) 60231. F 0.01
+expand: main@NodeBlock120.i.i.backedge (39, 0) FAR  w(0) 60302. F 0.00
+expand: main@NodeBlock120.i.i (40, 0) FAR  w(0) 55712. F 0.01
+expand: main@NodeBlock120.i.i.backedge (41, 0) FAR  w(0) 55617. F 0.00
+expand: main@NodeBlock120.i.i (42, 0) FAR  w(0) 51265. F 0.01
+expand: main@NodeBlock120.i.i.backedge (43, 0) FAR  w(0) 51243. F 0.00
+expand: main@NodeBlock120.i.i (44, 0) FAR  w(0) 25934. F 0.02
+expand: main@empty.loop (45, 0) FAR  w(0) 23943. F 0.00
+expand: main@entry (46, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (47, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (48, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.76 :before-memory 71.16 :after-memory 71.66)
+Propagating: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48  ! 49 50 
+(spacer::context::propagate :time 0.36 :before-memory 71.66 :after-memory 72.48)
+Entering level 49
+expand: query!0 (49, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 72.48 :after-memory 72.62)
+Propagating: 49  ! 50 
+(spacer::context::propagate :time 0.00 :before-memory 72.62 :after-memory 72.62)
+Entering level 50
+expand: query!0 (50, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (49, 50) FAR 1 U 0.00
+expand: main@entry!_BAD (49, 0) FAR  w(0) 1.
+	create_child: main@entry (48, 50) FAR 1 U 0.00
+expand: main@entry (48, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (47, 50) FAR 23943 U 0.01
+expand: main@empty.loop (47, 0) FAR  w(0) 23943.
+	create_child: main@NodeBlock120.i.i (46, 50) FAR 25934 U 0.00
+expand: main@NodeBlock120.i.i (46, 0) FAR  w(0) 25934.
+	create_child: main@NodeBlock120.i.i.backedge (45, 50) FAR 51243 U 0.01
+expand: main@NodeBlock120.i.i.backedge (45, 0) FAR  w(0) 51243.
+	create_child: main@NodeBlock120.i.i (44, 50) FAR 51265 U 0.00
+expand: main@NodeBlock120.i.i (44, 0) FAR  w(0) 51265.
+	create_child: main@NodeBlock120.i.i.backedge (43, 50) FAR 55617 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (43, 0) FAR  w(0) 55617.
+	create_child: main@NodeBlock120.i.i (42, 50) FAR 55712 U 0.00
+expand: main@NodeBlock120.i.i (42, 0) FAR  w(0) 55712.
+	create_child: main@NodeBlock120.i.i.backedge (41, 50) FAR 60302 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (41, 0) FAR  w(0) 60302.
+	create_child: main@NodeBlock120.i.i (40, 50) FAR 60231 U 0.00
+expand: main@NodeBlock120.i.i (40, 0) FAR  w(0) 60231.
+	create_child: main@NodeBlock120.i.i.backedge (39, 50) FAR 204474 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (39, 0) FAR  w(0) 204474.
+	create_child: main@NodeBlock120.i.i (38, 50) FAR 204382 U 0.00
+expand: main@NodeBlock120.i.i (38, 0) FAR  w(0) 204382.
+	create_child: main@NodeBlock120.i.i.backedge (37, 50) FAR 204554 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (37, 0) FAR  w(0) 204554.
+	create_child: main@NodeBlock120.i.i (36, 50) FAR 204486 U 0.00
+expand: main@NodeBlock120.i.i (36, 0) FAR  w(0) 204486.
+	create_child: main@NodeBlock120.i.i.backedge (35, 50) FAR 204127 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (35, 0) FAR  w(0) 204127.
+	create_child: main@NodeBlock120.i.i (34, 50) FAR 204402 U 0.00
+expand: main@NodeBlock120.i.i (34, 0) FAR  w(0) 204402.
+	create_child: main@NodeBlock120.i.i.backedge (33, 50) FAR 204665 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (33, 0) FAR  w(0) 204665.
+	create_child: main@NodeBlock120.i.i (32, 50) FAR 204555 U 0.00
+expand: main@NodeBlock120.i.i (32, 0) FAR  w(0) 204555.
+	create_child: main@NodeBlock120.i.i.backedge (31, 50) FAR 204545 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (31, 0) FAR  w(0) 204545.
+	create_child: main@NodeBlock120.i.i (30, 50) FAR 204699 U 0.00
+expand: main@NodeBlock120.i.i (30, 0) FAR  w(0) 204699.
+	create_child: main@NodeBlock120.i.i.backedge (29, 50) FAR 204399 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (29, 0) FAR  w(0) 204399.
+	create_child: main@NodeBlock120.i.i (28, 50) FAR 204694 U 0.00
+expand: main@NodeBlock120.i.i (28, 0) FAR  w(0) 204694.
+	create_child: main@NodeBlock120.i.i.backedge (27, 50) FAR 204682 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (27, 0) FAR  w(0) 204682.
+	create_child: main@NodeBlock120.i.i (26, 50) FAR 204601 U 0.00
+expand: main@NodeBlock120.i.i (26, 0) FAR  w(0) 204601.
+	create_child: main@NodeBlock120.i.i.backedge (25, 50) FAR 204716 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (25, 0) FAR  w(0) 204716.
+	create_child: main@NodeBlock120.i.i (24, 50) FAR 204729 U 0.00
+expand: main@NodeBlock120.i.i (24, 0) FAR  w(0) 204729.
+	create_child: main@NodeBlock120.i.i.backedge (23, 50) FAR 204750 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (23, 0) FAR  w(0) 204750.
+	create_child: main@NodeBlock120.i.i (22, 50) FAR 204749 U 0.00
+expand: main@NodeBlock120.i.i (22, 0) FAR  w(0) 204749.
+	create_child: main@NodeBlock120.i.i.backedge (21, 50) FAR 204723 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (21, 0) FAR  w(0) 204723.
+	create_child: main@NodeBlock120.i.i (20, 50) FAR 204671 U 0.00
+expand: main@NodeBlock120.i.i (20, 0) FAR  w(0) 204671.
+	create_child: main@NodeBlock120.i.i.backedge (19, 50) FAR 204234 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (19, 0) FAR  w(0) 204234.
+	create_child: main@NodeBlock120.i.i (18, 50) FAR 204507 U 0.00
+expand: main@NodeBlock120.i.i (18, 0) FAR  w(0) 204507.
+	create_child: main@NodeBlock120.i.i.backedge (17, 50) FAR 204400 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (17, 0) FAR  w(0) 204400.
+	create_child: main@NodeBlock120.i.i (16, 50) FAR 204669 U 0.00
+expand: main@NodeBlock120.i.i (16, 0) FAR  w(0) 204669.
+	create_child: main@NodeBlock120.i.i.backedge (15, 50) FAR 204235 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (15, 0) FAR  w(0) 204235.
+	create_child: main@NodeBlock120.i.i (14, 50) FAR 204734 U 0.00
+expand: main@NodeBlock120.i.i (14, 0) FAR  w(0) 204734.
+	create_child: main@NodeBlock120.i.i.backedge (13, 50) FAR 204528 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (13, 0) FAR  w(0) 204528.
+	create_child: main@NodeBlock120.i.i (12, 50) FAR 204596 U 0.00
+expand: main@NodeBlock120.i.i (12, 0) FAR  w(0) 204596.
+	create_child: main@NodeBlock120.i.i.backedge (11, 50) FAR 204765 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (11, 0) FAR  w(0) 204765.
+	create_child: main@NodeBlock120.i.i (10, 50) FAR 204690 U 0.00
+expand: main@NodeBlock120.i.i (10, 0) FAR  w(0) 204690.
+	create_child: main@NodeBlock120.i.i.backedge (9, 50) FAR 217577 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (9, 0) FAR  w(0) 217577.
+	create_child: main@NodeBlock120.i.i (8, 50) FAR 217813 U 0.00
+expand: main@NodeBlock120.i.i (8, 0) FAR  w(0) 217813.
+	create_child: main@NodeBlock120.i.i.backedge (7, 50) FAR 217875 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (7, 0) FAR  w(0) 217875.
+	create_child: main@NodeBlock120.i.i (6, 50) FAR 217493 U 0.00
+expand: main@NodeBlock120.i.i (6, 0) FAR  w(0) 217493.
+	create_child: main@NodeBlock120.i.i.backedge (5, 50) FAR 217802 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (5, 0) FAR  w(0) 217802.
+	create_child: main@NodeBlock120.i.i (4, 50) FAR 217731 U 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 217731.
+	create_child: main@NodeBlock120.i.i.backedge (3, 50) FAR 231776 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (3, 0) FAR  w(0) 231776.
+	create_child: main@NodeBlock120.i.i (2, 50) FAR 231569 U 0.00
+expand: main@NodeBlock120.i.i (2, 0) FAR  w(0) 231569.
+	create_child: main@NodeBlock120.i.i.backedge (1, 50) FAR 246692 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (1, 0) FAR  w(0) 246692.
+	create_child: main@NodeBlock120.i.i (0, 50) FAR 247080 U 0.00
+expand: main@NodeBlock120.i.i (0, 0) FAR  w(0) 247080. F 0.00
+expand: main@NodeBlock120.i.i.backedge (1, 0) FAR  w(0) 246692. F 0.00
+expand: main@NodeBlock120.i.i (2, 0) FAR  w(0) 231569. F 0.01
+expand: main@NodeBlock120.i.i.backedge (3, 0) FAR  w(0) 231776. F 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 217731.
+	create_child: main@_138 (3, 50) FAR 248107 UNDEF 0.01
+expand: main@_138 (3, 0) FAR  w(0) 248107.
+	create_child: main@_138!_Cond (2, 50) FAR 247996 U 0.00
+expand: main@_138!_Cond (2, 0) FAR  w(0) 247996. F 0.00
+expand: main@_138 (3, 0) FAR  w(0) 248107. F 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 217731. F 0.03
+expand: main@NodeBlock120.i.i.backedge (5, 0) FAR  w(0) 217802. F 0.00
+expand: main@NodeBlock120.i.i (6, 0) FAR  w(0) 217493. F 0.03
+expand: main@NodeBlock120.i.i.backedge (7, 0) FAR  w(0) 217875. F 0.00
+expand: main@NodeBlock120.i.i (8, 0) FAR  w(0) 217813.
+	create_child: main@_138 (7, 50) FAR 248324 UNDEF 0.01
+expand: main@_138 (7, 0) FAR  w(0) 248324.
+	create_child: main@_138!_Cond (6, 50) FAR 248616 U 0.00
+expand: main@_138!_Cond (6, 0) FAR  w(0) 248616. F 0.00
+expand: main@_138 (7, 0) FAR  w(0) 248324. F 0.00
+expand: main@NodeBlock120.i.i (8, 0) FAR  w(0) 217813. F 0.01
+expand: main@NodeBlock120.i.i.backedge (9, 0) FAR  w(0) 217577. F 0.00
+expand: main@NodeBlock120.i.i (10, 0) FAR  w(0) 204690. F 0.01
+expand: main@NodeBlock120.i.i.backedge (11, 0) FAR  w(0) 204765. F 0.00
+expand: main@NodeBlock120.i.i (12, 0) FAR  w(0) 204596. F 0.01
+expand: main@NodeBlock120.i.i.backedge (13, 0) FAR  w(0) 204528. F 0.00
+expand: main@NodeBlock120.i.i (14, 0) FAR  w(0) 204734. F 0.03
+expand: main@NodeBlock120.i.i.backedge (15, 0) FAR  w(0) 204235. F 0.00
+expand: main@NodeBlock120.i.i (16, 0) FAR  w(0) 204669.
+	create_child: main@_138 (15, 50) FAR 206467 UNDEF 0.01
+expand: main@_138 (15, 0) FAR  w(0) 206467.
+	create_child: main@_138!_Cond (14, 50) FAR 204067 U 0.00
+expand: main@_138!_Cond (14, 0) FAR  w(0) 204067. F 0.00
+expand: main@_138 (15, 0) FAR  w(0) 206467. F 0.00
+expand: main@NodeBlock120.i.i (16, 0) FAR  w(0) 204669. F 0.01
+expand: main@NodeBlock120.i.i.backedge (17, 0) FAR  w(0) 204400. F 0.00
+expand: main@NodeBlock120.i.i (18, 0) FAR  w(0) 204507. F 0.01
+expand: main@NodeBlock120.i.i.backedge (19, 0) FAR  w(0) 204234. F 0.00
+expand: main@NodeBlock120.i.i (20, 0) FAR  w(0) 204671. F 0.01
+expand: main@NodeBlock120.i.i.backedge (21, 0) FAR  w(0) 204723. F 0.00
+expand: main@NodeBlock120.i.i (22, 0) FAR  w(0) 204749. F 0.03
+expand: main@NodeBlock120.i.i.backedge (23, 0) FAR  w(0) 204750. F 0.00
+expand: main@NodeBlock120.i.i (24, 0) FAR  w(0) 204729.
+	create_child: main@_138 (23, 50) FAR 206551 UNDEF 0.01
+expand: main@_138 (23, 0) FAR  w(0) 206551.
+	create_child: main@_138!_Cond (22, 50) FAR 206900 U 0.00
+expand: main@_138!_Cond (22, 0) FAR  w(0) 206900. F 0.00
+expand: main@_138 (23, 0) FAR  w(0) 206551. F 0.00
+expand: main@NodeBlock120.i.i (24, 0) FAR  w(0) 204729. F 0.02
+expand: main@NodeBlock120.i.i.backedge (25, 0) FAR  w(0) 204716. F 0.00
+expand: main@NodeBlock120.i.i (26, 0) FAR  w(0) 204601. F 0.01
+expand: main@NodeBlock120.i.i.backedge (27, 0) FAR  w(0) 204682. F 0.00
+expand: main@NodeBlock120.i.i (28, 0) FAR  w(0) 204694. F 0.02
+expand: main@NodeBlock120.i.i.backedge (29, 0) FAR  w(0) 204399. F 0.00
+expand: main@NodeBlock120.i.i (30, 0) FAR  w(0) 204699. F 0.02
+expand: main@NodeBlock120.i.i.backedge (31, 0) FAR  w(0) 204545. F 0.00
+expand: main@NodeBlock120.i.i (32, 0) FAR  w(0) 204555. F 0.02
+expand: main@NodeBlock120.i.i.backedge (33, 0) FAR  w(0) 204665. F 0.00
+expand: main@NodeBlock120.i.i (34, 0) FAR  w(0) 204402. F 0.02
+expand: main@NodeBlock120.i.i.backedge (35, 0) FAR  w(0) 204127. F 0.00
+expand: main@NodeBlock120.i.i (36, 0) FAR  w(0) 204486. F 0.03
+expand: main@NodeBlock120.i.i.backedge (37, 0) FAR  w(0) 204554. F 0.00
+expand: main@NodeBlock120.i.i (38, 0) FAR  w(0) 204382.
+	create_child: main@_138 (37, 50) FAR 207497 U 0.01
+expand: main@_138 (37, 0) FAR  w(0) 207497.
+	create_child: main@_138!_Cond (36, 50) FAR 207785 U 0.00
+expand: main@_138!_Cond (36, 0) FAR  w(0) 207785. F 0.00
+expand: main@_138 (37, 0) FAR  w(0) 207497. F 0.00
+expand: main@NodeBlock120.i.i (38, 0) FAR  w(0) 204382. F 0.01
+expand: main@NodeBlock120.i.i.backedge (39, 0) FAR  w(0) 204474. F 0.00
+expand: main@NodeBlock120.i.i (40, 0) FAR  w(0) 60231. F 0.01
+expand: main@NodeBlock120.i.i.backedge (41, 0) FAR  w(0) 60302. F 0.00
+expand: main@NodeBlock120.i.i (42, 0) FAR  w(0) 55712. F 0.01
+expand: main@NodeBlock120.i.i.backedge (43, 0) FAR  w(0) 55617. F 0.00
+expand: main@NodeBlock120.i.i (44, 0) FAR  w(0) 51265. F 0.01
+expand: main@NodeBlock120.i.i.backedge (45, 0) FAR  w(0) 51243. F 0.00
+expand: main@NodeBlock120.i.i (46, 0) FAR  w(0) 25934. F 0.01
+expand: main@empty.loop (47, 0) FAR  w(0) 23943. F 0.00
+expand: main@entry (48, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (49, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (50, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.84 :before-memory 72.62 :after-memory 73.04)
+Propagating: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50  ! 51 52 
+(spacer::context::propagate :time 0.33 :before-memory 73.04 :after-memory 73.93)
+Entering level 51
+expand: query!0 (51, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 73.93 :after-memory 74.07)
+Propagating: 51  ! 52 
+(spacer::context::propagate :time 0.00 :before-memory 74.07 :after-memory 74.07)
+Entering level 52
+expand: query!0 (52, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (51, 52) FAR 1 U 0.00
+expand: main@entry!_BAD (51, 0) FAR  w(0) 1.
+	create_child: main@entry (50, 52) FAR 1 U 0.00
+expand: main@entry (50, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (49, 52) FAR 23943 U 0.00
+expand: main@empty.loop (49, 0) FAR  w(0) 23943.
+	create_child: main@NodeBlock120.i.i (48, 52) FAR 25934 U 0.00
+expand: main@NodeBlock120.i.i (48, 0) FAR  w(0) 25934.
+	create_child: main@NodeBlock120.i.i.backedge (47, 52) FAR 51243 U 0.01
+expand: main@NodeBlock120.i.i.backedge (47, 0) FAR  w(0) 51243.
+	create_child: main@NodeBlock120.i.i (46, 52) FAR 51265 U 0.00
+expand: main@NodeBlock120.i.i (46, 0) FAR  w(0) 51265.
+	create_child: main@NodeBlock120.i.i.backedge (45, 52) FAR 55617 U 0.01
+expand: main@NodeBlock120.i.i.backedge (45, 0) FAR  w(0) 55617.
+	create_child: main@NodeBlock120.i.i (44, 52) FAR 55712 U 0.00
+expand: main@NodeBlock120.i.i (44, 0) FAR  w(0) 55712.
+	create_child: main@NodeBlock120.i.i.backedge (43, 52) FAR 60302 U 0.01
+expand: main@NodeBlock120.i.i.backedge (43, 0) FAR  w(0) 60302.
+	create_child: main@NodeBlock120.i.i (42, 52) FAR 60231 U 0.00
+expand: main@NodeBlock120.i.i (42, 0) FAR  w(0) 60231.
+	create_child: main@NodeBlock120.i.i.backedge (41, 52) FAR 204474 U 0.01
+expand: main@NodeBlock120.i.i.backedge (41, 0) FAR  w(0) 204474.
+	create_child: main@NodeBlock120.i.i (40, 52) FAR 204382 U 0.00
+expand: main@NodeBlock120.i.i (40, 0) FAR  w(0) 204382.
+	create_child: main@NodeBlock120.i.i.backedge (39, 52) FAR 204554 U 0.01
+expand: main@NodeBlock120.i.i.backedge (39, 0) FAR  w(0) 204554.
+	create_child: main@NodeBlock120.i.i (38, 52) FAR 204486 U 0.00
+expand: main@NodeBlock120.i.i (38, 0) FAR  w(0) 204486.
+	create_child: main@NodeBlock120.i.i.backedge (37, 52) FAR 204127 U 0.01
+expand: main@NodeBlock120.i.i.backedge (37, 0) FAR  w(0) 204127.
+	create_child: main@NodeBlock120.i.i (36, 52) FAR 204402 U 0.00
+expand: main@NodeBlock120.i.i (36, 0) FAR  w(0) 204402.
+	create_child: main@NodeBlock120.i.i.backedge (35, 52) FAR 204665 U 0.01
+expand: main@NodeBlock120.i.i.backedge (35, 0) FAR  w(0) 204665.
+	create_child: main@NodeBlock120.i.i (34, 52) FAR 204555 U 0.00
+expand: main@NodeBlock120.i.i (34, 0) FAR  w(0) 204555.
+	create_child: main@NodeBlock120.i.i.backedge (33, 52) FAR 204545 U 0.01
+expand: main@NodeBlock120.i.i.backedge (33, 0) FAR  w(0) 204545.
+	create_child: main@NodeBlock120.i.i (32, 52) FAR 204699 U 0.00
+expand: main@NodeBlock120.i.i (32, 0) FAR  w(0) 204699.
+	create_child: main@NodeBlock120.i.i.backedge (31, 52) FAR 204399 U 0.01
+expand: main@NodeBlock120.i.i.backedge (31, 0) FAR  w(0) 204399.
+	create_child: main@NodeBlock120.i.i (30, 52) FAR 204694 U 0.00
+expand: main@NodeBlock120.i.i (30, 0) FAR  w(0) 204694.
+	create_child: main@NodeBlock120.i.i.backedge (29, 52) FAR 204682 U 0.01
+expand: main@NodeBlock120.i.i.backedge (29, 0) FAR  w(0) 204682.
+	create_child: main@NodeBlock120.i.i (28, 52) FAR 204601 U 0.00
+expand: main@NodeBlock120.i.i (28, 0) FAR  w(0) 204601.
+	create_child: main@NodeBlock120.i.i.backedge (27, 52) FAR 204716 U 0.01
+expand: main@NodeBlock120.i.i.backedge (27, 0) FAR  w(0) 204716.
+	create_child: main@NodeBlock120.i.i (26, 52) FAR 204729 U 0.00
+expand: main@NodeBlock120.i.i (26, 0) FAR  w(0) 204729.
+	create_child: main@NodeBlock120.i.i.backedge (25, 52) FAR 204750 U 0.01
+expand: main@NodeBlock120.i.i.backedge (25, 0) FAR  w(0) 204750.
+	create_child: main@NodeBlock120.i.i (24, 52) FAR 204749 U 0.00
+expand: main@NodeBlock120.i.i (24, 0) FAR  w(0) 204749.
+	create_child: main@NodeBlock120.i.i.backedge (23, 52) FAR 204723 U 0.01
+expand: main@NodeBlock120.i.i.backedge (23, 0) FAR  w(0) 204723.
+	create_child: main@NodeBlock120.i.i (22, 52) FAR 204671 U 0.00
+expand: main@NodeBlock120.i.i (22, 0) FAR  w(0) 204671.
+	create_child: main@NodeBlock120.i.i.backedge (21, 52) FAR 204234 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (21, 0) FAR  w(0) 204234.
+	create_child: main@NodeBlock120.i.i (20, 52) FAR 204507 U 0.00
+expand: main@NodeBlock120.i.i (20, 0) FAR  w(0) 204507.
+	create_child: main@NodeBlock120.i.i.backedge (19, 52) FAR 204400 U 0.01
+expand: main@NodeBlock120.i.i.backedge (19, 0) FAR  w(0) 204400.
+	create_child: main@NodeBlock120.i.i (18, 52) FAR 204669 U 0.00
+expand: main@NodeBlock120.i.i (18, 0) FAR  w(0) 204669.
+	create_child: main@NodeBlock120.i.i.backedge (17, 52) FAR 204235 U 0.02
+expand: main@NodeBlock120.i.i.backedge (17, 0) FAR  w(0) 204235.
+	create_child: main@NodeBlock120.i.i (16, 52) FAR 204734 U 0.00
+expand: main@NodeBlock120.i.i (16, 0) FAR  w(0) 204734.
+	create_child: main@NodeBlock120.i.i.backedge (15, 52) FAR 204528 U 0.01
+expand: main@NodeBlock120.i.i.backedge (15, 0) FAR  w(0) 204528.
+	create_child: main@NodeBlock120.i.i (14, 52) FAR 204596 U 0.00
+expand: main@NodeBlock120.i.i (14, 0) FAR  w(0) 204596.
+	create_child: main@NodeBlock120.i.i.backedge (13, 52) FAR 204765 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (13, 0) FAR  w(0) 204765.
+	create_child: main@NodeBlock120.i.i (12, 52) FAR 204690 U 0.00
+expand: main@NodeBlock120.i.i (12, 0) FAR  w(0) 204690.
+	create_child: main@NodeBlock120.i.i.backedge (11, 52) FAR 217577 U 0.01
+expand: main@NodeBlock120.i.i.backedge (11, 0) FAR  w(0) 217577.
+	create_child: main@NodeBlock120.i.i (10, 52) FAR 217813 U 0.00
+expand: main@NodeBlock120.i.i (10, 0) FAR  w(0) 217813.
+	create_child: main@NodeBlock120.i.i.backedge (9, 52) FAR 217875 U 0.01
+expand: main@NodeBlock120.i.i.backedge (9, 0) FAR  w(0) 217875.
+	create_child: main@NodeBlock120.i.i (8, 52) FAR 217493 U 0.00
+expand: main@NodeBlock120.i.i (8, 0) FAR  w(0) 217493.
+	create_child: main@NodeBlock120.i.i.backedge (7, 52) FAR 217802 U 0.01
+expand: main@NodeBlock120.i.i.backedge (7, 0) FAR  w(0) 217802.
+	create_child: main@NodeBlock120.i.i (6, 52) FAR 217731 U 0.00
+expand: main@NodeBlock120.i.i (6, 0) FAR  w(0) 217731.
+	create_child: main@NodeBlock120.i.i.backedge (5, 52) FAR 231776 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (5, 0) FAR  w(0) 231776.
+	create_child: main@NodeBlock120.i.i (4, 52) FAR 231569 U 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 231569.
+	create_child: main@_138 (3, 52) FAR 263363 UNDEF 0.01
+expand: main@_138 (3, 0) FAR  w(0) 263363.
+	create_child: main@_138!_Cond (2, 52) FAR 263335 U 0.00
+expand: main@_138!_Cond (2, 0) FAR  w(0) 263335. F 0.00
+expand: main@_138 (3, 0) FAR  w(0) 263363. F 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 231569. F 0.02
+expand: main@NodeBlock120.i.i.backedge (5, 0) FAR  w(0) 231776. F 0.00
+expand: main@NodeBlock120.i.i (6, 0) FAR  w(0) 217731. F 0.02
+expand: main@NodeBlock120.i.i.backedge (7, 0) FAR  w(0) 217802. F 0.00
+expand: main@NodeBlock120.i.i (8, 0) FAR  w(0) 217493. F 0.03
+expand: main@NodeBlock120.i.i.backedge (9, 0) FAR  w(0) 217875. F 0.00
+expand: main@NodeBlock120.i.i (10, 0) FAR  w(0) 217813.
+	create_child: main@_138 (9, 52) FAR 248324 UNDEF 0.01
+expand: main@_138 (9, 0) FAR  w(0) 248324.
+	create_child: main@_138!_Cond (8, 52) FAR 248616 U 0.00
+expand: main@_138!_Cond (8, 0) FAR  w(0) 248616. F 0.00
+expand: main@_138 (9, 0) FAR  w(0) 248324. F 0.00
+expand: main@NodeBlock120.i.i (10, 0) FAR  w(0) 217813. F 0.01
+expand: main@NodeBlock120.i.i.backedge (11, 0) FAR  w(0) 217577. F 0.00
+expand: main@NodeBlock120.i.i (12, 0) FAR  w(0) 204690. F 0.01
+expand: main@NodeBlock120.i.i.backedge (13, 0) FAR  w(0) 204765. F 0.00
+expand: main@NodeBlock120.i.i (14, 0) FAR  w(0) 204596. F 0.01
+expand: main@NodeBlock120.i.i.backedge (15, 0) FAR  w(0) 204528. F 0.00
+expand: main@NodeBlock120.i.i (16, 0) FAR  w(0) 204734. F 0.02
+expand: main@NodeBlock120.i.i.backedge (17, 0) FAR  w(0) 204235. F 0.00
+expand: main@NodeBlock120.i.i (18, 0) FAR  w(0) 204669.
+	create_child: main@_138 (17, 52) FAR 206467 UNDEF 0.01
+expand: main@_138 (17, 0) FAR  w(0) 206467.
+	create_child: main@_138!_Cond (16, 52) FAR 204067 U 0.00
+expand: main@_138!_Cond (16, 0) FAR  w(0) 204067. F 0.00
+expand: main@_138 (17, 0) FAR  w(0) 206467. F 0.00
+expand: main@NodeBlock120.i.i (18, 0) FAR  w(0) 204669. F 0.01
+expand: main@NodeBlock120.i.i.backedge (19, 0) FAR  w(0) 204400. F 0.00
+expand: main@NodeBlock120.i.i (20, 0) FAR  w(0) 204507. F 0.01
+expand: main@NodeBlock120.i.i.backedge (21, 0) FAR  w(0) 204234. F 0.00
+expand: main@NodeBlock120.i.i (22, 0) FAR  w(0) 204671. F 0.02
+expand: main@NodeBlock120.i.i.backedge (23, 0) FAR  w(0) 204723. F 0.00
+expand: main@NodeBlock120.i.i (24, 0) FAR  w(0) 204749. F 0.03
+expand: main@NodeBlock120.i.i.backedge (25, 0) FAR  w(0) 204750. F 0.00
+expand: main@NodeBlock120.i.i (26, 0) FAR  w(0) 204729.
+	create_child: main@_138 (25, 52) FAR 206551 UNDEF 0.01
+expand: main@_138 (25, 0) FAR  w(0) 206551.
+	create_child: main@_138!_Cond (24, 52) FAR 206900 U 0.00
+expand: main@_138!_Cond (24, 0) FAR  w(0) 206900. F 0.00
+expand: main@_138 (25, 0) FAR  w(0) 206551. F 0.00
+expand: main@NodeBlock120.i.i (26, 0) FAR  w(0) 204729. F 0.02
+expand: main@NodeBlock120.i.i.backedge (27, 0) FAR  w(0) 204716. F 0.00
+expand: main@NodeBlock120.i.i (28, 0) FAR  w(0) 204601. F 0.01
+expand: main@NodeBlock120.i.i.backedge (29, 0) FAR  w(0) 204682. F 0.00
+expand: main@NodeBlock120.i.i (30, 0) FAR  w(0) 204694. F 0.02
+expand: main@NodeBlock120.i.i.backedge (31, 0) FAR  w(0) 204399. F 0.00
+expand: main@NodeBlock120.i.i (32, 0) FAR  w(0) 204699. F 0.02
+expand: main@NodeBlock120.i.i.backedge (33, 0) FAR  w(0) 204545. F 0.00
+expand: main@NodeBlock120.i.i (34, 0) FAR  w(0) 204555. F 0.02
+expand: main@NodeBlock120.i.i.backedge (35, 0) FAR  w(0) 204665. F 0.00
+expand: main@NodeBlock120.i.i (36, 0) FAR  w(0) 204402. F 0.02
+expand: main@NodeBlock120.i.i.backedge (37, 0) FAR  w(0) 204127. F 0.00
+expand: main@NodeBlock120.i.i (38, 0) FAR  w(0) 204486. F 0.03
+expand: main@NodeBlock120.i.i.backedge (39, 0) FAR  w(0) 204554. F 0.00
+expand: main@NodeBlock120.i.i (40, 0) FAR  w(0) 204382.
+	create_child: main@_138 (39, 52) FAR 207497 UNDEF 0.01
+expand: main@_138 (39, 0) FAR  w(0) 207497.
+	create_child: main@_138!_Cond (38, 52) FAR 207785 U 0.00
+expand: main@_138!_Cond (38, 0) FAR  w(0) 207785. F 0.00
+expand: main@_138 (39, 0) FAR  w(0) 207497. F 0.00
+expand: main@NodeBlock120.i.i (40, 0) FAR  w(0) 204382. F 0.01
+expand: main@NodeBlock120.i.i.backedge (41, 0) FAR  w(0) 204474. F 0.00
+expand: main@NodeBlock120.i.i (42, 0) FAR  w(0) 60231. F 0.01
+expand: main@NodeBlock120.i.i.backedge (43, 0) FAR  w(0) 60302. F 0.00
+expand: main@NodeBlock120.i.i (44, 0) FAR  w(0) 55712. F 0.01
+expand: main@NodeBlock120.i.i.backedge (45, 0) FAR  w(0) 55617. F 0.00
+expand: main@NodeBlock120.i.i (46, 0) FAR  w(0) 51265. F 0.01
+expand: main@NodeBlock120.i.i.backedge (47, 0) FAR  w(0) 51243. F 0.00
+expand: main@NodeBlock120.i.i (48, 0) FAR  w(0) 25934. F 0.01
+expand: main@empty.loop (49, 0) FAR  w(0) 23943. F 0.00
+expand: main@entry (50, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (51, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (52, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.82 :before-memory 74.07 :after-memory 74.46)
+Propagating: 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52  ! 53 54 
+(spacer::context::propagate :time 0.36 :before-memory 74.46 :after-memory 75.16)
+Entering level 53
+expand: query!0 (53, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 75.16 :after-memory 75.18)
+Propagating: 53  ! 54 
+(spacer::context::propagate :time 0.00 :before-memory 75.18 :after-memory 75.18)
+Entering level 54
+expand: query!0 (54, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (53, 54) FAR 1 U 0.00
+expand: main@entry!_BAD (53, 0) FAR  w(0) 1.
+	create_child: main@entry (52, 54) FAR 1 U 0.00
+expand: main@entry (52, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (51, 54) FAR 23943 U 0.00
+expand: main@empty.loop (51, 0) FAR  w(0) 23943.
+	create_child: main@NodeBlock120.i.i (50, 54) FAR 25934 U 0.00
+expand: main@NodeBlock120.i.i (50, 0) FAR  w(0) 25934.
+	create_child: main@NodeBlock120.i.i.backedge (49, 54) FAR 51243 U 0.01
+expand: main@NodeBlock120.i.i.backedge (49, 0) FAR  w(0) 51243.
+	create_child: main@NodeBlock120.i.i (48, 54) FAR 51265 U 0.00
+expand: main@NodeBlock120.i.i (48, 0) FAR  w(0) 51265.
+	create_child: main@NodeBlock120.i.i.backedge (47, 54) FAR 55617 U 0.01
+expand: main@NodeBlock120.i.i.backedge (47, 0) FAR  w(0) 55617.
+	create_child: main@NodeBlock120.i.i (46, 54) FAR 55712 U 0.00
+expand: main@NodeBlock120.i.i (46, 0) FAR  w(0) 55712.
+	create_child: main@NodeBlock120.i.i.backedge (45, 54) FAR 60302 U 0.01
+expand: main@NodeBlock120.i.i.backedge (45, 0) FAR  w(0) 60302.
+	create_child: main@NodeBlock120.i.i (44, 54) FAR 60231 U 0.00
+expand: main@NodeBlock120.i.i (44, 0) FAR  w(0) 60231.
+	create_child: main@NodeBlock120.i.i.backedge (43, 54) FAR 204474 U 0.01
+expand: main@NodeBlock120.i.i.backedge (43, 0) FAR  w(0) 204474.
+	create_child: main@NodeBlock120.i.i (42, 54) FAR 204382 U 0.00
+expand: main@NodeBlock120.i.i (42, 0) FAR  w(0) 204382.
+	create_child: main@NodeBlock120.i.i.backedge (41, 54) FAR 204554 U 0.01
+expand: main@NodeBlock120.i.i.backedge (41, 0) FAR  w(0) 204554.
+	create_child: main@NodeBlock120.i.i (40, 54) FAR 204486 U 0.00
+expand: main@NodeBlock120.i.i (40, 0) FAR  w(0) 204486.
+	create_child: main@NodeBlock120.i.i.backedge (39, 54) FAR 204127 U 0.01
+expand: main@NodeBlock120.i.i.backedge (39, 0) FAR  w(0) 204127.
+	create_child: main@NodeBlock120.i.i (38, 54) FAR 204402 U 0.00
+expand: main@NodeBlock120.i.i (38, 0) FAR  w(0) 204402.
+	create_child: main@NodeBlock120.i.i.backedge (37, 54) FAR 204665 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (37, 0) FAR  w(0) 204665.
+	create_child: main@NodeBlock120.i.i (36, 54) FAR 204555 U 0.00
+expand: main@NodeBlock120.i.i (36, 0) FAR  w(0) 204555.
+	create_child: main@NodeBlock120.i.i.backedge (35, 54) FAR 204545 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (35, 0) FAR  w(0) 204545.
+	create_child: main@NodeBlock120.i.i (34, 54) FAR 204699 U 0.00
+expand: main@NodeBlock120.i.i (34, 0) FAR  w(0) 204699.
+	create_child: main@NodeBlock120.i.i.backedge (33, 54) FAR 204399 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (33, 0) FAR  w(0) 204399.
+	create_child: main@NodeBlock120.i.i (32, 54) FAR 204694 U 0.00
+expand: main@NodeBlock120.i.i (32, 0) FAR  w(0) 204694.
+	create_child: main@NodeBlock120.i.i.backedge (31, 54) FAR 204682 UNDEF 0.02
+expand: main@NodeBlock120.i.i.backedge (31, 0) FAR  w(0) 204682.
+	create_child: main@NodeBlock120.i.i (30, 54) FAR 204601 U 0.00
+expand: main@NodeBlock120.i.i (30, 0) FAR  w(0) 204601.
+	create_child: main@NodeBlock120.i.i.backedge (29, 54) FAR 204716 U 0.01
+expand: main@NodeBlock120.i.i.backedge (29, 0) FAR  w(0) 204716.
+	create_child: main@NodeBlock120.i.i (28, 54) FAR 204729 U 0.00
+expand: main@NodeBlock120.i.i (28, 0) FAR  w(0) 204729.
+	create_child: main@NodeBlock120.i.i.backedge (27, 54) FAR 204750 U 0.01
+expand: main@NodeBlock120.i.i.backedge (27, 0) FAR  w(0) 204750.
+	create_child: main@NodeBlock120.i.i (26, 54) FAR 204749 U 0.00
+expand: main@NodeBlock120.i.i (26, 0) FAR  w(0) 204749.
+	create_child: main@NodeBlock120.i.i.backedge (25, 54) FAR 204723 U 0.01
+expand: main@NodeBlock120.i.i.backedge (25, 0) FAR  w(0) 204723.
+	create_child: main@NodeBlock120.i.i (24, 54) FAR 204671 U 0.00
+expand: main@NodeBlock120.i.i (24, 0) FAR  w(0) 204671.
+	create_child: main@NodeBlock120.i.i.backedge (23, 54) FAR 204234 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (23, 0) FAR  w(0) 204234.
+	create_child: main@NodeBlock120.i.i (22, 54) FAR 204507 U 0.00
+expand: main@NodeBlock120.i.i (22, 0) FAR  w(0) 204507.
+	create_child: main@NodeBlock120.i.i.backedge (21, 54) FAR 204400 U 0.01
+expand: main@NodeBlock120.i.i.backedge (21, 0) FAR  w(0) 204400.
+	create_child: main@NodeBlock120.i.i (20, 54) FAR 204669 U 0.00
+expand: main@NodeBlock120.i.i (20, 0) FAR  w(0) 204669.
+	create_child: main@NodeBlock120.i.i.backedge (19, 54) FAR 204235 U 0.01
+expand: main@NodeBlock120.i.i.backedge (19, 0) FAR  w(0) 204235.
+	create_child: main@NodeBlock120.i.i (18, 54) FAR 204734 U 0.00
+expand: main@NodeBlock120.i.i (18, 0) FAR  w(0) 204734.
+	create_child: main@NodeBlock120.i.i.backedge (17, 54) FAR 204528 U 0.01
+expand: main@NodeBlock120.i.i.backedge (17, 0) FAR  w(0) 204528.
+	create_child: main@NodeBlock120.i.i (16, 54) FAR 204596 U 0.00
+expand: main@NodeBlock120.i.i (16, 0) FAR  w(0) 204596.
+	create_child: main@NodeBlock120.i.i.backedge (15, 54) FAR 204765 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (15, 0) FAR  w(0) 204765.
+	create_child: main@NodeBlock120.i.i (14, 54) FAR 204690 U 0.00
+expand: main@NodeBlock120.i.i (14, 0) FAR  w(0) 204690.
+	create_child: main@NodeBlock120.i.i.backedge (13, 54) FAR 217577 U 0.01
+expand: main@NodeBlock120.i.i.backedge (13, 0) FAR  w(0) 217577.
+	create_child: main@NodeBlock120.i.i (12, 54) FAR 217813 U 0.00
+expand: main@NodeBlock120.i.i (12, 0) FAR  w(0) 217813.
+	create_child: main@NodeBlock120.i.i.backedge (11, 54) FAR 217875 U 0.01
+expand: main@NodeBlock120.i.i.backedge (11, 0) FAR  w(0) 217875.
+	create_child: main@NodeBlock120.i.i (10, 54) FAR 217493 U 0.00
+expand: main@NodeBlock120.i.i (10, 0) FAR  w(0) 217493.
+	create_child: main@NodeBlock120.i.i.backedge (9, 54) FAR 217802 U 0.01
+expand: main@NodeBlock120.i.i.backedge (9, 0) FAR  w(0) 217802.
+	create_child: main@NodeBlock120.i.i (8, 54) FAR 217731 U 0.00
+expand: main@NodeBlock120.i.i (8, 0) FAR  w(0) 217731.
+	create_child: main@NodeBlock120.i.i.backedge (7, 54) FAR 231776 UNDEF 0.01
+expand: main@NodeBlock120.i.i.backedge (7, 0) FAR  w(0) 231776.
+	create_child: main@NodeBlock120.i.i (6, 54) FAR 231569 U 0.00
+expand: main@NodeBlock120.i.i (6, 0) FAR  w(0) 231569.
+	create_child: main@NodeBlock120.i.i.backedge (5, 54) FAR 246692 U 0.01
+expand: main@NodeBlock120.i.i.backedge (5, 0) FAR  w(0) 246692.
+	create_child: main@NodeBlock120.i.i (4, 54) FAR 247080 U 0.00
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(0) 247080.
+	create_child: main@NodeBlock120.i.i.backedge (3, 54) FAR 278128 U 0.01
+expand: main@NodeBlock120.i.i.backedge (3, 0) FAR  w(0) 278128.
+	create_child: main@NodeBlock120.i.i (2, 54) FAR 278557 U 0.00
+expand: main@NodeBlock120.i.i (2, 0) FAR  w(0) 278557.
+	create_child: main@NodeBlock120.i.i.backedge (1, 54) FAR 278642 U 0.01
+expand: main@NodeBlock120.i.i.backedge (1, 0) FAR  w(0) 278642. T 0.00
+is-reachable: main@NodeBlock120.i.i (2, 0) FAR 278557 F 0.01
+expand: main@NodeBlock120.i.i (2, 0) FAR  w(1) 278557. T 0.01
+is-reachable: main@NodeBlock120.i.i.backedge (3, 0) FAR 278128 T 0.00
+is-reachable: main@NodeBlock120.i.i (4, 0) FAR 247080 F 0.01
+Deleting closed node: main@NodeBlock120.i.i.backedge(3, 54) 278128
+expand: main@NodeBlock120.i.i (4, 0) FAR  w(1) 247080. T 0.01
+is-reachable: main@NodeBlock120.i.i.backedge (5, 0) FAR 246692 T 0.00
+is-reachable: main@NodeBlock120.i.i (6, 0) FAR 231569 F 0.01
+Deleting closed node: main@NodeBlock120.i.i.backedge(5, 54) 246692
+expand: main@NodeBlock120.i.i (6, 0) FAR  w(1) 231569. T 0.01
+is-reachable: main@NodeBlock120.i.i.backedge (7, 0) FAR 231776 T 0.00
+is-reachable: main@NodeBlock120.i.i (8, 0) FAR 217731 T 0.01
+is-reachable: main@NodeBlock120.i.i.backedge (9, 0) FAR 217802 T 0.00
+is-reachable: main@NodeBlock120.i.i (10, 0) FAR 217493 T 0.01
+is-reachable: main@NodeBlock120.i.i.backedge (11, 0) FAR 217875 T 0.00
+is-reachable: main@NodeBlock120.i.i (12, 0) FAR 217813 F 0.01
+Deleting closed node: main@NodeBlock120.i.i.backedge(7, 54) 231776
+Deleting closed node: main@NodeBlock120.i.i(8, 54) 217731
+Deleting closed node: main@NodeBlock120.i.i.backedge(9, 54) 217802
+Deleting closed node: main@NodeBlock120.i.i(10, 54) 217493
+Deleting closed node: main@NodeBlock120.i.i.backedge(11, 54) 217875
+expand: main@NodeBlock120.i.i (12, 0) FAR  w(1) 217813. T 0.01
+is-reachable: main@NodeBlock120.i.i.backedge (13, 0) FAR 217577 T 0.00
+is-reachable: main@NodeBlock120.i.i (14, 0) FAR 204690 T 0.01
+is-reachable: main@NodeBlock120.i.i.backedge (15, 0) FAR 204765 T 0.00
+is-reachable: main@NodeBlock120.i.i (16, 0) FAR 204596 F 0.01
+Deleting closed node: main@NodeBlock120.i.i.backedge(13, 54) 217577
+Deleting closed node: main@NodeBlock120.i.i(14, 54) 204690
+Deleting closed node: main@NodeBlock120.i.i.backedge(15, 54) 204765
+expand: main@NodeBlock120.i.i (16, 0) FAR  w(1) 204596. T 0.01
+is-reachable: main@NodeBlock120.i.i.backedge (17, 0) FAR 204528 T 0.00
+is-reachable: main@NodeBlock120.i.i (18, 0) FAR 204734 T 0.01
+is-reachable: main@NodeBlock120.i.i.backedge (19, 0) FAR 204235 T 0.00
+is-reachable: main@NodeBlock120.i.i (20, 0) FAR 204669 T 0.01
+is-reachable: main@NodeBlock120.i.i.backedge (21, 0) FAR 204400 T 0.00
+is-reachable: main@NodeBlock120.i.i (22, 0) FAR 204507 T 0.01
+is-reachable: main@NodeBlock120.i.i.backedge (23, 0) FAR 204234 T 0.00
+is-reachable: main@NodeBlock120.i.i (24, 0) FAR 204671 T 0.01
+is-reachable: main@NodeBlock120.i.i.backedge (25, 0) FAR 204723 T 0.00
+is-reachable: main@NodeBlock120.i.i (26, 0) FAR 204749 T 0.01
+is-reachable: main@NodeBlock120.i.i.backedge (27, 0) FAR 204750 T 0.00
+is-reachable: main@NodeBlock120.i.i (28, 0) FAR 204729 T 0.01
+is-reachable: main@NodeBlock120.i.i.backedge (29, 0) FAR 204716 T 0.00
+is-reachable: main@NodeBlock120.i.i (30, 0) FAR 204601 T 0.01
+is-reachable: main@NodeBlock120.i.i.backedge (31, 0) FAR 204682 T 0.00
+is-reachable: main@NodeBlock120.i.i (32, 0) FAR 204694 T 0.01
+is-reachable: main@NodeBlock120.i.i.backedge (33, 0) FAR 204399 T 0.00
+is-reachable: main@NodeBlock120.i.i (34, 0) FAR 204699 T 0.01
+is-reachable: main@NodeBlock120.i.i.backedge (35, 0) FAR 204545 T 0.00
+is-reachable: main@NodeBlock120.i.i (36, 0) FAR 204555 T 0.01
+is-reachable: main@NodeBlock120.i.i.backedge (37, 0) FAR 204665 T 0.00
+is-reachable: main@NodeBlock120.i.i (38, 0) FAR 204402 T 0.01
+is-reachable: main@NodeBlock120.i.i.backedge (39, 0) FAR 204127 T 0.00
+is-reachable: main@NodeBlock120.i.i (40, 0) FAR 204486 T 0.01
+is-reachable: main@NodeBlock120.i.i.backedge (41, 0) FAR 204554 T 0.00
+is-reachable: main@NodeBlock120.i.i (42, 0) FAR 204382 T 0.01
+is-reachable: main@NodeBlock120.i.i.backedge (43, 0) FAR 204474 T 0.00
+is-reachable: main@NodeBlock120.i.i (44, 0) FAR 60231 T 0.01
+is-reachable: main@NodeBlock120.i.i.backedge (45, 0) FAR 60302 T 0.00
+is-reachable: main@NodeBlock120.i.i (46, 0) FAR 55712 T 0.01
+is-reachable: main@NodeBlock120.i.i.backedge (47, 0) FAR 55617 T 0.00
+is-reachable: main@NodeBlock120.i.i (48, 0) FAR 51265 T 0.01
+is-reachable: main@NodeBlock120.i.i.backedge (49, 0) FAR 51243 T 0.00
+is-reachable: main@NodeBlock120.i.i (50, 0) FAR 25934 T 0.01
+is-reachable: main@empty.loop (51, 0) FAR 23943 T 0.00
+is-reachable: main@entry (52, 0) FAR 1 T 0.00
+is-reachable: main@entry!_BAD (53, 0) FAR 1 T 0.00
+is-reachable: query!0 (54, 0) FAR 1 T 0.00
+(spacer::context::check_reachability :time 0.66 :before-memory 75.18 :after-memory 79.38)

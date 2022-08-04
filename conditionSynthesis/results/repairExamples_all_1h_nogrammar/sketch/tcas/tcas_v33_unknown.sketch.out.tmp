@@ -1,0 +1,9 @@
+This function should never be called. Will cause tcas_v3..nknown.sk:23 ARRAY OUT OF BOUNDS !(0<=4 < 4)
+
+*** Rejected
+    [0;31m[1659424397.1000 - ERROR] [SKETCH] Sketch Not Resolved Error: This function should never be called. Will cause tcas_v3..nknown.sk:23 ARRAY OUT OF BOUNDS !(0<=4 < 4)
+
+*** Rejected
+The sketch could not be resolved.[0m
+    [0;32m[1659424397.1020 - DEBUG] [SKETCH] stack trace written to file: /root/.sketch/tmp/stacktrace.txt[0m
+    [0;32m[1659424397.1021 - DEBUG] Backend solver input file at /root/.sketch/tmp/tcas_v33_unknown.sk/input0.tmp[0m

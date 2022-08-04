@@ -1,0 +1,5 @@
+./repairExamples_01-08-20-11-08/forwardSl//crafted/binary_search_synthesis_v1_realizable.fwd.sl:1.9: No set-logic command was given before this point.
+./repairExamples_01-08-20-11-08/forwardSl//crafted/binary_search_synthesis_v1_realizable.fwd.sl:1.9: cvc5 will make all theories available.
+./repairExamples_01-08-20-11-08/forwardSl//crafted/binary_search_synthesis_v1_realizable.fwd.sl:1.9: Consider setting a stricter logic for (likely) better performance.
+./repairExamples_01-08-20-11-08/forwardSl//crafted/binary_search_synthesis_v1_realizable.fwd.sl:1.9: To suppress this warning in the future use (set-logic ALL).
+cvc5 interrupted by SIGTERM.

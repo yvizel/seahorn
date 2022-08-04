@@ -1,0 +1,12 @@
+
+
+*** Rejected
+    [0;31m[1659407630.8540 - ERROR] [SKETCH] Sketch Not Resolved Error: 
+
+*** Rejected
+The sketch could not be resolved.[0m
+    [0;32m[1659407630.8560 - DEBUG] [SKETCH] stack trace written to file: /root/.sketch/tmp/stacktrace.txt[0m
+    [0;32m[1659407630.8561 - DEBUG] Backend solver input file at /root/.sketch/tmp/binary_search_synthesis_v2_realizable.sk/input0.tmp[0m
+SKETCH version 1.7.6
+Benchmark = /host/binary_search_synthesis_v2_realizable.sk
+Total time = 1312605

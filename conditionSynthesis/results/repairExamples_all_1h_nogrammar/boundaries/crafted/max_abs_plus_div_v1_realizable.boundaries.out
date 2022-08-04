@@ -1,0 +1,3 @@
+(
+(define-fun Condition_0 ((vg_0 Int) (mainv%loop.bound_0 Int) (mainv%_2_0 Int)) Bool (or (>= mainv%loop.bound_0 6) (not (>= mainv%_2_0 13))))
+)

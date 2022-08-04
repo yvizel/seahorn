@@ -1,0 +1,8 @@
+./repairExamples_02-08-01-11-57/unwindingSl//crafted/bat_bug_loop_example_realizable.unwd.sl:1.9: No set-logic command was given before this point.
+./repairExamples_02-08-01-11-57/unwindingSl//crafted/bat_bug_loop_example_realizable.unwd.sl:1.9: cvc5 will make all theories available.
+./repairExamples_02-08-01-11-57/unwindingSl//crafted/bat_bug_loop_example_realizable.unwd.sl:1.9: Consider setting a stricter logic for (likely) better performance.
+./repairExamples_02-08-01-11-57/unwindingSl//crafted/bat_bug_loop_example_realizable.unwd.sl:1.9: To suppress this warning in the future use (set-logic ALL).
+(
+(define-fun mainventry!_Cond ((x0 Int) (x1 Int) (x2 Int) (x3 Int) (x4 Int)) Bool (and (= x4 9) (<= x2 x1)))
+(define-fun mainv.lr.ph ((x0 Int) (x1 Int) (x2 Int)) Bool (and (<= 9 (+ x1 x0)) (= x2 3)))
+)

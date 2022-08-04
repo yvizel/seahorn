@@ -1,0 +1,10 @@
+{
+    "loop_count": 1,
+    "loop_lines": [
+        {
+            "column": 3,
+            "file": "../repairExamples/crafted/bat_bug_loop_v2_realizable.c",
+            "line": 23
+        }
+    ]
+}

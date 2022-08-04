@@ -1,0 +1,10 @@
+{
+    "loop_count": 1,
+    "loop_lines": [
+        {
+            "column": 5,
+            "file": "../repairExamples/sv-comp/locks/test_locks_8.c",
+            "line": 33
+        }
+    ]
+}

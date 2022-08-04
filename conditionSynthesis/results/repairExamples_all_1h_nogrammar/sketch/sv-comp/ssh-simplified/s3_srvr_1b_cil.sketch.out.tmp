@@ -1,0 +1,9 @@
+/host/s3_srvr_1b_cil.sk:64:59: unexpected token: switch_1_8466
+/host/s3_srvr_1b_cil.sk:81:59: unexpected token: switch_1_8512
+/host/s3_srvr_1b_cil.sk:94:59: unexpected token: switch_1_8640
+/host/s3_srvr_1b_cil.sk:111:59: unexpected token: switch_1_8656
+/host/s3_srvr_1b_cil.sk:172:5: unexpected token: switch_1_break
+/host/s3_srvr_1b_cil.sk:177:3: unexpected token: end
+/host/s3_srvr_1b_cil.sk:180:3: unexpected token: ERROR
+    [0;31m[1659417220.0730 - ERROR] [SKETCH] Program Parse Error: could not parse program[0m
+    [0;32m[1659417220.0770 - DEBUG] [SKETCH] stack trace written to file: /root/.sketch/tmp/stacktrace.txt[0m

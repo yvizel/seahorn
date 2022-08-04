@@ -1,0 +1,12 @@
+  UNSATISFIABLE ASSERTION Assert at array_p..izable.sk:56 (2)
+
+*** Rejected
+    [0;31m[1659406318.4080 - ERROR] [SKETCH] Sketch Not Resolved Error:   UNSATISFIABLE ASSERTION Assert at array_p..izable.sk:56 (2)
+
+*** Rejected
+The sketch could not be resolved.[0m
+    [0;32m[1659406318.4120 - DEBUG] [SKETCH] stack trace written to file: /root/.sketch/tmp/stacktrace.txt[0m
+    [0;32m[1659406318.4121 - DEBUG] Backend solver input file at /root/.sketch/tmp/array_positive_sum_v2_loop_unrealizable.sk/input0.tmp[0m
+SKETCH version 1.7.6
+Benchmark = /host/array_positive_sum_v2_loop_unrealizable.sk
+Total time = 1547

@@ -1,0 +1,10 @@
+{
+    "loop_count": 1,
+    "loop_lines": [
+        {
+            "column": 3,
+            "file": "../repairExamples/crafted/nonterminating_v1_realizable.c",
+            "line": 10
+        }
+    ]
+}

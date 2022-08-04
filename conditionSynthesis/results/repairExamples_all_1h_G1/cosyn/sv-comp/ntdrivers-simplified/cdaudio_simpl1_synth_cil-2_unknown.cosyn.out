@@ -1,0 +1,209 @@
+(transform N7datalog13mk_coi_filterE...no-op 0s)
+(transform N7datalog25mk_interp_tail_simplifierE...10 rules 0.251s)
+(transform N7datalog27mk_quantifier_instantiationE...no-op 0s)
+(transform N7datalog8mk_scaleE...no-op 0s)
+(transform N7datalog18mk_karr_invariantsE...no-op 0s)
+(transform N7datalog14mk_array_blastE...no-op 0s)
+(transform N7datalog16mk_elim_term_iteE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...9 rules 0.105s)
+(transform N7datalog12mk_bit_blastE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog13mk_coi_filterE...no-op 0s)
+(transform N7datalog25mk_interp_tail_simplifierE...9 rules 0.009s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog13mk_coi_filterE...no-op 0s)
+(transform N7datalog25mk_interp_tail_simplifierE...9 rules 0.009s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+expand: query!0 (0, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 22.00 :after-memory 22.41)
+Entering level 1
+expand: query!0 (1, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (0, 1) FAR 1 U 0.00
+expand: main@entry!_BAD (0, 0) FAR  w(0) 1. F 0.06
+expand: query!0 (1, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.07 :before-memory 22.41 :after-memory 36.97)
+Propagating: 0 (smt.stats :restarts  :decisions  :clauses/bin     :simplify   :memory)
+(smt.stats      :conflicts  :propagations   :lemmas     :deletions   )
+(smt.stats    0    102   2458  53752 22997/0   208     0    0   38.06)
+1  ! 2 
+(spacer::context::propagate :time 0.04 :before-memory 36.97 :after-memory 39.86)
+Entering level 2
+expand: query!0 (2, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (1, 2) FAR 1 U 0.00
+expand: main@entry!_BAD (1, 0) FAR  w(0) 1(smt.stats    1    209  10548 105715 23026/0   407     0    0   40.77)
+(smt.stats    2    310  13474 152195 23140/0   594     0    0   42.18)
+(smt.stats    3    421  17179 216919 23223/0   739     0    0   42.82)
+(smt.stats    4    524  17858 273543 23273/0   859     0    0   44.32)
+.
+	create_child: main@entry (0, 2) FAR 1 U 0.25
+expand: main@entry (0, 0) FAR  w(0) 1(smt.stats :restarts  :decisions  :clauses/bin     :simplify   :memory)
+(smt.stats      :conflicts  :propagations   :lemmas     :deletions   )
+(smt.stats    0    102   4360  52118 22572/0   103     0    0   64.71)
+(smt.stats    1    203   5649  98336 22582/0   205     0    0   65.44)
+(smt.stats    2    314  10612 147914 22582/0   316     0    0   66.15)
+(smt.stats    3    415  13413 184648 22590/0   417     0    0   67.44)
+(smt.stats    4    526  17737 230742 22595/0   529     0    0   67.94)
+(smt.stats    5    648  18640 269281 22601/0   651     0    0   69.60)
+(smt.stats    6    749  20500 315117 22610/0   752     0    0   71.06)
+(smt.stats    7    860  20712 349488 22615/0   863     0    0   73.55)
+. F 0.83
+expand: main@entry!_BAD (1, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (2, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 1.08 :before-memory 39.86 :after-memory 76.56)
+Propagating: 0 (smt.stats :restarts :decisions   :clauses/bin     :simplify   :memory)
+(smt.stats     :conflicts  :propagations   :lemmas      :deletions   )
+(smt.stats    8   1061  30349 466168 22573/0  1061     0    0   76.46)
+1 2  ! 3 
+(spacer::context::propagate :time 0.07 :before-memory 76.56 :after-memory 78.52)
+Entering level 3
+expand: query!0 (3, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (2, 3) FAR 1 U 0.00
+expand: main@entry!_BAD (2, 0) FAR  w(0) 1.
+	create_child: main@entry (1, 3) FAR 1 U 0.04
+expand: main@entry (1, 0) FAR  w(0) 1.
+	create_child: main@_314 (0, 3) FAR 259200 U 0.36
+expand: main@_314 (0, 0) FAR  w(0) 259200. F 0.00
+expand: main@entry (1, 0) FAR  w(0) 1.
+	create_child: main@_567 (0, 3) FAR 259756 U 0.05
+expand: main@_567 (0, 0) FAR  w(0) 259756. F 0.01
+expand: main@entry (1, 0) FAR  w(0) 1.
+	create_child: main@_567 (0, 3) FAR 262889 U 0.07
+expand: main@_567 (0, 0) FAR  w(0) 262889. F 0.00
+expand: main@entry (1, 0) FAR  w(0) 1. F 0.35
+expand: main@entry!_BAD (2, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (3, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.90 :before-memory 78.52 :after-memory 88.12)
+Propagating: 0 1 2 3  ! 4 
+(spacer::context::propagate :time 0.04 :before-memory 88.12 :after-memory 88.32)
+Entering level 4
+expand: query!0 (4, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (3, 4) FAR 1 U 0.00
+expand: main@entry!_BAD (3, 0) FAR  w(0) 1.
+	create_child: main@entry (2, 4) FAR 1 U 0.02
+expand: main@entry (2, 0) FAR  w(0) 1.
+	create_child: main@_314 (1, 4) FAR 259200 U 0.04
+expand: main@_314 (1, 0) FAR  w(0) 259200.
+	create_child: main@_314!_Cond (0, 4) FAR 264429 U 0.00
+expand: main@_314!_Cond (0, 0) FAR  w(0) 264429. F 0.01
+expand: main@_314 (1, 0) FAR  w(0) 259200. F 0.00
+expand: main@entry (2, 0) FAR  w(0) 1. F 0.35
+expand: main@entry!_BAD (3, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (4, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.43 :before-memory 88.32 :after-memory 92.92)
+Propagating: 0 1 2 3 4  ! 5 
+(spacer::context::propagate :time 0.02 :before-memory 92.92 :after-memory 93.11)
+Entering level 5
+expand: query!0 (5, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (4, 5) FAR 1 U 0.00
+expand: main@entry!_BAD (4, 0) FAR  w(0) 1.
+	create_child: main@entry (3, 5) FAR 1 U 0.02
+expand: main@entry (3, 0) FAR  w(0) 1.
+	create_child: main@_314 (2, 5) FAR 259200 U 0.03
+expand: main@_314 (2, 0) FAR  w(0) 259200.
+	create_child: main@_314!_Cond (1, 5) FAR 264429 U 0.00
+expand: main@_314!_Cond (1, 0) FAR  w(0) 264429.
+	create_child: main@_567 (0, 5) FAR 267577 U 0.00
+expand: main@_567 (0, 0) FAR  w(0) 267577. F 0.00
+expand: main@_314!_Cond (1, 0) FAR  w(0) 264429. F 0.01
+expand: main@_314 (2, 0) FAR  w(0) 259200. F 0.01
+expand: main@entry (3, 0) FAR  w(0) 1. F 0.36
+expand: main@entry!_BAD (4, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (5, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.45 :before-memory 93.11 :after-memory 93.28)
+Propagating: 0 1 2 
+(spacer::context::propagate :time 0.00 :before-memory 93.28 :after-memory 93.28)
+(define-fun main@entry!_BAD () Bool
+  false)
+(define-fun main@_314!_Cond ((x!0 Int)
+ (x!1 Int)
+ (x!2 Int)
+ (x!3 Int)
+ (x!4 Int)
+ (x!5 Int)
+ (x!6 Int)
+ (x!7 Int)
+ (x!8 Int)
+ (x!9 Int)
+ (x!10 (Array Int Int))
+ (x!11 (Array Int Int))
+ (x!12 (Array Int Int))
+ (x!13 (Array Int Int))
+ (x!14 (Array Int Int))
+ (x!15 (Array Int Int))
+ (x!16 (Array Int Int))
+ (x!17 (Array Int Int))
+ (x!18 (Array Int Int))
+ (x!19 (Array Int Int))
+ (x!20 Int)) Bool
+  (or (not (<= x!20 0)) (not (= (select x!19 x!5) 1)) (<= (select x!10 x!0) 0)))
+(define-fun main@_314 ((x!0 Int)
+ (x!1 (Array Int Int))
+ (x!2 Int)
+ (x!3 (Array Int Int))
+ (x!4 Int)
+ (x!5 (Array Int Int))
+ (x!6 Int)
+ (x!7 (Array Int Int))
+ (x!8 Int)
+ (x!9 (Array Int Int))
+ (x!10 Int)
+ (x!11 Int)
+ (x!12 Int)
+ (x!13 Int)
+ (x!14 (Array Int Int))
+ (x!15 (Array Int Int))
+ (x!16 (Array Int Int))
+ (x!17 Int)
+ (x!18 (Array Int Int))
+ (x!19 Int)) Bool
+  (or (not (= (select x!18 x!12) 1)) (<= (select x!7 x!8) 0)))
+(define-fun main@entry ((x!0 Int)) Bool
+  false)
+(define-fun main@_320 ((x!0 Int)
+ (x!1 (Array Int Int))
+ (x!2 Int)
+ (x!3 (Array Int Int))
+ (x!4 Int)
+ (x!5 (Array Int Int))
+ (x!6 Int)
+ (x!7 (Array Int Int))
+ (x!8 Int)
+ (x!9 (Array Int Int))
+ (x!10 Int)
+ (x!11 Int)
+ (x!12 Int)
+ (x!13 Int)
+ (x!14 (Array Int Int))
+ (x!15 (Array Int Int))
+ (x!16 (Array Int Int))
+ (x!17 Int)
+ (x!18 (Array Int Int))) Bool
+  true)
+(define-fun main@_567 ((x!0 Int)
+ (x!1 (Array Int Int))
+ (x!2 Int)
+ (x!3 (Array Int Int))
+ (x!4 Int)
+ (x!5 (Array Int Int))
+ (x!6 Int)
+ (x!7 (Array Int Int))
+ (x!8 Int)
+ (x!9 (Array Int Int))
+ (x!10 Int)
+ (x!11 Int)
+ (x!12 Int)
+ (x!13 Int)
+ (x!14 (Array Int Int))
+ (x!15 (Array Int Int))
+ (x!16 (Array Int Int))
+ (x!17 Int)
+ (x!18 (Array Int Int))
+ (x!19 Int)) Bool
+  (or (not (<= x!19 0)) (not (= (select x!18 x!12) 1)) (= (select x!7 x!8) 0)))

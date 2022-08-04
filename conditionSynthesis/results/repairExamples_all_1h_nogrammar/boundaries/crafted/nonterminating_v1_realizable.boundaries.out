@@ -1,0 +1,5 @@
+(error "Parse Error: ./repairExamples_02-08-01-11-57/boundariesSl//crafted/nonterminating_v1_realizable.boundaries.sl:29.28: Symbol 'mainv._crit_edge' previously declared as a variable
+
+  (define-fun mainv._crit_edge () Bool
+              ^
+")

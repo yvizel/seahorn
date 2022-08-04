@@ -1,0 +1,256 @@
+(transform N7datalog13mk_coi_filterE...no-op 0s)
+(transform N7datalog25mk_interp_tail_simplifierE...11 rules 0.089s)
+(transform N7datalog27mk_quantifier_instantiationE...no-op 0s)
+(transform N7datalog8mk_scaleE...no-op 0s)
+(transform N7datalog18mk_karr_invariantsE...no-op 0s)
+(transform N7datalog14mk_array_blastE...no-op 0s)
+(transform N7datalog16mk_elim_term_iteE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...10 rules 0.017s)
+(transform N7datalog12mk_bit_blastE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog13mk_coi_filterE...no-op 0s)
+(transform N7datalog25mk_interp_tail_simplifierE...10 rules 0.009s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog13mk_coi_filterE...no-op 0s)
+(transform N7datalog25mk_interp_tail_simplifierE...10 rules 0.007s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+expand: query!0 (0, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 20.24 :after-memory 20.55)
+Entering level 1
+expand: query!0 (1, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (0, 1) FAR 1 U 0.00
+expand: main@entry!_BAD (0, 0) FAR  w(0) 1. F 0.01
+expand: query!0 (1, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.01 :before-memory 20.55 :after-memory 23.22)
+Propagating: 0 1  ! 2 
+(spacer::context::propagate :time 0.00 :before-memory 23.22 :after-memory 23.78)
+Entering level 2
+expand: query!0 (2, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (1, 2) FAR 1 U 0.00
+expand: main@entry!_BAD (1, 0) FAR  w(0) 1.
+	create_child: main@entry (0, 2) FAR 1 U 0.00
+expand: main@entry (0, 0) FAR  w(0) 1. F 0.02
+expand: main@entry!_BAD (1, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (2, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.03 :before-memory 23.78 :after-memory 28.53)
+Propagating: 0 1 2  ! 3 
+(spacer::context::propagate :time 0.00 :before-memory 28.53 :after-memory 28.91)
+Entering level 3
+expand: query!0 (3, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (2, 3) FAR 1 U 0.00
+expand: main@entry!_BAD (2, 0) FAR  w(0) 1.
+	create_child: main@entry (1, 3) FAR 1 U 0.00
+expand: main@entry (1, 0) FAR  w(0) 1.
+	create_child: main@FloppyDeviceControl.exit.i (0, 3) FAR 83205 U 0.02
+expand: main@FloppyDeviceControl.exit.i (0, 0) FAR  w(0) 83205. F 0.01
+expand: main@entry (1, 0) FAR  w(0) 1.
+	create_child: main@FloppyDeviceControl.exit.i (0, 3) FAR 85518 U 0.01
+expand: main@FloppyDeviceControl.exit.i (0, 0) FAR  w(0) 85518. F 0.02
+expand: main@entry (1, 0) FAR  w(0) 1.
+	create_child: main@FloppyDeviceControl.exit.i (0, 3) FAR 85943 U 0.01
+expand: main@FloppyDeviceControl.exit.i (0, 0) FAR  w(0) 85943. F 0.01
+expand: main@entry (1, 0) FAR  w(0) 1.
+	create_child: main@FloppyDeviceControl.exit.i (0, 3) FAR 86304 U 0.01
+expand: main@FloppyDeviceControl.exit.i (0, 0) FAR  w(0) 86304. F 0.01
+expand: main@entry (1, 0) FAR  w(0) 1.
+	create_child: main@FloppyDeviceControl.exit.i (0, 3) FAR 86844 U 0.01
+expand: main@FloppyDeviceControl.exit.i (0, 0) FAR  w(0) 86844. F 0.00
+expand: main@entry (1, 0) FAR  w(0) 1.
+	create_child: main@FloppyDeviceControl.exit.i (0, 3) FAR 87232 U 0.01
+expand: main@FloppyDeviceControl.exit.i (0, 0) FAR  w(0) 87232. F 0.00
+expand: main@entry (1, 0) FAR  w(0) 1.
+	create_child: main@_12 (0, 3) FAR 87296 U 0.01
+expand: main@_12 (0, 0) FAR  w(0) 87296. F 0.00
+expand: main@entry (1, 0) FAR  w(0) 1. F 0.01
+expand: main@entry!_BAD (2, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (3, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.14 :before-memory 28.91 :after-memory 34.93)
+Propagating: 0 1 2 3  ! 4 
+(spacer::context::propagate :time 0.00 :before-memory 34.93 :after-memory 35.03)
+Entering level 4
+expand: query!0 (4, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (3, 4) FAR 1 U 0.00
+expand: main@entry!_BAD (3, 0) FAR  w(0) 1.
+	create_child: main@entry (2, 4) FAR 1 U 0.00
+expand: main@entry (2, 0) FAR  w(0) 1.
+	create_child: main@_12 (1, 4) FAR 87296 U 0.01
+expand: main@_12 (1, 0) FAR  w(0) 87296.
+	create_child: main@_12!_Cond (0, 4) FAR 88684 U 0.00
+expand: main@_12!_Cond (0, 0) FAR  w(0) 88684. F 0.02
+expand: main@_12 (1, 0) FAR  w(0) 87296. F 0.00
+expand: main@entry (2, 0) FAR  w(0) 1. F 0.01
+expand: main@entry!_BAD (3, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (4, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.04 :before-memory 35.03 :after-memory 41.14)
+Propagating: 0 1 2 3 4  ! 5 
+(spacer::context::propagate :time 0.01 :before-memory 41.14 :after-memory 41.84)
+Entering level 5
+expand: query!0 (5, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (4, 5) FAR 1 U 0.00
+expand: main@entry!_BAD (4, 0) FAR  w(0) 1.
+	create_child: main@entry (3, 5) FAR 1 U 0.00
+expand: main@entry (3, 0) FAR  w(0) 1.
+	create_child: main@_12 (2, 5) FAR 87296 U 0.01
+expand: main@_12 (2, 0) FAR  w(0) 87296.
+	create_child: main@_12!_Cond (1, 5) FAR 88684 U 0.00
+expand: main@_12!_Cond (1, 0) FAR  w(0) 88684(smt.stats :restarts  :decisions   :clauses/bin    :simplify   :memory)
+(smt.stats      :conflicts  :propagations   :lemmas     :deletions   )
+(smt.stats    0    133   9257  38466  9039/0   236     0    0   43.44)
+.
+	create_child: main@FloppyDeviceControl.exit.i (0, 5) FAR 113325 U 0.02
+expand: main@FloppyDeviceControl.exit.i (0, 0) FAR  w(0) 113325. F 0.00
+expand: main@_12!_Cond (1, 0) FAR  w(0) 88684. F 0.00
+expand: main@_12 (2, 0) FAR  w(0) 87296. F 0.00
+expand: main@entry (3, 0) FAR  w(0) 1. F 0.01
+expand: main@entry!_BAD (4, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (5, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.04 :before-memory 41.84 :after-memory 44.12)
+Propagating: 0 1 
+(spacer::context::propagate :time 0.00 :before-memory 44.12 :after-memory 44.12)
+(define-fun main@entry!_BAD () Bool
+  false)
+(define-fun main@FloppyDeviceControl.exit.i ((x!0 Int)
+ (x!1 (Array Int Int))
+ (x!2 Int)
+ (x!3 (Array Int Int))
+ (x!4 Int)
+ (x!5 (Array Int Int))
+ (x!6 Int)
+ (x!7 Int)
+ (x!8 (Array Int Int))
+ (x!9 Int)
+ (x!10 (Array Int Int))
+ (x!11 Int)
+ (x!12 (Array Int Int))
+ (x!13 (Array Int Int))
+ (x!14 Int)
+ (x!15 (Array Int Int))
+ (x!16 Int)
+ (x!17 Bool)) Bool
+  (let ((a!1 (or (= (select x!1 x!2) 0)
+                 (not (= (select x!15 x!16) 0))
+                 (not (= (select x!12 x!7) 2))
+                 (not (<= x!14 0))))
+        (a!2 (or (not (= (select x!15 x!16) 0))
+                 (not (= (select x!12 x!7) 4))
+                 (not (= x!14 (- 1073741823)))
+                 (<= (select x!5 x!6) 0)
+                 (not (= (select x!13 x!0) (- 1073741823)))))
+        (a!3 (or (not (= (select x!12 x!7) 4))
+                 (<= (select x!5 x!6) 0)
+                 (not (= (select x!13 x!0) 259))
+                 (not (= x!14 259))))
+        (a!4 (or (not (= (select x!15 x!16) 0))
+                 (not (= (select x!12 x!7) 4))
+                 (<= (select x!5 x!6) 0)
+                 (not (= (select x!13 x!0) 0))
+                 (not (= x!14 0)))))
+    (and a!1 x!17 a!2 a!3 a!4)))
+(define-fun main@entry ((x!0 Int)) Bool
+  false)
+(define-fun main@_252 ((x!0 Int)
+ (x!1 (Array Int Int))
+ (x!2 Int)
+ (x!3 (Array Int Int))
+ (x!4 Int)
+ (x!5 (Array Int Int))
+ (x!6 Int)
+ (x!7 Int)
+ (x!8 (Array Int Int))
+ (x!9 Int)
+ (x!10 (Array Int Int))
+ (x!11 Int)
+ (x!12 Int)
+ (x!13 (Array Int Int))
+ (x!14 (Array Int Int))
+ (x!15 (Array Int Int))
+ (x!16 (Array Int Int))
+ (x!17 Int)
+ (x!18 (Array Int Int))
+ (x!19 Int)
+ (x!20 (Array Int Int))
+ (x!21 Int)
+ (x!22 (Array Int Int))
+ (x!23 Int)
+ (x!24 (Array Int Int))
+ (x!25 Int)
+ (x!26 Int)
+ (x!27 (Array Int Int))
+ (x!28 Int)
+ (x!29 (Array Int Int))) Bool
+  true)
+(define-fun main@_12 ((x!0 Int)
+ (x!1 (Array Int Int))
+ (x!2 Int)
+ (x!3 (Array Int Int))
+ (x!4 Int)
+ (x!5 (Array Int Int))
+ (x!6 Int)
+ (x!7 Int)
+ (x!8 (Array Int Int))
+ (x!9 Int)
+ (x!10 (Array Int Int))
+ (x!11 Int)
+ (x!12 Int)
+ (x!13 (Array Int Int))
+ (x!14 (Array Int Int))
+ (x!15 (Array Int Int))
+ (x!16 (Array Int Int))
+ (x!17 Int)
+ (x!18 (Array Int Int))
+ (x!19 Int)
+ (x!20 (Array Int Int))
+ (x!21 Int)
+ (x!22 (Array Int Int))
+ (x!23 Int)
+ (x!24 (Array Int Int))
+ (x!25 Int)
+ (x!26 Int)
+ (x!27 (Array Int Int))
+ (x!28 Int)
+ (x!29 (Array Int Int))
+ (x!30 Int)) Bool
+  false)
+(define-fun main@_12!_Cond ((x!0 Int)
+ (x!1 Int)
+ (x!2 Int)
+ (x!3 Int)
+ (x!4 Int)
+ (x!5 Int)
+ (x!6 Int)
+ (x!7 Int)
+ (x!8 Int)
+ (x!9 Int)
+ (x!10 Int)
+ (x!11 Int)
+ (x!12 Int)
+ (x!13 Int)
+ (x!14 Int)
+ (x!15 (Array Int Int))
+ (x!16 (Array Int Int))
+ (x!17 (Array Int Int))
+ (x!18 (Array Int Int))
+ (x!19 (Array Int Int))
+ (x!20 (Array Int Int))
+ (x!21 (Array Int Int))
+ (x!22 (Array Int Int))
+ (x!23 (Array Int Int))
+ (x!24 (Array Int Int))
+ (x!25 (Array Int Int))
+ (x!26 (Array Int Int))
+ (x!27 (Array Int Int))
+ (x!28 (Array Int Int))
+ (x!29 (Array Int Int))
+ (x!30 (Array Int Int))
+ (x!31 (Array Int Int))
+ (x!32 (Array Int Int))
+ (x!33 Bool)
+ (x!34 Int)) Bool
+  x!33)

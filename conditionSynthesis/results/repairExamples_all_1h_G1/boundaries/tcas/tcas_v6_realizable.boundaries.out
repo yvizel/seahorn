@@ -1,0 +1,5 @@
+(error "Parse Error: ./repairExamples_01-08-20-11-08/boundariesSl//tcas/tcas_v6_realizable.boundaries.grammar.sl:1043.27: Symbol 'mainv.critedge2' previously declared as a variable
+
+  (define-fun mainv.critedge2 ((mainv%sm31_0 (Array Int Int)) (mainv%Alt...
+              ^
+")

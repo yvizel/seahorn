@@ -1,0 +1,12 @@
+  UNSATISFIABLE ASSERTION bat_bug..izable.sk:20: This loop was unrolled 8 times, but apparently that was not enough. Use the --bnd-unroll-amnt flag for better results.
+
+*** Rejected
+    [0;31m[1659402871.5890 - ERROR] [SKETCH] Sketch Not Resolved Error:   UNSATISFIABLE ASSERTION bat_bug..izable.sk:20: This loop was unrolled 8 times, but apparently that was not enough. Use the --bnd-unroll-amnt flag for better results.
+
+*** Rejected
+The sketch could not be resolved.[0m
+    [0;32m[1659402871.5920 - DEBUG] [SKETCH] stack trace written to file: /root/.sketch/tmp/stacktrace.txt[0m
+    [0;32m[1659402871.5921 - DEBUG] Backend solver input file at /root/.sketch/tmp/bat_bug_loop_example_realizable.sk/input0.tmp[0m
+SKETCH version 1.7.6
+Benchmark = /host/bat_bug_loop_example_realizable.sk
+Total time = 1421

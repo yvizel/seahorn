@@ -1,0 +1,21 @@
+/host/s3_srvr_1a_cil.sk:7:17: unexpected token: s__s3__tmp__new_cipher__algorithms
+/host/s3_srvr_1a_cil.sk:109:59: unexpected token: switch_1_8466
+/host/s3_srvr_1a_cil.sk:118:59: unexpected token: switch_1_8496
+/host/s3_srvr_1a_cil.sk:135:59: unexpected token: switch_1_8512
+/host/s3_srvr_1a_cil.sk:139:59: unexpected token: switch_1_8528
+/host/s3_srvr_1a_cil.sk:143:59: unexpected token: switch_1_8544
+/host/s3_srvr_1a_cil.sk:160:63: unexpected token: _L___2
+/host/s3_srvr_1a_cil.sk:161:111: unexpected token: 256
+/host/s3_srvr_1a_cil.sk:175:65: unexpected token: _L___1
+/host/s3_srvr_1a_cil.sk:191:59: unexpected token: switch_1_8560
+/host/s3_srvr_1a_cil.sk:195:59: unexpected token: switch_1_8576
+/host/s3_srvr_1a_cil.sk:208:59: unexpected token: switch_1_8592
+/host/s3_srvr_1a_cil.sk:212:59: unexpected token: switch_1_8608
+/host/s3_srvr_1a_cil.sk:216:59: unexpected token: switch_1_8640
+/host/s3_srvr_1a_cil.sk:233:59: unexpected token: switch_1_8656
+/host/s3_srvr_1a_cil.sk:242:59: unexpected token: switch_1_8672
+/host/s3_srvr_1a_cil.sk:306:5: unexpected token: switch_1_break
+/host/s3_srvr_1a_cil.sk:311:3: unexpected token: end
+/host/s3_srvr_1a_cil.sk:314:3: unexpected token: ERROR
+    [0;31m[1659406339.6640 - ERROR] [SKETCH] Program Parse Error: could not parse program[0m
+    [0;32m[1659406339.6680 - DEBUG] [SKETCH] stack trace written to file: /root/.sketch/tmp/stacktrace.txt[0m

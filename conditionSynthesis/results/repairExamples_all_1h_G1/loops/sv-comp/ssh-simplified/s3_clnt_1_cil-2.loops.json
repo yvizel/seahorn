@@ -1,0 +1,10 @@
+{
+    "loop_count": 1,
+    "loop_lines": [
+        {
+            "column": 3,
+            "file": "../repairExamples/sv-comp/ssh-simplified/s3_clnt_1_cil-2.c",
+            "line": 100
+        }
+    ]
+}

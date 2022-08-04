@@ -1,0 +1,6 @@
+git head position: f1a7829af2f6cd4ddc7ff641ad94b410f71c46e7
+frontend command: sea pf <file> --inline -o0 --keep-temp --temp-dir=/tmp/repair/ --step=large --horn-cond-synthesis --horn-synth-cps=h1 --horn-read-file --horn-avoid-synthesis
+backend command: z3 <reversefile.smt2> -T:3600 -v:1 fp.xform.slice=false fp.xform.inline_linear=false fp.xform.inline_eager=false
+cvc5 command: timeout 3600s cvc5 <fwdfile.sl> --sygus-add-const-grammar
+sketch command: python3 c_to_sketch.py && timeout 3600s sketch <generated sketch file> --fe-output-code --bnd-inbits 10
+grammar file: add_grammar_to_sygus/G1

@@ -1,0 +1,1 @@
+sketch not resolved error:   unsatisfiable assertion bat_bug..izable.sk:24: this loop was unrolled 8 times, but apparently that was not enough. use the --bnd-unroll-amnt flag for better results.

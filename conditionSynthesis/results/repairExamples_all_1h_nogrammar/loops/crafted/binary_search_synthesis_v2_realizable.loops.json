@@ -1,0 +1,25 @@
+{
+    "loop_count": 4,
+    "loop_lines": [
+        {
+            "column": 2,
+            "file": "../repairExamples/crafted/binary_search_synthesis_v2_realizable.c",
+            "line": 13
+        },
+        {
+            "column": 2,
+            "file": "../repairExamples/crafted/binary_search_synthesis_v2_realizable.c",
+            "line": 18
+        },
+        {
+            "column": 2,
+            "file": "../repairExamples/crafted/binary_search_synthesis_v2_realizable.c",
+            "line": 29
+        },
+        {
+            "column": 2,
+            "file": "../repairExamples/crafted/binary_search_synthesis_v2_realizable.c",
+            "line": 47
+        }
+    ]
+}

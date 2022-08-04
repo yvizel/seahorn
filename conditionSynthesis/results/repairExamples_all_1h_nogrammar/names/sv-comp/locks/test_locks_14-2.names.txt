@@ -1,0 +1,8 @@
+condition location:
+main@.lr.ph.split!_Cond @__VERIFIER_nondet_int_0 @find_condition_0 main@%loop.bound_0
+main@.backedge @__VERIFIER_nondet_int_0 @find_condition_0 main@%loop.bound_0
+main@verifier.error
+condition location:
+main@.backedge!_Cond @__VERIFIER_nondet_int_0 @find_condition_0 main@%loop.bound_0
+main@.backedge @__VERIFIER_nondet_int_0 @find_condition_0 main@%loop.bound_0
+main@verifier.error

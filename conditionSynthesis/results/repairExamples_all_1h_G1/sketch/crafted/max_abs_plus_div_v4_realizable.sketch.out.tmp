@@ -1,0 +1,9 @@
+  UNSATISFIABLE ASSERTION max_abs..izable.sk:29: This loop was unrolled 8 times, but apparently that was not enough. Use the --bnd-unroll-amnt flag for better results.
+
+*** Rejected
+    [0;31m[1659405513.9810 - ERROR] [SKETCH] Sketch Not Resolved Error:   UNSATISFIABLE ASSERTION max_abs..izable.sk:29: This loop was unrolled 8 times, but apparently that was not enough. Use the --bnd-unroll-amnt flag for better results.
+
+*** Rejected
+The sketch could not be resolved.[0m
+    [0;32m[1659405513.9840 - DEBUG] [SKETCH] stack trace written to file: /root/.sketch/tmp/stacktrace.txt[0m
+    [0;32m[1659405513.9841 - DEBUG] Backend solver input file at /root/.sketch/tmp/max_abs_plus_div_v4_realizable.sk/input0.tmp[0m

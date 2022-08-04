@@ -1,0 +1,182 @@
+(transform N7datalog13mk_coi_filterE...no-op 0s)
+(transform N7datalog25mk_interp_tail_simplifierE...11 rules 0.001s)
+(transform N7datalog27mk_quantifier_instantiationE...no-op 0s)
+(transform N7datalog8mk_scaleE...no-op 0s)
+(transform N7datalog18mk_karr_invariantsE...no-op 0s)
+(transform N7datalog14mk_array_blastE...no-op 0s)
+(transform N7datalog16mk_elim_term_iteE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...10 rules 0s)
+(transform N7datalog12mk_bit_blastE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog13mk_coi_filterE...no-op 0s)
+(transform N7datalog25mk_interp_tail_simplifierE...10 rules 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog13mk_coi_filterE...no-op 0s)
+(transform N7datalog25mk_interp_tail_simplifierE...10 rules 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+expand: query!0 (0, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 11.36 :after-memory 11.45)
+Entering level 1
+expand: query!0 (1, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (0, 1) FAR 1 U 0.00
+expand: main@entry!_BAD (0, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (1, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 11.45 :after-memory 11.55)
+Propagating: 0 1  ! 2 
+(spacer::context::propagate :time 0.00 :before-memory 11.55 :after-memory 11.64)
+Entering level 2
+expand: query!0 (2, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (1, 2) FAR 1 U 0.00
+expand: main@entry!_BAD (1, 0) FAR  w(0) 1.
+	create_child: main@entry (0, 2) FAR 1 U 0.00
+expand: main@entry (0, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (1, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (2, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 11.64 :after-memory 11.74)
+Propagating: 0 1 2  ! 3 
+(spacer::context::propagate :time 0.00 :before-memory 11.74 :after-memory 11.74)
+Entering level 3
+expand: query!0 (3, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (2, 3) FAR 1 U 0.00
+expand: main@entry!_BAD (2, 0) FAR  w(0) 1.
+	create_child: main@entry (1, 3) FAR 1 U 0.00
+expand: main@entry (1, 0) FAR  w(0) 1.
+	create_child: main@entry!_Cond (0, 3) FAR 1446 U 0.00
+expand: main@entry!_Cond (0, 0) FAR  w(0) 1446. F 0.00
+expand: main@entry (1, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (2, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (3, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 11.74 :after-memory 11.93)
+Propagating: 0 1 2 3  ! 4 
+(spacer::context::propagate :time 0.00 :before-memory 11.93 :after-memory 12.03)
+Entering level 4
+expand: query!0 (4, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (3, 4) FAR 1 U 0.00
+expand: main@entry!_BAD (3, 0) FAR  w(0) 1.
+	create_child: main@entry (2, 4) FAR 1 U 0.00
+expand: main@entry (2, 0) FAR  w(0) 1.
+	create_child: main@entry!_Cond (1, 4) FAR 1446 U 0.00
+expand: main@entry!_Cond (1, 0) FAR  w(0) 1446.
+	create_child: main@_12 (0, 4) FAR 1987 U 0.00
+expand: main@_12 (0, 0) FAR  w(0) 1987. F 0.00
+expand: main@entry!_Cond (1, 0) FAR  w(0) 1446.
+	create_child: main@_9 (0, 4) FAR 2376 U 0.00
+expand: main@_9 (0, 0) FAR  w(0) 2376. F 0.00
+expand: main@entry!_Cond (1, 0) FAR  w(0) 1446. F 0.00
+expand: main@entry (2, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (3, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (4, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 12.03 :after-memory 12.41)
+Propagating: 0 1 2 3 4  ! 5 
+(spacer::context::propagate :time 0.00 :before-memory 12.41 :after-memory 12.61)
+Entering level 5
+expand: query!0 (5, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (4, 5) FAR 1 U 0.00
+expand: main@entry!_BAD (4, 0) FAR  w(0) 1.
+	create_child: main@entry (3, 5) FAR 1 U 0.00
+expand: main@entry (3, 0) FAR  w(0) 1.
+	create_child: main@entry!_Cond (2, 5) FAR 1446 U 0.00
+expand: main@entry!_Cond (2, 0) FAR  w(0) 1446.
+	create_child: main@_12 (1, 5) FAR 1987 U 0.00
+expand: main@_12 (1, 0) FAR  w(0) 1987. F 0.00
+expand: main@entry!_Cond (2, 0) FAR  w(0) 1446.
+	create_child: main@_9 (1, 5) FAR 2856 U 0.00
+expand: main@_9 (1, 0) FAR  w(0) 2856.
+	create_child: main@_12 (1, 5) FAR 3043 X 0.00
+expand: main@_12 (1, 0) FAR  w(0) 3043.
+	create_child: main@.lr.ph (0, 5) FAR 2292 U 0.00
+expand: main@.lr.ph (0, 0) FAR  w(0) 2292. F 0.00
+expand: main@_12 (1, 0) FAR  w(0) 3043. F 0.00
+expand: main@entry!_Cond (2, 0) FAR  w(0) 1446.
+	create_child: main@_9 (1, 5) FAR 3856 U 0.00
+expand: main@_9 (1, 0) FAR  w(0) 3856.
+	create_child: main@.lr.ph (0, 5) FAR 3964 U 0.00
+expand: main@.lr.ph (0, 0) FAR  w(0) 3964. F 0.00
+expand: main@_9 (1, 0) FAR  w(0) 3856. F 0.00
+expand: main@entry!_Cond (2, 0) FAR  w(0) 1446. F 0.00
+expand: main@entry (3, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (4, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (5, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.01 :before-memory 12.61 :after-memory 13.29)
+Propagating: 0 1 2 3 4 5  ! 6 
+(spacer::context::propagate :time 0.00 :before-memory 13.29 :after-memory 13.48)
+Entering level 6
+expand: query!0 (6, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (5, 6) FAR 1 U 0.00
+expand: main@entry!_BAD (5, 0) FAR  w(0) 1.
+	create_child: main@entry (4, 6) FAR 1 U 0.00
+expand: main@entry (4, 0) FAR  w(0) 1.
+	create_child: main@entry!_Cond (3, 6) FAR 1446 U 0.00
+expand: main@entry!_Cond (3, 0) FAR  w(0) 1446.
+	create_child: main@_9 (2, 6) FAR 6049 U 0.00
+expand: main@_9 (2, 0) FAR  w(0) 6049.
+	create_child: main@.lr.ph (1, 6) FAR 4373 U 0.00
+expand: main@.lr.ph (1, 0) FAR  w(0) 4373. F 0.00
+expand: main@_9 (2, 0) FAR  w(0) 6049. F 0.00
+expand: main@entry!_Cond (3, 0) FAR  w(0) 1446. F 0.00
+expand: main@entry (4, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (5, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (6, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.01 :before-memory 13.48 :after-memory 13.81)
+Propagating: 1 2 3 4 5 6  ! 7 
+(spacer::context::propagate :time 0.00 :before-memory 13.81 :after-memory 13.81)
+Entering level 7
+expand: query!0 (7, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (6, 7) FAR 1 U 0.00
+expand: main@entry!_BAD (6, 0) FAR  w(0) 1.
+	create_child: main@entry (5, 7) FAR 1 U 0.00
+expand: main@entry (5, 0) FAR  w(0) 1.
+	create_child: main@entry!_Cond (4, 7) FAR 1446 U 0.00
+expand: main@entry!_Cond (4, 0) FAR  w(0) 1446.
+	create_child: main@_9 (3, 7) FAR 6049 U 0.00
+expand: main@_9 (3, 0) FAR  w(0) 6049.
+	create_child: main@.lr.ph (2, 7) FAR 4373 U 0.00
+expand: main@.lr.ph (2, 0) FAR  w(0) 4373. F 0.00
+expand: main@_9 (3, 0) FAR  w(0) 6049. F 0.00
+expand: main@entry!_Cond (4, 0) FAR  w(0) 1446. F 0.00
+expand: main@entry (5, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (6, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (7, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 13.81 :after-memory 13.90)
+Propagating: 2 3 4 5 6 7  ! 8 
+(spacer::context::propagate :time 0.00 :before-memory 13.90 :after-memory 13.90)
+Entering level 8
+expand: query!0 (8, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (7, 8) FAR 1 U 0.00
+expand: main@entry!_BAD (7, 0) FAR  w(0) 1.
+	create_child: main@entry (6, 8) FAR 1 U 0.00
+expand: main@entry (6, 0) FAR  w(0) 1.
+	create_child: main@entry!_Cond (5, 8) FAR 1446 U 0.00
+expand: main@entry!_Cond (5, 0) FAR  w(0) 1446.
+	create_child: main@_9 (4, 8) FAR 6049 U 0.00
+expand: main@_9 (4, 0) FAR  w(0) 6049.
+	create_child: main@.lr.ph (3, 8) FAR 4373 U 0.00
+expand: main@.lr.ph (3, 0) FAR  w(0) 4373. F 0.00
+expand: main@_9 (4, 0) FAR  w(0) 6049. F 0.00
+expand: main@entry!_Cond (5, 0) FAR  w(0) 1446. F 0.00
+expand: main@entry (6, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (7, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (8, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.01 :before-memory 13.90 :after-memory 13.90)
+Propagating: 3 
+(spacer::context::propagate :time 0.00 :before-memory 13.90 :after-memory 13.90)
+(define-fun main@entry!_BAD () Bool
+  false)
+(define-fun main@entry!_Cond ((x!0 Int) (x!1 Int) (x!2 Int)) Bool
+  (not (<= x!1 5)))
+(define-fun main@entry ((x!0 Int) (x!1 Int) (x!2 Int)) Bool
+  false)
+(define-fun main@_12 ((x!0 Int) (x!1 Int)) Bool
+  (not (<= x!1 12)))
+(define-fun main@.lr.ph ((x!0 Int) (x!1 Int) (x!2 Int)) Bool
+  (and (or (not (<= x!2 5)) (not (>= x!0 8)))
+       (or (not (<= x!1 12)) (not (>= x!0 9)))))
+(define-fun main@_9 ((x!0 Int) (x!1 Int) (x!2 Int)) Bool
+  (or (not (<= x!0 5)) (not (>= x!1 9))))

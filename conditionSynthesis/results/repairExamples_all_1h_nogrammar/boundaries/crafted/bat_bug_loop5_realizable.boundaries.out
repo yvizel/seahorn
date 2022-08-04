@@ -1,0 +1,5 @@
+(error "Parse Error: ./repairExamples_02-08-01-11-57/boundariesSl//crafted/bat_bug_loop5_realizable.boundaries.sl:42.23: Symbol 'mainv.lr.ph' previously declared as a variable
+
+  (define-fun mainv.lr.ph ((vg_0 Int) (mainv%.04.i5_2 Int) (mainv%.0.i7_...
+              ^
+")

@@ -1,0 +1,4 @@
+(
+(define-fun Condition_0 ((vg1_0 Int) (mainv%.0.i.i_1 Bool)) Bool true)
+(define-fun Condition_1 ((vg1_0 Int) (mainv%.0.i1.i_1 Bool)) Bool true)
+)

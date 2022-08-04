@@ -1,0 +1,7 @@
+./repairExamples_02-08-01-11-57/unwindingSl//sv-comp/ntdrivers-simplified/cdaudio_simpl1_synth_cil-1_unknown.unwd.sl:1.9: No set-logic command was given before this point.
+./repairExamples_02-08-01-11-57/unwindingSl//sv-comp/ntdrivers-simplified/cdaudio_simpl1_synth_cil-1_unknown.unwd.sl:1.9: cvc5 will make all theories available.
+./repairExamples_02-08-01-11-57/unwindingSl//sv-comp/ntdrivers-simplified/cdaudio_simpl1_synth_cil-1_unknown.unwd.sl:1.9: Consider setting a stricter logic for (likely) better performance.
+./repairExamples_02-08-01-11-57/unwindingSl//sv-comp/ntdrivers-simplified/cdaudio_simpl1_synth_cil-1_unknown.unwd.sl:1.9: To suppress this warning in the future use (set-logic ALL).
+(
+(define-fun mainvNewDefault.i.i!_Cond ((x0 Int) (x1 Int) (x2 Int) (x3 Int) (x4 Int) (x5 Int) (x6 Int) (x7 Int) (x8 Int) (x9 Int) (x10 Int) (x11 Int) (x12 Int) (x13 Int) (x14 Int) (x15 (Array Int Int)) (x16 (Array Int Int)) (x17 (Array Int Int)) (x18 (Array Int Int)) (x19 (Array Int Int)) (x20 (Array Int Int)) (x21 (Array Int Int)) (x22 (Array Int Int)) (x23 (Array Int Int)) (x24 (Array Int Int)) (x25 (Array Int Int)) (x26 (Array Int Int)) (x27 (Array Int Int)) (x28 (Array Int Int)) (x29 Int)) Bool false)
+)

@@ -1,0 +1,70 @@
+/host/s3_clnt_2_cil-1.sk:40:17: unexpected token: tmp
+/host/s3_clnt_2_cil-1.sk:41:17: unexpected token: l
+/host/s3_clnt_2_cil-1.sk:60:17: unexpected token: __cil_tmp56
+/host/s3_clnt_2_cil-1.sk:104:9: unexpected token: while_0_continue
+/host/s3_clnt_2_cil-1.sk:310:77: unexpected token: switch_1_12292
+/host/s3_clnt_2_cil-1.sk:315:77: unexpected token: switch_1_16384
+/host/s3_clnt_2_cil-1.sk:318:77: unexpected token: switch_1_4096
+/host/s3_clnt_2_cil-1.sk:321:77: unexpected token: switch_1_20480
+/host/s3_clnt_2_cil-1.sk:324:77: unexpected token: switch_1_4099
+/host/s3_clnt_2_cil-1.sk:375:77: unexpected token: switch_1_4368
+/host/s3_clnt_2_cil-1.sk:378:77: unexpected token: switch_1_4369
+/host/s3_clnt_2_cil-1.sk:407:77: unexpected token: switch_1_4384
+/host/s3_clnt_2_cil-1.sk:410:77: unexpected token: switch_1_4385
+/host/s3_clnt_2_cil-1.sk:434:77: unexpected token: switch_1_4400
+/host/s3_clnt_2_cil-1.sk:437:77: unexpected token: switch_1_4401
+/host/s3_clnt_2_cil-1.sk:441:79: unexpected token: __cil_tmp56
+/host/s3_clnt_2_cil-1.sk:441:93: unexpected token: (
+/host/s3_clnt_2_cil-1.sk:441:107: unexpected token: )
+/host/s3_clnt_2_cil-1.sk:442:104: unexpected token: 256
+/host/s3_clnt_2_cil-1.sk:465:77: unexpected token: switch_1_4416
+/host/s3_clnt_2_cil-1.sk:468:77: unexpected token: switch_1_4417
+/host/s3_clnt_2_cil-1.sk:490:77: unexpected token: switch_1_4432
+/host/s3_clnt_2_cil-1.sk:493:77: unexpected token: switch_1_4433
+/host/s3_clnt_2_cil-1.sk:509:77: unexpected token: switch_1_4448
+/host/s3_clnt_2_cil-1.sk:512:77: unexpected token: switch_1_4449
+/host/s3_clnt_2_cil-1.sk:531:77: unexpected token: switch_1_4464
+/host/s3_clnt_2_cil-1.sk:534:77: unexpected token: switch_1_4465
+/host/s3_clnt_2_cil-1.sk:537:77: unexpected token: switch_1_4466
+/host/s3_clnt_2_cil-1.sk:540:77: unexpected token: switch_1_4467
+/host/s3_clnt_2_cil-1.sk:551:77: unexpected token: switch_1_4480
+/host/s3_clnt_2_cil-1.sk:554:77: unexpected token: switch_1_4481
+/host/s3_clnt_2_cil-1.sk:562:77: unexpected token: l
+/host/s3_clnt_2_cil-1.sk:562:81: unexpected token: (
+/host/s3_clnt_2_cil-1.sk:562:95: unexpected token: )
+/host/s3_clnt_2_cil-1.sk:575:77: unexpected token: switch_1_4496
+/host/s3_clnt_2_cil-1.sk:578:77: unexpected token: switch_1_4497
+/host/s3_clnt_2_cil-1.sk:590:77: unexpected token: switch_1_4512
+/host/s3_clnt_2_cil-1.sk:593:77: unexpected token: switch_1_4513
+/host/s3_clnt_2_cil-1.sk:626:77: unexpected token: switch_1_4528
+/host/s3_clnt_2_cil-1.sk:629:77: unexpected token: switch_1_4529
+/host/s3_clnt_2_cil-1.sk:639:77: unexpected token: __cil_tmp58
+/host/s3_clnt_2_cil-1.sk:639:91: unexpected token: __cil_tmp57
+/host/s3_clnt_2_cil-1.sk:639:105: unexpected token: 5
+/host/s3_clnt_2_cil-1.sk:646:106: unexpected token: 2
+/host/s3_clnt_2_cil-1.sk:650:83: unexpected token: __cil_tmp61
+/host/s3_clnt_2_cil-1.sk:650:97: unexpected token: __cil_tmp60
+/host/s3_clnt_2_cil-1.sk:650:111: unexpected token: 4
+/host/s3_clnt_2_cil-1.sk:664:77: unexpected token: switch_1_4560
+/host/s3_clnt_2_cil-1.sk:667:77: unexpected token: switch_1_4561
+/host/s3_clnt_2_cil-1.sk:686:77: unexpected token: switch_1_4352
+/host/s3_clnt_2_cil-1.sk:689:97: unexpected token: 0
+/host/s3_clnt_2_cil-1.sk:695:102: unexpected token: 0
+/host/s3_clnt_2_cil-1.sk:709:77: unexpected token: switch_1_3
+/host/s3_clnt_2_cil-1.sk:718:79: unexpected token: __cil_tmp65
+/host/s3_clnt_2_cil-1.sk:718:93: unexpected token: __cil_tmp64
+/host/s3_clnt_2_cil-1.sk:718:105: unexpected token: -
+/host/s3_clnt_2_cil-1.sk:718:107: unexpected token: 4
+/host/s3_clnt_2_cil-1.sk:738:77: unexpected token: switch_1_default
+/host/s3_clnt_2_cil-1.sk:745:77: unexpected token: switch_1_break
+/host/s3_clnt_2_cil-1.sk:848:7: unexpected token: while_0_break
+/host/s3_clnt_2_cil-1.sk:852:5: unexpected token: end
+/host/s3_clnt_2_cil-1.sk:860:5: unexpected token: ERROR
+/host/s3_clnt_2_cil-1.sk:867:22: expecting an identifier, found ')'
+/host/s3_clnt_2_cil-1.sk:869:8: expecting RPAREN, found ';'
+/host/s3_clnt_2_cil-1.sk:877:3: expecting EOF, found 'return'
+    [0;31m[1659417220.1210 - ERROR] [SKETCH] Program Parse Error: could not parse program[0m
+    [0;32m[1659417220.1270 - DEBUG] [SKETCH] stack trace written to file: /root/.sketch/tmp/stacktrace.txt[0m
+SKETCH version 1.7.6
+Benchmark = /host/s3_clnt_2_cil-1.sk
+Total time = 298

@@ -1,0 +1,4 @@
+condition location:
+main@entry!_Cond @g_0 main@%loop.bound_0 main@%_2_0
+main@_12 main@%loop.bound_0 main@%_2_0
+main@_9 main@%loop.bound_0 main@%_2_0 @g_0

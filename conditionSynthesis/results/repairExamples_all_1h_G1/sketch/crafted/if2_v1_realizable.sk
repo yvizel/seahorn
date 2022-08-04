@@ -1,0 +1,67 @@
+void f()
+{
+}
+
+harness int main()
+{
+  int x = getND();
+  int sum = 0;
+  if (main_generator_for_bit_11(1, x, sum))
+  {
+    f();
+    sum += x;
+  }
+  else
+  {
+    sum -= x;
+  }
+
+  assert(sum >= 0);
+  return 0;
+}
+
+
+generator int base_generator_for_int_11(int x, int sum) {
+    return {| x | sum |};
+}
+generator int main_generator_for_int_11(int bnd, int sk_x, int sk_sum) {
+    assert bnd > 0;
+    int t = ??(3);
+    int x = {| 50 | 100 | 300 | 600 | ?? | base_generator_for_int_11(sk_x, sk_sum)  | main_generator_for_int_11(bnd - 1, sk_x, sk_sum) |};
+    if(t == 0){return x;}
+    int y = {| 50 | 100 | 300 | 600 | ?? | base_generator_for_int_11(sk_x, sk_sum)  | main_generator_for_int_11(bnd - 1, sk_x, sk_sum) |};
+    if(t == 1){return x+y;}
+    if(t == 2){return x-y;}
+    if(t == 3){return x*y;}
+    if(t == 4){return x/y;}
+}
+generator bit main_generator_for_bit_11(int bnd, int sk_x, int sk_sum) {
+    assert bnd > 0;
+    int t = ??(6);
+    if(t==0) {
+        int y = main_generator_for_int_11(bnd, sk_x, sk_sum);
+        int z = main_generator_for_int_11(bnd, sk_x, sk_sum);
+        int t2 = ??(2);
+        if(t2 == 0) {return y < z;}
+        if(t2 == 1) {return y == z;}
+        if(t2 == 2) {return y <= z;}
+    }
+    bit x = {| ??(1)  | main_generator_for_bit_11(bnd - 1, sk_x, sk_sum) |};
+    if(t == 3){return x;}
+    if(t == 4){return !x;}
+    bit y = {| ??(1)  | main_generator_for_bit_11(bnd - 1, sk_x, sk_sum) |};
+    if(t == 5){return x&&y;}
+    if(t == 6){return x||y;}
+}
+int NDCNT=0;
+int getND_private(int i);
+int getND(){
+    //Every time this function is called
+    //it produces a new non-deterministic value.
+    return getND_private(NDCNT++);
+}
+int nd(){
+    //Every time this function is called
+    //it produces a new non-deterministic value.
+    return getND_private(NDCNT++);
+}

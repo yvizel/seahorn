@@ -1,0 +1,3 @@
+(
+(define-fun Condition_0 ((vg_0 Int) (mainv%loop.bound_0 Int) (mainv%_2_0 Int)) Bool (>= 12 mainv%_2_0))
+)

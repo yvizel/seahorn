@@ -1,0 +1,10 @@
+{
+    "loop_count": 1,
+    "loop_lines": [
+        {
+            "column": 3,
+            "file": "../repairExamples/crafted/max_abs_plus_div_v3_unrealizable.c",
+            "line": 25
+        }
+    ]
+}

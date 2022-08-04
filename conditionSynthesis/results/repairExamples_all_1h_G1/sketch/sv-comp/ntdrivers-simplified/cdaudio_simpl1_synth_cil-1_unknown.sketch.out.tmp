@@ -1,0 +1,4 @@
+/host/cdaudio_simpl1_synth_cil-1_unknown.sk:24:18: expecting an identifier, found ')'
+/host/cdaudio_simpl1_synth_cil-1_unknown.sk:30:5: expecting EOF, found 'return'
+    [0;31m[1659402743.2220 - ERROR] [SKETCH] Program Parse Error: could not parse program[0m
+    [0;32m[1659402743.2250 - DEBUG] [SKETCH] stack trace written to file: /root/.sketch/tmp/stacktrace.txt[0m

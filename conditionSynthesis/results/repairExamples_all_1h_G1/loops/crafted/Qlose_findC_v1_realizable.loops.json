@@ -1,0 +1,20 @@
+{
+    "loop_count": 3,
+    "loop_lines": [
+        {
+            "column": 3,
+            "file": "../repairExamples/crafted/Qlose_findC_v1_realizable.c",
+            "line": 8
+        },
+        {
+            "column": 3,
+            "file": "../repairExamples/crafted/Qlose_findC_v1_realizable.c",
+            "line": 17
+        },
+        {
+            "column": 2,
+            "file": "../repairExamples/crafted/Qlose_findC_v1_realizable.c",
+            "line": 27
+        }
+    ]
+}

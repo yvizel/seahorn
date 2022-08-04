@@ -1,0 +1,231 @@
+(transform N7datalog13mk_coi_filterE...no-op 0s)
+(transform N7datalog25mk_interp_tail_simplifierE...13 rules 0.034s)
+(transform N7datalog27mk_quantifier_instantiationE...no-op 0s)
+(transform N7datalog8mk_scaleE...no-op 0s)
+(transform N7datalog18mk_karr_invariantsE...no-op 0s)
+(transform N7datalog14mk_array_blastE...no-op 0s)
+(transform N7datalog16mk_elim_term_iteE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...12 rules 0.004s)
+(transform N7datalog12mk_bit_blastE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog13mk_coi_filterE...no-op 0s)
+(transform N7datalog25mk_interp_tail_simplifierE...12 rules 0.002s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog13mk_coi_filterE...no-op 0s)
+(transform N7datalog25mk_interp_tail_simplifierE...12 rules 0.002s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+expand: query!0 (0, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 17.66 :after-memory 17.76)
+Entering level 1
+expand: query!0 (1, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (0, 1) FAR 1 U 0.00
+expand: main@entry!_BAD (0, 0) FAR  w(0) 1. F 0.01
+expand: query!0 (1, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.01 :before-memory 17.76 :after-memory 19.63)
+Propagating: 0 1  ! 2 
+(spacer::context::propagate :time 0.00 :before-memory 19.63 :after-memory 19.82)
+Entering level 2
+expand: query!0 (2, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (1, 2) FAR 1 U 0.00
+expand: main@entry!_BAD (1, 0) FAR  w(0) 1.
+	create_child: main@entry (0, 2) FAR 1 U 0.00
+expand: main@entry (0, 0) FAR  w(0) 1. F 0.01
+expand: main@entry!_BAD (1, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (2, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.01 :before-memory 19.82 :after-memory 21.19)
+Propagating: 0 1 2  ! 3 
+(spacer::context::propagate :time 0.00 :before-memory 21.19 :after-memory 21.29)
+Entering level 3
+expand: query!0 (3, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (2, 3) FAR 1 U 0.00
+expand: main@entry!_BAD (2, 0) FAR  w(0) 1.
+	create_child: main@entry (1, 3) FAR 1 U 0.00
+expand: main@entry (1, 0) FAR  w(0) 1.
+	create_child: main@_58 (0, 3) FAR 25818 U 0.01
+expand: main@_58 (0, 0) FAR  w(0) 25818. F 0.00
+expand: main@entry (1, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (2, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (3, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.01 :before-memory 21.29 :after-memory 22.05)
+Propagating: 0 1 2 3  ! 4 
+(spacer::context::propagate :time 0.00 :before-memory 22.05 :after-memory 22.05)
+Entering level 4
+expand: query!0 (4, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (3, 4) FAR 1 U 0.00
+expand: main@entry!_BAD (3, 0) FAR  w(0) 1.
+	create_child: main@entry (2, 4) FAR 1 U 0.00
+expand: main@entry (2, 0) FAR  w(0) 1.
+	create_child: main@_58 (1, 4) FAR 25818 U 0.01
+expand: main@_58 (1, 0) FAR  w(0) 25818.
+	create_child: main@_58!_Cond (0, 4) FAR 27071 U 0.00
+expand: main@_58!_Cond (0, 0) FAR  w(0) 27071. F 0.00
+expand: main@_58 (1, 0) FAR  w(0) 25818. F 0.00
+expand: main@entry (2, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (3, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (4, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.02 :before-memory 22.05 :after-memory 22.82)
+Propagating: 0 1 2 3 4  ! 5 
+(spacer::context::propagate :time 0.00 :before-memory 22.82 :after-memory 22.91)
+Entering level 5
+expand: query!0 (5, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (4, 5) FAR 1 U 0.00
+expand: main@entry!_BAD (4, 0) FAR  w(0) 1.
+	create_child: main@entry (3, 5) FAR 1 U 0.00
+expand: main@entry (3, 0) FAR  w(0) 1.
+	create_child: main@_58 (2, 5) FAR 25818 U 0.01
+expand: main@_58 (2, 0) FAR  w(0) 25818.
+	create_child: main@_58!_Cond (1, 5) FAR 27071 U 0.00
+expand: main@_58!_Cond (1, 0) FAR  w(0) 27071.
+	create_child: main@_61 (0, 5) FAR 28768 U 0.00
+expand: main@_61 (0, 0) FAR  w(0) 28768. F 0.00
+expand: main@_58!_Cond (1, 0) FAR  w(0) 27071. F 0.00
+expand: main@_58 (2, 0) FAR  w(0) 25818. F 0.00
+expand: main@entry (3, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (4, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (5, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.02 :before-memory 22.91 :after-memory 24.16)
+Propagating: 0 1 2 3 4 5  ! 6 
+(spacer::context::propagate :time 0.00 :before-memory 24.16 :after-memory 24.25)
+Entering level 6
+expand: query!0 (6, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (5, 6) FAR 1 U 0.00
+expand: main@entry!_BAD (5, 0) FAR  w(0) 1.
+	create_child: main@entry (4, 6) FAR 1 U 0.00
+expand: main@entry (4, 0) FAR  w(0) 1.
+	create_child: main@_58 (3, 6) FAR 25818 U 0.01
+expand: main@_58 (3, 0) FAR  w(0) 25818.
+	create_child: main@_58!_Cond (2, 6) FAR 27071 U 0.00
+expand: main@_58!_Cond (2, 0) FAR  w(0) 27071.
+	create_child: main@_61 (1, 6) FAR 28768 U 0.00
+expand: main@_61 (1, 0) FAR  w(0) 28768.
+	create_child: main@.critedge1 (0, 6) FAR 30626 U 0.00
+expand: main@.critedge1 (0, 0) FAR  w(0) 30626. F 0.00
+expand: main@_61 (1, 0) FAR  w(0) 28768. F 0.00
+expand: main@_58!_Cond (2, 0) FAR  w(0) 27071. F 0.00
+expand: main@_58 (3, 0) FAR  w(0) 25818. F 0.00
+expand: main@entry (4, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (5, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (6, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.02 :before-memory 24.25 :after-memory 25.52)
+Propagating: 0 1 2 3 4 5 6  ! 7 
+(spacer::context::propagate :time 0.00 :before-memory 25.52 :after-memory 25.52)
+Entering level 7
+expand: query!0 (7, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (6, 7) FAR 1 U 0.00
+expand: main@entry!_BAD (6, 0) FAR  w(0) 1.
+	create_child: main@entry (5, 7) FAR 1 U 0.00
+expand: main@entry (5, 0) FAR  w(0) 1.
+	create_child: main@_58 (4, 7) FAR 25818 U 0.01
+expand: main@_58 (4, 0) FAR  w(0) 25818.
+	create_child: main@_58!_Cond (3, 7) FAR 27071 U 0.00
+expand: main@_58!_Cond (3, 0) FAR  w(0) 27071.
+	create_child: main@_61 (2, 7) FAR 28768 U 0.00
+expand: main@_61 (2, 0) FAR  w(0) 28768.
+	create_child: main@.critedge1 (1, 7) FAR 30626 U 0.00
+expand: main@.critedge1 (1, 0) FAR  w(0) 30626.
+	create_child: main@.critedge1!_Cond (0, 7) FAR 32395 U 0.00
+expand: main@.critedge1!_Cond (0, 0) FAR  w(0) 32395. F 0.02
+expand: main@.critedge1 (1, 0) FAR  w(0) 30626. F 0.00
+expand: main@_61 (2, 0) FAR  w(0) 28768. F 0.00
+expand: main@_58!_Cond (3, 0) FAR  w(0) 27071. F 0.00
+expand: main@_58 (4, 0) FAR  w(0) 25818. F 0.00
+expand: main@entry (5, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (6, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (7, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.04 :before-memory 25.52 :after-memory 28.72)
+Propagating: 0 1 2 3 4 5 6 7  ! 8 
+(spacer::context::propagate :time 0.01 :before-memory 28.72 :after-memory 29.58)
+Entering level 8
+expand: query!0 (8, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (7, 8) FAR 1 U 0.00
+expand: main@entry!_BAD (7, 0) FAR  w(0) 1.
+	create_child: main@entry (6, 8) FAR 1 U 0.00
+expand: main@entry (6, 0) FAR  w(0) 1.
+	create_child: main@_58 (5, 8) FAR 25818 U 0.01
+expand: main@_58 (5, 0) FAR  w(0) 25818.
+	create_child: main@_58!_Cond (4, 8) FAR 27071 U 0.00
+expand: main@_58!_Cond (4, 0) FAR  w(0) 27071.
+	create_child: main@_61 (3, 8) FAR 28768 U 0.00
+expand: main@_61 (3, 0) FAR  w(0) 28768.
+	create_child: main@.critedge1 (2, 8) FAR 30626 U 0.00
+expand: main@.critedge1 (2, 0) FAR  w(0) 30626.
+	create_child: main@.critedge1!_Cond (1, 8) FAR 32395 U 0.00
+expand: main@.critedge1!_Cond (1, 0) FAR  w(0) 32395(smt.stats :restarts  :decisions   :clauses/bin    :simplify   :memory)
+(smt.stats      :conflicts  :propagations   :lemmas     :deletions   )
+(smt.stats    0    139   5257  18062  4198/0   431     0    0   32.93)
+.
+	create_child: main@_95 (0, 8) FAR 42509 UNDEF 0.10
+expand: main@_95 (0, 0) FAR  w(0) 42509. UNDEF 0.01
+expand: main@_95 (0, 0) FAR  w(1) 42509. T 0.00
+is-reachable: main@.critedge1!_Cond (1, 0) FAR 32395 F 0.02
+expand: main@.critedge1!_Cond (1, 0) FAR  w(1) 32395.
+	create_child: main@_95 (0, 8) FAR 54340 U 0.01
+expand: main@_95 (0, 0) FAR  w(0) 54340. F 0.05
+expand: main@.critedge1!_Cond (1, 0) FAR  w(1) 32395
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.07
+expand: main@.critedge1 (2, 0) FAR  w(0) 30626
+
+
+FAILED TO FIND COEFFICIENT
+
+
+
+
+
+FAILED TO FIND COEFFICIENT
+
+
+. F 0.02
+expand: main@_61 (3, 0) FAR  w(0) 28768.
+	create_child: main@.critedge1 (2, 8) FAR 59337 U 0.01
+expand: main@.critedge1 (2, 0) FAR  w(0) 59337.
+	create_child: main@.critedge1!_Cond (1, 8) FAR 59438 U 0.00
+expand: main@.critedge1!_Cond (1, 0) FAR  w(0) 59438.
+	create_child: main@_95 (0, 8) FAR 60163 U 0.01
+expand: main@_95 (0, 0) FAR  w(0) 60163. F 0.03
+expand: main@.critedge1!_Cond (1, 0) FAR  w(0) 59438. F 0.02
+expand: main@.critedge1 (2, 0) FAR  w(0) 59337. F 0.01
+expand: main@_61 (3, 0) FAR  w(0) 28768.
+	create_child: main@.critedge1 (2, 8) FAR 61791 U 0.01
+expand: main@.critedge1 (2, 0) FAR  w(0) 61791.
+	create_child: main@.critedge1!_Cond (1, 8) FAR 61941 U 0.00
+expand: main@.critedge1!_Cond (1, 0) FAR  w(0) 61941. T 0.03
+is-reachable: main@.critedge1 (2, 0) FAR 61791 T 0.00
+is-reachable: main@_61 (3, 0) FAR 28768 F 0.00
+Deleting closed node: main@.critedge1(2, 8) 61791
+expand: main@_61 (3, 0) FAR  w(1) 28768.
+	create_child: main@_65 (3, 8) FAR 30643 X 0.01
+expand: main@_65 (3, 0) FAR  w(0) 30643. T 0.01
+is-reachable: main@_58!_Cond (4, 0) FAR 27071 F 0.00
+expand: main@_58!_Cond (4, 0) FAR  w(1) 27071. T 0.00
+is-reachable: main@_58 (5, 0) FAR 25818 T 0.00
+is-reachable: main@entry (6, 0) FAR 1 F 0.00
+Deleting closed node: main@_58(5, 8) 25818
+expand: main@entry (6, 0) FAR  w(1) 1. T 0.01
+is-reachable: main@entry!_BAD (7, 0) FAR 1 T 0.00
+is-reachable: query!0 (8, 0) FAR 1 T 0.00
+(spacer::context::check_reachability :time 0.47 :before-memory 29.58 :after-memory 44.10)

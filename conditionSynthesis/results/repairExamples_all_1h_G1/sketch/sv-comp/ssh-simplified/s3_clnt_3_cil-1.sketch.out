@@ -1,0 +1,18 @@
+/host/s3_clnt_3_cil-1.sk:40:17: unexpected token: l
+/host/s3_clnt_3_cil-1.sk:106:9: unexpected token: while_0_continue
+/host/s3_clnt_3_cil-1.sk:312:79: unexpected token: switch_1_12292
+/host/s3_clnt_3_cil-1.sk:317:79: unexpected token: switch_1_16384
+/host/s3_clnt_3_cil-1.sk:320:79: unexpected token: switch_1_4096
+/host/s3_clnt_3_cil-1.sk:323:79: unexpected token: switch_1_20480
+/host/s3_clnt_3_cil-1.sk:326:79: unexpected token: switch_1_4099
+/host/s3_clnt_3_cil-1.sk:349:87: unexpected token: unsigned
+/host/s3_clnt_3_cil-1.sk:349:102: unexpected token: buf
+/host/s3_clnt_3_cil-1.sk:349:112: unexpected token: unsigned
+/host/s3_clnt_3_cil-1.sk:349:127: unexpected token: (
+/host/s3_clnt_3_cil-1.sk:349:137: unexpected token: 0
+/host/s3_clnt_3_cil-1.sk:349:139: unexpected token: )
+    [0;31m[1659406353.3920 - ERROR] [SKETCH] Program Parse Error: Sketch failed to parse: null[0m
+    [0;32m[1659406353.3950 - DEBUG] [SKETCH] stack trace written to file: /root/.sketch/tmp/stacktrace.txt[0m
+SKETCH version 1.7.6
+Benchmark = /host/s3_clnt_3_cil-1.sk
+Total time = 226

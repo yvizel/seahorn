@@ -1,0 +1,14 @@
+./repairExamples_01-08-20-11-08/forwardSl//crafted/max_abs_plus_div_v1_realizable.fwd.sl:1.9: No set-logic command was given before this point.
+./repairExamples_01-08-20-11-08/forwardSl//crafted/max_abs_plus_div_v1_realizable.fwd.sl:1.9: cvc5 will make all theories available.
+./repairExamples_01-08-20-11-08/forwardSl//crafted/max_abs_plus_div_v1_realizable.fwd.sl:1.9: Consider setting a stricter logic for (likely) better performance.
+./repairExamples_01-08-20-11-08/forwardSl//crafted/max_abs_plus_div_v1_realizable.fwd.sl:1.9: To suppress this warning in the future use (set-logic ALL).
+(
+(define-fun verifier.error ((x0 Bool) (x1 Bool) (x2 Bool)) Bool true)
+(define-fun mainventry ((x0 Int) (x1 Int) (x2 Int)) Bool true)
+(define-fun mainv_12 ((x0 Int) (x1 Int)) Bool (= x0 5))
+(define-fun mainv_9 ((x0 Int) (x1 Int) (x2 Int)) Bool false)
+(define-fun mainv.lr.ph ((x0 Int) (x1 Int) (x2 Int)) Bool (and (<= x2 9) (<= 9 x0)))
+(define-fun mainvverifier.error.split () Bool false)
+(define-fun mainventry!_BAD () Bool true)
+(define-fun mainventry!_Cond ((x0 Int) (x1 Int) (x2 Int)) Bool (>= x1 (select ((as const (Array Int Int)) 0) (- 23))))
+)

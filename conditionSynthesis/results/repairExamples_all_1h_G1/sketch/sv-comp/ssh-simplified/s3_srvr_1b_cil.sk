@@ -1,0 +1,230 @@
+harness int main()
+{
+  int s__state = getND();
+  int s__hit = __VERIFIER_nondet_int();
+  int blastFlag = getND();
+  int tmp___1 = getND();
+  s__state = 8466;
+  blastFlag = 0;
+  while (1)
+  {
+    if ((s__state <= 8512) && (blastFlag > 2))
+    {
+      goto ERROR;
+    }
+
+    {
+      {
+        {
+          {
+            {
+              if (s__state == 8466)
+              {
+                goto switch_1_8466;
+              }
+              else
+              {
+                {
+                  {
+                    if (s__state == 8512)
+                    {
+                      goto switch_1_8512;
+                    }
+                    else
+                    {
+                      {
+                        {
+                          {
+                            {
+                              {
+                                {
+                                  {
+                                    {
+                                      {
+                                        {
+                                          {
+                                            {
+                                              {
+                                                if (s__state == 8640)
+                                                {
+                                                  goto switch_1_8640;
+                                                }
+                                                else
+                                                {
+                                                  {
+                                                    if (s__state == 8656)
+                                                    {
+                                                      goto switch_1_8656;
+                                                    }
+                                                    else
+                                                    {
+                                                      {
+                                                        {
+                                                          goto end;
+                                                          switch_1_8466:
+                                                          if (blastFlag == 0)
+                                                          {
+                                                            blastFlag = 2;
+                                                          }
+
+
+                                                          if ((s__hit != 0))
+                                                          {
+                                                            s__state = 8656;
+                                                          }
+                                                          else
+                                                          {
+                                                            s__state = 8512;
+                                                          }
+
+                                                          goto switch_1_break;
+                                                          switch_1_8512:
+                                                          tmp___1 = __VERIFIER_nondet_int();
+
+                                                          if (main_generator_for_bit_71(1, s__state, s__hit, blastFlag, tmp___1))
+                                                          {
+                                                            s__state = 8466;
+                                                          }
+                                                          else
+                                                          {
+                                                            s__state = 8640;
+                                                          }
+
+                                                          goto switch_1_break;
+                                                          switch_1_8640:
+                                                          if (blastFlag == 3)
+                                                          {
+                                                            blastFlag = 4;
+                                                          }
+
+
+                                                          if ((s__hit != 0))
+                                                          {
+                                                            goto end;
+                                                          }
+                                                          else
+                                                          {
+                                                            s__state = 8656;
+                                                          }
+
+                                                          goto switch_1_break;
+                                                          switch_1_8656:
+                                                          if (blastFlag == 2)
+                                                          {
+                                                            blastFlag = 3;
+                                                          }
+
+
+                                                          if (blastFlag == 4)
+                                                          {
+                                                            blastFlag = 5;
+                                                          }
+                                                          else
+                                                          {
+                                                            if (blastFlag == 5)
+                                                            {
+                                                              goto ERROR;
+                                                            }
+
+                                                          }
+
+                                                          if ((s__hit != 0))
+                                                          {
+                                                            s__state = 8640;
+                                                          }
+                                                          else
+                                                          {
+                                                            goto end;
+                                                          }
+
+                                                          goto switch_1_break;
+                                                        }
+                                                      }
+                                                    }
+
+                                                  }
+                                                }
+
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+
+                  }
+                }
+              }
+
+            }
+          }
+        }
+      }
+    }
+    switch_1_break:
+    ;
+
+  }
+
+  end:
+  return -1;
+
+  ERROR:
+  __VERIFIER_error();
+
+  return -1;
+}
+
+
+generator int base_generator_for_int_71(int s__state, int s__hit, int blastFlag, int tmp___1) {
+    return {| s__state | s__hit | blastFlag | tmp___1 |};
+}
+generator int main_generator_for_int_71(int bnd, int sk_s__state, int sk_s__hit, int sk_blastFlag, int sk_tmp___1) {
+    assert bnd > 0;
+    int t = ??(3);
+    int x = {| 50 | 100 | 300 | 600 | ?? | base_generator_for_int_71(sk_s__state, sk_s__hit, sk_blastFlag, sk_tmp___1)  | main_generator_for_int_71(bnd - 1, sk_s__state, sk_s__hit, sk_blastFlag, sk_tmp___1) |};
+    if(t == 0){return x;}
+    int y = {| 50 | 100 | 300 | 600 | ?? | base_generator_for_int_71(sk_s__state, sk_s__hit, sk_blastFlag, sk_tmp___1)  | main_generator_for_int_71(bnd - 1, sk_s__state, sk_s__hit, sk_blastFlag, sk_tmp___1) |};
+    if(t == 1){return x+y;}
+    if(t == 2){return x-y;}
+    if(t == 3){return x*y;}
+    if(t == 4){return x/y;}
+}
+generator bit main_generator_for_bit_71(int bnd, int sk_s__state, int sk_s__hit, int sk_blastFlag, int sk_tmp___1) {
+    assert bnd > 0;
+    int t = ??(6);
+    if(t==0) {
+        int y = main_generator_for_int_71(bnd, sk_s__state, sk_s__hit, sk_blastFlag, sk_tmp___1);
+        int z = main_generator_for_int_71(bnd, sk_s__state, sk_s__hit, sk_blastFlag, sk_tmp___1);
+        int t2 = ??(2);
+        if(t2 == 0) {return y < z;}
+        if(t2 == 1) {return y == z;}
+        if(t2 == 2) {return y <= z;}
+    }
+    bit x = {| ??(1)  | main_generator_for_bit_71(bnd - 1, sk_s__state, sk_s__hit, sk_blastFlag, sk_tmp___1) |};
+    if(t == 3){return x;}
+    if(t == 4){return !x;}
+    bit y = {| ??(1)  | main_generator_for_bit_71(bnd - 1, sk_s__state, sk_s__hit, sk_blastFlag, sk_tmp___1) |};
+    if(t == 5){return x&&y;}
+    if(t == 6){return x||y;}
+}
+int NDCNT=0;
+int getND_private(int i);
+int getND(){
+    //Every time this function is called
+    //it produces a new non-deterministic value.
+    return getND_private(NDCNT++);
+}
+int nd(){
+    //Every time this function is called
+    //it produces a new non-deterministic value.
+    return getND_private(NDCNT++);
+}

@@ -1,0 +1,3458 @@
+(transform N7datalog13mk_coi_filterE...no-op 0s)
+(transform N7datalog25mk_interp_tail_simplifierE...46 rules 0.07s)
+(transform N7datalog27mk_quantifier_instantiationE...no-op 0s)
+(transform N7datalog8mk_scaleE...no-op 0s)
+(transform N7datalog18mk_karr_invariantsE...no-op 0s)
+(transform N7datalog14mk_array_blastE...no-op 0s)
+(transform N7datalog16mk_elim_term_iteE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...44 rules 0.002s)
+(transform N7datalog12mk_bit_blastE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog13mk_coi_filterE...no-op 0s)
+(transform N7datalog25mk_interp_tail_simplifierE...44 rules 0.003s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog13mk_coi_filterE...no-op 0s)
+(transform N7datalog25mk_interp_tail_simplifierE...44 rules 0.003s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+(transform N7datalog15mk_rule_inlinerE...no-op 0s)
+(transform N7datalog22mk_subsumption_checkerE...no-op 0s)
+expand: query!0 (0, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 29.59 :after-memory 29.90)
+Entering level 1
+expand: query!0 (1, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (0, 1) FAR 1 U 0.00
+expand: main@entry!_BAD (0, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (1, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 29.90 :after-memory 30.25)
+Propagating: 0 1  ! 2 
+(spacer::context::propagate :time 0.00 :before-memory 30.25 :after-memory 30.25)
+Entering level 2
+expand: query!0 (2, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (1, 2) FAR 1 U 0.00
+expand: main@entry!_BAD (1, 0) FAR  w(0) 1.
+	create_child: main@entry (0, 2) FAR 1 U 0.00
+expand: main@entry (0, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (1, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (2, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 30.25 :after-memory 30.88)
+Propagating: 0 1 2  ! 3 
+(spacer::context::propagate :time 0.00 :before-memory 30.88 :after-memory 30.88)
+Entering level 3
+expand: query!0 (3, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (2, 3) FAR 1 U 0.00
+expand: main@entry!_BAD (2, 0) FAR  w(0) 1.
+	create_child: main@entry (1, 3) FAR 1 U 0.00
+expand: main@entry (1, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (0, 3) FAR 32750 U 0.00
+expand: main@empty.loop (0, 0) FAR  w(0) 32750. F 0.00
+expand: main@entry (1, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (2, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (3, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 30.88 :after-memory 31.75)
+Propagating: 0 1 2 3  ! 4 
+(spacer::context::propagate :time 0.00 :before-memory 31.75 :after-memory 31.75)
+Entering level 4
+expand: query!0 (4, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (3, 4) FAR 1 U 0.00
+expand: main@entry!_BAD (3, 0) FAR  w(0) 1.
+	create_child: main@entry (2, 4) FAR 1 U 0.00
+expand: main@entry (2, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (1, 4) FAR 32750 U 0.00
+expand: main@empty.loop (1, 0) FAR  w(0) 32750.
+	create_child: main@.lr.ph13 (0, 4) FAR 33934 U 0.00
+expand: main@.lr.ph13 (0, 0) FAR  w(0) 33934. F 0.00
+expand: main@empty.loop (1, 0) FAR  w(0) 32750. F 0.00
+expand: main@entry (2, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (3, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (4, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.01 :before-memory 31.75 :after-memory 32.63)
+Propagating: 0 1 2 3 4  ! 5 
+(spacer::context::propagate :time 0.00 :before-memory 32.63 :after-memory 32.63)
+Entering level 5
+expand: query!0 (5, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (4, 5) FAR 1 U 0.00
+expand: main@entry!_BAD (4, 0) FAR  w(0) 1.
+	create_child: main@entry (3, 5) FAR 1 U 0.00
+expand: main@entry (3, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (2, 5) FAR 32750 U 0.00
+expand: main@empty.loop (2, 0) FAR  w(0) 32750.
+	create_child: main@.lr.ph13 (1, 5) FAR 33934 U 0.00
+expand: main@.lr.ph13 (1, 0) FAR  w(0) 33934.
+	create_child: main@.lr.ph13!_Cond (0, 5) FAR 34910 U 0.00
+expand: main@.lr.ph13!_Cond (0, 0) FAR  w(0) 34910. F 0.01
+expand: main@.lr.ph13 (1, 0) FAR  w(0) 33934. F 0.00
+expand: main@empty.loop (2, 0) FAR  w(0) 32750. F 0.00
+expand: main@entry (3, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (4, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (5, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.01 :before-memory 32.63 :after-memory 34.88)
+Propagating: 0 1 2 3 4 5  ! 6 
+(spacer::context::propagate :time 0.01 :before-memory 34.88 :after-memory 37.06)
+Entering level 6
+expand: query!0 (6, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (5, 6) FAR 1 U 0.00
+expand: main@entry!_BAD (5, 0) FAR  w(0) 1.
+	create_child: main@entry (4, 6) FAR 1 U 0.00
+expand: main@entry (4, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (3, 6) FAR 32750 U 0.00
+expand: main@empty.loop (3, 0) FAR  w(0) 32750.
+	create_child: main@.lr.ph13 (2, 6) FAR 33934 U 0.00
+expand: main@.lr.ph13 (2, 0) FAR  w(0) 33934.
+	create_child: main@.lr.ph13!_Cond (1, 6) FAR 34910 U 0.00
+expand: main@.lr.ph13!_Cond (1, 0) FAR  w(0) 34910.
+	create_child: main@_39 (0, 6) FAR 42084 U 0.00
+expand: main@_39 (0, 0) FAR  w(0) 42084. F 0.01
+expand: main@.lr.ph13!_Cond (1, 0) FAR  w(0) 34910. F 0.00
+expand: main@.lr.ph13 (2, 0) FAR  w(0) 33934. F 0.00
+expand: main@empty.loop (3, 0) FAR  w(0) 32750. F 0.00
+expand: main@entry (4, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (5, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (6, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.03 :before-memory 37.06 :after-memory 40.26)
+Propagating: 0 1 2 3 4 5 6  ! 7 
+(spacer::context::propagate :time 0.00 :before-memory 40.26 :after-memory 40.37)
+Entering level 7
+expand: query!0 (7, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (6, 7) FAR 1 U 0.00
+expand: main@entry!_BAD (6, 0) FAR  w(0) 1.
+	create_child: main@entry (5, 7) FAR 1 U 0.00
+expand: main@entry (5, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (4, 7) FAR 32750 U 0.00
+expand: main@empty.loop (4, 0) FAR  w(0) 32750.
+	create_child: main@.lr.ph13 (3, 7) FAR 33934 U 0.00
+expand: main@.lr.ph13 (3, 0) FAR  w(0) 33934.
+	create_child: main@.lr.ph13!_Cond (2, 7) FAR 34910 U 0.00
+expand: main@.lr.ph13!_Cond (2, 0) FAR  w(0) 34910.
+	create_child: main@_39 (1, 7) FAR 42084 U 0.00
+expand: main@_39 (1, 0) FAR  w(0) 42084. F 0.00
+expand: main@.lr.ph13!_Cond (2, 0) FAR  w(0) 34910. F 0.00
+expand: main@.lr.ph13 (3, 0) FAR  w(0) 33934. F 0.00
+expand: main@empty.loop (4, 0) FAR  w(0) 32750. F 0.00
+expand: main@entry (5, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (6, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (7, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.02 :before-memory 40.37 :after-memory 40.66)
+Propagating: 1 2 3 4 5 6 7  ! 8 9 
+(spacer::context::propagate :time 0.01 :before-memory 40.66 :after-memory 40.76)
+Entering level 8
+expand: query!0 (8, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 40.76 :after-memory 40.76)
+Propagating: 8  ! 9 
+(spacer::context::propagate :time 0.00 :before-memory 40.76 :after-memory 40.76)
+Entering level 9
+expand: query!0 (9, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (8, 9) FAR 1 U 0.00
+expand: main@entry!_BAD (8, 0) FAR  w(0) 1.
+	create_child: main@entry (7, 9) FAR 1 U 0.00
+expand: main@entry (7, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (6, 9) FAR 32750 U 0.00
+expand: main@empty.loop (6, 0) FAR  w(0) 32750.
+	create_child: main@.lr.ph13 (5, 9) FAR 33934 U 0.00
+expand: main@.lr.ph13 (5, 0) FAR  w(0) 33934.
+	create_child: main@.lr.ph13!_Cond (4, 9) FAR 34910 U 0.00
+expand: main@.lr.ph13!_Cond (4, 0) FAR  w(0) 34910.
+	create_child: main@_39 (3, 9) FAR 42084 U 0.00
+expand: main@_39 (3, 0) FAR  w(0) 42084. F 0.01
+expand: main@.lr.ph13!_Cond (4, 0) FAR  w(0) 34910. F 0.01
+expand: main@.lr.ph13 (5, 0) FAR  w(0) 33934. F 0.00
+expand: main@empty.loop (6, 0) FAR  w(0) 32750. F 0.00
+expand: main@entry (7, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (8, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (9, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.02 :before-memory 40.76 :after-memory 40.85)
+Propagating: 3 4 5 6 7 8 9  ! 10 
+(spacer::context::propagate :time 0.00 :before-memory 40.85 :after-memory 40.85)
+Entering level 10
+expand: query!0 (10, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (9, 10) FAR 1 U 0.00
+expand: main@entry!_BAD (9, 0) FAR  w(0) 1.
+	create_child: main@entry (8, 10) FAR 1 U 0.00
+expand: main@entry (8, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (7, 10) FAR 32750 U 0.00
+expand: main@empty.loop (7, 0) FAR  w(0) 32750.
+	create_child: main@.lr.ph13 (6, 10) FAR 33934 U 0.00
+expand: main@.lr.ph13 (6, 0) FAR  w(0) 33934.
+	create_child: main@.lr.ph13!_Cond (5, 10) FAR 34910 U 0.00
+expand: main@.lr.ph13!_Cond (5, 0) FAR  w(0) 34910.
+	create_child: main@_39 (4, 10) FAR 42084 U 0.00
+expand: main@_39 (4, 0) FAR  w(0) 42084.
+	create_child: main@.lr.ph13 (3, 10) FAR 49589 U 0.00
+expand: main@.lr.ph13 (3, 0) FAR  w(0) 49589.
+	create_child: main@.lr.ph13!_Cond (2, 10) FAR 49931 U 0.00
+expand: main@.lr.ph13!_Cond (2, 0) FAR  w(0) 49931.
+	create_child: main@_39 (1, 10) FAR 50340 U 0.00
+expand: main@_39 (1, 0) FAR  w(0) 50340. F 0.01
+expand: main@.lr.ph13!_Cond (2, 0) FAR  w(0) 49931. F 0.00
+expand: main@.lr.ph13 (3, 0) FAR  w(0) 49589. F 0.00
+expand: main@_39 (4, 0) FAR  w(0) 42084. F 0.00
+expand: main@.lr.ph13!_Cond (5, 0) FAR  w(0) 34910. F 0.00
+expand: main@.lr.ph13 (6, 0) FAR  w(0) 33934. F 0.00
+expand: main@empty.loop (7, 0) FAR  w(0) 32750. F 0.00
+expand: main@entry (8, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (9, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (10, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.04 :before-memory 40.85 :after-memory 41.15)
+Propagating: 1 2 3 4 5 6 7 8 9 10  ! 11 12 
+(spacer::context::propagate :time 0.01 :before-memory 41.15 :after-memory 41.24)
+Entering level 11
+expand: query!0 (11, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 41.24 :after-memory 41.24)
+Propagating: 11  ! 12 
+(spacer::context::propagate :time 0.00 :before-memory 41.24 :after-memory 41.24)
+Entering level 12
+expand: query!0 (12, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (11, 12) FAR 1 U 0.00
+expand: main@entry!_BAD (11, 0) FAR  w(0) 1.
+	create_child: main@entry (10, 12) FAR 1 U 0.00
+expand: main@entry (10, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (9, 12) FAR 32750 U 0.00
+expand: main@empty.loop (9, 0) FAR  w(0) 32750.
+	create_child: main@.lr.ph13 (8, 12) FAR 33934 U 0.00
+expand: main@.lr.ph13 (8, 0) FAR  w(0) 33934.
+	create_child: main@.lr.ph13!_Cond (7, 12) FAR 34910 U 0.00
+expand: main@.lr.ph13!_Cond (7, 0) FAR  w(0) 34910.
+	create_child: main@_39 (6, 12) FAR 42084 U 0.00
+expand: main@_39 (6, 0) FAR  w(0) 42084.
+	create_child: main@.lr.ph13 (5, 12) FAR 49589 U 0.00
+expand: main@.lr.ph13 (5, 0) FAR  w(0) 49589.
+	create_child: main@.lr.ph13!_Cond (4, 12) FAR 49931 U 0.00
+expand: main@.lr.ph13!_Cond (4, 0) FAR  w(0) 49931.
+	create_child: main@_39 (3, 12) FAR 50340 U 0.00
+expand: main@_39 (3, 0) FAR  w(0) 50340. F 0.01
+expand: main@.lr.ph13!_Cond (4, 0) FAR  w(0) 49931. F 0.01
+expand: main@.lr.ph13 (5, 0) FAR  w(0) 49589. F 0.00
+expand: main@_39 (6, 0) FAR  w(0) 42084. F 0.01
+expand: main@.lr.ph13!_Cond (7, 0) FAR  w(0) 34910. F 0.01
+expand: main@.lr.ph13 (8, 0) FAR  w(0) 33934. F 0.00
+expand: main@empty.loop (9, 0) FAR  w(0) 32750. F 0.00
+expand: main@entry (10, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (11, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (12, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.05 :before-memory 41.24 :after-memory 41.33)
+Propagating: 3 4 5 6 7 8 9 10 11 12  ! 13 
+(spacer::context::propagate :time 0.01 :before-memory 41.33 :after-memory 41.33)
+Entering level 13
+expand: query!0 (13, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (12, 13) FAR 1 U 0.00
+expand: main@entry!_BAD (12, 0) FAR  w(0) 1.
+	create_child: main@entry (11, 13) FAR 1 U 0.00
+expand: main@entry (11, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (10, 13) FAR 32750 U 0.00
+expand: main@empty.loop (10, 0) FAR  w(0) 32750.
+	create_child: main@.lr.ph13 (9, 13) FAR 33934 U 0.00
+expand: main@.lr.ph13 (9, 0) FAR  w(0) 33934.
+	create_child: main@.lr.ph13!_Cond (8, 13) FAR 34910 U 0.00
+expand: main@.lr.ph13!_Cond (8, 0) FAR  w(0) 34910.
+	create_child: main@_39 (7, 13) FAR 42084 U 0.00
+expand: main@_39 (7, 0) FAR  w(0) 42084.
+	create_child: main@.lr.ph13 (6, 13) FAR 49589 U 0.00
+expand: main@.lr.ph13 (6, 0) FAR  w(0) 49589.
+	create_child: main@.lr.ph13!_Cond (5, 13) FAR 49931 U 0.00
+expand: main@.lr.ph13!_Cond (5, 0) FAR  w(0) 49931.
+	create_child: main@_39 (4, 13) FAR 50340 U 0.00
+expand: main@_39 (4, 0) FAR  w(0) 50340.
+	create_child: main@.lr.ph13 (3, 13) FAR 53099 U 0.00
+expand: main@.lr.ph13 (3, 0) FAR  w(0) 53099.
+	create_child: main@.lr.ph13!_Cond (2, 13) FAR 53482 U 0.00
+expand: main@.lr.ph13!_Cond (2, 0) FAR  w(0) 53482.
+	create_child: main@_39 (1, 13) FAR 53809 U 0.00
+expand: main@_39 (1, 0) FAR  w(0) 53809. F 0.01
+expand: main@.lr.ph13!_Cond (2, 0) FAR  w(0) 53482. F 0.00
+expand: main@.lr.ph13 (3, 0) FAR  w(0) 53099. F 0.00
+expand: main@_39 (4, 0) FAR  w(0) 50340. F 0.01
+expand: main@.lr.ph13!_Cond (5, 0) FAR  w(0) 49931. F 0.00
+expand: main@.lr.ph13 (6, 0) FAR  w(0) 49589. F 0.00
+expand: main@_39 (7, 0) FAR  w(0) 42084. F 0.00
+expand: main@.lr.ph13!_Cond (8, 0) FAR  w(0) 34910. F 0.00
+expand: main@.lr.ph13 (9, 0) FAR  w(0) 33934. F 0.00
+expand: main@empty.loop (10, 0) FAR  w(0) 32750. F 0.00
+expand: main@entry (11, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (12, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (13, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.06 :before-memory 41.33 :after-memory 41.98)
+Propagating: 1 2 3 4 5 6 7 8 9 10 11 12 13  ! 14 15 
+(spacer::context::propagate :time 0.03 :before-memory 41.98 :after-memory 42.08)
+Entering level 14
+expand: query!0 (14, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 42.08 :after-memory 42.08)
+Propagating: 14  ! 15 
+(spacer::context::propagate :time 0.00 :before-memory 42.08 :after-memory 42.08)
+Entering level 15
+expand: query!0 (15, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (14, 15) FAR 1 U 0.00
+expand: main@entry!_BAD (14, 0) FAR  w(0) 1.
+	create_child: main@entry (13, 15) FAR 1 U 0.00
+expand: main@entry (13, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (12, 15) FAR 32750 U 0.00
+expand: main@empty.loop (12, 0) FAR  w(0) 32750.
+	create_child: main@.lr.ph13 (11, 15) FAR 33934 U 0.00
+expand: main@.lr.ph13 (11, 0) FAR  w(0) 33934.
+	create_child: main@.lr.ph13!_Cond (10, 15) FAR 34910 U 0.00
+expand: main@.lr.ph13!_Cond (10, 0) FAR  w(0) 34910.
+	create_child: main@_39 (9, 15) FAR 42084 U 0.00
+expand: main@_39 (9, 0) FAR  w(0) 42084.
+	create_child: main@.lr.ph13 (8, 15) FAR 49589 U 0.00
+expand: main@.lr.ph13 (8, 0) FAR  w(0) 49589.
+	create_child: main@.lr.ph13!_Cond (7, 15) FAR 49931 U 0.00
+expand: main@.lr.ph13!_Cond (7, 0) FAR  w(0) 49931.
+	create_child: main@_39 (6, 15) FAR 50340 U 0.00
+expand: main@_39 (6, 0) FAR  w(0) 50340.
+	create_child: main@.lr.ph13 (5, 15) FAR 53099 U 0.00
+expand: main@.lr.ph13 (5, 0) FAR  w(0) 53099.
+	create_child: main@.lr.ph13!_Cond (4, 15) FAR 53482 U 0.00
+expand: main@.lr.ph13!_Cond (4, 0) FAR  w(0) 53482.
+	create_child: main@_39 (3, 15) FAR 53809 U 0.00
+expand: main@_39 (3, 0) FAR  w(0) 53809. F 0.01
+expand: main@.lr.ph13!_Cond (4, 0) FAR  w(0) 53482. F 0.01
+expand: main@.lr.ph13 (5, 0) FAR  w(0) 53099. F 0.00
+expand: main@_39 (6, 0) FAR  w(0) 50340. F 0.01
+expand: main@.lr.ph13!_Cond (7, 0) FAR  w(0) 49931. F 0.01
+expand: main@.lr.ph13 (8, 0) FAR  w(0) 49589. F 0.00
+expand: main@_39 (9, 0) FAR  w(0) 42084. F 0.01
+expand: main@.lr.ph13!_Cond (10, 0) FAR  w(0) 34910. F 0.01
+expand: main@.lr.ph13 (11, 0) FAR  w(0) 33934. F 0.00
+expand: main@empty.loop (12, 0) FAR  w(0) 32750. F 0.00
+expand: main@entry (13, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (14, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (15, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.07 :before-memory 42.08 :after-memory 42.18)
+Propagating: 3 4 5 6 7 8 9 10 11 12 13 14 15  ! 16 
+(spacer::context::propagate :time 0.01 :before-memory 42.18 :after-memory 42.27)
+Entering level 16
+expand: query!0 (16, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (15, 16) FAR 1 U 0.00
+expand: main@entry!_BAD (15, 0) FAR  w(0) 1.
+	create_child: main@entry (14, 16) FAR 1 U 0.00
+expand: main@entry (14, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (13, 16) FAR 32750 U 0.00
+expand: main@empty.loop (13, 0) FAR  w(0) 32750.
+	create_child: main@.lr.ph13 (12, 16) FAR 33934 U 0.00
+expand: main@.lr.ph13 (12, 0) FAR  w(0) 33934.
+	create_child: main@.lr.ph13!_Cond (11, 16) FAR 34910 U 0.00
+expand: main@.lr.ph13!_Cond (11, 0) FAR  w(0) 34910.
+	create_child: main@_39 (10, 16) FAR 42084 U 0.00
+expand: main@_39 (10, 0) FAR  w(0) 42084.
+	create_child: main@.lr.ph13 (9, 16) FAR 49589 U 0.00
+expand: main@.lr.ph13 (9, 0) FAR  w(0) 49589.
+	create_child: main@.lr.ph13!_Cond (8, 16) FAR 49931 U 0.00
+expand: main@.lr.ph13!_Cond (8, 0) FAR  w(0) 49931.
+	create_child: main@_39 (7, 16) FAR 50340 U 0.00
+expand: main@_39 (7, 0) FAR  w(0) 50340.
+	create_child: main@.lr.ph13 (6, 16) FAR 53099 U 0.00
+expand: main@.lr.ph13 (6, 0) FAR  w(0) 53099.
+	create_child: main@.lr.ph13!_Cond (5, 16) FAR 53482 U 0.00
+expand: main@.lr.ph13!_Cond (5, 0) FAR  w(0) 53482.
+	create_child: main@_39 (4, 16) FAR 53809 U 0.00
+expand: main@_39 (4, 0) FAR  w(0) 53809.
+	create_child: main@.lr.ph13 (3, 16) FAR 57889 U 0.00
+expand: main@.lr.ph13 (3, 0) FAR  w(0) 57889.
+	create_child: main@.lr.ph13!_Cond (2, 16) FAR 58168 U 0.00
+expand: main@.lr.ph13!_Cond (2, 0) FAR  w(0) 58168.
+	create_child: main@_39 (1, 16) FAR 58494 U 0.00
+expand: main@_39 (1, 0) FAR  w(0) 58494.
+	create_child: main@.lr.ph13.1 (0, 16) FAR 58423 U 0.00
+expand: main@.lr.ph13.1 (0, 0) FAR  w(0) 58423. F 0.00
+expand: main@_39 (1, 0) FAR  w(0) 58494. F 0.01
+expand: main@.lr.ph13!_Cond (2, 0) FAR  w(0) 58168. F 0.00
+expand: main@.lr.ph13 (3, 0) FAR  w(0) 57889. F 0.00
+expand: main@_39 (4, 0) FAR  w(0) 53809. F 0.01
+expand: main@.lr.ph13!_Cond (5, 0) FAR  w(0) 53482. F 0.01
+expand: main@.lr.ph13 (6, 0) FAR  w(0) 53099. F 0.00
+expand: main@_39 (7, 0) FAR  w(0) 50340. F 0.01
+expand: main@.lr.ph13!_Cond (8, 0) FAR  w(0) 49931. F 0.01
+expand: main@.lr.ph13 (9, 0) FAR  w(0) 49589. F 0.00
+expand: main@_39 (10, 0) FAR  w(0) 42084. F 0.01
+expand: main@.lr.ph13!_Cond (11, 0) FAR  w(0) 34910. F 0.01
+expand: main@.lr.ph13 (12, 0) FAR  w(0) 33934. F 0.00
+expand: main@empty.loop (13, 0) FAR  w(0) 32750. F 0.00
+expand: main@entry (14, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (15, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (16, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.10 :before-memory 42.27 :after-memory 43.60)
+Propagating: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16  ! 17 
+(spacer::context::propagate :time 0.03 :before-memory 43.60 :after-memory 43.70)
+Entering level 17
+expand: query!0 (17, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (16, 17) FAR 1 U 0.00
+expand: main@entry!_BAD (16, 0) FAR  w(0) 1.
+	create_child: main@entry (15, 17) FAR 1 U 0.00
+expand: main@entry (15, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (14, 17) FAR 32750 U 0.00
+expand: main@empty.loop (14, 0) FAR  w(0) 32750.
+	create_child: main@.lr.ph13 (13, 17) FAR 33934 U 0.00
+expand: main@.lr.ph13 (13, 0) FAR  w(0) 33934.
+	create_child: main@.lr.ph13!_Cond (12, 17) FAR 34910 U 0.00
+expand: main@.lr.ph13!_Cond (12, 0) FAR  w(0) 34910.
+	create_child: main@_39 (11, 17) FAR 42084 U 0.00
+expand: main@_39 (11, 0) FAR  w(0) 42084.
+	create_child: main@.lr.ph13 (10, 17) FAR 49589 U 0.00
+expand: main@.lr.ph13 (10, 0) FAR  w(0) 49589.
+	create_child: main@.lr.ph13!_Cond (9, 17) FAR 49931 U 0.00
+expand: main@.lr.ph13!_Cond (9, 0) FAR  w(0) 49931.
+	create_child: main@_39 (8, 17) FAR 50340 U 0.01
+expand: main@_39 (8, 0) FAR  w(0) 50340.
+	create_child: main@.lr.ph13 (7, 17) FAR 53099 U 0.00
+expand: main@.lr.ph13 (7, 0) FAR  w(0) 53099.
+	create_child: main@.lr.ph13!_Cond (6, 17) FAR 53482 U 0.00
+expand: main@.lr.ph13!_Cond (6, 0) FAR  w(0) 53482.
+	create_child: main@_39 (5, 17) FAR 53809 U 0.00
+expand: main@_39 (5, 0) FAR  w(0) 53809.
+	create_child: main@.lr.ph13 (4, 17) FAR 57889 U 0.01
+expand: main@.lr.ph13 (4, 0) FAR  w(0) 57889.
+	create_child: main@.lr.ph13!_Cond (3, 17) FAR 58168 U 0.00
+expand: main@.lr.ph13!_Cond (3, 0) FAR  w(0) 58168.
+	create_child: main@_39 (2, 17) FAR 58494 U 0.00
+expand: main@_39 (2, 0) FAR  w(0) 58494.
+	create_child: main@.lr.ph13.1 (1, 17) FAR 58423 U 0.00
+expand: main@.lr.ph13.1 (1, 0) FAR  w(0) 58423.
+	create_child: main@.lr.ph13.1!_Cond (0, 17) FAR 61511 U 0.00
+expand: main@.lr.ph13.1!_Cond (0, 0) FAR  w(0) 61511. F 0.01
+expand: main@.lr.ph13.1 (1, 0) FAR  w(0) 58423. F 0.00
+expand: main@_39 (2, 0) FAR  w(0) 58494. F 0.01
+expand: main@.lr.ph13!_Cond (3, 0) FAR  w(0) 58168. F 0.00
+expand: main@.lr.ph13 (4, 0) FAR  w(0) 57889. F 0.00
+expand: main@_39 (5, 0) FAR  w(0) 53809. F 0.01
+expand: main@.lr.ph13!_Cond (6, 0) FAR  w(0) 53482. F 0.01
+expand: main@.lr.ph13 (7, 0) FAR  w(0) 53099. F 0.00
+expand: main@_39 (8, 0) FAR  w(0) 50340. F 0.01
+expand: main@.lr.ph13!_Cond (9, 0) FAR  w(0) 49931. F 0.01
+expand: main@.lr.ph13 (10, 0) FAR  w(0) 49589. F 0.00
+expand: main@_39 (11, 0) FAR  w(0) 42084. F 0.01
+expand: main@.lr.ph13!_Cond (12, 0) FAR  w(0) 34910. F 0.01
+expand: main@.lr.ph13 (13, 0) FAR  w(0) 33934. F 0.00
+expand: main@empty.loop (14, 0) FAR  w(0) 32750. F 0.00
+expand: main@entry (15, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (16, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (17, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.12 :before-memory 43.70 :after-memory 47.81)
+Propagating: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17  ! 18 
+(spacer::context::propagate :time 0.03 :before-memory 47.81 :after-memory 48.35)
+Entering level 18
+expand: query!0 (18, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (17, 18) FAR 1 U 0.00
+expand: main@entry!_BAD (17, 0) FAR  w(0) 1.
+	create_child: main@entry (16, 18) FAR 1 U 0.00
+expand: main@entry (16, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (15, 18) FAR 32750 U 0.00
+expand: main@empty.loop (15, 0) FAR  w(0) 32750.
+	create_child: main@.lr.ph13 (14, 18) FAR 33934 U 0.00
+expand: main@.lr.ph13 (14, 0) FAR  w(0) 33934.
+	create_child: main@.lr.ph13!_Cond (13, 18) FAR 34910 U 0.00
+expand: main@.lr.ph13!_Cond (13, 0) FAR  w(0) 34910.
+	create_child: main@_39 (12, 18) FAR 42084 U 0.00
+expand: main@_39 (12, 0) FAR  w(0) 42084.
+	create_child: main@.lr.ph13 (11, 18) FAR 49589 U 0.00
+expand: main@.lr.ph13 (11, 0) FAR  w(0) 49589.
+	create_child: main@.lr.ph13!_Cond (10, 18) FAR 49931 U 0.00
+expand: main@.lr.ph13!_Cond (10, 0) FAR  w(0) 49931.
+	create_child: main@_39 (9, 18) FAR 50340 U 0.00
+expand: main@_39 (9, 0) FAR  w(0) 50340.
+	create_child: main@.lr.ph13 (8, 18) FAR 53099 U 0.00
+expand: main@.lr.ph13 (8, 0) FAR  w(0) 53099.
+	create_child: main@.lr.ph13!_Cond (7, 18) FAR 53482 U 0.00
+expand: main@.lr.ph13!_Cond (7, 0) FAR  w(0) 53482.
+	create_child: main@_39 (6, 18) FAR 53809 U 0.00
+expand: main@_39 (6, 0) FAR  w(0) 53809.
+	create_child: main@.lr.ph13 (5, 18) FAR 57889 U 0.00
+expand: main@.lr.ph13 (5, 0) FAR  w(0) 57889.
+	create_child: main@.lr.ph13!_Cond (4, 18) FAR 58168 U 0.00
+expand: main@.lr.ph13!_Cond (4, 0) FAR  w(0) 58168.
+	create_child: main@_39 (3, 18) FAR 58494 U 0.00
+expand: main@_39 (3, 0) FAR  w(0) 58494.
+	create_child: main@.lr.ph13.1 (2, 18) FAR 58423 U 0.00
+expand: main@.lr.ph13.1 (2, 0) FAR  w(0) 58423.
+	create_child: main@.lr.ph13.1!_Cond (1, 18) FAR 61511 U 0.00
+expand: main@.lr.ph13.1!_Cond (1, 0) FAR  w(0) 61511.
+	create_child: main@_111 (0, 18) FAR 69328 U 0.00
+expand: main@_111 (0, 0) FAR  w(0) 69328. F 0.01
+expand: main@.lr.ph13.1!_Cond (1, 0) FAR  w(0) 61511. F 0.00
+expand: main@.lr.ph13.1 (2, 0) FAR  w(0) 58423. F 0.00
+expand: main@_39 (3, 0) FAR  w(0) 58494. F 0.00
+expand: main@.lr.ph13!_Cond (4, 0) FAR  w(0) 58168. F 0.00
+expand: main@.lr.ph13 (5, 0) FAR  w(0) 57889. F 0.00
+expand: main@_39 (6, 0) FAR  w(0) 53809. F 0.01
+expand: main@.lr.ph13!_Cond (7, 0) FAR  w(0) 53482. F 0.01
+expand: main@.lr.ph13 (8, 0) FAR  w(0) 53099. F 0.00
+expand: main@_39 (9, 0) FAR  w(0) 50340. F 0.01
+expand: main@.lr.ph13!_Cond (10, 0) FAR  w(0) 49931. F 0.01
+expand: main@.lr.ph13 (11, 0) FAR  w(0) 49589. F 0.00
+expand: main@_39 (12, 0) FAR  w(0) 42084. F 0.01
+expand: main@.lr.ph13!_Cond (13, 0) FAR  w(0) 34910. F 0.01
+expand: main@.lr.ph13 (14, 0) FAR  w(0) 33934. F 0.00
+expand: main@empty.loop (15, 0) FAR  w(0) 32750. F 0.00
+expand: main@entry (16, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (17, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (18, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.12 :before-memory 48.35 :after-memory 52.09)
+Propagating: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18  ! 19 
+(spacer::context::propagate :time 0.03 :before-memory 52.09 :after-memory 52.30)
+Entering level 19
+expand: query!0 (19, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (18, 19) FAR 1 U 0.00
+expand: main@entry!_BAD (18, 0) FAR  w(0) 1.
+	create_child: main@entry (17, 19) FAR 1 U 0.00
+expand: main@entry (17, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (16, 19) FAR 32750 U 0.00
+expand: main@empty.loop (16, 0) FAR  w(0) 32750.
+	create_child: main@.lr.ph13 (15, 19) FAR 33934 U 0.00
+expand: main@.lr.ph13 (15, 0) FAR  w(0) 33934.
+	create_child: main@.lr.ph13!_Cond (14, 19) FAR 34910 U 0.00
+expand: main@.lr.ph13!_Cond (14, 0) FAR  w(0) 34910.
+	create_child: main@_39 (13, 19) FAR 42084 U 0.00
+expand: main@_39 (13, 0) FAR  w(0) 42084.
+	create_child: main@.lr.ph13 (12, 19) FAR 49589 U 0.00
+expand: main@.lr.ph13 (12, 0) FAR  w(0) 49589.
+	create_child: main@.lr.ph13!_Cond (11, 19) FAR 49931 U 0.00
+expand: main@.lr.ph13!_Cond (11, 0) FAR  w(0) 49931.
+	create_child: main@_39 (10, 19) FAR 50340 U 0.00
+expand: main@_39 (10, 0) FAR  w(0) 50340.
+	create_child: main@.lr.ph13 (9, 19) FAR 53099 U 0.00
+expand: main@.lr.ph13 (9, 0) FAR  w(0) 53099.
+	create_child: main@.lr.ph13!_Cond (8, 19) FAR 53482 U 0.00
+expand: main@.lr.ph13!_Cond (8, 0) FAR  w(0) 53482.
+	create_child: main@_39 (7, 19) FAR 53809 U 0.00
+expand: main@_39 (7, 0) FAR  w(0) 53809.
+	create_child: main@.lr.ph13 (6, 19) FAR 57889 U 0.00
+expand: main@.lr.ph13 (6, 0) FAR  w(0) 57889.
+	create_child: main@.lr.ph13!_Cond (5, 19) FAR 58168 U 0.00
+expand: main@.lr.ph13!_Cond (5, 0) FAR  w(0) 58168.
+	create_child: main@_39 (4, 19) FAR 58494 U 0.00
+expand: main@_39 (4, 0) FAR  w(0) 58494.
+	create_child: main@.lr.ph13.1 (3, 19) FAR 58423 U 0.01
+expand: main@.lr.ph13.1 (3, 0) FAR  w(0) 58423.
+	create_child: main@.lr.ph13.1!_Cond (2, 19) FAR 61511 U 0.00
+expand: main@.lr.ph13.1!_Cond (2, 0) FAR  w(0) 61511.
+	create_child: main@_111 (1, 19) FAR 69328 U 0.01
+expand: main@_111 (1, 0) FAR  w(0) 69328. F 0.00
+expand: main@.lr.ph13.1!_Cond (2, 0) FAR  w(0) 61511. F 0.00
+expand: main@.lr.ph13.1 (3, 0) FAR  w(0) 58423. F 0.00
+expand: main@_39 (4, 0) FAR  w(0) 58494. F 0.01
+expand: main@.lr.ph13!_Cond (5, 0) FAR  w(0) 58168. F 0.01
+expand: main@.lr.ph13 (6, 0) FAR  w(0) 57889. F 0.00
+expand: main@_39 (7, 0) FAR  w(0) 53809. F 0.01
+expand: main@.lr.ph13!_Cond (8, 0) FAR  w(0) 53482. F 0.01
+expand: main@.lr.ph13 (9, 0) FAR  w(0) 53099. F 0.00
+expand: main@_39 (10, 0) FAR  w(0) 50340. F 0.01
+expand: main@.lr.ph13!_Cond (11, 0) FAR  w(0) 49931. F 0.01
+expand: main@.lr.ph13 (12, 0) FAR  w(0) 49589. F 0.00
+expand: main@_39 (13, 0) FAR  w(0) 42084. F 0.01
+expand: main@.lr.ph13!_Cond (14, 0) FAR  w(0) 34910. F 0.01
+expand: main@.lr.ph13 (15, 0) FAR  w(0) 33934. F 0.01
+expand: main@empty.loop (16, 0) FAR  w(0) 32750. F 0.00
+expand: main@entry (17, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (18, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (19, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.15 :before-memory 52.30 :after-memory 52.69)
+Propagating: 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19  ! 20 21 
+(spacer::context::propagate :time 0.05 :before-memory 52.69 :after-memory 52.99)
+Entering level 20
+expand: query!0 (20, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 52.99 :after-memory 53.09)
+Propagating: 20  ! 21 
+(spacer::context::propagate :time 0.00 :before-memory 53.09 :after-memory 53.09)
+Entering level 21
+expand: query!0 (21, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (20, 21) FAR 1 U 0.00
+expand: main@entry!_BAD (20, 0) FAR  w(0) 1.
+	create_child: main@entry (19, 21) FAR 1 U 0.00
+expand: main@entry (19, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (18, 21) FAR 32750 U 0.00
+expand: main@empty.loop (18, 0) FAR  w(0) 32750.
+	create_child: main@.lr.ph13 (17, 21) FAR 33934 U 0.00
+expand: main@.lr.ph13 (17, 0) FAR  w(0) 33934.
+	create_child: main@.lr.ph13!_Cond (16, 21) FAR 34910 U 0.00
+expand: main@.lr.ph13!_Cond (16, 0) FAR  w(0) 34910.
+	create_child: main@_39 (15, 21) FAR 42084 U 0.00
+expand: main@_39 (15, 0) FAR  w(0) 42084.
+	create_child: main@.lr.ph13 (14, 21) FAR 49589 U 0.00
+expand: main@.lr.ph13 (14, 0) FAR  w(0) 49589.
+	create_child: main@.lr.ph13!_Cond (13, 21) FAR 49931 U 0.00
+expand: main@.lr.ph13!_Cond (13, 0) FAR  w(0) 49931.
+	create_child: main@_39 (12, 21) FAR 50340 U 0.00
+expand: main@_39 (12, 0) FAR  w(0) 50340.
+	create_child: main@.lr.ph13 (11, 21) FAR 53099 U 0.00
+expand: main@.lr.ph13 (11, 0) FAR  w(0) 53099.
+	create_child: main@.lr.ph13!_Cond (10, 21) FAR 53482 U 0.00
+expand: main@.lr.ph13!_Cond (10, 0) FAR  w(0) 53482.
+	create_child: main@_39 (9, 21) FAR 53809 U 0.00
+expand: main@_39 (9, 0) FAR  w(0) 53809.
+	create_child: main@.lr.ph13 (8, 21) FAR 57889 U 0.00
+expand: main@.lr.ph13 (8, 0) FAR  w(0) 57889.
+	create_child: main@.lr.ph13!_Cond (7, 21) FAR 58168 U 0.00
+expand: main@.lr.ph13!_Cond (7, 0) FAR  w(0) 58168.
+	create_child: main@_39 (6, 21) FAR 58494 U 0.00
+expand: main@_39 (6, 0) FAR  w(0) 58494.
+	create_child: main@.lr.ph13.1 (5, 21) FAR 58423 U 0.00
+expand: main@.lr.ph13.1 (5, 0) FAR  w(0) 58423.
+	create_child: main@.lr.ph13.1!_Cond (4, 21) FAR 61511 U 0.00
+expand: main@.lr.ph13.1!_Cond (4, 0) FAR  w(0) 61511.
+	create_child: main@_111 (3, 21) FAR 69328 U 0.00
+expand: main@_111 (3, 0) FAR  w(0) 69328. F 0.01
+expand: main@.lr.ph13.1!_Cond (4, 0) FAR  w(0) 61511. F 0.01
+expand: main@.lr.ph13.1 (5, 0) FAR  w(0) 58423. F 0.00
+expand: main@_39 (6, 0) FAR  w(0) 58494. F 0.01
+expand: main@.lr.ph13!_Cond (7, 0) FAR  w(0) 58168. F 0.01
+expand: main@.lr.ph13 (8, 0) FAR  w(0) 57889. F 0.00
+expand: main@_39 (9, 0) FAR  w(0) 53809. F 0.01
+expand: main@.lr.ph13!_Cond (10, 0) FAR  w(0) 53482. F 0.01
+expand: main@.lr.ph13 (11, 0) FAR  w(0) 53099. F 0.00
+expand: main@_39 (12, 0) FAR  w(0) 50340. F 0.01
+expand: main@.lr.ph13!_Cond (13, 0) FAR  w(0) 49931. F 0.01
+expand: main@.lr.ph13 (14, 0) FAR  w(0) 49589. F 0.00
+expand: main@_39 (15, 0) FAR  w(0) 42084. F 0.01
+expand: main@.lr.ph13!_Cond (16, 0) FAR  w(0) 34910. F 0.01
+expand: main@.lr.ph13 (17, 0) FAR  w(0) 33934. F 0.00
+expand: main@empty.loop (18, 0) FAR  w(0) 32750. F 0.00
+expand: main@entry (19, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (20, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (21, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.15 :before-memory 53.09 :after-memory 53.09)
+Propagating: 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21  ! 22 
+(spacer::context::propagate :time 0.04 :before-memory 53.09 :after-memory 53.19)
+Entering level 22
+expand: query!0 (22, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (21, 22) FAR 1 U 0.00
+expand: main@entry!_BAD (21, 0) FAR  w(0) 1.
+	create_child: main@entry (20, 22) FAR 1 U 0.00
+expand: main@entry (20, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (19, 22) FAR 32750 U 0.00
+expand: main@empty.loop (19, 0) FAR  w(0) 32750.
+	create_child: main@.lr.ph13 (18, 22) FAR 33934 U 0.00
+expand: main@.lr.ph13 (18, 0) FAR  w(0) 33934.
+	create_child: main@.lr.ph13!_Cond (17, 22) FAR 34910 U 0.00
+expand: main@.lr.ph13!_Cond (17, 0) FAR  w(0) 34910.
+	create_child: main@_39 (16, 22) FAR 42084 U 0.00
+expand: main@_39 (16, 0) FAR  w(0) 42084.
+	create_child: main@.lr.ph13 (15, 22) FAR 49589 U 0.00
+expand: main@.lr.ph13 (15, 0) FAR  w(0) 49589.
+	create_child: main@.lr.ph13!_Cond (14, 22) FAR 49931 U 0.00
+expand: main@.lr.ph13!_Cond (14, 0) FAR  w(0) 49931.
+	create_child: main@_39 (13, 22) FAR 50340 U 0.00
+expand: main@_39 (13, 0) FAR  w(0) 50340.
+	create_child: main@.lr.ph13 (12, 22) FAR 53099 U 0.00
+expand: main@.lr.ph13 (12, 0) FAR  w(0) 53099.
+	create_child: main@.lr.ph13!_Cond (11, 22) FAR 53482 U 0.00
+expand: main@.lr.ph13!_Cond (11, 0) FAR  w(0) 53482.
+	create_child: main@_39 (10, 22) FAR 53809 U 0.00
+expand: main@_39 (10, 0) FAR  w(0) 53809.
+	create_child: main@.lr.ph13 (9, 22) FAR 57889 U 0.00
+expand: main@.lr.ph13 (9, 0) FAR  w(0) 57889.
+	create_child: main@.lr.ph13!_Cond (8, 22) FAR 58168 U 0.00
+expand: main@.lr.ph13!_Cond (8, 0) FAR  w(0) 58168.
+	create_child: main@_39 (7, 22) FAR 58494 U 0.00
+expand: main@_39 (7, 0) FAR  w(0) 58494.
+	create_child: main@.lr.ph13.1 (6, 22) FAR 58423 U 0.01
+expand: main@.lr.ph13.1 (6, 0) FAR  w(0) 58423.
+	create_child: main@.lr.ph13.1!_Cond (5, 22) FAR 61511 U 0.00
+expand: main@.lr.ph13.1!_Cond (5, 0) FAR  w(0) 61511.
+	create_child: main@_111 (4, 22) FAR 69328 U 0.00
+expand: main@_111 (4, 0) FAR  w(0) 69328.
+	create_child: main@.lr.ph13.1 (3, 22) FAR 80967 U 0.00
+expand: main@.lr.ph13.1 (3, 0) FAR  w(0) 80967.
+	create_child: main@.lr.ph13.1!_Cond (2, 22) FAR 81202 U 0.00
+expand: main@.lr.ph13.1!_Cond (2, 0) FAR  w(0) 81202.
+	create_child: main@_111 (1, 22) FAR 81757 U 0.00
+expand: main@_111 (1, 0) FAR  w(0) 81757. F 0.01
+expand: main@.lr.ph13.1!_Cond (2, 0) FAR  w(0) 81202. F 0.00
+expand: main@.lr.ph13.1 (3, 0) FAR  w(0) 80967. F 0.00
+expand: main@_111 (4, 0) FAR  w(0) 69328. F 0.01
+expand: main@.lr.ph13.1!_Cond (5, 0) FAR  w(0) 61511. F 0.00
+expand: main@.lr.ph13.1 (6, 0) FAR  w(0) 58423. F 0.00
+expand: main@_39 (7, 0) FAR  w(0) 58494. F 0.01
+expand: main@.lr.ph13!_Cond (8, 0) FAR  w(0) 58168. F 0.01
+expand: main@.lr.ph13 (9, 0) FAR  w(0) 57889. F 0.00
+expand: main@_39 (10, 0) FAR  w(0) 53809. F 0.01
+expand: main@.lr.ph13!_Cond (11, 0) FAR  w(0) 53482. F 0.01
+expand: main@.lr.ph13 (12, 0) FAR  w(0) 53099. F 0.00
+expand: main@_39 (13, 0) FAR  w(0) 50340. F 0.01
+expand: main@.lr.ph13!_Cond (14, 0) FAR  w(0) 49931. F 0.01
+expand: main@.lr.ph13 (15, 0) FAR  w(0) 49589. F 0.00
+expand: main@_39 (16, 0) FAR  w(0) 42084. F 0.01
+expand: main@.lr.ph13!_Cond (17, 0) FAR  w(0) 34910. F 0.01
+expand: main@.lr.ph13 (18, 0) FAR  w(0) 33934. F 0.00
+expand: main@empty.loop (19, 0) FAR  w(0) 32750. F 0.00
+expand: main@entry (20, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (21, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (22, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.17 :before-memory 53.19 :after-memory 53.59)
+Propagating: 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22  ! 23 24 
+(spacer::context::propagate :time 0.09 :before-memory 53.59 :after-memory 53.81)
+Entering level 23
+expand: query!0 (23, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 53.81 :after-memory 53.92)
+Propagating: 23  ! 24 
+(spacer::context::propagate :time 0.00 :before-memory 53.92 :after-memory 53.92)
+Entering level 24
+expand: query!0 (24, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (23, 24) FAR 1 U 0.00
+expand: main@entry!_BAD (23, 0) FAR  w(0) 1.
+	create_child: main@entry (22, 24) FAR 1 U 0.00
+expand: main@entry (22, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (21, 24) FAR 32750 U 0.00
+expand: main@empty.loop (21, 0) FAR  w(0) 32750.
+	create_child: main@.lr.ph13 (20, 24) FAR 33934 U 0.00
+expand: main@.lr.ph13 (20, 0) FAR  w(0) 33934.
+	create_child: main@.lr.ph13!_Cond (19, 24) FAR 34910 U 0.00
+expand: main@.lr.ph13!_Cond (19, 0) FAR  w(0) 34910.
+	create_child: main@_39 (18, 24) FAR 42084 U 0.00
+expand: main@_39 (18, 0) FAR  w(0) 42084.
+	create_child: main@.lr.ph13 (17, 24) FAR 49589 U 0.00
+expand: main@.lr.ph13 (17, 0) FAR  w(0) 49589.
+	create_child: main@.lr.ph13!_Cond (16, 24) FAR 49931 U 0.00
+expand: main@.lr.ph13!_Cond (16, 0) FAR  w(0) 49931.
+	create_child: main@_39 (15, 24) FAR 50340 U 0.00
+expand: main@_39 (15, 0) FAR  w(0) 50340.
+	create_child: main@.lr.ph13 (14, 24) FAR 53099 U 0.00
+expand: main@.lr.ph13 (14, 0) FAR  w(0) 53099.
+	create_child: main@.lr.ph13!_Cond (13, 24) FAR 53482 U 0.00
+expand: main@.lr.ph13!_Cond (13, 0) FAR  w(0) 53482.
+	create_child: main@_39 (12, 24) FAR 53809 U 0.00
+expand: main@_39 (12, 0) FAR  w(0) 53809.
+	create_child: main@.lr.ph13 (11, 24) FAR 57889 U 0.00
+expand: main@.lr.ph13 (11, 0) FAR  w(0) 57889.
+	create_child: main@.lr.ph13!_Cond (10, 24) FAR 58168 U 0.00
+expand: main@.lr.ph13!_Cond (10, 0) FAR  w(0) 58168.
+	create_child: main@_39 (9, 24) FAR 58494 U 0.00
+expand: main@_39 (9, 0) FAR  w(0) 58494.
+	create_child: main@.lr.ph13.1 (8, 24) FAR 58423 U 0.00
+expand: main@.lr.ph13.1 (8, 0) FAR  w(0) 58423.
+	create_child: main@.lr.ph13.1!_Cond (7, 24) FAR 61511 U 0.00
+expand: main@.lr.ph13.1!_Cond (7, 0) FAR  w(0) 61511.
+	create_child: main@_111 (6, 24) FAR 69328 U 0.00
+expand: main@_111 (6, 0) FAR  w(0) 69328.
+	create_child: main@.lr.ph13.1 (5, 24) FAR 85189 U 0.00
+expand: main@.lr.ph13.1 (5, 0) FAR  w(0) 85189.
+	create_child: main@.lr.ph13.1!_Cond (4, 24) FAR 85392 U 0.00
+expand: main@.lr.ph13.1!_Cond (4, 0) FAR  w(0) 85392.
+	create_child: main@_111 (3, 24) FAR 85479 U 0.00
+expand: main@_111 (3, 0) FAR  w(0) 85479. F 0.01
+expand: main@.lr.ph13.1!_Cond (4, 0) FAR  w(0) 85392. F 0.01
+expand: main@.lr.ph13.1 (5, 0) FAR  w(0) 85189. F 0.00
+expand: main@_111 (6, 0) FAR  w(0) 69328. F 0.01
+expand: main@.lr.ph13.1!_Cond (7, 0) FAR  w(0) 61511. F 0.01
+expand: main@.lr.ph13.1 (8, 0) FAR  w(0) 58423. F 0.00
+expand: main@_39 (9, 0) FAR  w(0) 58494. F 0.01
+expand: main@.lr.ph13!_Cond (10, 0) FAR  w(0) 58168. F 0.01
+expand: main@.lr.ph13 (11, 0) FAR  w(0) 57889. F 0.00
+expand: main@_39 (12, 0) FAR  w(0) 53809. F 0.01
+expand: main@.lr.ph13!_Cond (13, 0) FAR  w(0) 53482. F 0.01
+expand: main@.lr.ph13 (14, 0) FAR  w(0) 53099. F 0.00
+expand: main@_39 (15, 0) FAR  w(0) 50340. F 0.01
+expand: main@.lr.ph13!_Cond (16, 0) FAR  w(0) 49931. F 0.01
+expand: main@.lr.ph13 (17, 0) FAR  w(0) 49589. F 0.00
+expand: main@_39 (18, 0) FAR  w(0) 42084. F 0.01
+expand: main@.lr.ph13!_Cond (19, 0) FAR  w(0) 34910. F 0.01
+expand: main@.lr.ph13 (20, 0) FAR  w(0) 33934. F 0.00
+expand: main@empty.loop (21, 0) FAR  w(0) 32750. F 0.00
+expand: main@entry (22, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (23, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (24, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.17 :before-memory 53.92 :after-memory 53.92)
+Propagating: 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24  ! 25 
+(spacer::context::propagate :time 0.05 :before-memory 53.92 :after-memory 54.02)
+Entering level 25
+expand: query!0 (25, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (24, 25) FAR 1 U 0.00
+expand: main@entry!_BAD (24, 0) FAR  w(0) 1.
+	create_child: main@entry (23, 25) FAR 1 U 0.00
+expand: main@entry (23, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (22, 25) FAR 32750 U 0.00
+expand: main@empty.loop (22, 0) FAR  w(0) 32750.
+	create_child: main@.lr.ph13 (21, 25) FAR 33934 U 0.00
+expand: main@.lr.ph13 (21, 0) FAR  w(0) 33934.
+	create_child: main@.lr.ph13!_Cond (20, 25) FAR 34910 U 0.00
+expand: main@.lr.ph13!_Cond (20, 0) FAR  w(0) 34910.
+	create_child: main@_39 (19, 25) FAR 42084 U 0.00
+expand: main@_39 (19, 0) FAR  w(0) 42084.
+	create_child: main@.lr.ph13 (18, 25) FAR 49589 U 0.00
+expand: main@.lr.ph13 (18, 0) FAR  w(0) 49589.
+	create_child: main@.lr.ph13!_Cond (17, 25) FAR 49931 U 0.00
+expand: main@.lr.ph13!_Cond (17, 0) FAR  w(0) 49931.
+	create_child: main@_39 (16, 25) FAR 50340 U 0.00
+expand: main@_39 (16, 0) FAR  w(0) 50340.
+	create_child: main@.lr.ph13 (15, 25) FAR 53099 U 0.00
+expand: main@.lr.ph13 (15, 0) FAR  w(0) 53099.
+	create_child: main@.lr.ph13!_Cond (14, 25) FAR 53482 U 0.00
+expand: main@.lr.ph13!_Cond (14, 0) FAR  w(0) 53482.
+	create_child: main@_39 (13, 25) FAR 53809 U 0.00
+expand: main@_39 (13, 0) FAR  w(0) 53809.
+	create_child: main@.lr.ph13 (12, 25) FAR 57889 U 0.00
+expand: main@.lr.ph13 (12, 0) FAR  w(0) 57889.
+	create_child: main@.lr.ph13!_Cond (11, 25) FAR 58168 U 0.00
+expand: main@.lr.ph13!_Cond (11, 0) FAR  w(0) 58168.
+	create_child: main@_39 (10, 25) FAR 58494 U 0.00
+expand: main@_39 (10, 0) FAR  w(0) 58494.
+	create_child: main@.lr.ph13.1 (9, 25) FAR 58423 U 0.00
+expand: main@.lr.ph13.1 (9, 0) FAR  w(0) 58423.
+	create_child: main@.lr.ph13.1!_Cond (8, 25) FAR 61511 U 0.00
+expand: main@.lr.ph13.1!_Cond (8, 0) FAR  w(0) 61511.
+	create_child: main@_111 (7, 25) FAR 69328 U 0.00
+expand: main@_111 (7, 0) FAR  w(0) 69328.
+	create_child: main@.lr.ph13.1 (6, 25) FAR 85882 U 0.00
+expand: main@.lr.ph13.1 (6, 0) FAR  w(0) 85882.
+	create_child: main@.lr.ph13.1!_Cond (5, 25) FAR 85056 U 0.00
+expand: main@.lr.ph13.1!_Cond (5, 0) FAR  w(0) 85056.
+	create_child: main@_111 (4, 25) FAR 87143 U 0.00
+expand: main@_111 (4, 0) FAR  w(0) 87143.
+	create_child: main@.lr.ph13.1 (3, 25) FAR 87180 U 0.00
+expand: main@.lr.ph13.1 (3, 0) FAR  w(0) 87180.
+	create_child: main@.lr.ph13.1!_Cond (2, 25) FAR 87335 U 0.00
+expand: main@.lr.ph13.1!_Cond (2, 0) FAR  w(0) 87335.
+	create_child: main@_111 (1, 25) FAR 87427 U 0.00
+expand: main@_111 (1, 0) FAR  w(0) 87427.
+	create_child: main@.lr.ph13.2 (0, 25) FAR 87488 U 0.00
+expand: main@.lr.ph13.2 (0, 0) FAR  w(0) 87488. F 0.00
+expand: main@_111 (1, 0) FAR  w(0) 87427. F 0.01
+expand: main@.lr.ph13.1!_Cond (2, 0) FAR  w(0) 87335. F 0.00
+expand: main@.lr.ph13.1 (3, 0) FAR  w(0) 87180. F 0.00
+expand: main@_111 (4, 0) FAR  w(0) 87143. F 0.01
+expand: main@.lr.ph13.1!_Cond (5, 0) FAR  w(0) 85056. F 0.01
+expand: main@.lr.ph13.1 (6, 0) FAR  w(0) 85882. F 0.00
+expand: main@_111 (7, 0) FAR  w(0) 69328. F 0.01
+expand: main@.lr.ph13.1!_Cond (8, 0) FAR  w(0) 61511. F 0.01
+expand: main@.lr.ph13.1 (9, 0) FAR  w(0) 58423. F 0.00
+expand: main@_39 (10, 0) FAR  w(0) 58494. F 0.01
+expand: main@.lr.ph13!_Cond (11, 0) FAR  w(0) 58168. F 0.01
+expand: main@.lr.ph13 (12, 0) FAR  w(0) 57889. F 0.00
+expand: main@_39 (13, 0) FAR  w(0) 53809. F 0.01
+expand: main@.lr.ph13!_Cond (14, 0) FAR  w(0) 53482. F 0.01
+expand: main@.lr.ph13 (15, 0) FAR  w(0) 53099. F 0.00
+expand: main@_39 (16, 0) FAR  w(0) 50340. F 0.01
+expand: main@.lr.ph13!_Cond (17, 0) FAR  w(0) 49931. F 0.01
+expand: main@.lr.ph13 (18, 0) FAR  w(0) 49589. F 0.01
+expand: main@_39 (19, 0) FAR  w(0) 42084. F 0.01
+expand: main@.lr.ph13!_Cond (20, 0) FAR  w(0) 34910. F 0.01
+expand: main@.lr.ph13 (21, 0) FAR  w(0) 33934. F 0.00
+expand: main@empty.loop (22, 0) FAR  w(0) 32750. F 0.00
+expand: main@entry (23, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (24, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (25, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.22 :before-memory 54.02 :after-memory 55.91)
+Propagating: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25  ! 26 
+(spacer::context::propagate :time 0.10 :before-memory 55.91 :after-memory 56.21)
+Entering level 26
+expand: query!0 (26, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (25, 26) FAR 1 U 0.00
+expand: main@entry!_BAD (25, 0) FAR  w(0) 1.
+	create_child: main@entry (24, 26) FAR 1 U 0.00
+expand: main@entry (24, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (23, 26) FAR 32750 U 0.01
+expand: main@empty.loop (23, 0) FAR  w(0) 32750.
+	create_child: main@.lr.ph13 (22, 26) FAR 33934 U 0.00
+expand: main@.lr.ph13 (22, 0) FAR  w(0) 33934.
+	create_child: main@.lr.ph13!_Cond (21, 26) FAR 34910 U 0.00
+expand: main@.lr.ph13!_Cond (21, 0) FAR  w(0) 34910.
+	create_child: main@_39 (20, 26) FAR 42084 U 0.00
+expand: main@_39 (20, 0) FAR  w(0) 42084.
+	create_child: main@.lr.ph13 (19, 26) FAR 49589 U 0.00
+expand: main@.lr.ph13 (19, 0) FAR  w(0) 49589.
+	create_child: main@.lr.ph13!_Cond (18, 26) FAR 49931 U 0.00
+expand: main@.lr.ph13!_Cond (18, 0) FAR  w(0) 49931.
+	create_child: main@_39 (17, 26) FAR 50340 U 0.00
+expand: main@_39 (17, 0) FAR  w(0) 50340.
+	create_child: main@.lr.ph13 (16, 26) FAR 53099 U 0.00
+expand: main@.lr.ph13 (16, 0) FAR  w(0) 53099.
+	create_child: main@.lr.ph13!_Cond (15, 26) FAR 53482 U 0.00
+expand: main@.lr.ph13!_Cond (15, 0) FAR  w(0) 53482.
+	create_child: main@_39 (14, 26) FAR 53809 U 0.00
+expand: main@_39 (14, 0) FAR  w(0) 53809.
+	create_child: main@.lr.ph13 (13, 26) FAR 57889 U 0.00
+expand: main@.lr.ph13 (13, 0) FAR  w(0) 57889.
+	create_child: main@.lr.ph13!_Cond (12, 26) FAR 58168 U 0.00
+expand: main@.lr.ph13!_Cond (12, 0) FAR  w(0) 58168.
+	create_child: main@_39 (11, 26) FAR 58494 U 0.00
+expand: main@_39 (11, 0) FAR  w(0) 58494.
+	create_child: main@.lr.ph13.1 (10, 26) FAR 58423 U 0.00
+expand: main@.lr.ph13.1 (10, 0) FAR  w(0) 58423.
+	create_child: main@.lr.ph13.1!_Cond (9, 26) FAR 61511 U 0.00
+expand: main@.lr.ph13.1!_Cond (9, 0) FAR  w(0) 61511.
+	create_child: main@_111 (8, 26) FAR 69328 U 0.00
+expand: main@_111 (8, 0) FAR  w(0) 69328.
+	create_child: main@.lr.ph13.1 (7, 26) FAR 91132 U 0.00
+expand: main@.lr.ph13.1 (7, 0) FAR  w(0) 91132.
+	create_child: main@.lr.ph13.1!_Cond (6, 26) FAR 91609 U 0.00
+expand: main@.lr.ph13.1!_Cond (6, 0) FAR  w(0) 91609.
+	create_child: main@_111 (5, 26) FAR 91849 U 0.00
+expand: main@_111 (5, 0) FAR  w(0) 91849.
+	create_child: main@.lr.ph13.1 (4, 26) FAR 91747 U 0.00
+expand: main@.lr.ph13.1 (4, 0) FAR  w(0) 91747.
+	create_child: main@.lr.ph13.1!_Cond (3, 26) FAR 91852 U 0.00
+expand: main@.lr.ph13.1!_Cond (3, 0) FAR  w(0) 91852.
+	create_child: main@_111 (2, 26) FAR 91449 U 0.00
+expand: main@_111 (2, 0) FAR  w(0) 91449.
+	create_child: main@.lr.ph13.2 (1, 26) FAR 91811 U 0.00
+expand: main@.lr.ph13.2 (1, 0) FAR  w(0) 91811.
+	create_child: main@.lr.ph13.2!_Cond (0, 26) FAR 91860 U 0.00
+expand: main@.lr.ph13.2!_Cond (0, 0) FAR  w(0) 91860. F 0.01
+expand: main@.lr.ph13.2 (1, 0) FAR  w(0) 91811. F 0.00
+expand: main@_111 (2, 0) FAR  w(0) 91449.(smt.stats :restarts :decisions    :clauses/bin    :simplify   :memory)
+(smt.stats      :conflicts  :propagations  :lemmas      :deletions   )
+(smt.stats    0    226  37206  60133  2321/0  1102     0    0   64.25)
+ F 0.06
+expand: main@.lr.ph13.1!_Cond (3, 0) FAR  w(0) 91852. F 0.00
+expand: main@.lr.ph13.1 (4, 0) FAR  w(0) 91747. F 0.00
+expand: main@_111 (5, 0) FAR  w(0) 91849. F 0.01
+expand: main@.lr.ph13.1!_Cond (6, 0) FAR  w(0) 91609. F 0.01
+expand: main@.lr.ph13.1 (7, 0) FAR  w(0) 91132. F 0.00
+expand: main@_111 (8, 0) FAR  w(0) 69328. F 0.01
+expand: main@.lr.ph13.1!_Cond (9, 0) FAR  w(0) 61511. F 0.01
+expand: main@.lr.ph13.1 (10, 0) FAR  w(0) 58423. F 0.00
+expand: main@_39 (11, 0) FAR  w(0) 58494. F 0.01
+expand: main@.lr.ph13!_Cond (12, 0) FAR  w(0) 58168. F 0.01
+expand: main@.lr.ph13 (13, 0) FAR  w(0) 57889. F 0.00
+expand: main@_39 (14, 0) FAR  w(0) 53809. F 0.01
+expand: main@.lr.ph13!_Cond (15, 0) FAR  w(0) 53482. F 0.01
+expand: main@.lr.ph13 (16, 0) FAR  w(0) 53099. F 0.00
+expand: main@_39 (17, 0) FAR  w(0) 50340. F 0.01
+expand: main@.lr.ph13!_Cond (18, 0) FAR  w(0) 49931. F 0.01
+expand: main@.lr.ph13 (19, 0) FAR  w(0) 49589. F 0.00
+expand: main@_39 (20, 0) FAR  w(0) 42084. F 0.01
+expand: main@.lr.ph13!_Cond (21, 0) FAR  w(0) 34910. F 0.01
+expand: main@.lr.ph13 (22, 0) FAR  w(0) 33934. F 0.00
+expand: main@empty.loop (23, 0) FAR  w(0) 32750. F 0.00
+expand: main@entry (24, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (25, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (26, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.28 :before-memory 56.21 :after-memory 66.48)
+Propagating: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26  ! 27 
+(spacer::context::propagate :time 0.09 :before-memory 66.48 :after-memory 68.22)
+Entering level 27
+expand: query!0 (27, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (26, 27) FAR 1 U 0.00
+expand: main@entry!_BAD (26, 0) FAR  w(0) 1.
+	create_child: main@entry (25, 27) FAR 1 U 0.00
+expand: main@entry (25, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (24, 27) FAR 32750 U 0.00
+expand: main@empty.loop (24, 0) FAR  w(0) 32750.
+	create_child: main@.lr.ph13 (23, 27) FAR 33934 U 0.00
+expand: main@.lr.ph13 (23, 0) FAR  w(0) 33934.
+	create_child: main@.lr.ph13!_Cond (22, 27) FAR 34910 U 0.00
+expand: main@.lr.ph13!_Cond (22, 0) FAR  w(0) 34910.
+	create_child: main@_39 (21, 27) FAR 42084 U 0.00
+expand: main@_39 (21, 0) FAR  w(0) 42084.
+	create_child: main@.lr.ph13 (20, 27) FAR 49589 U 0.00
+expand: main@.lr.ph13 (20, 0) FAR  w(0) 49589.
+	create_child: main@.lr.ph13!_Cond (19, 27) FAR 49931 U 0.00
+expand: main@.lr.ph13!_Cond (19, 0) FAR  w(0) 49931.
+	create_child: main@_39 (18, 27) FAR 50340 U 0.00
+expand: main@_39 (18, 0) FAR  w(0) 50340.
+	create_child: main@.lr.ph13 (17, 27) FAR 53099 U 0.00
+expand: main@.lr.ph13 (17, 0) FAR  w(0) 53099.
+	create_child: main@.lr.ph13!_Cond (16, 27) FAR 53482 U 0.00
+expand: main@.lr.ph13!_Cond (16, 0) FAR  w(0) 53482.
+	create_child: main@_39 (15, 27) FAR 53809 U 0.00
+expand: main@_39 (15, 0) FAR  w(0) 53809.
+	create_child: main@.lr.ph13 (14, 27) FAR 57889 U 0.00
+expand: main@.lr.ph13 (14, 0) FAR  w(0) 57889.
+	create_child: main@.lr.ph13!_Cond (13, 27) FAR 58168 U 0.00
+expand: main@.lr.ph13!_Cond (13, 0) FAR  w(0) 58168.
+	create_child: main@_39 (12, 27) FAR 58494 U 0.00
+expand: main@_39 (12, 0) FAR  w(0) 58494.
+	create_child: main@.lr.ph13.1 (11, 27) FAR 58423 U 0.00
+expand: main@.lr.ph13.1 (11, 0) FAR  w(0) 58423.
+	create_child: main@.lr.ph13.1!_Cond (10, 27) FAR 61511 U 0.00
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(0) 61511.
+	create_child: main@_111 (9, 27) FAR 69328 U 0.00
+expand: main@_111 (9, 0) FAR  w(0) 69328.
+	create_child: main@.lr.ph13.1 (8, 27) FAR 106901 U 0.01
+expand: main@.lr.ph13.1 (8, 0) FAR  w(0) 106901.
+	create_child: main@.lr.ph13.1!_Cond (7, 27) FAR 106806 U 0.00
+expand: main@.lr.ph13.1!_Cond (7, 0) FAR  w(0) 106806.
+	create_child: main@_111 (6, 27) FAR 107176 U 0.00
+expand: main@_111 (6, 0) FAR  w(0) 107176.
+	create_child: main@.lr.ph13.1 (5, 27) FAR 107015 U 0.00
+expand: main@.lr.ph13.1 (5, 0) FAR  w(0) 107015.
+	create_child: main@.lr.ph13.1!_Cond (4, 27) FAR 107180 U 0.00
+expand: main@.lr.ph13.1!_Cond (4, 0) FAR  w(0) 107180.
+	create_child: main@_111 (3, 27) FAR 106850 U 0.00
+expand: main@_111 (3, 0) FAR  w(0) 106850.
+	create_child: main@.lr.ph13.2 (2, 27) FAR 107232 U 0.00
+expand: main@.lr.ph13.2 (2, 0) FAR  w(0) 107232.
+	create_child: main@.lr.ph13.2!_Cond (1, 27) FAR 107188 U 0.00
+expand: main@.lr.ph13.2!_Cond (1, 0) FAR  w(0) 107188.
+	create_child: main@_125 (0, 27) FAR 107403 U 0.01
+expand: main@_125 (0, 0) FAR  w(0) 107403. F 0.02
+expand: main@.lr.ph13.2!_Cond (1, 0) FAR  w(0) 107188. F 0.00
+expand: main@.lr.ph13.2 (2, 0) FAR  w(0) 107232. F 0.00
+expand: main@_111 (3, 0) FAR  w(0) 106850. F 0.00
+expand: main@.lr.ph13.1!_Cond (4, 0) FAR  w(0) 107180. F 0.00
+expand: main@.lr.ph13.1 (5, 0) FAR  w(0) 107015. F 0.00
+expand: main@_111 (6, 0) FAR  w(0) 107176. F 0.01
+expand: main@.lr.ph13.1!_Cond (7, 0) FAR  w(0) 106806. F 0.01
+expand: main@.lr.ph13.1 (8, 0) FAR  w(0) 106901. F 0.00
+expand: main@_111 (9, 0) FAR  w(0) 69328. F 0.01
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(0) 61511. F 0.01
+expand: main@.lr.ph13.1 (11, 0) FAR  w(0) 58423. F 0.00
+expand: main@_39 (12, 0) FAR  w(0) 58494. F 0.01
+expand: main@.lr.ph13!_Cond (13, 0) FAR  w(0) 58168. F 0.01
+expand: main@.lr.ph13 (14, 0) FAR  w(0) 57889. F 0.00
+expand: main@_39 (15, 0) FAR  w(0) 53809. F 0.01
+expand: main@.lr.ph13!_Cond (16, 0) FAR  w(0) 53482. F 0.01
+expand: main@.lr.ph13 (17, 0) FAR  w(0) 53099. F 0.00
+expand: main@_39 (18, 0) FAR  w(0) 50340. F 0.01
+expand: main@.lr.ph13!_Cond (19, 0) FAR  w(0) 49931. F 0.01
+expand: main@.lr.ph13 (20, 0) FAR  w(0) 49589. F 0.00
+expand: main@_39 (21, 0) FAR  w(0) 42084. F 0.01
+expand: main@.lr.ph13!_Cond (22, 0) FAR  w(0) 34910. F 0.01
+expand: main@.lr.ph13 (23, 0) FAR  w(0) 33934. F 0.00
+expand: main@empty.loop (24, 0) FAR  w(0) 32750. F 0.00
+expand: main@entry (25, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (26, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (27, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.24 :before-memory 68.22 :after-memory 72.96)
+Propagating: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27  ! 28 
+(spacer::context::propagate :time 0.08 :before-memory 72.96 :after-memory 73.36)
+Entering level 28
+expand: query!0 (28, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (27, 28) FAR 1 U 0.00
+expand: main@entry!_BAD (27, 0) FAR  w(0) 1.
+	create_child: main@entry (26, 28) FAR 1 U 0.00
+expand: main@entry (26, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (25, 28) FAR 32750 U 0.00
+expand: main@empty.loop (25, 0) FAR  w(0) 32750.
+	create_child: main@.lr.ph13 (24, 28) FAR 33934 U 0.00
+expand: main@.lr.ph13 (24, 0) FAR  w(0) 33934.
+	create_child: main@.lr.ph13!_Cond (23, 28) FAR 34910 U 0.00
+expand: main@.lr.ph13!_Cond (23, 0) FAR  w(0) 34910.
+	create_child: main@_39 (22, 28) FAR 42084 U 0.00
+expand: main@_39 (22, 0) FAR  w(0) 42084.
+	create_child: main@.lr.ph13 (21, 28) FAR 49589 U 0.00
+expand: main@.lr.ph13 (21, 0) FAR  w(0) 49589.
+	create_child: main@.lr.ph13!_Cond (20, 28) FAR 49931 U 0.00
+expand: main@.lr.ph13!_Cond (20, 0) FAR  w(0) 49931.
+	create_child: main@_39 (19, 28) FAR 50340 U 0.00
+expand: main@_39 (19, 0) FAR  w(0) 50340.
+	create_child: main@.lr.ph13 (18, 28) FAR 53099 U 0.00
+expand: main@.lr.ph13 (18, 0) FAR  w(0) 53099.
+	create_child: main@.lr.ph13!_Cond (17, 28) FAR 53482 U 0.00
+expand: main@.lr.ph13!_Cond (17, 0) FAR  w(0) 53482.
+	create_child: main@_39 (16, 28) FAR 53809 U 0.00
+expand: main@_39 (16, 0) FAR  w(0) 53809.
+	create_child: main@.lr.ph13 (15, 28) FAR 57889 U 0.00
+expand: main@.lr.ph13 (15, 0) FAR  w(0) 57889.
+	create_child: main@.lr.ph13!_Cond (14, 28) FAR 58168 U 0.00
+expand: main@.lr.ph13!_Cond (14, 0) FAR  w(0) 58168.
+	create_child: main@_39 (13, 28) FAR 58494 U 0.00
+expand: main@_39 (13, 0) FAR  w(0) 58494.
+	create_child: main@.lr.ph13.1 (12, 28) FAR 58423 U 0.00
+expand: main@.lr.ph13.1 (12, 0) FAR  w(0) 58423.
+	create_child: main@.lr.ph13.1!_Cond (11, 28) FAR 61511 U 0.00
+expand: main@.lr.ph13.1!_Cond (11, 0) FAR  w(0) 61511.
+	create_child: main@_111 (10, 28) FAR 69328 U 0.00
+expand: main@_111 (10, 0) FAR  w(0) 69328.
+	create_child: main@.lr.ph13.1 (9, 28) FAR 106218 U 0.01
+expand: main@.lr.ph13.1 (9, 0) FAR  w(0) 106218.
+	create_child: main@.lr.ph13.1!_Cond (8, 28) FAR 115912 U 0.00
+expand: main@.lr.ph13.1!_Cond (8, 0) FAR  w(0) 115912.
+	create_child: main@_111 (7, 28) FAR 116265 U 0.00
+expand: main@_111 (7, 0) FAR  w(0) 116265.
+	create_child: main@.lr.ph13.1 (6, 28) FAR 115951 U 0.00
+expand: main@.lr.ph13.1 (6, 0) FAR  w(0) 115951.
+	create_child: main@.lr.ph13.1!_Cond (5, 28) FAR 116188 U 0.00
+expand: main@.lr.ph13.1!_Cond (5, 0) FAR  w(0) 116188.
+	create_child: main@_111 (4, 28) FAR 116235 U 0.00
+expand: main@_111 (4, 0) FAR  w(0) 116235.
+	create_child: main@.lr.ph13.2 (3, 28) FAR 116230 U 0.00
+expand: main@.lr.ph13.2 (3, 0) FAR  w(0) 116230.
+	create_child: main@.lr.ph13.2!_Cond (2, 28) FAR 116245 U 0.00
+expand: main@.lr.ph13.2!_Cond (2, 0) FAR  w(0) 116245.
+	create_child: main@_125 (1, 28) FAR 116379 U 0.00
+expand: main@_125 (1, 0) FAR  w(0) 116379. F 0.08
+expand: main@.lr.ph13.2!_Cond (2, 0) FAR  w(0) 116245. F 0.00
+expand: main@.lr.ph13.2 (3, 0) FAR  w(0) 116230. F 0.00
+expand: main@_111 (4, 0) FAR  w(0) 116235. F 0.01
+expand: main@.lr.ph13.1!_Cond (5, 0) FAR  w(0) 116188. F 0.01
+expand: main@.lr.ph13.1 (6, 0) FAR  w(0) 115951. F 0.00
+expand: main@_111 (7, 0) FAR  w(0) 116265. F 0.01
+expand: main@.lr.ph13.1!_Cond (8, 0) FAR  w(0) 115912. F 0.01
+expand: main@.lr.ph13.1 (9, 0) FAR  w(0) 106218. F 0.00
+expand: main@_111 (10, 0) FAR  w(0) 69328. F 0.01
+expand: main@.lr.ph13.1!_Cond (11, 0) FAR  w(0) 61511. F 0.01
+expand: main@.lr.ph13.1 (12, 0) FAR  w(0) 58423. F 0.00
+expand: main@_39 (13, 0) FAR  w(0) 58494. F 0.01
+expand: main@.lr.ph13!_Cond (14, 0) FAR  w(0) 58168. F 0.01
+expand: main@.lr.ph13 (15, 0) FAR  w(0) 57889. F 0.00
+expand: main@_39 (16, 0) FAR  w(0) 53809. F 0.01
+expand: main@.lr.ph13!_Cond (17, 0) FAR  w(0) 53482. F 0.01
+expand: main@.lr.ph13 (18, 0) FAR  w(0) 53099. F 0.00
+expand: main@_39 (19, 0) FAR  w(0) 50340. F 0.01
+expand: main@.lr.ph13!_Cond (20, 0) FAR  w(0) 49931. F 0.01
+expand: main@.lr.ph13 (21, 0) FAR  w(0) 49589. F 0.00
+expand: main@_39 (22, 0) FAR  w(0) 42084. F 0.01
+expand: main@.lr.ph13!_Cond (23, 0) FAR  w(0) 34910. F 0.01
+expand: main@.lr.ph13 (24, 0) FAR  w(0) 33934. F 0.00
+expand: main@empty.loop (25, 0) FAR  w(0) 32750. F 0.00
+expand: main@entry (26, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (27, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (28, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.33 :before-memory 73.36 :after-memory 75.15)
+Propagating: 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28  ! 29 30 
+(spacer::context::propagate :time 0.11 :before-memory 75.15 :after-memory 75.64)
+Entering level 29
+expand: query!0 (29, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.00 :before-memory 75.64 :after-memory 75.75)
+Propagating: 29  ! 30 
+(spacer::context::propagate :time 0.00 :before-memory 75.75 :after-memory 75.75)
+Entering level 30
+expand: query!0 (30, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (29, 30) FAR 1 U 0.00
+expand: main@entry!_BAD (29, 0) FAR  w(0) 1.
+	create_child: main@entry (28, 30) FAR 1 U 0.00
+expand: main@entry (28, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (27, 30) FAR 32750 U 0.00
+expand: main@empty.loop (27, 0) FAR  w(0) 32750.
+	create_child: main@.lr.ph13 (26, 30) FAR 33934 U 0.00
+expand: main@.lr.ph13 (26, 0) FAR  w(0) 33934.
+	create_child: main@.lr.ph13!_Cond (25, 30) FAR 34910 U 0.00
+expand: main@.lr.ph13!_Cond (25, 0) FAR  w(0) 34910.
+	create_child: main@_39 (24, 30) FAR 42084 U 0.00
+expand: main@_39 (24, 0) FAR  w(0) 42084.
+	create_child: main@.lr.ph13 (23, 30) FAR 49589 U 0.00
+expand: main@.lr.ph13 (23, 0) FAR  w(0) 49589.
+	create_child: main@.lr.ph13!_Cond (22, 30) FAR 49931 U 0.00
+expand: main@.lr.ph13!_Cond (22, 0) FAR  w(0) 49931.
+	create_child: main@_39 (21, 30) FAR 50340 U 0.00
+expand: main@_39 (21, 0) FAR  w(0) 50340.
+	create_child: main@.lr.ph13 (20, 30) FAR 53099 U 0.00
+expand: main@.lr.ph13 (20, 0) FAR  w(0) 53099.
+	create_child: main@.lr.ph13!_Cond (19, 30) FAR 53482 U 0.00
+expand: main@.lr.ph13!_Cond (19, 0) FAR  w(0) 53482.
+	create_child: main@_39 (18, 30) FAR 53809 U 0.00
+expand: main@_39 (18, 0) FAR  w(0) 53809.
+	create_child: main@.lr.ph13 (17, 30) FAR 57889 U 0.00
+expand: main@.lr.ph13 (17, 0) FAR  w(0) 57889.
+	create_child: main@.lr.ph13!_Cond (16, 30) FAR 58168 U 0.00
+expand: main@.lr.ph13!_Cond (16, 0) FAR  w(0) 58168.
+	create_child: main@_39 (15, 30) FAR 58494 U 0.00
+expand: main@_39 (15, 0) FAR  w(0) 58494.
+	create_child: main@.lr.ph13.1 (14, 30) FAR 58423 U 0.00
+expand: main@.lr.ph13.1 (14, 0) FAR  w(0) 58423.
+	create_child: main@.lr.ph13.1!_Cond (13, 30) FAR 61511 U 0.00
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(0) 61511.
+	create_child: main@_111 (12, 30) FAR 69328 U 0.00
+expand: main@_111 (12, 0) FAR  w(0) 69328.
+	create_child: main@.lr.ph13.1 (11, 30) FAR 123843 U 0.01
+expand: main@.lr.ph13.1 (11, 0) FAR  w(0) 123843.
+	create_child: main@.lr.ph13.1!_Cond (10, 30) FAR 123624 U 0.00
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(0) 123624.
+	create_child: main@_111 (9, 30) FAR 124081 U 0.00
+expand: main@_111 (9, 0) FAR  w(0) 124081.
+	create_child: main@.lr.ph13.1 (8, 30) FAR 123892 U 0.00
+expand: main@.lr.ph13.1 (8, 0) FAR  w(0) 123892.
+	create_child: main@.lr.ph13.1!_Cond (7, 30) FAR 123787 U 0.00
+expand: main@.lr.ph13.1!_Cond (7, 0) FAR  w(0) 123787.
+	create_child: main@_111 (6, 30) FAR 123889 U 0.00
+expand: main@_111 (6, 0) FAR  w(0) 123889.
+	create_child: main@.lr.ph13.2 (5, 30) FAR 124077 U 0.00
+expand: main@.lr.ph13.2 (5, 0) FAR  w(0) 124077.
+	create_child: main@.lr.ph13.2!_Cond (4, 30) FAR 124146 U 0.00
+expand: main@.lr.ph13.2!_Cond (4, 0) FAR  w(0) 124146.
+	create_child: main@_125 (3, 30) FAR 124211 U 0.00
+expand: main@_125 (3, 0) FAR  w(0) 124211. F 0.01
+expand: main@.lr.ph13.2!_Cond (4, 0) FAR  w(0) 124146. F 0.01
+expand: main@.lr.ph13.2 (5, 0) FAR  w(0) 124077. F 0.00
+expand: main@_111 (6, 0) FAR  w(0) 123889. F 0.01
+expand: main@.lr.ph13.1!_Cond (7, 0) FAR  w(0) 123787. F 0.00
+expand: main@.lr.ph13.1 (8, 0) FAR  w(0) 123892. F 0.00
+expand: main@_111 (9, 0) FAR  w(0) 124081. F 0.01
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(0) 123624. F 0.01
+expand: main@.lr.ph13.1 (11, 0) FAR  w(0) 123843. F 0.00
+expand: main@_111 (12, 0) FAR  w(0) 69328. F 0.01
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(0) 61511. F 0.01
+expand: main@.lr.ph13.1 (14, 0) FAR  w(0) 58423. F 0.00
+expand: main@_39 (15, 0) FAR  w(0) 58494. F 0.01
+expand: main@.lr.ph13!_Cond (16, 0) FAR  w(0) 58168. F 0.01
+expand: main@.lr.ph13 (17, 0) FAR  w(0) 57889. F 0.00
+expand: main@_39 (18, 0) FAR  w(0) 53809. F 0.01
+expand: main@.lr.ph13!_Cond (19, 0) FAR  w(0) 53482. F 0.01
+expand: main@.lr.ph13 (20, 0) FAR  w(0) 53099. F 0.00
+expand: main@_39 (21, 0) FAR  w(0) 50340. F 0.01
+expand: main@.lr.ph13!_Cond (22, 0) FAR  w(0) 49931. F 0.01
+expand: main@.lr.ph13 (23, 0) FAR  w(0) 49589. F 0.00
+expand: main@_39 (24, 0) FAR  w(0) 42084. F 0.01
+expand: main@.lr.ph13!_Cond (25, 0) FAR  w(0) 34910. F 0.01
+expand: main@.lr.ph13 (26, 0) FAR  w(0) 33934. F 0.00
+expand: main@empty.loop (27, 0) FAR  w(0) 32750. F 0.00
+expand: main@entry (28, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (29, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (30, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.26 :before-memory 75.75 :after-memory 75.76)
+Propagating: 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30  ! 31 
+(spacer::context::propagate :time 0.09 :before-memory 75.76 :after-memory 75.97)
+Entering level 31
+expand: query!0 (31, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (30, 31) FAR 1 U 0.00
+expand: main@entry!_BAD (30, 0) FAR  w(0) 1.
+	create_child: main@entry (29, 31) FAR 1 U 0.00
+expand: main@entry (29, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (28, 31) FAR 32750 U 0.00
+expand: main@empty.loop (28, 0) FAR  w(0) 32750.
+	create_child: main@.lr.ph13 (27, 31) FAR 33934 U 0.00
+expand: main@.lr.ph13 (27, 0) FAR  w(0) 33934.
+	create_child: main@.lr.ph13!_Cond (26, 31) FAR 34910 U 0.00
+expand: main@.lr.ph13!_Cond (26, 0) FAR  w(0) 34910.
+	create_child: main@_39 (25, 31) FAR 42084 U 0.00
+expand: main@_39 (25, 0) FAR  w(0) 42084.
+	create_child: main@.lr.ph13 (24, 31) FAR 49589 U 0.00
+expand: main@.lr.ph13 (24, 0) FAR  w(0) 49589.
+	create_child: main@.lr.ph13!_Cond (23, 31) FAR 49931 U 0.00
+expand: main@.lr.ph13!_Cond (23, 0) FAR  w(0) 49931.
+	create_child: main@_39 (22, 31) FAR 50340 U 0.00
+expand: main@_39 (22, 0) FAR  w(0) 50340.
+	create_child: main@.lr.ph13 (21, 31) FAR 53099 U 0.00
+expand: main@.lr.ph13 (21, 0) FAR  w(0) 53099.
+	create_child: main@.lr.ph13!_Cond (20, 31) FAR 53482 U 0.00
+expand: main@.lr.ph13!_Cond (20, 0) FAR  w(0) 53482.
+	create_child: main@_39 (19, 31) FAR 53809 U 0.00
+expand: main@_39 (19, 0) FAR  w(0) 53809.
+	create_child: main@.lr.ph13 (18, 31) FAR 57889 U 0.00
+expand: main@.lr.ph13 (18, 0) FAR  w(0) 57889.
+	create_child: main@.lr.ph13!_Cond (17, 31) FAR 58168 U 0.00
+expand: main@.lr.ph13!_Cond (17, 0) FAR  w(0) 58168.
+	create_child: main@_39 (16, 31) FAR 58494 U 0.00
+expand: main@_39 (16, 0) FAR  w(0) 58494.
+	create_child: main@.lr.ph13.1 (15, 31) FAR 58423 U 0.00
+expand: main@.lr.ph13.1 (15, 0) FAR  w(0) 58423.
+	create_child: main@.lr.ph13.1!_Cond (14, 31) FAR 61511 U 0.00
+expand: main@.lr.ph13.1!_Cond (14, 0) FAR  w(0) 61511.
+	create_child: main@_111 (13, 31) FAR 69328 U 0.00
+expand: main@_111 (13, 0) FAR  w(0) 69328.
+	create_child: main@.lr.ph13.1 (12, 31) FAR 125968 U 0.01
+expand: main@.lr.ph13.1 (12, 0) FAR  w(0) 125968.
+	create_child: main@.lr.ph13.1!_Cond (11, 31) FAR 126029 U 0.00
+expand: main@.lr.ph13.1!_Cond (11, 0) FAR  w(0) 126029.
+	create_child: main@_111 (10, 31) FAR 126225 U 0.00
+expand: main@_111 (10, 0) FAR  w(0) 126225.
+	create_child: main@.lr.ph13.1 (9, 31) FAR 126173 U 0.01
+expand: main@.lr.ph13.1 (9, 0) FAR  w(0) 126173.
+	create_child: main@.lr.ph13.1!_Cond (8, 31) FAR 125972 U 0.00
+expand: main@.lr.ph13.1!_Cond (8, 0) FAR  w(0) 125972.
+	create_child: main@_111 (7, 31) FAR 126066 U 0.00
+expand: main@_111 (7, 0) FAR  w(0) 126066.
+	create_child: main@.lr.ph13.2 (6, 31) FAR 126242 U 0.00
+expand: main@.lr.ph13.2 (6, 0) FAR  w(0) 126242.
+	create_child: main@.lr.ph13.2!_Cond (5, 31) FAR 126052 U 0.00
+expand: main@.lr.ph13.2!_Cond (5, 0) FAR  w(0) 126052.
+	create_child: main@_125 (4, 31) FAR 126342 U 0.00
+expand: main@_125 (4, 0) FAR  w(0) 126342.
+	create_child: main@.lr.ph13.2 (3, 31) FAR 126345 U 0.00
+expand: main@.lr.ph13.2 (3, 0) FAR  w(0) 126345.
+	create_child: main@.lr.ph13.2!_Cond (2, 31) FAR 126534 U 0.00
+expand: main@.lr.ph13.2!_Cond (2, 0) FAR  w(0) 126534.
+	create_child: main@_125 (1, 31) FAR 126593 U 0.00
+expand: main@_125 (1, 0) FAR  w(0) 126593.
+	create_child: main@.lr.ph13.3 (0, 31) FAR 126756 U 0.00
+expand: main@.lr.ph13.3 (0, 0) FAR  w(0) 126756. F 0.00
+expand: main@_125 (1, 0) FAR  w(0) 126593. F 0.01
+expand: main@.lr.ph13.2!_Cond (2, 0) FAR  w(0) 126534. F 0.00
+expand: main@.lr.ph13.2 (3, 0) FAR  w(0) 126345. F 0.00
+expand: main@_125 (4, 0) FAR  w(0) 126342. F 0.01
+expand: main@.lr.ph13.2!_Cond (5, 0) FAR  w(0) 126052. F 0.01
+expand: main@.lr.ph13.2 (6, 0) FAR  w(0) 126242. F 0.00
+expand: main@_111 (7, 0) FAR  w(0) 126066. F 0.01
+expand: main@.lr.ph13.1!_Cond (8, 0) FAR  w(0) 125972. F 0.01
+expand: main@.lr.ph13.1 (9, 0) FAR  w(0) 126173. F 0.00
+expand: main@_111 (10, 0) FAR  w(0) 126225. F 0.01
+expand: main@.lr.ph13.1!_Cond (11, 0) FAR  w(0) 126029. F 0.01
+expand: main@.lr.ph13.1 (12, 0) FAR  w(0) 125968. F 0.00
+expand: main@_111 (13, 0) FAR  w(0) 69328. F 0.01
+expand: main@.lr.ph13.1!_Cond (14, 0) FAR  w(0) 61511. F 0.01
+expand: main@.lr.ph13.1 (15, 0) FAR  w(0) 58423. F 0.00
+expand: main@_39 (16, 0) FAR  w(0) 58494. F 0.01
+expand: main@.lr.ph13!_Cond (17, 0) FAR  w(0) 58168. F 0.01
+expand: main@.lr.ph13 (18, 0) FAR  w(0) 57889. F 0.00
+expand: main@_39 (19, 0) FAR  w(0) 53809. F 0.01
+expand: main@.lr.ph13!_Cond (20, 0) FAR  w(0) 53482. F 0.01
+expand: main@.lr.ph13 (21, 0) FAR  w(0) 53099. F 0.00
+expand: main@_39 (22, 0) FAR  w(0) 50340. F 0.01
+expand: main@.lr.ph13!_Cond (23, 0) FAR  w(0) 49931. F 0.01
+expand: main@.lr.ph13 (24, 0) FAR  w(0) 49589. F 0.00
+expand: main@_39 (25, 0) FAR  w(0) 42084. F 0.01
+expand: main@.lr.ph13!_Cond (26, 0) FAR  w(0) 34910. F 0.01
+expand: main@.lr.ph13 (27, 0) FAR  w(0) 33934. F 0.00
+expand: main@empty.loop (28, 0) FAR  w(0) 32750. F 0.00
+expand: main@entry (29, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (30, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (31, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.30 :before-memory 75.97 :after-memory 78.20)
+Propagating: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31  ! 32 
+(spacer::context::propagate :time 0.14 :before-memory 78.20 :after-memory 78.61)
+Entering level 32
+expand: query!0 (32, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (31, 32) FAR 1 U 0.00
+expand: main@entry!_BAD (31, 0) FAR  w(0) 1.
+	create_child: main@entry (30, 32) FAR 1 U 0.00
+expand: main@entry (30, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (29, 32) FAR 32750 U 0.00
+expand: main@empty.loop (29, 0) FAR  w(0) 32750.
+	create_child: main@.lr.ph13 (28, 32) FAR 33934 U 0.00
+expand: main@.lr.ph13 (28, 0) FAR  w(0) 33934.
+	create_child: main@.lr.ph13!_Cond (27, 32) FAR 34910 U 0.00
+expand: main@.lr.ph13!_Cond (27, 0) FAR  w(0) 34910.
+	create_child: main@_39 (26, 32) FAR 42084 U 0.00
+expand: main@_39 (26, 0) FAR  w(0) 42084.
+	create_child: main@.lr.ph13 (25, 32) FAR 49589 U 0.00
+expand: main@.lr.ph13 (25, 0) FAR  w(0) 49589.
+	create_child: main@.lr.ph13!_Cond (24, 32) FAR 49931 U 0.00
+expand: main@.lr.ph13!_Cond (24, 0) FAR  w(0) 49931.
+	create_child: main@_39 (23, 32) FAR 50340 U 0.00
+expand: main@_39 (23, 0) FAR  w(0) 50340.
+	create_child: main@.lr.ph13 (22, 32) FAR 53099 U 0.00
+expand: main@.lr.ph13 (22, 0) FAR  w(0) 53099.
+	create_child: main@.lr.ph13!_Cond (21, 32) FAR 53482 U 0.00
+expand: main@.lr.ph13!_Cond (21, 0) FAR  w(0) 53482.
+	create_child: main@_39 (20, 32) FAR 53809 U 0.00
+expand: main@_39 (20, 0) FAR  w(0) 53809.
+	create_child: main@.lr.ph13 (19, 32) FAR 57889 U 0.00
+expand: main@.lr.ph13 (19, 0) FAR  w(0) 57889.
+	create_child: main@.lr.ph13!_Cond (18, 32) FAR 58168 U 0.00
+expand: main@.lr.ph13!_Cond (18, 0) FAR  w(0) 58168.
+	create_child: main@_39 (17, 32) FAR 58494 U 0.00
+expand: main@_39 (17, 0) FAR  w(0) 58494.
+	create_child: main@.lr.ph13.1 (16, 32) FAR 58423 U 0.00
+expand: main@.lr.ph13.1 (16, 0) FAR  w(0) 58423.
+	create_child: main@.lr.ph13.1!_Cond (15, 32) FAR 61511 U 0.00
+expand: main@.lr.ph13.1!_Cond (15, 0) FAR  w(0) 61511.
+	create_child: main@_111 (14, 32) FAR 69328 U 0.00
+expand: main@_111 (14, 0) FAR  w(0) 69328.
+	create_child: main@.lr.ph13.1 (13, 32) FAR 132763 U 0.01
+expand: main@.lr.ph13.1 (13, 0) FAR  w(0) 132763.
+	create_child: main@.lr.ph13.1!_Cond (12, 32) FAR 132805 U 0.00
+expand: main@.lr.ph13.1!_Cond (12, 0) FAR  w(0) 132805.
+	create_child: main@_111 (11, 32) FAR 132915 U 0.00
+expand: main@_111 (11, 0) FAR  w(0) 132915.
+	create_child: main@.lr.ph13.1 (10, 32) FAR 132826 U 0.00
+expand: main@.lr.ph13.1 (10, 0) FAR  w(0) 132826.
+	create_child: main@.lr.ph13.1!_Cond (9, 32) FAR 132912 U 0.00
+expand: main@.lr.ph13.1!_Cond (9, 0) FAR  w(0) 132912.
+	create_child: main@_111 (8, 32) FAR 132557 U 0.00
+expand: main@_111 (8, 0) FAR  w(0) 132557.
+	create_child: main@.lr.ph13.2 (7, 32) FAR 132943 U 0.00
+expand: main@.lr.ph13.2 (7, 0) FAR  w(0) 132943.
+	create_child: main@.lr.ph13.2!_Cond (6, 32) FAR 133002 U 0.00
+expand: main@.lr.ph13.2!_Cond (6, 0) FAR  w(0) 133002.
+	create_child: main@_125 (5, 32) FAR 133047 U 0.00
+expand: main@_125 (5, 0) FAR  w(0) 133047.
+	create_child: main@.lr.ph13.2 (4, 32) FAR 133095 U 0.00
+expand: main@.lr.ph13.2 (4, 0) FAR  w(0) 133095.
+	create_child: main@.lr.ph13.2!_Cond (3, 32) FAR 132916 U 0.00
+expand: main@.lr.ph13.2!_Cond (3, 0) FAR  w(0) 132916.
+	create_child: main@_125 (2, 32) FAR 132850 U 0.00
+expand: main@_125 (2, 0) FAR  w(0) 132850.
+	create_child: main@.lr.ph13.3 (1, 32) FAR 133102 U 0.00
+expand: main@.lr.ph13.3 (1, 0) FAR  w(0) 133102.
+	create_child: main@.lr.ph13.3!_Cond (0, 32) FAR 133115 U 0.00
+expand: main@.lr.ph13.3!_Cond (0, 0) FAR  w(0) 133115. F 0.01
+expand: main@.lr.ph13.3 (1, 0) FAR  w(0) 133102. F 0.00
+expand: main@_125 (2, 0) FAR  w(0) 132850. F 0.00
+expand: main@.lr.ph13.2!_Cond (3, 0) FAR  w(0) 132916. F 0.00
+expand: main@.lr.ph13.2 (4, 0) FAR  w(0) 133095. F 0.00
+expand: main@_125 (5, 0) FAR  w(0) 133047. F 0.01
+expand: main@.lr.ph13.2!_Cond (6, 0) FAR  w(0) 133002. F 0.01
+expand: main@.lr.ph13.2 (7, 0) FAR  w(0) 132943. F 0.00
+expand: main@_111 (8, 0) FAR  w(0) 132557. F 0.01
+expand: main@.lr.ph13.1!_Cond (9, 0) FAR  w(0) 132912. F 0.01
+expand: main@.lr.ph13.1 (10, 0) FAR  w(0) 132826. F 0.00
+expand: main@_111 (11, 0) FAR  w(0) 132915. F 0.01
+expand: main@.lr.ph13.1!_Cond (12, 0) FAR  w(0) 132805. F 0.01
+expand: main@.lr.ph13.1 (13, 0) FAR  w(0) 132763. F 0.00
+expand: main@_111 (14, 0) FAR  w(0) 69328. F 0.01
+expand: main@.lr.ph13.1!_Cond (15, 0) FAR  w(0) 61511. F 0.01
+expand: main@.lr.ph13.1 (16, 0) FAR  w(0) 58423. F 0.00
+expand: main@_39 (17, 0) FAR  w(0) 58494. F 0.01
+expand: main@.lr.ph13!_Cond (18, 0) FAR  w(0) 58168. F 0.01
+expand: main@.lr.ph13 (19, 0) FAR  w(0) 57889. F 0.00
+expand: main@_39 (20, 0) FAR  w(0) 53809. F 0.01
+expand: main@.lr.ph13!_Cond (21, 0) FAR  w(0) 53482. F 0.01
+expand: main@.lr.ph13 (22, 0) FAR  w(0) 53099. F 0.01
+expand: main@_39 (23, 0) FAR  w(0) 50340. F 0.01
+expand: main@.lr.ph13!_Cond (24, 0) FAR  w(0) 49931. F 0.01
+expand: main@.lr.ph13 (25, 0) FAR  w(0) 49589. F 0.00
+expand: main@_39 (26, 0) FAR  w(0) 42084. F 0.01
+expand: main@.lr.ph13!_Cond (27, 0) FAR  w(0) 34910. F 0.01
+expand: main@.lr.ph13 (28, 0) FAR  w(0) 33934. F 0.00
+expand: main@empty.loop (29, 0) FAR  w(0) 32750. F 0.00
+expand: main@entry (30, 0) FAR  w(0) 1. F 0.00
+expand: main@entry!_BAD (31, 0) FAR  w(0) 1. F 0.00
+expand: query!0 (32, 0) FAR  w(0) 1. F 0.00
+(spacer::context::check_reachability :time 0.30 :before-memory 78.61 :after-memory 89.55)
+Propagating: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32  ! 33 
+(spacer::context::propagate :time 0.15 :before-memory 89.55 :after-memory 91.69)
+Entering level 33
+expand: query!0 (33, 0) FAR  w(0) 1.
+	create_child: main@entry!_BAD (32, 33) FAR 1 U 0.00
+expand: main@entry!_BAD (32, 0) FAR  w(0) 1.
+	create_child: main@entry (31, 33) FAR 1 U 0.00
+expand: main@entry (31, 0) FAR  w(0) 1.
+	create_child: main@empty.loop (30, 33) FAR 32750 U 0.00
+expand: main@empty.loop (30, 0) FAR  w(0) 32750.
+	create_child: main@.lr.ph13 (29, 33) FAR 33934 U 0.00
+expand: main@.lr.ph13 (29, 0) FAR  w(0) 33934.
+	create_child: main@.lr.ph13!_Cond (28, 33) FAR 34910 U 0.00
+expand: main@.lr.ph13!_Cond (28, 0) FAR  w(0) 34910.
+	create_child: main@_39 (27, 33) FAR 42084 U 0.00
+expand: main@_39 (27, 0) FAR  w(0) 42084.
+	create_child: main@.lr.ph13 (26, 33) FAR 49589 U 0.00
+expand: main@.lr.ph13 (26, 0) FAR  w(0) 49589.
+	create_child: main@.lr.ph13!_Cond (25, 33) FAR 49931 U 0.00
+expand: main@.lr.ph13!_Cond (25, 0) FAR  w(0) 49931.
+	create_child: main@_39 (24, 33) FAR 50340 U 0.00
+expand: main@_39 (24, 0) FAR  w(0) 50340.
+	create_child: main@.lr.ph13 (23, 33) FAR 53099 U 0.00
+expand: main@.lr.ph13 (23, 0) FAR  w(0) 53099.
+	create_child: main@.lr.ph13!_Cond (22, 33) FAR 53482 U 0.00
+expand: main@.lr.ph13!_Cond (22, 0) FAR  w(0) 53482.
+	create_child: main@_39 (21, 33) FAR 53809 U 0.00
+expand: main@_39 (21, 0) FAR  w(0) 53809.
+	create_child: main@.lr.ph13 (20, 33) FAR 57889 U 0.00
+expand: main@.lr.ph13 (20, 0) FAR  w(0) 57889.
+	create_child: main@.lr.ph13!_Cond (19, 33) FAR 58168 U 0.00
+expand: main@.lr.ph13!_Cond (19, 0) FAR  w(0) 58168.
+	create_child: main@_39 (18, 33) FAR 58494 U 0.00
+expand: main@_39 (18, 0) FAR  w(0) 58494.
+	create_child: main@.lr.ph13.1 (17, 33) FAR 58423 U 0.00
+expand: main@.lr.ph13.1 (17, 0) FAR  w(0) 58423.
+	create_child: main@.lr.ph13.1!_Cond (16, 33) FAR 61511 U 0.00
+expand: main@.lr.ph13.1!_Cond (16, 0) FAR  w(0) 61511.
+	create_child: main@_111 (15, 33) FAR 69328 U 0.00
+expand: main@_111 (15, 0) FAR  w(0) 69328.
+	create_child: main@.lr.ph13.1 (14, 33) FAR 144401 U 0.01
+expand: main@.lr.ph13.1 (14, 0) FAR  w(0) 144401.
+	create_child: main@.lr.ph13.1!_Cond (13, 33) FAR 144558 U 0.00
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(0) 144558.
+	create_child: main@_111 (12, 33) FAR 144698 U 0.00
+expand: main@_111 (12, 0) FAR  w(0) 144698.
+	create_child: main@.lr.ph13.1 (11, 33) FAR 144666 U 0.00
+expand: main@.lr.ph13.1 (11, 0) FAR  w(0) 144666.
+	create_child: main@.lr.ph13.1!_Cond (10, 33) FAR 144433 U 0.00
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(0) 144433.
+	create_child: main@_111 (9, 33) FAR 144613 U 0.00
+expand: main@_111 (9, 0) FAR  w(0) 144613.
+	create_child: main@.lr.ph13.2 (8, 33) FAR 144406 U 0.00
+expand: main@.lr.ph13.2 (8, 0) FAR  w(0) 144406.
+	create_child: main@.lr.ph13.2!_Cond (7, 33) FAR 144593 U 0.00
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(0) 144593.
+	create_child: main@_125 (6, 33) FAR 144809 U 0.00
+expand: main@_125 (6, 0) FAR  w(0) 144809.
+	create_child: main@.lr.ph13.2 (5, 33) FAR 144681 U 0.00
+expand: main@.lr.ph13.2 (5, 0) FAR  w(0) 144681.
+	create_child: main@.lr.ph13.2!_Cond (4, 33) FAR 144286 U 0.00
+expand: main@.lr.ph13.2!_Cond (4, 0) FAR  w(0) 144286.
+	create_child: main@_125 (3, 33) FAR 144641 U 0.00
+expand: main@_125 (3, 0) FAR  w(0) 144641.
+	create_child: main@.lr.ph13.3 (2, 33) FAR 144819 U 0.00
+expand: main@.lr.ph13.3 (2, 0) FAR  w(0) 144819.
+	create_child: main@.lr.ph13.3!_Cond (1, 33) FAR 144853 U 0.00
+expand: main@.lr.ph13.3!_Cond (1, 0) FAR  w(0) 144853. T 0.05
+is-reachable: main@.lr.ph13.3 (2, 0) FAR 144819 F 0.00
+expand: main@.lr.ph13.3 (2, 0) FAR  w(1) 144819. T 0.00
+is-reachable: main@_125 (3, 0) FAR 144641 F 0.00
+expand: main@_125 (3, 0) FAR  w(1) 144641.
+	create_child: main@.lr.ph13._crit_edge.2 (3, 33) FAR 150326 X 0.02
+expand: main@.lr.ph13._crit_edge.2 (3, 0) FAR  w(0) 150326.
+	create_child: main@.lr.ph13.3 (2, 33) FAR 156293 U 0.02
+expand: main@.lr.ph13.3 (2, 0) FAR  w(0) 156293.
+	create_child: main@.lr.ph13.3!_Cond (1, 33) FAR 157991 U 0.01
+expand: main@.lr.ph13.3!_Cond (1, 0) FAR  w(0) 157991. T 0.04
+is-reachable: main@.lr.ph13.3 (2, 0) FAR 156293 F 0.00
+expand: main@.lr.ph13.3 (2, 0) FAR  w(1) 156293. T 0.00
+is-reachable: main@.lr.ph13._crit_edge.2 (3, 0) FAR 150326 F 0.00
+expand: main@.lr.ph13._crit_edge.2 (3, 0) FAR  w(1) 150326. T 0.00
+is-reachable: main@.lr.ph13.2!_Cond (4, 0) FAR 144286 F 0.01
+expand: main@.lr.ph13.2!_Cond (4, 0) FAR  w(1) 144286. T 0.00
+is-reachable: main@.lr.ph13.2 (5, 0) FAR 144681 F 0.01
+expand: main@.lr.ph13.2 (5, 0) FAR  w(1) 144681. T 0.00
+is-reachable: main@_125 (6, 0) FAR 144809 F 0.01
+expand: main@_125 (6, 0) FAR  w(1) 144809.
+	create_child: main@.lr.ph13._crit_edge.2 (6, 33) FAR 164738 X 0.02
+expand: main@.lr.ph13._crit_edge.2 (6, 0) FAR  w(0) 164738.
+	create_child: main@.lr.ph13.2 (5, 33) FAR 150224 U 0.01
+expand: main@.lr.ph13.2 (5, 0) FAR  w(0) 150224.
+	create_child: main@.lr.ph13.2!_Cond (4, 33) FAR 165795 U 0.01
+expand: main@.lr.ph13.2!_Cond (4, 0) FAR  w(0) 165795.
+	create_child: main@_125 (3, 33) FAR 168659 U 0.02
+expand: main@_125 (3, 0) FAR  w(0) 168659.
+	create_child: main@.lr.ph13.3 (2, 33) FAR 169577 U 0.01
+expand: main@.lr.ph13.3 (2, 0) FAR  w(0) 169577.
+	create_child: main@.lr.ph13.3!_Cond (1, 33) FAR 170064 U 0.01
+expand: main@.lr.ph13.3!_Cond (1, 0) FAR  w(0) 170064. T 0.02
+is-reachable: main@.lr.ph13.3 (2, 0) FAR 169577 F 0.00
+expand: main@.lr.ph13.3 (2, 0) FAR  w(1) 169577. T 0.00
+is-reachable: main@_125 (3, 0) FAR 168659 F 0.01
+expand: main@_125 (3, 0) FAR  w(1) 168659. T 0.02
+is-reachable: main@.lr.ph13.2!_Cond (4, 0) FAR 165795 F 0.01
+expand: main@.lr.ph13.2!_Cond (4, 0) FAR  w(1) 165795. T 0.01
+is-reachable: main@.lr.ph13.2 (5, 0) FAR 150224 F 0.00
+expand: main@.lr.ph13.2 (5, 0) FAR  w(1) 150224. T 0.00
+is-reachable: main@.lr.ph13._crit_edge.2 (6, 0) FAR 164738 F 0.01
+expand: main@.lr.ph13._crit_edge.2 (6, 0) FAR  w(1) 164738. T 0.00
+is-reachable: main@.lr.ph13.2!_Cond (7, 0) FAR 144593 F 0.01
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(1) 144593. T 0.01
+is-reachable: main@.lr.ph13.2 (8, 0) FAR 144406 F 0.01
+expand: main@.lr.ph13.2 (8, 0) FAR  w(1) 144406. T 0.00
+is-reachable: main@_111 (9, 0) FAR 144613 F 0.01
+expand: main@_111 (9, 0) FAR  w(1) 144613.
+	create_child: main@.lr.ph13._crit_edge.1 (9, 33) FAR 176606 X 0.02
+expand: main@.lr.ph13._crit_edge.1 (9, 0) FAR  w(0) 176606.
+	create_child: main@.lr.ph13.2 (8, 33) FAR 184263 U 0.02
+expand: main@.lr.ph13.2 (8, 0) FAR  w(0) 184263.
+	create_child: main@.lr.ph13.2!_Cond (7, 33) FAR 185165 U 0.01
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(0) 185165.
+	create_child: main@_125 (6, 33) FAR 186343 U 0.02
+expand: main@_125 (6, 0) FAR  w(0) 186343.
+	create_child: main@.lr.ph13.2 (5, 33) FAR 187191 U 0.02
+expand: main@.lr.ph13.2 (5, 0) FAR  w(0) 187191.
+	create_child: main@.lr.ph13.2!_Cond (4, 33) FAR 188087 U 0.01
+expand: main@.lr.ph13.2!_Cond (4, 0) FAR  w(0) 188087.
+	create_child: main@_125 (3, 33) FAR 188609 U 0.02
+expand: main@_125 (3, 0) FAR  w(0) 188609.
+	create_child: main@.lr.ph13.3 (2, 33) FAR 186094 U 0.01
+expand: main@.lr.ph13.3 (2, 0) FAR  w(0) 186094.
+	create_child: main@.lr.ph13.3!_Cond (1, 33) FAR 189570 U 0.01
+expand: main@.lr.ph13.3!_Cond (1, 0) FAR  w(0) 189570. T 0.02
+is-reachable: main@.lr.ph13.3 (2, 0) FAR 186094 F 0.00
+expand: main@.lr.ph13.3 (2, 0) FAR  w(1) 186094. T 0.00
+is-reachable: main@_125 (3, 0) FAR 188609 F 0.01
+expand: main@_125 (3, 0) FAR  w(1) 188609. T 0.02
+is-reachable: main@.lr.ph13.2!_Cond (4, 0) FAR 188087 F 0.01
+expand: main@.lr.ph13.2!_Cond (4, 0) FAR  w(1) 188087. T 0.01
+is-reachable: main@.lr.ph13.2 (5, 0) FAR 187191 F 0.00
+expand: main@.lr.ph13.2 (5, 0) FAR  w(1) 187191. T 0.00
+is-reachable: main@_125 (6, 0) FAR 186343 F 0.01
+expand: main@_125 (6, 0) FAR  w(1) 186343.
+	create_child: main@.lr.ph13._crit_edge.2 (6, 33) FAR 191897 X 0.02
+expand: main@.lr.ph13._crit_edge.2 (6, 0) FAR  w(0) 191897.
+	create_child: main@.lr.ph13.2 (5, 33) FAR 192329 U 0.01
+expand: main@.lr.ph13.2 (5, 0) FAR  w(0) 192329.
+	create_child: main@.lr.ph13.2!_Cond (4, 33) FAR 192472 U 0.01
+expand: main@.lr.ph13.2!_Cond (4, 0) FAR  w(0) 192472.
+	create_child: main@_125 (3, 33) FAR 193971 U 0.05
+expand: main@_125 (3, 0) FAR  w(0) 193971.
+	create_child: main@.lr.ph13.3 (2, 33) FAR 193978 U 0.01
+expand: main@.lr.ph13.3 (2, 0) FAR  w(0) 193978.
+	create_child: main@.lr.ph13.3!_Cond (1, 33) FAR 194360 U 0.01
+expand: main@.lr.ph13.3!_Cond (1, 0) FAR  w(0) 194360. T 0.02
+is-reachable: main@.lr.ph13.3 (2, 0) FAR 193978 F 0.00
+expand: main@.lr.ph13.3 (2, 0) FAR  w(1) 193978. T 0.00
+is-reachable: main@_125 (3, 0) FAR 193971 F 0.01
+expand: main@_125 (3, 0) FAR  w(1) 193971. T 0.02
+is-reachable: main@.lr.ph13.2!_Cond (4, 0) FAR 192472 F 0.01
+expand: main@.lr.ph13.2!_Cond (4, 0) FAR  w(1) 192472. T 0.01
+is-reachable: main@.lr.ph13.2 (5, 0) FAR 192329 F 0.00
+expand: main@.lr.ph13.2 (5, 0) FAR  w(1) 192329. T 0.00
+is-reachable: main@.lr.ph13._crit_edge.2 (6, 0) FAR 191897 F 0.01
+expand: main@.lr.ph13._crit_edge.2 (6, 0) FAR  w(1) 191897. T 0.01
+is-reachable: main@.lr.ph13.2!_Cond (7, 0) FAR 185165 F 0.01
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(1) 185165. T 0.01
+is-reachable: main@.lr.ph13.2 (8, 0) FAR 184263 F 0.01
+expand: main@.lr.ph13.2 (8, 0) FAR  w(1) 184263. T 0.01
+is-reachable: main@.lr.ph13._crit_edge.1 (9, 0) FAR 176606 F 0.00
+expand: main@.lr.ph13._crit_edge.1 (9, 0) FAR  w(1) 176606. T 0.00
+is-reachable: main@.lr.ph13.1!_Cond (10, 0) FAR 144433 F 0.01
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(1) 144433. T 0.01
+is-reachable: main@.lr.ph13.1 (11, 0) FAR 144666 F 0.01
+expand: main@.lr.ph13.1 (11, 0) FAR  w(1) 144666. T 0.00
+is-reachable: main@_111 (12, 0) FAR 144698 F 0.01
+expand: main@_111 (12, 0) FAR  w(1) 144698.
+	create_child: main@.lr.ph13._crit_edge.1 (12, 33) FAR 203631 X 0.02
+expand: main@.lr.ph13._crit_edge.1 (12, 0) FAR  w(0) 203631.
+	create_child: main@.lr.ph13.1 (11, 33) FAR 204568 U 0.02
+expand: main@.lr.ph13.1 (11, 0) FAR  w(0) 204568.
+	create_child: main@.lr.ph13.1!_Cond (10, 33) FAR 206321 U 0.01
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(0) 206321.
+	create_child: main@_111 (9, 33) FAR 209029 U 0.03
+expand: main@_111 (9, 0) FAR  w(0) 209029.
+	create_child: main@.lr.ph13.2 (8, 33) FAR 211107 U 0.03
+expand: main@.lr.ph13.2 (8, 0) FAR  w(0) 211107.
+	create_child: main@.lr.ph13.2!_Cond (7, 33) FAR 211046 U 0.01
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(0) 211046.
+	create_child: main@.lr.ph13._crit_edge.2 (6, 33) FAR 196102 U 0.02
+expand: main@.lr.ph13._crit_edge.2 (6, 0) FAR  w(0) 196102.
+	create_child: main@.lr.ph13.2 (5, 33) FAR 212536 U 0.01
+expand: main@.lr.ph13.2 (5, 0) FAR  w(0) 212536.
+	create_child: main@.lr.ph13.2!_Cond (4, 33) FAR 213527 U 0.01
+expand: main@.lr.ph13.2!_Cond (4, 0) FAR  w(0) 213527.
+	create_child: main@_125 (3, 33) FAR 214767 U 0.04
+expand: main@_125 (3, 0) FAR  w(0) 214767.
+	create_child: main@.lr.ph13.3 (2, 33) FAR 214579 U 0.02
+expand: main@.lr.ph13.3 (2, 0) FAR  w(0) 214579.
+	create_child: main@.lr.ph13.3!_Cond (1, 33) FAR 214576 U 0.01
+expand: main@.lr.ph13.3!_Cond (1, 0) FAR  w(0) 214576. T 0.02
+is-reachable: main@.lr.ph13.3 (2, 0) FAR 214579 F 0.00
+expand: main@.lr.ph13.3 (2, 0) FAR  w(1) 214579. T 0.00
+is-reachable: main@_125 (3, 0) FAR 214767 F 0.01
+expand: main@_125 (3, 0) FAR  w(1) 214767. T 0.02
+is-reachable: main@.lr.ph13.2!_Cond (4, 0) FAR 213527 F 0.01
+expand: main@.lr.ph13.2!_Cond (4, 0) FAR  w(1) 213527. T 0.01
+is-reachable: main@.lr.ph13.2 (5, 0) FAR 212536 F 0.00
+expand: main@.lr.ph13.2 (5, 0) FAR  w(1) 212536. T 0.00
+is-reachable: main@.lr.ph13._crit_edge.2 (6, 0) FAR 196102 F 0.01
+expand: main@.lr.ph13._crit_edge.2 (6, 0) FAR  w(1) 196102. T 0.00
+is-reachable: main@.lr.ph13.2!_Cond (7, 0) FAR 211046 F 0.01
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(1) 211046. T 0.01
+is-reachable: main@.lr.ph13.2 (8, 0) FAR 211107 F 0.01
+expand: main@.lr.ph13.2 (8, 0) FAR  w(1) 211107. T 0.01
+is-reachable: main@_111 (9, 0) FAR 209029 F 0.01
+expand: main@_111 (9, 0) FAR  w(1) 209029.
+	create_child: main@.lr.ph13._crit_edge.1 (9, 33) FAR 216708 X 0.02
+expand: main@.lr.ph13._crit_edge.1 (9, 0) FAR  w(0) 216708.
+	create_child: main@.lr.ph13.2 (8, 33) FAR 217444 U 0.01
+expand: main@.lr.ph13.2 (8, 0) FAR  w(0) 217444.
+	create_child: main@.lr.ph13.2!_Cond (7, 33) FAR 196650 U 0.01
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(0) 196650.
+	create_child: main@_125 (6, 33) FAR 218867 U 0.02
+expand: main@_125 (6, 0) FAR  w(0) 218867.
+	create_child: main@.lr.ph13.2 (5, 33) FAR 219440 U 0.01
+expand: main@.lr.ph13.2 (5, 0) FAR  w(0) 219440.
+	create_child: main@.lr.ph13.2!_Cond (4, 33) FAR 219799 U 0.01
+expand: main@.lr.ph13.2!_Cond (4, 0) FAR  w(0) 219799.
+	create_child: main@_125 (3, 33) FAR 220672 U 0.02
+expand: main@_125 (3, 0) FAR  w(0) 220672.
+	create_child: main@.lr.ph13.3 (2, 33) FAR 221204 U 0.01
+expand: main@.lr.ph13.3 (2, 0) FAR  w(0) 221204.
+	create_child: main@.lr.ph13.3!_Cond (1, 33) FAR 220843 U 0.01
+expand: main@.lr.ph13.3!_Cond (1, 0) FAR  w(0) 220843. T 0.02
+is-reachable: main@.lr.ph13.3 (2, 0) FAR 221204 F 0.00
+expand: main@.lr.ph13.3 (2, 0) FAR  w(1) 221204. T 0.00
+is-reachable: main@_125 (3, 0) FAR 220672 F 0.01
+expand: main@_125 (3, 0) FAR  w(1) 220672.
+	create_child: main@.lr.ph13._crit_edge.2 (3, 33) FAR 222663 X 0.02
+expand: main@.lr.ph13._crit_edge.2 (3, 0) FAR  w(0) 222663.
+	create_child: main@.lr.ph13.3 (2, 33) FAR 224187 U 0.01
+expand: main@.lr.ph13.3 (2, 0) FAR  w(0) 224187.
+	create_child: main@.lr.ph13.3!_Cond (1, 33) FAR 224578 U 0.01
+expand: main@.lr.ph13.3!_Cond (1, 0) FAR  w(0) 224578. T 0.02
+is-reachable: main@.lr.ph13.3 (2, 0) FAR 224187 F 0.00
+expand: main@.lr.ph13.3 (2, 0) FAR  w(1) 224187. T 0.00
+is-reachable: main@.lr.ph13._crit_edge.2 (3, 0) FAR 222663 F 0.00
+expand: main@.lr.ph13._crit_edge.2 (3, 0) FAR  w(1) 222663. T 0.01
+is-reachable: main@.lr.ph13.2!_Cond (4, 0) FAR 219799 F 0.01
+expand: main@.lr.ph13.2!_Cond (4, 0) FAR  w(1) 219799. T 0.01
+is-reachable: main@.lr.ph13.2 (5, 0) FAR 219440 F 0.01
+expand: main@.lr.ph13.2 (5, 0) FAR  w(1) 219440. T 0.00
+is-reachable: main@_125 (6, 0) FAR 218867 F 0.01
+expand: main@_125 (6, 0) FAR  w(1) 218867.
+	create_child: main@.lr.ph13._crit_edge.2 (6, 33) FAR 226382 X 0.02
+expand: main@.lr.ph13._crit_edge.2 (6, 0) FAR  w(0) 226382.
+	create_child: main@.lr.ph13.2 (5, 33) FAR 226089 U 0.01
+expand: main@.lr.ph13.2 (5, 0) FAR  w(0) 226089.
+	create_child: main@.lr.ph13.2!_Cond (4, 33) FAR 225983 U 0.01
+expand: main@.lr.ph13.2!_Cond (4, 0) FAR  w(0) 225983.
+	create_child: main@_125 (3, 33) FAR 227968 U 0.04
+expand: main@_125 (3, 0) FAR  w(0) 227968.
+	create_child: main@.lr.ph13.3 (2, 33) FAR 227602 U 0.01
+expand: main@.lr.ph13.3 (2, 0) FAR  w(0) 227602.
+	create_child: main@.lr.ph13.3!_Cond (1, 33) FAR 228376 U 0.01
+expand: main@.lr.ph13.3!_Cond (1, 0) FAR  w(0) 228376. T 0.02
+is-reachable: main@.lr.ph13.3 (2, 0) FAR 227602 F 0.00
+expand: main@.lr.ph13.3 (2, 0) FAR  w(1) 227602. T 0.00
+is-reachable: main@_125 (3, 0) FAR 227968 F 0.01
+expand: main@_125 (3, 0) FAR  w(1) 227968. T 0.03
+is-reachable: main@.lr.ph13.2!_Cond (4, 0) FAR 225983 F 0.01
+expand: main@.lr.ph13.2!_Cond (4, 0) FAR  w(1) 225983. T 0.01
+is-reachable: main@.lr.ph13.2 (5, 0) FAR 226089 F 0.01
+expand: main@.lr.ph13.2 (5, 0) FAR  w(1) 226089. T 0.01
+is-reachable: main@.lr.ph13._crit_edge.2 (6, 0) FAR 226382 F 0.01
+expand: main@.lr.ph13._crit_edge.2 (6, 0) FAR  w(1) 226382. T 0.00
+is-reachable: main@.lr.ph13.2!_Cond (7, 0) FAR 196650 F 0.01
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(1) 196650. T 0.01
+is-reachable: main@.lr.ph13.2 (8, 0) FAR 217444 F 0.01
+expand: main@.lr.ph13.2 (8, 0) FAR  w(1) 217444. T 0.01
+is-reachable: main@.lr.ph13._crit_edge.1 (9, 0) FAR 216708 F 0.01
+expand: main@.lr.ph13._crit_edge.1 (9, 0) FAR  w(1) 216708. T 0.01
+is-reachable: main@.lr.ph13.1!_Cond (10, 0) FAR 206321 F 0.01
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(1) 206321. T 0.01
+is-reachable: main@.lr.ph13.1 (11, 0) FAR 204568 F 0.01
+expand: main@.lr.ph13.1 (11, 0) FAR  w(1) 204568. T 0.01
+is-reachable: main@.lr.ph13._crit_edge.1 (12, 0) FAR 203631 F 0.01
+expand: main@.lr.ph13._crit_edge.1 (12, 0) FAR  w(1) 203631. T 0.01
+is-reachable: main@.lr.ph13.1!_Cond (13, 0) FAR 144558 F 0.01
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(1) 144558. T 0.01
+is-reachable: main@.lr.ph13.1 (14, 0) FAR 144401 F 0.01
+expand: main@.lr.ph13.1 (14, 0) FAR  w(1) 144401. T 0.01
+is-reachable: main@_111 (15, 0) FAR 69328 F 0.03
+expand: main@_111 (15, 0) FAR  w(1) 69328.
+	create_child: main@.lr.ph13._crit_edge.1 (15, 33) FAR 238670 X 0.04
+expand: main@.lr.ph13._crit_edge.1 (15, 0) FAR  w(0) 238670.
+	create_child: main@.lr.ph13.1 (14, 33) FAR 238800 U 0.03
+expand: main@.lr.ph13.1 (14, 0) FAR  w(0) 238800.
+	create_child: main@.lr.ph13.1!_Cond (13, 33) FAR 239424 U 0.01
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(0) 239424.
+	create_child: main@_111 (12, 33) FAR 241440 U 0.03
+expand: main@_111 (12, 0) FAR  w(0) 241440.
+	create_child: main@.lr.ph13.1 (11, 33) FAR 242481 U 0.03
+expand: main@.lr.ph13.1 (11, 0) FAR  w(0) 242481.
+	create_child: main@.lr.ph13.1!_Cond (10, 33) FAR 243219 U 0.01
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(0) 243219.
+	create_child: main@_111 (9, 33) FAR 243584 U 0.03
+expand: main@_111 (9, 0) FAR  w(0) 243584.
+	create_child: main@.lr.ph13.2 (8, 33) FAR 244698 U 0.04
+expand: main@.lr.ph13.2 (8, 0) FAR  w(0) 244698.
+	create_child: main@.lr.ph13.2!_Cond (7, 33) FAR 245323 U 0.01
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(0) 245323.
+	create_child: main@_125 (6, 33) FAR 246319 U 0.03
+expand: main@_125 (6, 0) FAR  w(0) 246319.
+	create_child: main@.lr.ph13.2 (5, 33) FAR 227942 U 0.02
+expand: main@.lr.ph13.2 (5, 0) FAR  w(0) 227942.
+	create_child: main@.lr.ph13.2!_Cond (4, 33) FAR 246452 U 0.01
+expand: main@.lr.ph13.2!_Cond (4, 0) FAR  w(0) 246452.
+	create_child: main@_125 (3, 33) FAR 247152 U 0.02
+expand: main@_125 (3, 0) FAR  w(0) 247152. T 0.03
+is-reachable: main@.lr.ph13.2!_Cond (4, 0) FAR 246452 F 0.01
+expand: main@.lr.ph13.2!_Cond (4, 0) FAR  w(1) 246452. T 0.01
+is-reachable: main@.lr.ph13.2 (5, 0) FAR 227942 F 0.01
+expand: main@.lr.ph13.2 (5, 0) FAR  w(1) 227942. T 0.00
+is-reachable: main@_125 (6, 0) FAR 246319 F 0.01
+expand: main@_125 (6, 0) FAR  w(1) 246319.
+	create_child: main@.lr.ph13._crit_edge.2 (6, 33) FAR 220591 X 0.02
+expand: main@.lr.ph13._crit_edge.2 (6, 0) FAR  w(0) 220591.
+	create_child: main@.lr.ph13.2 (5, 33) FAR 248395 U 0.01
+expand: main@.lr.ph13.2 (5, 0) FAR  w(0) 248395.
+	create_child: main@.lr.ph13.2!_Cond (4, 33) FAR 248296 U 0.01
+expand: main@.lr.ph13.2!_Cond (4, 0) FAR  w(0) 248296. T 0.02
+is-reachable: main@.lr.ph13.2 (5, 0) FAR 248395 F 0.00
+expand: main@.lr.ph13.2 (5, 0) FAR  w(1) 248395. T 0.00
+is-reachable: main@.lr.ph13._crit_edge.2 (6, 0) FAR 220591 F 0.01
+expand: main@.lr.ph13._crit_edge.2 (6, 0) FAR  w(1) 220591. T 0.00
+is-reachable: main@.lr.ph13.2!_Cond (7, 0) FAR 245323 F 0.01
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(1) 245323. T 0.01
+is-reachable: main@.lr.ph13.2 (8, 0) FAR 244698 F 0.01
+expand: main@.lr.ph13.2 (8, 0) FAR  w(1) 244698. T 0.01
+is-reachable: main@_111 (9, 0) FAR 243584 F 0.01
+expand: main@_111 (9, 0) FAR  w(1) 243584.
+	create_child: main@.lr.ph13._crit_edge.1 (9, 33) FAR 250211 X 0.05
+expand: main@.lr.ph13._crit_edge.1 (9, 0) FAR  w(0) 250211.
+	create_child: main@.lr.ph13.2 (8, 33) FAR 250172 U 0.02
+expand: main@.lr.ph13.2 (8, 0) FAR  w(0) 250172.
+	create_child: main@.lr.ph13.2!_Cond (7, 33) FAR 248560 U 0.01
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(0) 248560.
+	create_child: main@_125 (6, 33) FAR 251220 U 0.02
+expand: main@_125 (6, 0) FAR  w(0) 251220.
+	create_child: main@.lr.ph13.2 (5, 33) FAR 247430 U 0.01
+expand: main@.lr.ph13.2 (5, 0) FAR  w(0) 247430.
+	create_child: main@.lr.ph13.2!_Cond (4, 33) FAR 250444 U 0.01
+expand: main@.lr.ph13.2!_Cond (4, 0) FAR  w(0) 250444.
+	create_child: main@.lr.ph13._crit_edge.2 (3, 33) FAR 249105 U 0.02
+expand: main@.lr.ph13._crit_edge.2 (3, 0) FAR  w(0) 249105.
+	create_child: main@.lr.ph13.3 (2, 33) FAR 251518 U 0.01
+expand: main@.lr.ph13.3 (2, 0) FAR  w(0) 251518.
+	create_child: main@.lr.ph13.3!_Cond (1, 33) FAR 223858 U 0.01
+expand: main@.lr.ph13.3!_Cond (1, 0) FAR  w(0) 223858. T 0.03
+is-reachable: main@.lr.ph13.3 (2, 0) FAR 251518 F 0.00
+expand: main@.lr.ph13.3 (2, 0) FAR  w(1) 251518. T 0.00
+is-reachable: main@.lr.ph13._crit_edge.2 (3, 0) FAR 249105 F 0.01
+expand: main@.lr.ph13._crit_edge.2 (3, 0) FAR  w(1) 249105. T 0.00
+is-reachable: main@.lr.ph13.2!_Cond (4, 0) FAR 250444 F 0.01
+expand: main@.lr.ph13.2!_Cond (4, 0) FAR  w(1) 250444. T 0.01
+is-reachable: main@.lr.ph13.2 (5, 0) FAR 247430 F 0.01
+expand: main@.lr.ph13.2 (5, 0) FAR  w(1) 247430. T 0.01
+is-reachable: main@_125 (6, 0) FAR 251220 F 0.01
+expand: main@_125 (6, 0) FAR  w(1) 251220. T 0.02
+is-reachable: main@.lr.ph13.2!_Cond (7, 0) FAR 248560 F 0.01
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(1) 248560. T 0.01
+is-reachable: main@.lr.ph13.2 (8, 0) FAR 250172 F 0.01
+expand: main@.lr.ph13.2 (8, 0) FAR  w(1) 250172. T 0.01
+is-reachable: main@.lr.ph13._crit_edge.1 (9, 0) FAR 250211 F 0.01
+expand: main@.lr.ph13._crit_edge.1 (9, 0) FAR  w(1) 250211. T 0.01
+is-reachable: main@.lr.ph13.1!_Cond (10, 0) FAR 243219 F 0.02
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(1) 243219. T 0.01
+is-reachable: main@.lr.ph13.1 (11, 0) FAR 242481 F 0.01
+expand: main@.lr.ph13.1 (11, 0) FAR  w(1) 242481. T 0.01
+is-reachable: main@_111 (12, 0) FAR 241440 F 0.03
+expand: main@_111 (12, 0) FAR  w(1) 241440.
+	create_child: main@.lr.ph13._crit_edge.1 (12, 33) FAR 256408 X 0.04
+expand: main@.lr.ph13._crit_edge.1 (12, 0) FAR  w(0) 256408.
+	create_child: main@.lr.ph13.1 (11, 33) FAR 255913 U 0.01
+expand: main@.lr.ph13.1 (11, 0) FAR  w(0) 255913.
+	create_child: main@.lr.ph13.1!_Cond (10, 33) FAR 255992 U 0.02
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(0) 255992.
+	create_child: main@_111 (9, 33) FAR 258440 U 0.05
+expand: main@_111 (9, 0) FAR  w(0) 258440.
+	create_child: main@.lr.ph13.2 (8, 33) FAR 258586 U 0.02
+expand: main@.lr.ph13.2 (8, 0) FAR  w(0) 258586.
+	create_child: main@.lr.ph13.2!_Cond (7, 33) FAR 257997 U 0.01
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(0) 257997.
+	create_child: main@.lr.ph13._crit_edge.2 (6, 33) FAR 259421 U 0.03
+expand: main@.lr.ph13._crit_edge.2 (6, 0) FAR  w(0) 259421.
+	create_child: main@.lr.ph13.2 (5, 33) FAR 260178 U 0.01
+expand: main@.lr.ph13.2 (5, 0) FAR  w(0) 260178.
+	create_child: main@.lr.ph13.2!_Cond (4, 33) FAR 247547 U 0.02
+expand: main@.lr.ph13.2!_Cond (4, 0) FAR  w(0) 247547. T 0.02
+is-reachable: main@.lr.ph13.2 (5, 0) FAR 260178 F 0.01
+expand: main@.lr.ph13.2 (5, 0) FAR  w(1) 260178. T 0.00
+is-reachable: main@.lr.ph13._crit_edge.2 (6, 0) FAR 259421 F 0.01
+expand: main@.lr.ph13._crit_edge.2 (6, 0) FAR  w(1) 259421. T 0.01
+is-reachable: main@.lr.ph13.2!_Cond (7, 0) FAR 257997 F 0.01
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(1) 257997. T 0.01
+is-reachable: main@.lr.ph13.2 (8, 0) FAR 258586 F 0.01
+expand: main@.lr.ph13.2 (8, 0) FAR  w(1) 258586. T 0.01
+is-reachable: main@_111 (9, 0) FAR 258440 F 0.02
+expand: main@_111 (9, 0) FAR  w(1) 258440. T 0.05
+is-reachable: main@.lr.ph13.1!_Cond (10, 0) FAR 255992 F 0.02
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(1) 255992. T 0.01
+is-reachable: main@.lr.ph13.1 (11, 0) FAR 255913 F 0.01
+expand: main@.lr.ph13.1 (11, 0) FAR  w(1) 255913. T 0.01
+is-reachable: main@.lr.ph13._crit_edge.1 (12, 0) FAR 256408 F 0.02
+expand: main@.lr.ph13._crit_edge.1 (12, 0) FAR  w(1) 256408. T 0.01
+is-reachable: main@.lr.ph13.1!_Cond (13, 0) FAR 239424 F 0.02
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(1) 239424. T 0.02
+is-reachable: main@.lr.ph13.1 (14, 0) FAR 238800 F 0.01
+expand: main@.lr.ph13.1 (14, 0) FAR  w(1) 238800. T 0.01
+is-reachable: main@.lr.ph13._crit_edge.1 (15, 0) FAR 238670 F 0.01
+expand: main@.lr.ph13._crit_edge.1 (15, 0) FAR  w(1) 238670. T 0.01
+is-reachable: main@.lr.ph13.1!_Cond (16, 0) FAR 61511 F 0.04
+expand: main@.lr.ph13.1!_Cond (16, 0) FAR  w(1) 61511. T 0.03
+is-reachable: main@.lr.ph13.1 (17, 0) FAR 58423 F 0.02
+expand: main@.lr.ph13.1 (17, 0) FAR  w(1) 58423. T 0.02
+is-reachable: main@_39 (18, 0) FAR 58494 F 0.03
+expand: main@_39 (18, 0) FAR  w(1) 58494.
+	create_child: main@.lr.ph13._crit_edge (18, 33) FAR 277154 X 0.07
+expand: main@.lr.ph13._crit_edge (18, 0) FAR  w(0) 277154.
+	create_child: main@.lr.ph13.1 (17, 33) FAR 289568 U 0.04
+expand: main@.lr.ph13.1 (17, 0) FAR  w(0) 289568.
+	create_child: main@.lr.ph13.1!_Cond (16, 33) FAR 290481 U 0.04
+expand: main@.lr.ph13.1!_Cond (16, 0) FAR  w(0) 290481.
+	create_child: main@_111 (15, 33) FAR 292625 U 0.06
+expand: main@_111 (15, 0) FAR  w(0) 292625.
+	create_child: main@.lr.ph13.1 (14, 33) FAR 293718 U 0.06
+expand: main@.lr.ph13.1 (14, 0) FAR  w(0) 293718.
+	create_child: main@.lr.ph13.1!_Cond (13, 33) FAR 294335 U 0.03
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(0) 294335.
+	create_child: main@_111 (12, 33) FAR 292304 U 0.06
+expand: main@_111 (12, 0) FAR  w(0) 292304.
+	create_child: main@.lr.ph13.1 (11, 33) FAR 295946 U 0.05
+expand: main@.lr.ph13.1 (11, 0) FAR  w(0) 295946.
+	create_child: main@.lr.ph13.1!_Cond (10, 33) FAR 296317 U 0.03
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(0) 296317.
+	create_child: main@_111 (9, 33) FAR 297234 U 0.06
+expand: main@_111 (9, 0) FAR  w(0) 297234.
+	create_child: main@.lr.ph13.2 (8, 33) FAR 298223 U 0.06
+expand: main@.lr.ph13.2 (8, 0) FAR  w(0) 298223.
+	create_child: main@.lr.ph13.2!_Cond (7, 33) FAR 298449 U 0.02
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(0) 298449.
+	create_child: main@_125 (6, 33) FAR 299938 U 0.03
+expand: main@_125 (6, 0) FAR  w(0) 299938.
+	create_child: main@.lr.ph13.2 (5, 33) FAR 250745 U 0.02
+expand: main@.lr.ph13.2 (5, 0) FAR  w(0) 250745.
+	create_child: main@.lr.ph13.2!_Cond (4, 33) FAR 300562 U 0.01
+expand: main@.lr.ph13.2!_Cond (4, 0) FAR  w(0) 300562.
+	create_child: main@_125 (3, 33) FAR 301058 U 0.02
+expand: main@_125 (3, 0) FAR  w(0) 301058. T 0.04
+is-reachable: main@.lr.ph13.2!_Cond (4, 0) FAR 300562 F 0.01
+expand: main@.lr.ph13.2!_Cond (4, 0) FAR  w(1) 300562. T 0.01
+is-reachable: main@.lr.ph13.2 (5, 0) FAR 250745 F 0.01
+expand: main@.lr.ph13.2 (5, 0) FAR  w(1) 250745. T 0.01
+is-reachable: main@_125 (6, 0) FAR 299938 F 0.01
+expand: main@_125 (6, 0) FAR  w(1) 299938. T 0.02
+is-reachable: main@.lr.ph13.2!_Cond (7, 0) FAR 298449 F 0.01
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(1) 298449. T 0.01
+is-reachable: main@.lr.ph13.2 (8, 0) FAR 298223 F 0.01
+expand: main@.lr.ph13.2 (8, 0) FAR  w(1) 298223. T 0.01
+is-reachable: main@_111 (9, 0) FAR 297234 F 0.01
+expand: main@_111 (9, 0) FAR  w(1) 297234. T 0.07
+is-reachable: main@.lr.ph13.1!_Cond (10, 0) FAR 296317 F 0.02
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(1) 296317. T 0.02
+is-reachable: main@.lr.ph13.1 (11, 0) FAR 295946 F 0.02
+expand: main@.lr.ph13.1 (11, 0) FAR  w(1) 295946. T 0.01
+is-reachable: main@_111 (12, 0) FAR 292304 F 0.02
+expand: main@_111 (12, 0) FAR  w(1) 292304.
+	create_child: main@.lr.ph13._crit_edge.1 (12, 33) FAR 255589 X 0.04
+expand: main@.lr.ph13._crit_edge.1 (12, 0) FAR  w(0) 255589.
+	create_child: main@.lr.ph13.1 (11, 33) FAR 305220 U 0.04
+expand: main@.lr.ph13.1 (11, 0) FAR  w(0) 305220.
+	create_child: main@.lr.ph13.1!_Cond (10, 33) FAR 296118 U 0.04
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(0) 296118.
+	create_child: main@_111 (9, 33) FAR 306791 U 0.03
+expand: main@_111 (9, 0) FAR  w(0) 306791.
+	create_child: main@.lr.ph13.2 (8, 33) FAR 306619 U 0.04
+expand: main@.lr.ph13.2 (8, 0) FAR  w(0) 306619.
+	create_child: main@.lr.ph13.2!_Cond (7, 33) FAR 307456 U 0.01
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(0) 307456.
+	create_child: main@_125 (6, 33) FAR 308421 U 0.03
+expand: main@_125 (6, 0) FAR  w(0) 308421.
+	create_child: main@.lr.ph13.2 (5, 33) FAR 302037 U 0.02
+expand: main@.lr.ph13.2 (5, 0) FAR  w(0) 302037.
+	create_child: main@.lr.ph13.2!_Cond (4, 33) FAR 309395 U 0.01
+expand: main@.lr.ph13.2!_Cond (4, 0) FAR  w(0) 309395.
+	create_child: main@_125 (3, 33) FAR 309833 U 0.02
+expand: main@_125 (3, 0) FAR  w(0) 309833. T 0.03
+is-reachable: main@.lr.ph13.2!_Cond (4, 0) FAR 309395 F 0.01
+expand: main@.lr.ph13.2!_Cond (4, 0) FAR  w(1) 309395. T 0.01
+is-reachable: main@.lr.ph13.2 (5, 0) FAR 302037 F 0.01
+expand: main@.lr.ph13.2 (5, 0) FAR  w(1) 302037. T 0.01
+is-reachable: main@_125 (6, 0) FAR 308421 F 0.01
+expand: main@_125 (6, 0) FAR  w(1) 308421. T 0.03
+is-reachable: main@.lr.ph13.2!_Cond (7, 0) FAR 307456 F 0.01
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(1) 307456. T 0.01
+is-reachable: main@.lr.ph13.2 (8, 0) FAR 306619 F 0.01
+expand: main@.lr.ph13.2 (8, 0) FAR  w(1) 306619. T 0.01
+is-reachable: main@_111 (9, 0) FAR 306791 F 0.02
+expand: main@_111 (9, 0) FAR  w(1) 306791. T 0.06
+is-reachable: main@.lr.ph13.1!_Cond (10, 0) FAR 296118 F 0.02
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(1) 296118. T 0.02
+is-reachable: main@.lr.ph13.1 (11, 0) FAR 305220 F 0.01
+expand: main@.lr.ph13.1 (11, 0) FAR  w(1) 305220. T 0.01
+is-reachable: main@.lr.ph13._crit_edge.1 (12, 0) FAR 255589 F 0.02
+expand: main@.lr.ph13._crit_edge.1 (12, 0) FAR  w(1) 255589. T 0.02
+is-reachable: main@.lr.ph13.1!_Cond (13, 0) FAR 294335 F 0.02
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(1) 294335. T 0.02
+is-reachable: main@.lr.ph13.1 (14, 0) FAR 293718 F 0.02
+expand: main@.lr.ph13.1 (14, 0) FAR  w(1) 293718. T 0.01
+is-reachable: main@_111 (15, 0) FAR 292625 F 0.03
+expand: main@_111 (15, 0) FAR  w(1) 292625.
+	create_child: main@.lr.ph13._crit_edge.1 (15, 33) FAR 311073 X 0.04
+expand: main@.lr.ph13._crit_edge.1 (15, 0) FAR  w(0) 311073.
+	create_child: main@.lr.ph13.1 (14, 33) FAR 315265 U 0.03
+expand: main@.lr.ph13.1 (14, 0) FAR  w(0) 315265.
+	create_child: main@.lr.ph13.1!_Cond (13, 33) FAR 315178 U 0.03
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(0) 315178.
+	create_child: main@_111 (12, 33) FAR 316140 U 0.05
+expand: main@_111 (12, 0) FAR  w(0) 316140.
+	create_child: main@.lr.ph13.1 (11, 33) FAR 316641 U 0.04
+expand: main@.lr.ph13.1 (11, 0) FAR  w(0) 316641.
+	create_child: main@.lr.ph13.1!_Cond (10, 33) FAR 317225 U 0.03
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(0) 317225.
+	create_child: main@_111 (9, 33) FAR 317740 U 0.03
+expand: main@_111 (9, 0) FAR  w(0) 317740.
+	create_child: main@.lr.ph13.2 (8, 33) FAR 318034 U 0.03
+expand: main@.lr.ph13.2 (8, 0) FAR  w(0) 318034.
+	create_child: main@.lr.ph13.2!_Cond (7, 33) FAR 308789 U 0.02
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(0) 308789.
+	create_child: main@_125 (6, 33) FAR 318416 U 0.03
+expand: main@_125 (6, 0) FAR  w(0) 318416.
+	create_child: main@.lr.ph13.2 (5, 33) FAR 318768 U 0.02
+expand: main@.lr.ph13.2 (5, 0) FAR  w(0) 318768.
+	create_child: main@.lr.ph13.2!_Cond (4, 33) FAR 307854 U 0.01
+expand: main@.lr.ph13.2!_Cond (4, 0) FAR  w(0) 307854. T 0.01
+is-reachable: main@.lr.ph13.2 (5, 0) FAR 318768 F 0.01
+expand: main@.lr.ph13.2 (5, 0) FAR  w(1) 318768. T 0.01
+is-reachable: main@_125 (6, 0) FAR 318416 F 0.01
+expand: main@_125 (6, 0) FAR  w(1) 318416. T 0.02
+is-reachable: main@.lr.ph13.2!_Cond (7, 0) FAR 308789 F 0.01
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(1) 308789. T 0.01
+is-reachable: main@.lr.ph13.2 (8, 0) FAR 318034 F 0.01
+expand: main@.lr.ph13.2 (8, 0) FAR  w(1) 318034. T 0.01
+is-reachable: main@_111 (9, 0) FAR 317740 F 0.01
+expand: main@_111 (9, 0) FAR  w(1) 317740. T 0.08
+is-reachable: main@.lr.ph13.1!_Cond (10, 0) FAR 317225 F 0.02
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(1) 317225. T 0.02
+is-reachable: main@.lr.ph13.1 (11, 0) FAR 316641 F 0.01
+expand: main@.lr.ph13.1 (11, 0) FAR  w(1) 316641. T 0.01
+is-reachable: main@_111 (12, 0) FAR 316140 F 0.03
+expand: main@_111 (12, 0) FAR  w(1) 316140.
+	create_child: main@.lr.ph13._crit_edge.1 (12, 33) FAR 315173 X 0.04
+expand: main@.lr.ph13._crit_edge.1 (12, 0) FAR  w(0) 315173.
+	create_child: main@.lr.ph13.1 (11, 33) FAR 301388 U 0.02
+expand: main@.lr.ph13.1 (11, 0) FAR  w(0) 301388.
+	create_child: main@.lr.ph13.1!_Cond (10, 33) FAR 314802 U 0.02
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(0) 314802.
+	create_child: main@_111 (9, 33) FAR 321732 U 0.04
+expand: main@_111 (9, 0) FAR  w(0) 321732.
+	create_child: main@.lr.ph13.2 (8, 33) FAR 321754 U 0.02
+expand: main@.lr.ph13.2 (8, 0) FAR  w(0) 321754.
+	create_child: main@.lr.ph13.2!_Cond (7, 33) FAR 322435 U 0.01
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(0) 322435. T 0.01
+is-reachable: main@.lr.ph13.2 (8, 0) FAR 321754 F 0.01
+expand: main@.lr.ph13.2 (8, 0) FAR  w(1) 321754. T 0.01
+is-reachable: main@_111 (9, 0) FAR 321732 F 0.02
+expand: main@_111 (9, 0) FAR  w(1) 321732. T 0.06
+is-reachable: main@.lr.ph13.1!_Cond (10, 0) FAR 314802 F 0.02
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(1) 314802. T 0.02
+is-reachable: main@.lr.ph13.1 (11, 0) FAR 301388 F 0.01
+expand: main@.lr.ph13.1 (11, 0) FAR  w(1) 301388. T 0.01
+is-reachable: main@.lr.ph13._crit_edge.1 (12, 0) FAR 315173 F 0.01
+expand: main@.lr.ph13._crit_edge.1 (12, 0) FAR  w(1) 315173. T 0.01
+is-reachable: main@.lr.ph13.1!_Cond (13, 0) FAR 315178 F 0.02
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(1) 315178. T 0.02
+is-reachable: main@.lr.ph13.1 (14, 0) FAR 315265 F 0.01
+expand: main@.lr.ph13.1 (14, 0) FAR  w(1) 315265. T 0.01
+is-reachable: main@.lr.ph13._crit_edge.1 (15, 0) FAR 311073 F 0.02
+expand: main@.lr.ph13._crit_edge.1 (15, 0) FAR  w(1) 311073. T 0.01
+is-reachable: main@.lr.ph13.1!_Cond (16, 0) FAR 290481 F 0.03
+expand: main@.lr.ph13.1!_Cond (16, 0) FAR  w(1) 290481. T 0.02
+is-reachable: main@.lr.ph13.1 (17, 0) FAR 289568 F 0.02
+expand: main@.lr.ph13.1 (17, 0) FAR  w(1) 289568. T 0.02
+is-reachable: main@.lr.ph13._crit_edge (18, 0) FAR 277154 F 0.01
+expand: main@.lr.ph13._crit_edge (18, 0) FAR  w(1) 277154. T 0.01
+is-reachable: main@.lr.ph13!_Cond (19, 0) FAR 58168 F 0.03
+expand: main@.lr.ph13!_Cond (19, 0) FAR  w(1) 58168. T 0.02
+is-reachable: main@.lr.ph13 (20, 0) FAR 57889 F 0.02
+expand: main@.lr.ph13 (20, 0) FAR  w(1) 57889. T 0.02
+is-reachable: main@_39 (21, 0) FAR 53809 F 0.09
+expand: main@_39 (21, 0) FAR  w(1) 53809.
+	create_child: main@.lr.ph13._crit_edge (21, 33) FAR 353842 X 0.09
+expand: main@.lr.ph13._crit_edge (21, 0) FAR  w(0) 353842.
+	create_child: main@.lr.ph13 (20, 33) FAR 357262 U 0.04
+expand: main@.lr.ph13 (20, 0) FAR  w(0) 357262.
+	create_child: main@.lr.ph13!_Cond (19, 33) FAR 360859 U 0.03
+expand: main@.lr.ph13!_Cond (19, 0) FAR  w(0) 360859.
+	create_child: main@_39 (18, 33) FAR 334071 U 0.05
+expand: main@_39 (18, 0) FAR  w(0) 334071.
+	create_child: main@.lr.ph13.1 (17, 33) FAR 368481 U 0.05
+expand: main@.lr.ph13.1 (17, 0) FAR  w(0) 368481.
+	create_child: main@.lr.ph13.1!_Cond (16, 33) FAR 368986 U 0.03
+expand: main@.lr.ph13.1!_Cond (16, 0) FAR  w(0) 368986.
+	create_child: main@_111 (15, 33) FAR 370071 U 0.06
+expand: main@_111 (15, 0) FAR  w(0) 370071.
+	create_child: main@.lr.ph13.1 (14, 33) FAR 314873 U 0.04
+expand: main@.lr.ph13.1 (14, 0) FAR  w(0) 314873.
+	create_child: main@.lr.ph13.1!_Cond (13, 33) FAR 370721 U 0.03
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(0) 370721.
+	create_child: main@_111 (12, 33) FAR 371093 U 0.05
+expand: main@_111 (12, 0) FAR  w(0) 371093.
+	create_child: main@.lr.ph13.1 (11, 33) FAR 317997 U 0.03
+expand: main@.lr.ph13.1 (11, 0) FAR  w(0) 317997.
+	create_child: main@.lr.ph13.1!_Cond (10, 33) FAR 327059 U 0.02
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(0) 327059.
+	create_child: main@_111 (9, 33) FAR 371688 U 0.06
+expand: main@_111 (9, 0) FAR  w(0) 371688.
+	create_child: main@.lr.ph13.2 (8, 33) FAR 372129 U 0.08
+expand: main@.lr.ph13.2 (8, 0) FAR  w(0) 372129.
+	create_child: main@.lr.ph13.2!_Cond (7, 33) FAR 322942 U 0.01
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(0) 322942.
+	create_child: main@_125 (6, 33) FAR 322927 U 0.02
+expand: main@_125 (6, 0) FAR  w(0) 322927.
+	create_child: main@.lr.ph13.2 (5, 33) FAR 372816 U 0.02
+expand: main@.lr.ph13.2 (5, 0) FAR  w(0) 372816.
+	create_child: main@.lr.ph13.2!_Cond (4, 33) FAR 300244 U 0.01
+expand: main@.lr.ph13.2!_Cond (4, 0) FAR  w(0) 300244.
+	create_child: main@.lr.ph13._crit_edge.2 (3, 33) FAR 322443 U 0.02
+expand: main@.lr.ph13._crit_edge.2 (3, 0) FAR  w(0) 322443. T 0.01
+is-reachable: main@.lr.ph13.2!_Cond (4, 0) FAR 300244 F 0.01
+expand: main@.lr.ph13.2!_Cond (4, 0) FAR  w(1) 300244. T 0.01
+is-reachable: main@.lr.ph13.2 (5, 0) FAR 372816 F 0.01
+expand: main@.lr.ph13.2 (5, 0) FAR  w(1) 372816. T 0.01
+is-reachable: main@_125 (6, 0) FAR 322927 F 0.01
+expand: main@_125 (6, 0) FAR  w(1) 322927. T 0.02
+is-reachable: main@.lr.ph13.2!_Cond (7, 0) FAR 322942 F 0.01
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(1) 322942. T 0.01
+is-reachable: main@.lr.ph13.2 (8, 0) FAR 372129 F 0.01
+expand: main@.lr.ph13.2 (8, 0) FAR  w(1) 372129. T 0.01
+is-reachable: main@_111 (9, 0) FAR 371688 F 0.03
+expand: main@_111 (9, 0) FAR  w(1) 371688.
+	create_child: main@.lr.ph13._crit_edge.1 (9, 33) FAR 374366 X 0.06
+expand: main@.lr.ph13._crit_edge.1 (9, 0) FAR  w(0) 374366. T 0.03
+is-reachable: main@.lr.ph13.1!_Cond (10, 0) FAR 327059 F 0.02
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(1) 327059. T 0.02
+is-reachable: main@.lr.ph13.1 (11, 0) FAR 317997 F 0.01
+expand: main@.lr.ph13.1 (11, 0) FAR  w(1) 317997. T 0.01
+is-reachable: main@_111 (12, 0) FAR 371093 F 0.05
+expand: main@_111 (12, 0) FAR  w(1) 371093.
+	create_child: main@.lr.ph13._crit_edge.1 (12, 33) FAR 377110 X 0.10
+expand: main@.lr.ph13._crit_edge.1 (12, 0) FAR  w(0) 377110.
+	create_child: main@.lr.ph13.1 (11, 33) FAR 375359 U 0.03
+expand: main@.lr.ph13.1 (11, 0) FAR  w(0) 375359.
+	create_child: main@.lr.ph13.1!_Cond (10, 33) FAR 370320 U 0.03
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(0) 370320.
+	create_child: main@_111 (9, 33) FAR 378693 U 0.07
+expand: main@_111 (9, 0) FAR  w(0) 378693.
+	create_child: main@.lr.ph13.2 (8, 33) FAR 376263 U 0.04
+expand: main@.lr.ph13.2 (8, 0) FAR  w(0) 376263.
+	create_child: main@.lr.ph13.2!_Cond (7, 33) FAR 378522 U 0.01
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(0) 378522.
+	create_child: main@_125 (6, 33) FAR 379895 U 0.02
+expand: main@_125 (6, 0) FAR  w(0) 379895.
+	create_child: main@.lr.ph13.2 (5, 33) FAR 380016 U 0.02
+expand: main@.lr.ph13.2 (5, 0) FAR  w(0) 380016.
+	create_child: main@.lr.ph13.2!_Cond (4, 33) FAR 372097 U 0.01
+expand: main@.lr.ph13.2!_Cond (4, 0) FAR  w(0) 372097. T 0.01
+is-reachable: main@.lr.ph13.2 (5, 0) FAR 380016 F 0.01
+expand: main@.lr.ph13.2 (5, 0) FAR  w(1) 380016. T 0.01
+is-reachable: main@_125 (6, 0) FAR 379895 F 0.01
+expand: main@_125 (6, 0) FAR  w(1) 379895. T 0.02
+is-reachable: main@.lr.ph13.2!_Cond (7, 0) FAR 378522 F 0.01
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(1) 378522. T 0.01
+is-reachable: main@.lr.ph13.2 (8, 0) FAR 376263 F 0.01
+expand: main@.lr.ph13.2 (8, 0) FAR  w(1) 376263. T 0.01
+is-reachable: main@_111 (9, 0) FAR 378693 F 0.03
+expand: main@_111 (9, 0) FAR  w(1) 378693. T 0.08
+is-reachable: main@.lr.ph13.1!_Cond (10, 0) FAR 370320 F 0.02
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(1) 370320. T 0.02
+is-reachable: main@.lr.ph13.1 (11, 0) FAR 375359 F 0.02
+expand: main@.lr.ph13.1 (11, 0) FAR  w(1) 375359. T 0.02
+is-reachable: main@.lr.ph13._crit_edge.1 (12, 0) FAR 377110 F 0.02
+expand: main@.lr.ph13._crit_edge.1 (12, 0) FAR  w(1) 377110. T 0.01
+is-reachable: main@.lr.ph13.1!_Cond (13, 0) FAR 370721 F 0.03
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(1) 370721. T 0.03
+is-reachable: main@.lr.ph13.1 (14, 0) FAR 314873 F 0.02
+expand: main@.lr.ph13.1 (14, 0) FAR  w(1) 314873. T 0.02
+is-reachable: main@_111 (15, 0) FAR 370071 F 0.08
+expand: main@_111 (15, 0) FAR  w(1) 370071.
+	create_child: main@.lr.ph13._crit_edge.1 (15, 33) FAR 384514 X 0.08
+expand: main@.lr.ph13._crit_edge.1 (15, 0) FAR  w(0) 384514.
+	create_child: main@.lr.ph13.1 (14, 33) FAR 384840 U 0.04
+expand: main@.lr.ph13.1 (14, 0) FAR  w(0) 384840.
+	create_child: main@.lr.ph13.1!_Cond (13, 33) FAR 381170 U 0.04
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(0) 381170.
+	create_child: main@_111 (12, 33) FAR 385863 U 0.07
+expand: main@_111 (12, 0) FAR  w(0) 385863.
+	create_child: main@.lr.ph13._crit_edge.1 (12, 33) FAR 386000 X 0.06
+expand: main@.lr.ph13._crit_edge.1 (12, 0) FAR  w(0) 386000.
+	create_child: main@.lr.ph13.1 (11, 33) FAR 386325 U 0.04
+expand: main@.lr.ph13.1 (11, 0) FAR  w(0) 386325.
+	create_child: main@.lr.ph13.1!_Cond (10, 33) FAR 375778 U 0.03
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(0) 375778.
+	create_child: main@_111 (9, 33) FAR 386795 U 0.04
+expand: main@_111 (9, 0) FAR  w(0) 386795.
+	create_child: main@.lr.ph13.2 (8, 33) FAR 384407 U 0.03
+expand: main@.lr.ph13.2 (8, 0) FAR  w(0) 384407.
+	create_child: main@.lr.ph13.2!_Cond (7, 33) FAR 382467 U 0.01
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(0) 382467. T 0.01
+is-reachable: main@.lr.ph13.2 (8, 0) FAR 384407 F 0.01
+expand: main@.lr.ph13.2 (8, 0) FAR  w(1) 384407. T 0.01
+is-reachable: main@_111 (9, 0) FAR 386795 F 0.02
+expand: main@_111 (9, 0) FAR  w(1) 386795. T 0.07
+is-reachable: main@.lr.ph13.1!_Cond (10, 0) FAR 375778 F 0.02
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(1) 375778. T 0.03
+is-reachable: main@.lr.ph13.1 (11, 0) FAR 386325 F 0.01
+expand: main@.lr.ph13.1 (11, 0) FAR  w(1) 386325. T 0.01
+is-reachable: main@.lr.ph13._crit_edge.1 (12, 0) FAR 386000 F 0.02
+expand: main@.lr.ph13._crit_edge.1 (12, 0) FAR  w(1) 386000. T 0.01
+is-reachable: main@.lr.ph13.1!_Cond (13, 0) FAR 381170 F 0.03
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(1) 381170. T 0.03
+is-reachable: main@.lr.ph13.1 (14, 0) FAR 384840 F 0.02
+expand: main@.lr.ph13.1 (14, 0) FAR  w(1) 384840. T 0.01
+is-reachable: main@.lr.ph13._crit_edge.1 (15, 0) FAR 384514 F 0.02
+expand: main@.lr.ph13._crit_edge.1 (15, 0) FAR  w(1) 384514. T 0.02
+is-reachable: main@.lr.ph13.1!_Cond (16, 0) FAR 368986 F 0.03
+expand: main@.lr.ph13.1!_Cond (16, 0) FAR  w(1) 368986. T 0.03
+is-reachable: main@.lr.ph13.1 (17, 0) FAR 368481 F 0.02
+expand: main@.lr.ph13.1 (17, 0) FAR  w(1) 368481. T 0.02
+is-reachable: main@_39 (18, 0) FAR 334071 F 0.04
+expand: main@_39 (18, 0) FAR  w(1) 334071.
+	create_child: main@.lr.ph13._crit_edge (18, 33) FAR 393858 X 0.13
+expand: main@.lr.ph13._crit_edge (18, 0) FAR  w(0) 393858.
+	create_child: main@.lr.ph13.1 (17, 33) FAR 392748 U 0.03
+expand: main@.lr.ph13.1 (17, 0) FAR  w(0) 392748.
+	create_child: main@.lr.ph13.1!_Cond (16, 33) FAR 369146 U 0.04
+expand: main@.lr.ph13.1!_Cond (16, 0) FAR  w(0) 369146.
+	create_child: main@_111 (15, 33) FAR 388101 U 0.06
+expand: main@_111 (15, 0) FAR  w(0) 388101.
+	create_child: main@.lr.ph13.1 (14, 33) FAR 375091 U 0.04
+expand: main@.lr.ph13.1 (14, 0) FAR  w(0) 375091.
+	create_child: main@.lr.ph13.1!_Cond (13, 33) FAR 394217 U 0.03
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(0) 394217.
+	create_child: main@_111 (12, 33) FAR 395390 U 0.04
+expand: main@_111 (12, 0) FAR  w(0) 395390.
+	create_child: main@.lr.ph13.1 (11, 33) FAR 395480 U 0.04
+expand: main@.lr.ph13.1 (11, 0) FAR  w(0) 395480.
+	create_child: main@.lr.ph13.1!_Cond (10, 33) FAR 396069 U 0.05
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(0) 396069.
+	create_child: main@_111 (9, 33) FAR 396403 U 0.07
+expand: main@_111 (9, 0) FAR  w(0) 396403.
+	create_child: main@.lr.ph13.2 (8, 33) FAR 396845 U 0.03
+expand: main@.lr.ph13.2 (8, 0) FAR  w(0) 396845.
+	create_child: main@.lr.ph13.2!_Cond (7, 33) FAR 386947 U 0.02
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(0) 386947.
+	create_child: main@.lr.ph13._crit_edge.2 (6, 33) FAR 380312 U 0.03
+expand: main@.lr.ph13._crit_edge.2 (6, 0) FAR  w(0) 380312.
+	create_child: main@.lr.ph13.2 (5, 33) FAR 397739 U 0.01
+expand: main@.lr.ph13.2 (5, 0) FAR  w(0) 397739.
+	create_child: main@.lr.ph13.2!_Cond (4, 33) FAR 397697 U 0.01
+expand: main@.lr.ph13.2!_Cond (4, 0) FAR  w(0) 397697. T 0.02
+is-reachable: main@.lr.ph13.2 (5, 0) FAR 397739 F 0.01
+expand: main@.lr.ph13.2 (5, 0) FAR  w(1) 397739. T 0.01
+is-reachable: main@.lr.ph13._crit_edge.2 (6, 0) FAR 380312 F 0.01
+expand: main@.lr.ph13._crit_edge.2 (6, 0) FAR  w(1) 380312. T 0.01
+is-reachable: main@.lr.ph13.2!_Cond (7, 0) FAR 386947 F 0.02
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(1) 386947. T 0.01
+is-reachable: main@.lr.ph13.2 (8, 0) FAR 396845 F 0.01
+expand: main@.lr.ph13.2 (8, 0) FAR  w(1) 396845. T 0.01
+is-reachable: main@_111 (9, 0) FAR 396403 F 0.02
+expand: main@_111 (9, 0) FAR  w(1) 396403.
+	create_child: main@.lr.ph13._crit_edge.1 (9, 33) FAR 399901 X 0.07
+expand: main@.lr.ph13._crit_edge.1 (9, 0) FAR  w(0) 399901.
+	create_child: main@.lr.ph13.2 (8, 33) FAR 400598 U 0.03
+expand: main@.lr.ph13.2 (8, 0) FAR  w(0) 400598.
+	create_child: main@.lr.ph13.2!_Cond (7, 33) FAR 400597 U 0.01
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(0) 400597. T 0.02
+is-reachable: main@.lr.ph13.2 (8, 0) FAR 400598 F 0.01
+expand: main@.lr.ph13.2 (8, 0) FAR  w(1) 400598. T 0.01
+is-reachable: main@.lr.ph13._crit_edge.1 (9, 0) FAR 399901 F 0.01
+expand: main@.lr.ph13._crit_edge.1 (9, 0) FAR  w(1) 399901. T 0.01
+is-reachable: main@.lr.ph13.1!_Cond (10, 0) FAR 396069 F 0.02
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(1) 396069. T 0.02
+is-reachable: main@.lr.ph13.1 (11, 0) FAR 395480 F 0.01
+expand: main@.lr.ph13.1 (11, 0) FAR  w(1) 395480. T 0.01
+is-reachable: main@_111 (12, 0) FAR 395390 F 0.02
+expand: main@_111 (12, 0) FAR  w(1) 395390. T 0.06
+is-reachable: main@.lr.ph13.1!_Cond (13, 0) FAR 394217 F 0.03
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(1) 394217. T 0.03
+is-reachable: main@.lr.ph13.1 (14, 0) FAR 375091 F 0.03
+expand: main@.lr.ph13.1 (14, 0) FAR  w(1) 375091. T 0.02
+is-reachable: main@_111 (15, 0) FAR 388101 F 0.03
+expand: main@_111 (15, 0) FAR  w(1) 388101.
+	create_child: main@.lr.ph13._crit_edge.1 (15, 33) FAR 402844 X 0.05
+expand: main@.lr.ph13._crit_edge.1 (15, 0) FAR  w(0) 402844.
+	create_child: main@.lr.ph13.1 (14, 33) FAR 401276 U 0.04
+expand: main@.lr.ph13.1 (14, 0) FAR  w(0) 401276.
+	create_child: main@.lr.ph13.1!_Cond (13, 33) FAR 405329 U 0.03
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(0) 405329.
+	create_child: main@_111 (12, 33) FAR 405309 U 0.05
+expand: main@_111 (12, 0) FAR  w(0) 405309.
+	create_child: main@.lr.ph13.1 (11, 33) FAR 405577 U 0.03
+expand: main@.lr.ph13.1 (11, 0) FAR  w(0) 405577.
+	create_child: main@.lr.ph13.1!_Cond (10, 33) FAR 405863 U 0.02
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(0) 405863.
+	create_child: main@.lr.ph13._crit_edge.1 (9, 33) FAR 401343 U 0.04
+expand: main@.lr.ph13._crit_edge.1 (9, 0) FAR  w(0) 401343. T 0.01
+is-reachable: main@.lr.ph13.1!_Cond (10, 0) FAR 405863 F 0.03
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(1) 405863. T 0.03
+is-reachable: main@.lr.ph13.1 (11, 0) FAR 405577 F 0.02
+expand: main@.lr.ph13.1 (11, 0) FAR  w(1) 405577. T 0.02
+is-reachable: main@_111 (12, 0) FAR 405309 F 0.02
+expand: main@_111 (12, 0) FAR  w(1) 405309. T 0.07
+is-reachable: main@.lr.ph13.1!_Cond (13, 0) FAR 405329 F 0.03
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(1) 405329. T 0.03
+is-reachable: main@.lr.ph13.1 (14, 0) FAR 401276 F 0.02
+expand: main@.lr.ph13.1 (14, 0) FAR  w(1) 401276. T 0.02
+is-reachable: main@.lr.ph13._crit_edge.1 (15, 0) FAR 402844 F 0.02
+expand: main@.lr.ph13._crit_edge.1 (15, 0) FAR  w(1) 402844. T 0.02
+is-reachable: main@.lr.ph13.1!_Cond (16, 0) FAR 369146 F 0.04
+expand: main@.lr.ph13.1!_Cond (16, 0) FAR  w(1) 369146. T 0.04
+is-reachable: main@.lr.ph13.1 (17, 0) FAR 392748 F 0.02
+expand: main@.lr.ph13.1 (17, 0) FAR  w(1) 392748. T 0.02
+is-reachable: main@.lr.ph13._crit_edge (18, 0) FAR 393858 F 0.02
+expand: main@.lr.ph13._crit_edge (18, 0) FAR  w(1) 393858. T 0.01
+is-reachable: main@.lr.ph13!_Cond (19, 0) FAR 360859 F 0.03
+expand: main@.lr.ph13!_Cond (19, 0) FAR  w(1) 360859. T 0.04
+is-reachable: main@.lr.ph13 (20, 0) FAR 357262 F 0.02
+expand: main@.lr.ph13 (20, 0) FAR  w(1) 357262. T 0.03
+is-reachable: main@.lr.ph13._crit_edge (21, 0) FAR 353842 F 0.06
+expand: main@.lr.ph13._crit_edge (21, 0) FAR  w(1) 353842. T 0.03
+is-reachable: main@.lr.ph13!_Cond (22, 0) FAR 53482 F 0.06
+expand: main@.lr.ph13!_Cond (22, 0) FAR  w(1) 53482. T 0.05
+is-reachable: main@.lr.ph13 (23, 0) FAR 53099 F 0.09
+expand: main@.lr.ph13 (23, 0) FAR  w(1) 53099. T 0.05
+is-reachable: main@_39 (24, 0) FAR 50340 F 0.15
+expand: main@_39 (24, 0) FAR  w(1) 50340.
+	create_child: main@.lr.ph13._crit_edge (24, 33) FAR 454393 X 0.23
+expand: main@.lr.ph13._crit_edge (24, 0) FAR  w(0) 454393.
+	create_child: main@.lr.ph13 (23, 33) FAR 456717 U 0.09
+expand: main@.lr.ph13 (23, 0) FAR  w(0) 456717.
+	create_child: main@.lr.ph13!_Cond (22, 33) FAR 435907 U 0.07
+expand: main@.lr.ph13!_Cond (22, 0) FAR  w(0) 435907.
+	create_child: main@_39 (21, 33) FAR 465216 U 0.13
+expand: main@_39 (21, 0) FAR  w(0) 465216.
+	create_child: main@.lr.ph13 (20, 33) FAR 465866 U 0.12
+expand: main@.lr.ph13 (20, 0) FAR  w(0) 465866.
+	create_child: main@.lr.ph13!_Cond (19, 33) FAR 467181 U 0.12
+expand: main@.lr.ph13!_Cond (19, 0) FAR  w(0) 467181.
+	create_child: main@_39 (18, 33) FAR 467398 U 0.10
+expand: main@_39 (18, 0) FAR  w(0) 467398.
+	create_child: main@.lr.ph13.1 (17, 33) FAR 467996 U 0.10
+expand: main@.lr.ph13.1 (17, 0) FAR  w(0) 467996.
+	create_child: main@.lr.ph13.1!_Cond (16, 33) FAR 406934 U 0.05
+expand: main@.lr.ph13.1!_Cond (16, 0) FAR  w(0) 406934.
+	create_child: main@_111 (15, 33) FAR 468176 U 0.11
+expand: main@_111 (15, 0) FAR  w(0) 468176.
+	create_child: main@.lr.ph13.1 (14, 33) FAR 468551 U 0.09
+expand: main@.lr.ph13.1 (14, 0) FAR  w(0) 468551.
+	create_child: main@.lr.ph13.1!_Cond (13, 33) FAR 468703 U 0.04
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(0) 468703.
+	create_child: main@_111 (12, 33) FAR 468704 U 0.07
+expand: main@_111 (12, 0) FAR  w(0) 468704.
+	create_child: main@.lr.ph13.1 (11, 33) FAR 407097 U 0.05
+expand: main@.lr.ph13.1 (11, 0) FAR  w(0) 407097.
+	create_child: main@.lr.ph13.1!_Cond (10, 33) FAR 401418 U 0.03
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(0) 401418.
+	create_child: main@_111 (9, 33) FAR 470106 U 0.04
+expand: main@_111 (9, 0) FAR  w(0) 470106.
+	create_child: main@.lr.ph13.2 (8, 33) FAR 407733 U 0.04
+expand: main@.lr.ph13.2 (8, 0) FAR  w(0) 407733.
+	create_child: main@.lr.ph13.2!_Cond (7, 33) FAR 469976 U 0.02
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(0) 469976.
+	create_child: main@.lr.ph13._crit_edge.2 (6, 33) FAR 470823 U 0.05
+expand: main@.lr.ph13._crit_edge.2 (6, 0) FAR  w(0) 470823.
+	create_child: main@.lr.ph13.2 (5, 33) FAR 398716 U 0.02
+expand: main@.lr.ph13.2 (5, 0) FAR  w(0) 398716.
+	create_child: main@.lr.ph13.2!_Cond (4, 33) FAR 387317 U 0.01
+expand: main@.lr.ph13.2!_Cond (4, 0) FAR  w(0) 387317. T 0.02
+is-reachable: main@.lr.ph13.2 (5, 0) FAR 398716 F 0.01
+expand: main@.lr.ph13.2 (5, 0) FAR  w(1) 398716. T 0.01
+is-reachable: main@.lr.ph13._crit_edge.2 (6, 0) FAR 470823 F 0.01
+expand: main@.lr.ph13._crit_edge.2 (6, 0) FAR  w(1) 470823. T 0.01
+is-reachable: main@.lr.ph13.2!_Cond (7, 0) FAR 469976 F 0.01
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(1) 469976. T 0.01
+is-reachable: main@.lr.ph13.2 (8, 0) FAR 407733 F 0.01
+expand: main@.lr.ph13.2 (8, 0) FAR  w(1) 407733. T 0.01
+is-reachable: main@_111 (9, 0) FAR 470106 F 0.03
+expand: main@_111 (9, 0) FAR  w(1) 470106. T 0.09
+is-reachable: main@.lr.ph13.1!_Cond (10, 0) FAR 401418 F 0.03
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(1) 401418. T 0.03
+is-reachable: main@.lr.ph13.1 (11, 0) FAR 407097 F 0.02
+expand: main@.lr.ph13.1 (11, 0) FAR  w(1) 407097. T 0.02
+is-reachable: main@_111 (12, 0) FAR 468704 F 0.03
+expand: main@_111 (12, 0) FAR  w(1) 468704.
+	create_child: main@.lr.ph13._crit_edge.1 (12, 33) FAR 69450 X 0.05
+expand: main@.lr.ph13._crit_edge.1 (12, 0) FAR  w(0) 69450.
+	create_child: main@.lr.ph13.1 (11, 33) FAR 409151 U 0.06
+expand: main@.lr.ph13.1 (11, 0) FAR  w(0) 409151.
+	create_child: main@.lr.ph13.1!_Cond (10, 33) FAR 468789 U 0.04
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(0) 468789.
+	create_child: main@_111 (9, 33) FAR 408318 U 0.05
+expand: main@_111 (9, 0) FAR  w(0) 408318.
+	create_child: main@.lr.ph13.2 (8, 33) FAR 473824 U 0.03
+expand: main@.lr.ph13.2 (8, 0) FAR  w(0) 473824.
+	create_child: main@.lr.ph13.2!_Cond (7, 33) FAR 474338 U 0.02
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(0) 474338. T 0.02
+is-reachable: main@.lr.ph13.2 (8, 0) FAR 473824 F 0.01
+expand: main@.lr.ph13.2 (8, 0) FAR  w(1) 473824. T 0.01
+is-reachable: main@_111 (9, 0) FAR 408318 F 0.02
+expand: main@_111 (9, 0) FAR  w(1) 408318. T 0.06
+is-reachable: main@.lr.ph13.1!_Cond (10, 0) FAR 468789 F 0.03
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(1) 468789. T 0.03
+is-reachable: main@.lr.ph13.1 (11, 0) FAR 409151 F 0.02
+expand: main@.lr.ph13.1 (11, 0) FAR  w(1) 409151. T 0.02
+is-reachable: main@.lr.ph13._crit_edge.1 (12, 0) FAR 69450 F 0.02
+expand: main@.lr.ph13._crit_edge.1 (12, 0) FAR  w(1) 69450. T 0.02
+is-reachable: main@.lr.ph13.1!_Cond (13, 0) FAR 468703 F 0.03
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(1) 468703. T 0.03
+is-reachable: main@.lr.ph13.1 (14, 0) FAR 468551 F 0.02
+expand: main@.lr.ph13.1 (14, 0) FAR  w(1) 468551. T 0.02
+is-reachable: main@_111 (15, 0) FAR 468176 F 0.03
+expand: main@_111 (15, 0) FAR  w(1) 468176.
+	create_child: main@.lr.ph13._crit_edge.1 (15, 33) FAR 470101 X 0.06
+expand: main@.lr.ph13._crit_edge.1 (15, 0) FAR  w(0) 470101.
+	create_child: main@.lr.ph13.1 (14, 33) FAR 478569 U 0.06
+expand: main@.lr.ph13.1 (14, 0) FAR  w(0) 478569.
+	create_child: main@.lr.ph13.1!_Cond (13, 33) FAR 473748 U 0.04
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(0) 473748.
+	create_child: main@_111 (12, 33) FAR 472166 U 0.08
+expand: main@_111 (12, 0) FAR  w(0) 472166.
+	create_child: main@.lr.ph13.1 (11, 33) FAR 407140 U 0.04
+expand: main@.lr.ph13.1 (11, 0) FAR  w(0) 407140.
+	create_child: main@.lr.ph13.1!_Cond (10, 33) FAR 479032 U 0.03
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(0) 479032. T 0.04
+is-reachable: main@.lr.ph13.1 (11, 0) FAR 407140 F 0.02
+expand: main@.lr.ph13.1 (11, 0) FAR  w(1) 407140. T 0.02
+is-reachable: main@_111 (12, 0) FAR 472166 F 0.02
+expand: main@_111 (12, 0) FAR  w(1) 472166.
+	create_child: main@.lr.ph13._crit_edge.1 (12, 33) FAR 480655 X 0.10
+expand: main@.lr.ph13._crit_edge.1 (12, 0) FAR  w(0) 480655.
+	create_child: main@.lr.ph13.1 (11, 33) FAR 478119 U 0.03
+expand: main@.lr.ph13.1 (11, 0) FAR  w(0) 478119.
+	create_child: main@.lr.ph13.1!_Cond (10, 33) FAR 477236 U 0.04
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(0) 477236. T 0.04
+is-reachable: main@.lr.ph13.1 (11, 0) FAR 478119 F 0.02
+expand: main@.lr.ph13.1 (11, 0) FAR  w(1) 478119. T 0.02
+is-reachable: main@.lr.ph13._crit_edge.1 (12, 0) FAR 480655 F 0.01
+expand: main@.lr.ph13._crit_edge.1 (12, 0) FAR  w(1) 480655. T 0.01
+is-reachable: main@.lr.ph13.1!_Cond (13, 0) FAR 473748 F 0.03
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(1) 473748. T 0.03
+is-reachable: main@.lr.ph13.1 (14, 0) FAR 478569 F 0.02
+expand: main@.lr.ph13.1 (14, 0) FAR  w(1) 478569. T 0.02
+is-reachable: main@.lr.ph13._crit_edge.1 (15, 0) FAR 470101 F 0.02
+expand: main@.lr.ph13._crit_edge.1 (15, 0) FAR  w(1) 470101. T 0.02
+is-reachable: main@.lr.ph13.1!_Cond (16, 0) FAR 406934 F 0.04
+expand: main@.lr.ph13.1!_Cond (16, 0) FAR  w(1) 406934. T 0.04
+is-reachable: main@.lr.ph13.1 (17, 0) FAR 467996 F 0.03
+expand: main@.lr.ph13.1 (17, 0) FAR  w(1) 467996. T 0.03
+is-reachable: main@_39 (18, 0) FAR 467398 F 0.05
+expand: main@_39 (18, 0) FAR  w(1) 467398.
+	create_child: main@.lr.ph13._crit_edge (18, 33) FAR 485273 X 0.26
+expand: main@.lr.ph13._crit_edge (18, 0) FAR  w(0) 485273.
+	create_child: main@.lr.ph13.1 (17, 33) FAR 452027 U 0.05
+expand: main@.lr.ph13.1 (17, 0) FAR  w(0) 452027.
+	create_child: main@.lr.ph13.1!_Cond (16, 33) FAR 480514 U 0.07
+expand: main@.lr.ph13.1!_Cond (16, 0) FAR  w(0) 480514.
+	create_child: main@_111 (15, 33) FAR 454013 U 0.07
+expand: main@_111 (15, 0) FAR  w(0) 454013.
+	create_child: main@.lr.ph13.1 (14, 33) FAR 476954 U 0.06
+expand: main@.lr.ph13.1 (14, 0) FAR  w(0) 476954.
+	create_child: main@.lr.ph13.1!_Cond (13, 33) FAR 483069 U 0.04
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(0) 483069.
+	create_child: main@_111 (12, 33) FAR 488216 U 0.07
+expand: main@_111 (12, 0) FAR  w(0) 488216.
+	create_child: main@.lr.ph13.1 (11, 33) FAR 453795 U 0.04
+expand: main@.lr.ph13.1 (11, 0) FAR  w(0) 453795.
+	create_child: main@.lr.ph13.1!_Cond (10, 33) FAR 478343 U 0.04
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(0) 478343.
+	create_child: main@_111 (9, 33) FAR 276650 U 0.07
+expand: main@_111 (9, 0) FAR  w(0) 276650.
+	create_child: main@.lr.ph13.2 (8, 33) FAR 489098 U 0.04
+expand: main@.lr.ph13.2 (8, 0) FAR  w(0) 489098.
+	create_child: main@.lr.ph13.2!_Cond (7, 33) FAR 454191 U 0.02
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(0) 454191.
+	create_child: main@.lr.ph13._crit_edge.2 (6, 33) FAR 398782 U 0.03
+expand: main@.lr.ph13._crit_edge.2 (6, 0) FAR  w(0) 398782.
+	create_child: main@.lr.ph13.2 (5, 33) FAR 486257 U 0.02
+expand: main@.lr.ph13.2 (5, 0) FAR  w(0) 486257.
+	create_child: main@.lr.ph13.2!_Cond (4, 33) FAR 486913 U 0.01
+expand: main@.lr.ph13.2!_Cond (4, 0) FAR  w(0) 486913. T 0.02
+is-reachable: main@.lr.ph13.2 (5, 0) FAR 486257 F 0.01
+expand: main@.lr.ph13.2 (5, 0) FAR  w(1) 486257. T 0.01
+is-reachable: main@.lr.ph13._crit_edge.2 (6, 0) FAR 398782 F 0.01
+expand: main@.lr.ph13._crit_edge.2 (6, 0) FAR  w(1) 398782. T 0.01
+is-reachable: main@.lr.ph13.2!_Cond (7, 0) FAR 454191 F 0.01
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(1) 454191. T 0.02
+is-reachable: main@.lr.ph13.2 (8, 0) FAR 489098 F 0.01
+expand: main@.lr.ph13.2 (8, 0) FAR  w(1) 489098. T 0.01
+is-reachable: main@_111 (9, 0) FAR 276650 F 0.03
+expand: main@_111 (9, 0) FAR  w(1) 276650.
+	create_child: main@.lr.ph13._crit_edge.1 (9, 33) FAR 488124 X 0.10
+expand: main@.lr.ph13._crit_edge.1 (9, 0) FAR  w(0) 488124.
+	create_child: main@.lr.ph13.2 (8, 33) FAR 488700 U 0.04
+expand: main@.lr.ph13.2 (8, 0) FAR  w(0) 488700.
+	create_child: main@.lr.ph13.2!_Cond (7, 33) FAR 475306 U 0.02
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(0) 475306. T 0.02
+is-reachable: main@.lr.ph13.2 (8, 0) FAR 488700 F 0.01
+expand: main@.lr.ph13.2 (8, 0) FAR  w(1) 488700. T 0.01
+is-reachable: main@.lr.ph13._crit_edge.1 (9, 0) FAR 488124 F 0.01
+expand: main@.lr.ph13._crit_edge.1 (9, 0) FAR  w(1) 488124. T 0.01
+is-reachable: main@.lr.ph13.1!_Cond (10, 0) FAR 478343 F 0.03
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(1) 478343. T 0.03
+is-reachable: main@.lr.ph13.1 (11, 0) FAR 453795 F 0.02
+expand: main@.lr.ph13.1 (11, 0) FAR  w(1) 453795. T 0.02
+is-reachable: main@_111 (12, 0) FAR 488216 F 0.03
+expand: main@_111 (12, 0) FAR  w(1) 488216.
+	create_child: main@.lr.ph13._crit_edge.1 (12, 33) FAR 491921 X 0.07
+expand: main@.lr.ph13._crit_edge.1 (12, 0) FAR  w(0) 491921.
+	create_child: main@.lr.ph13.1 (11, 33) FAR 488152 U 0.03
+expand: main@.lr.ph13.1 (11, 0) FAR  w(0) 488152.
+	create_child: main@.lr.ph13.1!_Cond (10, 33) FAR 453748 U 0.04
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(0) 453748.
+	create_child: main@.lr.ph13._crit_edge.1 (9, 33) FAR 489301 U 0.13
+expand: main@.lr.ph13._crit_edge.1 (9, 0) FAR  w(0) 489301. T 0.01
+is-reachable: main@.lr.ph13.1!_Cond (10, 0) FAR 453748 F 0.08
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(1) 453748. T 0.09
+is-reachable: main@.lr.ph13.1 (11, 0) FAR 488152 F 0.02
+expand: main@.lr.ph13.1 (11, 0) FAR  w(1) 488152. T 0.02
+is-reachable: main@.lr.ph13._crit_edge.1 (12, 0) FAR 491921 F 0.02
+expand: main@.lr.ph13._crit_edge.1 (12, 0) FAR  w(1) 491921. T 0.02
+is-reachable: main@.lr.ph13.1!_Cond (13, 0) FAR 483069 F 0.10
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(1) 483069. T 0.10
+is-reachable: main@.lr.ph13.1 (14, 0) FAR 476954 F 0.03
+expand: main@.lr.ph13.1 (14, 0) FAR  w(1) 476954. T 0.03
+is-reachable: main@_111 (15, 0) FAR 454013 F 0.04
+expand: main@_111 (15, 0) FAR  w(1) 454013.
+	create_child: main@.lr.ph13._crit_edge.1 (15, 33) FAR 496004 X 0.07
+expand: main@.lr.ph13._crit_edge.1 (15, 0) FAR  w(0) 496004.
+	create_child: main@.lr.ph13.1 (14, 33) FAR 493191 U 0.04
+expand: main@.lr.ph13.1 (14, 0) FAR  w(0) 493191.
+	create_child: main@.lr.ph13.1!_Cond (13, 33) FAR 488564 U 0.05
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(0) 488564.
+	create_child: main@_111 (12, 33) FAR 496587 U 0.17
+expand: main@_111 (12, 0) FAR  w(0) 496587.
+	create_child: main@.lr.ph13.1 (11, 33) FAR 487579 U 0.04
+expand: main@.lr.ph13.1 (11, 0) FAR  w(0) 487579.
+	create_child: main@.lr.ph13.1!_Cond (10, 33) FAR 493845 U 0.04
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(0) 493845.
+	create_child: main@_111 (9, 33) FAR 495224 U 0.10
+expand: main@_111 (9, 0) FAR  w(0) 495224. T 0.13
+is-reachable: main@.lr.ph13.1!_Cond (10, 0) FAR 493845 F 0.10
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(1) 493845. T 0.11
+is-reachable: main@.lr.ph13.1 (11, 0) FAR 487579 F 0.02
+expand: main@.lr.ph13.1 (11, 0) FAR  w(1) 487579. T 0.02
+is-reachable: main@_111 (12, 0) FAR 496587 F 0.03
+expand: main@_111 (12, 0) FAR  w(1) 496587.
+	create_child: main@.lr.ph13._crit_edge.1 (12, 33) FAR 497910 X 0.08
+expand: main@.lr.ph13._crit_edge.1 (12, 0) FAR  w(0) 497910.
+	create_child: main@.lr.ph13.1 (11, 33) FAR 499337 U 0.03
+expand: main@.lr.ph13.1 (11, 0) FAR  w(0) 499337.
+	create_child: main@.lr.ph13.1!_Cond (10, 33) FAR 493386 U 0.04
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(0) 493386. T 0.13
+is-reachable: main@.lr.ph13.1 (11, 0) FAR 499337 F 0.02
+expand: main@.lr.ph13.1 (11, 0) FAR  w(1) 499337. T 0.02
+is-reachable: main@.lr.ph13._crit_edge.1 (12, 0) FAR 497910 F 0.02
+expand: main@.lr.ph13._crit_edge.1 (12, 0) FAR  w(1) 497910. T 0.02
+is-reachable: main@.lr.ph13.1!_Cond (13, 0) FAR 488564 F 0.11
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(1) 488564. T 0.11
+is-reachable: main@.lr.ph13.1 (14, 0) FAR 493191 F 0.03
+expand: main@.lr.ph13.1 (14, 0) FAR  w(1) 493191. T 0.03
+is-reachable: main@.lr.ph13._crit_edge.1 (15, 0) FAR 496004 F 0.02
+expand: main@.lr.ph13._crit_edge.1 (15, 0) FAR  w(1) 496004. T 0.03
+is-reachable: main@.lr.ph13.1!_Cond (16, 0) FAR 480514 F 0.05
+expand: main@.lr.ph13.1!_Cond (16, 0) FAR  w(1) 480514. T 0.04
+is-reachable: main@.lr.ph13.1 (17, 0) FAR 452027 F 0.03
+expand: main@.lr.ph13.1 (17, 0) FAR  w(1) 452027. T 0.03
+is-reachable: main@.lr.ph13._crit_edge (18, 0) FAR 485273 F 0.04
+expand: main@.lr.ph13._crit_edge (18, 0) FAR  w(1) 485273. T 0.03
+is-reachable: main@.lr.ph13!_Cond (19, 0) FAR 467181 F 0.07
+expand: main@.lr.ph13!_Cond (19, 0) FAR  w(1) 467181. T 0.10
+is-reachable: main@.lr.ph13 (20, 0) FAR 465866 F 0.07
+expand: main@.lr.ph13 (20, 0) FAR  w(1) 465866. T 0.10
+is-reachable: main@_39 (21, 0) FAR 465216 F 0.07
+expand: main@_39 (21, 0) FAR  w(1) 465216.
+	create_child: main@.lr.ph13._crit_edge (21, 33) FAR 486870 X 0.17
+expand: main@.lr.ph13._crit_edge (21, 0) FAR  w(0) 486870.
+	create_child: main@.lr.ph13 (20, 33) FAR 419501 U 0.10
+expand: main@.lr.ph13 (20, 0) FAR  w(0) 419501.
+	create_child: main@.lr.ph13!_Cond (19, 33) FAR 457981 U 0.10
+expand: main@.lr.ph13!_Cond (19, 0) FAR  w(0) 457981.
+	create_child: main@_39 (18, 33) FAR 467125 U 0.14
+expand: main@_39 (18, 0) FAR  w(0) 467125.
+	create_child: main@.lr.ph13.1 (17, 33) FAR 510121 U 0.11
+expand: main@.lr.ph13.1 (17, 0) FAR  w(0) 510121.
+	create_child: main@.lr.ph13.1!_Cond (16, 33) FAR 498733 U 0.05
+expand: main@.lr.ph13.1!_Cond (16, 0) FAR  w(0) 498733.
+	create_child: main@_111 (15, 33) FAR 499375 U 0.08
+expand: main@_111 (15, 0) FAR  w(0) 499375.
+	create_child: main@.lr.ph13.1 (14, 33) FAR 510763 U 0.05
+expand: main@.lr.ph13.1 (14, 0) FAR  w(0) 510763.
+	create_child: main@.lr.ph13.1!_Cond (13, 33) FAR 510882 U 0.05
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(0) 510882.
+	create_child: main@_111 (12, 33) FAR 505274 U 0.06
+expand: main@_111 (12, 0) FAR  w(0) 505274.
+	create_child: main@.lr.ph13.1 (11, 33) FAR 508918 U 0.04
+expand: main@.lr.ph13.1 (11, 0) FAR  w(0) 508918.
+	create_child: main@.lr.ph13.1!_Cond (10, 33) FAR 494938 U 0.04
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(0) 494938.
+	create_child: main@_111 (9, 33) FAR 455504 U 0.07
+expand: main@_111 (9, 0) FAR  w(0) 455504.
+	create_child: main@.lr.ph13.2 (8, 33) FAR 508350 U 0.06
+expand: main@.lr.ph13.2 (8, 0) FAR  w(0) 508350.
+	create_child: main@.lr.ph13.2!_Cond (7, 33) FAR 514277 U 0.02
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(0) 514277.
+	create_child: main@_125 (6, 33) FAR 508151 U 0.03
+expand: main@_125 (6, 0) FAR  w(0) 508151.
+	create_child: main@.lr.ph13.2 (5, 33) FAR 515872 U 0.03
+expand: main@.lr.ph13.2 (5, 0) FAR  w(0) 515872.
+	create_child: main@.lr.ph13.2!_Cond (4, 33) FAR 515093 U 0.01
+expand: main@.lr.ph13.2!_Cond (4, 0) FAR  w(0) 515093. T 0.02
+is-reachable: main@.lr.ph13.2 (5, 0) FAR 515872 F 0.01
+expand: main@.lr.ph13.2 (5, 0) FAR  w(1) 515872. T 0.01
+is-reachable: main@_125 (6, 0) FAR 508151 F 0.01
+expand: main@_125 (6, 0) FAR  w(1) 508151. T 0.03
+is-reachable: main@.lr.ph13.2!_Cond (7, 0) FAR 514277 F 0.02
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(1) 514277. T 0.02
+is-reachable: main@.lr.ph13.2 (8, 0) FAR 508350 F 0.01
+expand: main@.lr.ph13.2 (8, 0) FAR  w(1) 508350. T 0.01
+is-reachable: main@_111 (9, 0) FAR 455504 F 0.03
+expand: main@_111 (9, 0) FAR  w(1) 455504. T 0.08
+is-reachable: main@.lr.ph13.1!_Cond (10, 0) FAR 494938 F 0.03
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(1) 494938. T 0.04
+is-reachable: main@.lr.ph13.1 (11, 0) FAR 508918 F 0.02
+expand: main@.lr.ph13.1 (11, 0) FAR  w(1) 508918. T 0.03
+is-reachable: main@_111 (12, 0) FAR 505274 F 0.03
+expand: main@_111 (12, 0) FAR  w(1) 505274.
+	create_child: main@.lr.ph13._crit_edge.1 (12, 33) FAR 495687 X 0.09
+expand: main@.lr.ph13._crit_edge.1 (12, 0) FAR  w(0) 495687. T 0.06
+is-reachable: main@.lr.ph13.1!_Cond (13, 0) FAR 510882 F 0.04
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(1) 510882. T 0.03
+is-reachable: main@.lr.ph13.1 (14, 0) FAR 510763 F 0.03
+expand: main@.lr.ph13.1 (14, 0) FAR  w(1) 510763. T 0.03
+is-reachable: main@_111 (15, 0) FAR 499375 F 0.03
+expand: main@_111 (15, 0) FAR  w(1) 499375.
+	create_child: main@.lr.ph13._crit_edge.1 (15, 33) FAR 515974 X 0.07
+expand: main@.lr.ph13._crit_edge.1 (15, 0) FAR  w(0) 515974.
+	create_child: main@.lr.ph13.1 (14, 33) FAR 499385 U 0.04
+expand: main@.lr.ph13.1 (14, 0) FAR  w(0) 499385.
+	create_child: main@.lr.ph13.1!_Cond (13, 33) FAR 521295 U 0.04
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(0) 521295.
+	create_child: main@.lr.ph13._crit_edge.1 (12, 33) FAR 501097 U 0.06
+expand: main@.lr.ph13._crit_edge.1 (12, 0) FAR  w(0) 501097.
+	create_child: main@.lr.ph13.1 (11, 33) FAR 521667 U 0.03
+expand: main@.lr.ph13.1 (11, 0) FAR  w(0) 521667.
+	create_child: main@.lr.ph13.1!_Cond (10, 33) FAR 521383 U 0.04
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(0) 521383. T 0.04
+is-reachable: main@.lr.ph13.1 (11, 0) FAR 521667 F 0.02
+expand: main@.lr.ph13.1 (11, 0) FAR  w(1) 521667. T 0.02
+is-reachable: main@.lr.ph13._crit_edge.1 (12, 0) FAR 501097 F 0.02
+expand: main@.lr.ph13._crit_edge.1 (12, 0) FAR  w(1) 501097. T 0.02
+is-reachable: main@.lr.ph13.1!_Cond (13, 0) FAR 521295 F 0.04
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(1) 521295. T 0.04
+is-reachable: main@.lr.ph13.1 (14, 0) FAR 499385 F 0.03
+expand: main@.lr.ph13.1 (14, 0) FAR  w(1) 499385. T 0.03
+is-reachable: main@.lr.ph13._crit_edge.1 (15, 0) FAR 515974 F 0.03
+expand: main@.lr.ph13._crit_edge.1 (15, 0) FAR  w(1) 515974. T 0.02
+is-reachable: main@.lr.ph13.1!_Cond (16, 0) FAR 498733 F 0.04
+expand: main@.lr.ph13.1!_Cond (16, 0) FAR  w(1) 498733. T 0.04
+is-reachable: main@.lr.ph13.1 (17, 0) FAR 510121 F 0.03
+expand: main@.lr.ph13.1 (17, 0) FAR  w(1) 510121. T 0.03
+is-reachable: main@_39 (18, 0) FAR 467125 F 0.07
+expand: main@_39 (18, 0) FAR  w(1) 467125.
+	create_child: main@.lr.ph13._crit_edge (18, 33) FAR 513026 X 0.62
+expand: main@.lr.ph13._crit_edge (18, 0) FAR  w(0) 513026.
+	create_child: main@.lr.ph13.1 (17, 33) FAR 511410 U 0.06
+expand: main@.lr.ph13.1 (17, 0) FAR  w(0) 511410.
+	create_child: main@.lr.ph13.1!_Cond (16, 33) FAR 516627 U 0.04
+expand: main@.lr.ph13.1!_Cond (16, 0) FAR  w(0) 516627.
+	create_child: main@_111 (15, 33) FAR 524969 U 0.08
+expand: main@_111 (15, 0) FAR  w(0) 524969.
+	create_child: main@.lr.ph13.1 (14, 33) FAR 508171 U 0.07
+expand: main@.lr.ph13.1 (14, 0) FAR  w(0) 508171.
+	create_child: main@.lr.ph13.1!_Cond (13, 33) FAR 518971 U 0.04
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(0) 518971.
+	create_child: main@_111 (12, 33) FAR 527565 U 0.06
+expand: main@_111 (12, 0) FAR  w(0) 527565.
+	create_child: main@.lr.ph13.1 (11, 33) FAR 517165 U 0.04
+expand: main@.lr.ph13.1 (11, 0) FAR  w(0) 517165.
+	create_child: main@.lr.ph13.1!_Cond (10, 33) FAR 528026 U 0.04
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(0) 528026.
+	create_child: main@_111 (9, 33) FAR 462122 U 0.07
+expand: main@_111 (9, 0) FAR  w(0) 462122.
+	create_child: main@.lr.ph13.2 (8, 33) FAR 521564 U 0.04
+expand: main@.lr.ph13.2 (8, 0) FAR  w(0) 521564.
+	create_child: main@.lr.ph13.2!_Cond (7, 33) FAR 528127 U 0.02
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(0) 528127. T 0.02
+is-reachable: main@.lr.ph13.2 (8, 0) FAR 521564 F 0.01
+expand: main@.lr.ph13.2 (8, 0) FAR  w(1) 521564. T 0.01
+is-reachable: main@_111 (9, 0) FAR 462122 F 0.02
+expand: main@_111 (9, 0) FAR  w(1) 462122.
+	create_child: main@.lr.ph13._crit_edge.1 (9, 33) FAR 527177 X 0.12
+expand: main@.lr.ph13._crit_edge.1 (9, 0) FAR  w(0) 527177. T 0.03
+is-reachable: main@.lr.ph13.1!_Cond (10, 0) FAR 528026 F 0.03
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(1) 528026. T 0.03
+is-reachable: main@.lr.ph13.1 (11, 0) FAR 517165 F 0.02
+expand: main@.lr.ph13.1 (11, 0) FAR  w(1) 517165. T 0.02
+is-reachable: main@_111 (12, 0) FAR 527565 F 0.04
+expand: main@_111 (12, 0) FAR  w(1) 527565. T 0.10
+is-reachable: main@.lr.ph13.1!_Cond (13, 0) FAR 518971 F 0.04
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(1) 518971. T 0.04
+is-reachable: main@.lr.ph13.1 (14, 0) FAR 508171 F 0.03
+expand: main@.lr.ph13.1 (14, 0) FAR  w(1) 508171. T 0.03
+is-reachable: main@_111 (15, 0) FAR 524969 F 0.03
+expand: main@_111 (15, 0) FAR  w(1) 524969.
+	create_child: main@.lr.ph13._crit_edge.1 (15, 33) FAR 527230 X 0.08
+expand: main@.lr.ph13._crit_edge.1 (15, 0) FAR  w(0) 527230.
+	create_child: main@.lr.ph13.1 (14, 33) FAR 518673 U 0.04
+expand: main@.lr.ph13.1 (14, 0) FAR  w(0) 518673.
+	create_child: main@.lr.ph13.1!_Cond (13, 33) FAR 522493 U 0.04
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(0) 522493.
+	create_child: main@_111 (12, 33) FAR 528897 U 0.06
+expand: main@_111 (12, 0) FAR  w(0) 528897.
+	create_child: main@.lr.ph13.1 (11, 33) FAR 527523 U 0.05
+expand: main@.lr.ph13.1 (11, 0) FAR  w(0) 527523.
+	create_child: main@.lr.ph13.1!_Cond (10, 33) FAR 518023 U 0.04
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(0) 518023. T 0.06
+is-reachable: main@.lr.ph13.1 (11, 0) FAR 527523 F 0.02
+expand: main@.lr.ph13.1 (11, 0) FAR  w(1) 527523. T 0.03
+is-reachable: main@_111 (12, 0) FAR 528897 F 0.03
+expand: main@_111 (12, 0) FAR  w(1) 528897. T 0.07
+is-reachable: main@.lr.ph13.1!_Cond (13, 0) FAR 522493 F 0.04
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(1) 522493. T 0.04
+is-reachable: main@.lr.ph13.1 (14, 0) FAR 518673 F 0.03
+expand: main@.lr.ph13.1 (14, 0) FAR  w(1) 518673. T 0.02
+is-reachable: main@.lr.ph13._crit_edge.1 (15, 0) FAR 527230 F 0.02
+expand: main@.lr.ph13._crit_edge.1 (15, 0) FAR  w(1) 527230. T 0.02
+is-reachable: main@.lr.ph13.1!_Cond (16, 0) FAR 516627 F 0.04
+expand: main@.lr.ph13.1!_Cond (16, 0) FAR  w(1) 516627. T 0.04
+is-reachable: main@.lr.ph13.1 (17, 0) FAR 511410 F 0.03
+expand: main@.lr.ph13.1 (17, 0) FAR  w(1) 511410. T 0.03
+is-reachable: main@.lr.ph13._crit_edge (18, 0) FAR 513026 F 0.03
+expand: main@.lr.ph13._crit_edge (18, 0) FAR  w(1) 513026. T 0.03
+is-reachable: main@.lr.ph13!_Cond (19, 0) FAR 457981 F 0.07
+expand: main@.lr.ph13!_Cond (19, 0) FAR  w(1) 457981. T 0.07
+is-reachable: main@.lr.ph13 (20, 0) FAR 419501 F 0.06
+expand: main@.lr.ph13 (20, 0) FAR  w(1) 419501. T 0.05
+is-reachable: main@.lr.ph13._crit_edge (21, 0) FAR 486870 F 0.06
+expand: main@.lr.ph13._crit_edge (21, 0) FAR  w(1) 486870. T 0.05
+is-reachable: main@.lr.ph13!_Cond (22, 0) FAR 435907 F 0.10
+expand: main@.lr.ph13!_Cond (22, 0) FAR  w(1) 435907. T 0.10
+is-reachable: main@.lr.ph13 (23, 0) FAR 456717 F 0.08
+expand: main@.lr.ph13 (23, 0) FAR  w(1) 456717. T 0.10
+is-reachable: main@.lr.ph13._crit_edge (24, 0) FAR 454393 F 0.10
+expand: main@.lr.ph13._crit_edge (24, 0) FAR  w(1) 454393. T 0.09
+is-reachable: main@.lr.ph13!_Cond (25, 0) FAR 49931 F 0.43
+expand: main@.lr.ph13!_Cond (25, 0) FAR  w(1) 49931. T 0.24
+is-reachable: main@.lr.ph13 (26, 0) FAR 49589 F 0.27
+expand: main@.lr.ph13 (26, 0) FAR  w(1) 49589. T 0.29
+is-reachable: main@_39 (27, 0) FAR 42084 F 0.60
+expand: main@_39 (27, 0) FAR  w(1) 42084.
+	create_child: main@.lr.ph13._crit_edge (27, 33) FAR 617583 X 0.77
+expand: main@.lr.ph13._crit_edge (27, 0) FAR  w(0) 617583.
+	create_child: main@.lr.ph13 (26, 33) FAR 614990 U 0.18
+expand: main@.lr.ph13 (26, 0) FAR  w(0) 614990.
+	create_child: main@.lr.ph13!_Cond (25, 33) FAR 623992 U 0.39
+expand: main@.lr.ph13!_Cond (25, 0) FAR  w(0) 623992.
+	create_child: main@_39 (24, 33) FAR 634847 U 0.43
+expand: main@_39 (24, 0) FAR  w(0) 634847.
+	create_child: main@.lr.ph13 (23, 33) FAR 635574 U 0.37
+expand: main@.lr.ph13 (23, 0) FAR  w(0) 635574.
+	create_child: main@.lr.ph13!_Cond (22, 33) FAR 582160 U 0.28
+expand: main@.lr.ph13!_Cond (22, 0) FAR  w(0) 582160.
+	create_child: main@_39 (21, 33) FAR 637521 U 0.45
+expand: main@_39 (21, 0) FAR  w(0) 637521.
+	create_child: main@.lr.ph13 (20, 33) FAR 639930 U 0.44
+expand: main@.lr.ph13 (20, 0) FAR  w(0) 639930.
+	create_child: main@.lr.ph13!_Cond (19, 33) FAR 639547 U 0.35
+expand: main@.lr.ph13!_Cond (19, 0) FAR  w(0) 639547.
+	create_child: main@_39 (18, 33) FAR 640186 U 0.77
+expand: main@_39 (18, 0) FAR  w(0) 640186.
+	create_child: main@.lr.ph13.1 (17, 33) FAR 640313 U 0.34
+expand: main@.lr.ph13.1 (17, 0) FAR  w(0) 640313.
+	create_child: main@.lr.ph13.1!_Cond (16, 33) FAR 502804 U 0.14
+expand: main@.lr.ph13.1!_Cond (16, 0) FAR  w(0) 502804.
+	create_child: main@_111 (15, 33) FAR 640883 U 0.14
+expand: main@_111 (15, 0) FAR  w(0) 640883.
+	create_child: main@.lr.ph13.1 (14, 33) FAR 527447 U 0.10
+expand: main@.lr.ph13.1 (14, 0) FAR  w(0) 527447.
+	create_child: main@.lr.ph13.1!_Cond (13, 33) FAR 640603 U 0.07
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(0) 640603.
+	create_child: main@_111 (12, 33) FAR 642586 U 0.12
+expand: main@_111 (12, 0) FAR  w(0) 642586.
+	create_child: main@.lr.ph13.1 (11, 33) FAR 642916 U 0.06
+expand: main@.lr.ph13.1 (11, 0) FAR  w(0) 642916.
+	create_child: main@.lr.ph13.1!_Cond (10, 33) FAR 643284 U 0.06
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(0) 643284.
+	create_child: main@_111 (9, 33) FAR 643405 U 0.10
+expand: main@_111 (9, 0) FAR  w(0) 643405.
+	create_child: main@.lr.ph13.2 (8, 33) FAR 642057 U 0.08
+expand: main@.lr.ph13.2 (8, 0) FAR  w(0) 642057.
+	create_child: main@.lr.ph13.2!_Cond (7, 33) FAR 528001 U 0.04
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(0) 528001.
+	create_child: main@.lr.ph13._crit_edge.2 (6, 33) FAR 644106 U 0.07
+expand: main@.lr.ph13._crit_edge.2 (6, 0) FAR  w(0) 644106.
+	create_child: main@.lr.ph13.2 (5, 33) FAR 643961 U 0.04
+expand: main@.lr.ph13.2 (5, 0) FAR  w(0) 643961.
+	create_child: main@.lr.ph13.2!_Cond (4, 33) FAR 645412 U 0.02
+expand: main@.lr.ph13.2!_Cond (4, 0) FAR  w(0) 645412. T 0.04
+is-reachable: main@.lr.ph13.2 (5, 0) FAR 643961 F 0.01
+expand: main@.lr.ph13.2 (5, 0) FAR  w(1) 643961. T 0.01
+is-reachable: main@.lr.ph13._crit_edge.2 (6, 0) FAR 644106 F 0.01
+expand: main@.lr.ph13._crit_edge.2 (6, 0) FAR  w(1) 644106. T 0.01
+is-reachable: main@.lr.ph13.2!_Cond (7, 0) FAR 528001 F 0.03
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(1) 528001. T 0.03
+is-reachable: main@.lr.ph13.2 (8, 0) FAR 642057 F 0.01
+expand: main@.lr.ph13.2 (8, 0) FAR  w(1) 642057. T 0.01
+is-reachable: main@_111 (9, 0) FAR 643405 F 0.05
+expand: main@_111 (9, 0) FAR  w(1) 643405.
+	create_child: main@.lr.ph13._crit_edge.1 (9, 33) FAR 530379 X 0.12
+expand: main@.lr.ph13._crit_edge.1 (9, 0) FAR  w(0) 530379.
+	create_child: main@.lr.ph13.2 (8, 33) FAR 531473 U 0.05
+expand: main@.lr.ph13.2 (8, 0) FAR  w(0) 531473.
+	create_child: main@.lr.ph13.2!_Cond (7, 33) FAR 527012 U 0.02
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(0) 527012.
+	create_child: main@.lr.ph13._crit_edge.2 (6, 33) FAR 647529 U 0.04
+expand: main@.lr.ph13._crit_edge.2 (6, 0) FAR  w(0) 647529.
+	create_child: main@.lr.ph13.2 (5, 33) FAR 647686 U 0.02
+expand: main@.lr.ph13.2 (5, 0) FAR  w(0) 647686.
+	create_child: main@.lr.ph13.2!_Cond (4, 33) FAR 530940 U 0.02
+expand: main@.lr.ph13.2!_Cond (4, 0) FAR  w(0) 530940. T 0.03
+is-reachable: main@.lr.ph13.2 (5, 0) FAR 647686 F 0.01
+expand: main@.lr.ph13.2 (5, 0) FAR  w(1) 647686. T 0.01
+is-reachable: main@.lr.ph13._crit_edge.2 (6, 0) FAR 647529 F 0.01
+expand: main@.lr.ph13._crit_edge.2 (6, 0) FAR  w(1) 647529. T 0.01
+is-reachable: main@.lr.ph13.2!_Cond (7, 0) FAR 527012 F 0.02
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(1) 527012. T 0.02
+is-reachable: main@.lr.ph13.2 (8, 0) FAR 531473 F 0.01
+expand: main@.lr.ph13.2 (8, 0) FAR  w(1) 531473. T 0.01
+is-reachable: main@.lr.ph13._crit_edge.1 (9, 0) FAR 530379 F 0.02
+expand: main@.lr.ph13._crit_edge.1 (9, 0) FAR  w(1) 530379. T 0.02
+is-reachable: main@.lr.ph13.1!_Cond (10, 0) FAR 643284 F 0.05
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(1) 643284. T 0.05
+is-reachable: main@.lr.ph13.1 (11, 0) FAR 642916 F 0.04
+expand: main@.lr.ph13.1 (11, 0) FAR  w(1) 642916. T 0.05
+is-reachable: main@_111 (12, 0) FAR 642586 F 0.05
+expand: main@_111 (12, 0) FAR  w(1) 642586.
+	create_child: main@.lr.ph13._crit_edge.1 (12, 33) FAR 650042 X 0.08
+expand: main@.lr.ph13._crit_edge.1 (12, 0) FAR  w(0) 650042.
+	create_child: main@.lr.ph13.1 (11, 33) FAR 650442 U 0.06
+expand: main@.lr.ph13.1 (11, 0) FAR  w(0) 650442.
+	create_child: main@.lr.ph13.1!_Cond (10, 33) FAR 651631 U 0.06
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(0) 651631.
+	create_child: main@_111 (9, 33) FAR 652473 U 0.08
+expand: main@_111 (9, 0) FAR  w(0) 652473.
+	create_child: main@.lr.ph13.2 (8, 33) FAR 653208 U 0.06
+expand: main@.lr.ph13.2 (8, 0) FAR  w(0) 653208.
+	create_child: main@.lr.ph13.2!_Cond (7, 33) FAR 653117 U 0.03
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(0) 653117.
+	create_child: main@.lr.ph13._crit_edge.2 (6, 33) FAR 653762 U 0.05
+expand: main@.lr.ph13._crit_edge.2 (6, 0) FAR  w(0) 653762.
+	create_child: main@.lr.ph13.2 (5, 33) FAR 654772 U 0.03
+expand: main@.lr.ph13.2 (5, 0) FAR  w(0) 654772.
+	create_child: main@.lr.ph13.2!_Cond (4, 33) FAR 654818 U 0.02
+expand: main@.lr.ph13.2!_Cond (4, 0) FAR  w(0) 654818. T 0.04
+is-reachable: main@.lr.ph13.2 (5, 0) FAR 654772 F 0.01
+expand: main@.lr.ph13.2 (5, 0) FAR  w(1) 654772. T 0.01
+is-reachable: main@.lr.ph13._crit_edge.2 (6, 0) FAR 653762 F 0.01
+expand: main@.lr.ph13._crit_edge.2 (6, 0) FAR  w(1) 653762. T 0.01
+is-reachable: main@.lr.ph13.2!_Cond (7, 0) FAR 653117 F 0.02
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(1) 653117. T 0.02
+is-reachable: main@.lr.ph13.2 (8, 0) FAR 653208 F 0.01
+expand: main@.lr.ph13.2 (8, 0) FAR  w(1) 653208. T 0.01
+is-reachable: main@_111 (9, 0) FAR 652473 F 0.04
+expand: main@_111 (9, 0) FAR  w(1) 652473.
+	create_child: main@.lr.ph13._crit_edge.1 (9, 33) FAR 655826 X 0.10
+expand: main@.lr.ph13._crit_edge.1 (9, 0) FAR  w(0) 655826.
+	create_child: main@.lr.ph13.2 (8, 33) FAR 651095 U 0.03
+expand: main@.lr.ph13.2 (8, 0) FAR  w(0) 651095.
+	create_child: main@.lr.ph13.2!_Cond (7, 33) FAR 654009 U 0.02
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(0) 654009. T 0.02
+is-reachable: main@.lr.ph13.2 (8, 0) FAR 651095 F 0.01
+expand: main@.lr.ph13.2 (8, 0) FAR  w(1) 651095. T 0.01
+is-reachable: main@.lr.ph13._crit_edge.1 (9, 0) FAR 655826 F 0.02
+expand: main@.lr.ph13._crit_edge.1 (9, 0) FAR  w(1) 655826. T 0.02
+is-reachable: main@.lr.ph13.1!_Cond (10, 0) FAR 651631 F 0.04
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(1) 651631. T 0.04
+is-reachable: main@.lr.ph13.1 (11, 0) FAR 650442 F 0.03
+expand: main@.lr.ph13.1 (11, 0) FAR  w(1) 650442. T 0.03
+is-reachable: main@.lr.ph13._crit_edge.1 (12, 0) FAR 650042 F 0.03
+expand: main@.lr.ph13._crit_edge.1 (12, 0) FAR  w(1) 650042. T 0.02
+is-reachable: main@.lr.ph13.1!_Cond (13, 0) FAR 640603 F 0.04
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(1) 640603. T 0.05
+is-reachable: main@.lr.ph13.1 (14, 0) FAR 527447 F 0.04
+expand: main@.lr.ph13.1 (14, 0) FAR  w(1) 527447. T 0.04
+is-reachable: main@_111 (15, 0) FAR 640883 F 0.04
+expand: main@_111 (15, 0) FAR  w(1) 640883.
+	create_child: main@.lr.ph13._crit_edge.1 (15, 33) FAR 660522 X 0.07
+expand: main@.lr.ph13._crit_edge.1 (15, 0) FAR  w(0) 660522.
+	create_child: main@.lr.ph13.1 (14, 33) FAR 659421 U 0.06
+expand: main@.lr.ph13.1 (14, 0) FAR  w(0) 659421.
+	create_child: main@.lr.ph13.1!_Cond (13, 33) FAR 657019 U 0.05
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(0) 657019.
+	create_child: main@_111 (12, 33) FAR 659661 U 0.10
+expand: main@_111 (12, 0) FAR  w(0) 659661.
+	create_child: main@.lr.ph13.1 (11, 33) FAR 657225 U 0.07
+expand: main@.lr.ph13.1 (11, 0) FAR  w(0) 657225.
+	create_child: main@.lr.ph13.1!_Cond (10, 33) FAR 651088 U 0.05
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(0) 651088.
+	create_child: main@.lr.ph13._crit_edge.1 (9, 33) FAR 660092 U 0.08
+expand: main@.lr.ph13._crit_edge.1 (9, 0) FAR  w(0) 660092. T 0.03
+is-reachable: main@.lr.ph13.1!_Cond (10, 0) FAR 651088 F 0.05
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(1) 651088. T 0.05
+is-reachable: main@.lr.ph13.1 (11, 0) FAR 657225 F 0.03
+expand: main@.lr.ph13.1 (11, 0) FAR  w(1) 657225. T 0.03
+is-reachable: main@_111 (12, 0) FAR 659661 F 0.04
+expand: main@_111 (12, 0) FAR  w(1) 659661.
+	create_child: main@.lr.ph13._crit_edge.1 (12, 33) FAR 660358 X 0.10
+expand: main@.lr.ph13._crit_edge.1 (12, 0) FAR  w(0) 660358.
+	create_child: main@.lr.ph13.1 (11, 33) FAR 481118 U 0.04
+expand: main@.lr.ph13.1 (11, 0) FAR  w(0) 481118.
+	create_child: main@.lr.ph13.1!_Cond (10, 33) FAR 660955 U 0.05
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(0) 660955.
+	create_child: main@_111 (9, 33) FAR 661033 U 0.08
+expand: main@_111 (9, 0) FAR  w(0) 661033. T 0.17
+is-reachable: main@.lr.ph13.1!_Cond (10, 0) FAR 660955 F 0.04
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(1) 660955. T 0.05
+is-reachable: main@.lr.ph13.1 (11, 0) FAR 481118 F 0.03
+expand: main@.lr.ph13.1 (11, 0) FAR  w(1) 481118. T 0.03
+is-reachable: main@.lr.ph13._crit_edge.1 (12, 0) FAR 660358 F 0.02
+expand: main@.lr.ph13._crit_edge.1 (12, 0) FAR  w(1) 660358. T 0.02
+is-reachable: main@.lr.ph13.1!_Cond (13, 0) FAR 657019 F 0.04
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(1) 657019. T 0.04
+is-reachable: main@.lr.ph13.1 (14, 0) FAR 659421 F 0.03
+expand: main@.lr.ph13.1 (14, 0) FAR  w(1) 659421. T 0.04
+is-reachable: main@.lr.ph13._crit_edge.1 (15, 0) FAR 660522 F 0.03
+expand: main@.lr.ph13._crit_edge.1 (15, 0) FAR  w(1) 660522. T 0.03
+is-reachable: main@.lr.ph13.1!_Cond (16, 0) FAR 502804 F 0.06
+expand: main@.lr.ph13.1!_Cond (16, 0) FAR  w(1) 502804. T 0.05
+is-reachable: main@.lr.ph13.1 (17, 0) FAR 640313 F 0.05
+expand: main@.lr.ph13.1 (17, 0) FAR  w(1) 640313. T 0.04
+is-reachable: main@_39 (18, 0) FAR 640186 F 0.13
+expand: main@_39 (18, 0) FAR  w(1) 640186.(smt.stats :restarts :decisions    :clauses/bin    :simplify  :memory)
+(smt.stats      :conflicts  :propagations   :lemmas     :deletions   )
+(smt.stats    0    362 127077  83206  4343/0   532     0    0  506.67)
+(smt.stats    1    463 178521 113711  5100/0   688     0    0  507.09)
+(smt.stats    2    574 233690 135734  5104/0   756     0    0  507.32)
+
+	create_child: main@.lr.ph13._crit_edge (18, 33) FAR 667582 X 3.35
+expand: main@.lr.ph13._crit_edge (18, 0) FAR  w(0) 667582.
+	create_child: main@.lr.ph13.1 (17, 33) FAR 610115 U 0.11
+expand: main@.lr.ph13.1 (17, 0) FAR  w(0) 610115.
+	create_child: main@.lr.ph13.1!_Cond (16, 33) FAR 610714 U 0.06
+expand: main@.lr.ph13.1!_Cond (16, 0) FAR  w(0) 610714.
+	create_child: main@_111 (15, 33) FAR 667939 U 0.09
+expand: main@_111 (15, 0) FAR  w(0) 667939.
+	create_child: main@.lr.ph13.1 (14, 33) FAR 667648 U 0.06
+expand: main@.lr.ph13.1 (14, 0) FAR  w(0) 667648.
+	create_child: main@.lr.ph13.1!_Cond (13, 33) FAR 649439 U 0.06
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(0) 649439.
+	create_child: main@_111 (12, 33) FAR 646333 U 0.08
+expand: main@_111 (12, 0) FAR  w(0) 646333.
+	create_child: main@.lr.ph13.1 (11, 33) FAR 610492 U 0.05
+expand: main@.lr.ph13.1 (11, 0) FAR  w(0) 610492.
+	create_child: main@.lr.ph13.1!_Cond (10, 33) FAR 614662 U 0.06
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(0) 614662.
+	create_child: main@_111 (9, 33) FAR 611529 U 0.09
+expand: main@_111 (9, 0) FAR  w(0) 611529.
+	create_child: main@.lr.ph13.2 (8, 33) FAR 611745 U 0.07
+expand: main@.lr.ph13.2 (8, 0) FAR  w(0) 611745.
+	create_child: main@.lr.ph13.2!_Cond (7, 33) FAR 667056 U 0.03
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(0) 667056.
+	create_child: main@.lr.ph13._crit_edge.2 (6, 33) FAR 670402 U 0.07
+expand: main@.lr.ph13._crit_edge.2 (6, 0) FAR  w(0) 670402.
+	create_child: main@.lr.ph13.2 (5, 33) FAR 516474 U 0.03
+expand: main@.lr.ph13.2 (5, 0) FAR  w(0) 516474.
+	create_child: main@.lr.ph13.2!_Cond (4, 33) FAR 656293 U 0.03
+expand: main@.lr.ph13.2!_Cond (4, 0) FAR  w(0) 656293.
+	create_child: main@_125 (3, 33) FAR 671788 U 0.06
+expand: main@_125 (3, 0) FAR  w(0) 671788.
+	create_child: main@.lr.ph13.3 (2, 33) FAR 671721 U 0.05
+expand: main@.lr.ph13.3 (2, 0) FAR  w(0) 671721.
+	create_child: main@.lr.ph13.3!_Cond (1, 33) FAR 673211 U 0.02
+expand: main@.lr.ph13.3!_Cond (1, 0) FAR  w(0) 673211. T 0.06
+is-reachable: main@.lr.ph13.3 (2, 0) FAR 671721 F 0.01
+expand: main@.lr.ph13.3 (2, 0) FAR  w(1) 671721. T 0.01
+is-reachable: main@_125 (3, 0) FAR 671788 F 0.02
+expand: main@_125 (3, 0) FAR  w(1) 671788. T 0.06
+is-reachable: main@.lr.ph13.2!_Cond (4, 0) FAR 656293 F 0.02
+expand: main@.lr.ph13.2!_Cond (4, 0) FAR  w(1) 656293. T 0.03
+is-reachable: main@.lr.ph13.2 (5, 0) FAR 516474 F 0.01
+expand: main@.lr.ph13.2 (5, 0) FAR  w(1) 516474. T 0.02
+is-reachable: main@.lr.ph13._crit_edge.2 (6, 0) FAR 670402 F 0.01
+expand: main@.lr.ph13._crit_edge.2 (6, 0) FAR  w(1) 670402. T 0.01
+is-reachable: main@.lr.ph13.2!_Cond (7, 0) FAR 667056 F 0.03
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(1) 667056. T 0.03
+is-reachable: main@.lr.ph13.2 (8, 0) FAR 611745 F 0.01
+expand: main@.lr.ph13.2 (8, 0) FAR  w(1) 611745. T 0.01
+is-reachable: main@_111 (9, 0) FAR 611529 F 0.03
+expand: main@_111 (9, 0) FAR  w(1) 611529.
+	create_child: main@.lr.ph13._crit_edge.1 (9, 33) FAR 613216 X 0.11
+expand: main@.lr.ph13._crit_edge.1 (9, 0) FAR  w(0) 613216.
+	create_child: main@.lr.ph13.2 (8, 33) FAR 606493 U 0.04
+expand: main@.lr.ph13.2 (8, 0) FAR  w(0) 606493.
+	create_child: main@.lr.ph13.2!_Cond (7, 33) FAR 299299 U 0.02
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(0) 299299. T 0.02
+is-reachable: main@.lr.ph13.2 (8, 0) FAR 606493 F 0.01
+expand: main@.lr.ph13.2 (8, 0) FAR  w(1) 606493. T 0.01
+is-reachable: main@.lr.ph13._crit_edge.1 (9, 0) FAR 613216 F 0.02
+expand: main@.lr.ph13._crit_edge.1 (9, 0) FAR  w(1) 613216. T 0.02
+is-reachable: main@.lr.ph13.1!_Cond (10, 0) FAR 614662 F 0.05
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(1) 614662. T 0.05
+is-reachable: main@.lr.ph13.1 (11, 0) FAR 610492 F 0.03
+expand: main@.lr.ph13.1 (11, 0) FAR  w(1) 610492. T 0.03
+is-reachable: main@_111 (12, 0) FAR 646333 F 0.04
+expand: main@_111 (12, 0) FAR  w(1) 646333.
+	create_child: main@.lr.ph13._crit_edge.1 (12, 33) FAR 670062 X 0.09
+expand: main@.lr.ph13._crit_edge.1 (12, 0) FAR  w(0) 670062.
+	create_child: main@.lr.ph13.1 (11, 33) FAR 656072 U 0.04
+expand: main@.lr.ph13.1 (11, 0) FAR  w(0) 656072.
+	create_child: main@.lr.ph13.1!_Cond (10, 33) FAR 670055 U 0.05
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(0) 670055.
+	create_child: main@_111 (9, 33) FAR 609868 U 0.09
+expand: main@_111 (9, 0) FAR  w(0) 609868.
+	create_child: main@.lr.ph13.2 (8, 33) FAR 664876 U 0.06
+expand: main@.lr.ph13.2 (8, 0) FAR  w(0) 664876.
+	create_child: main@.lr.ph13.2!_Cond (7, 33) FAR 652688 U 0.03
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(0) 652688.
+	create_child: main@.lr.ph13._crit_edge.2 (6, 33) FAR 672536 U 0.04
+expand: main@.lr.ph13._crit_edge.2 (6, 0) FAR  w(0) 672536.
+	create_child: main@.lr.ph13.2 (5, 33) FAR 675890 U 0.02
+expand: main@.lr.ph13.2 (5, 0) FAR  w(0) 675890.
+	create_child: main@.lr.ph13.2!_Cond (4, 33) FAR 676409 U 0.02
+expand: main@.lr.ph13.2!_Cond (4, 0) FAR  w(0) 676409. T 0.03
+is-reachable: main@.lr.ph13.2 (5, 0) FAR 675890 F 0.01
+expand: main@.lr.ph13.2 (5, 0) FAR  w(1) 675890. T 0.01
+is-reachable: main@.lr.ph13._crit_edge.2 (6, 0) FAR 672536 F 0.01
+expand: main@.lr.ph13._crit_edge.2 (6, 0) FAR  w(1) 672536. T 0.01
+is-reachable: main@.lr.ph13.2!_Cond (7, 0) FAR 652688 F 0.02
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(1) 652688. T 0.02
+is-reachable: main@.lr.ph13.2 (8, 0) FAR 664876 F 0.01
+expand: main@.lr.ph13.2 (8, 0) FAR  w(1) 664876. T 0.01
+is-reachable: main@_111 (9, 0) FAR 609868 F 0.03
+expand: main@_111 (9, 0) FAR  w(1) 609868.
+	create_child: main@.lr.ph13._crit_edge.1 (9, 33) FAR 661795 X 0.11
+expand: main@.lr.ph13._crit_edge.1 (9, 0) FAR  w(0) 661795. T 0.03
+is-reachable: main@.lr.ph13.1!_Cond (10, 0) FAR 670055 F 0.04
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(1) 670055. T 0.04
+is-reachable: main@.lr.ph13.1 (11, 0) FAR 656072 F 0.03
+expand: main@.lr.ph13.1 (11, 0) FAR  w(1) 656072. T 0.04
+is-reachable: main@.lr.ph13._crit_edge.1 (12, 0) FAR 670062 F 0.03
+expand: main@.lr.ph13._crit_edge.1 (12, 0) FAR  w(1) 670062. T 0.03
+is-reachable: main@.lr.ph13.1!_Cond (13, 0) FAR 649439 F 0.05
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(1) 649439. T 0.05
+is-reachable: main@.lr.ph13.1 (14, 0) FAR 667648 F 0.04
+expand: main@.lr.ph13.1 (14, 0) FAR  w(1) 667648. T 0.04
+is-reachable: main@_111 (15, 0) FAR 667939 F 0.05
+expand: main@_111 (15, 0) FAR  w(1) 667939.
+	create_child: main@.lr.ph13._crit_edge.1 (15, 33) FAR 680460 X 0.08
+expand: main@.lr.ph13._crit_edge.1 (15, 0) FAR  w(0) 680460.
+	create_child: main@.lr.ph13.1 (14, 33) FAR 665091 U 0.05
+expand: main@.lr.ph13.1 (14, 0) FAR  w(0) 665091.
+	create_child: main@.lr.ph13.1!_Cond (13, 33) FAR 676956 U 0.06
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(0) 676956.
+	create_child: main@_111 (12, 33) FAR 682038 U 0.09
+expand: main@_111 (12, 0) FAR  w(0) 682038.
+	create_child: main@.lr.ph13.1 (11, 33) FAR 682555 U 0.05
+expand: main@.lr.ph13.1 (11, 0) FAR  w(0) 682555.
+	create_child: main@.lr.ph13.1!_Cond (10, 33) FAR 678636 U 0.06
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(0) 678636.
+	create_child: main@_111 (9, 33) FAR 661871 U 0.09
+expand: main@_111 (9, 0) FAR  w(0) 661871.
+	create_child: main@.lr.ph13.2 (8, 33) FAR 682652 U 0.05
+expand: main@.lr.ph13.2 (8, 0) FAR  w(0) 682652.
+	create_child: main@.lr.ph13.2!_Cond (7, 33) FAR 682693 U 0.03
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(0) 682693.
+	create_child: main@_125 (6, 33) FAR 683046 U 0.05
+expand: main@_125 (6, 0) FAR  w(0) 683046.
+	create_child: main@.lr.ph13.2 (5, 33) FAR 683461 U 0.03
+expand: main@.lr.ph13.2 (5, 0) FAR  w(0) 683461.
+	create_child: main@.lr.ph13.2!_Cond (4, 33) FAR 684230 U 0.02
+expand: main@.lr.ph13.2!_Cond (4, 0) FAR  w(0) 684230. T 0.02
+is-reachable: main@.lr.ph13.2 (5, 0) FAR 683461 F 0.01
+expand: main@.lr.ph13.2 (5, 0) FAR  w(1) 683461. T 0.01
+is-reachable: main@_125 (6, 0) FAR 683046 F 0.01
+expand: main@_125 (6, 0) FAR  w(1) 683046. T 0.04
+is-reachable: main@.lr.ph13.2!_Cond (7, 0) FAR 682693 F 0.02
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(1) 682693. T 0.02
+is-reachable: main@.lr.ph13.2 (8, 0) FAR 682652 F 0.01
+expand: main@.lr.ph13.2 (8, 0) FAR  w(1) 682652. T 0.02
+is-reachable: main@_111 (9, 0) FAR 661871 F 0.03
+expand: main@_111 (9, 0) FAR  w(1) 661871.
+	create_child: main@.lr.ph13._crit_edge.1 (9, 33) FAR 675493 X 0.10
+expand: main@.lr.ph13._crit_edge.1 (9, 0) FAR  w(0) 675493. T 0.03
+is-reachable: main@.lr.ph13.1!_Cond (10, 0) FAR 678636 F 0.04
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(1) 678636. T 0.04
+is-reachable: main@.lr.ph13.1 (11, 0) FAR 682555 F 0.03
+expand: main@.lr.ph13.1 (11, 0) FAR  w(1) 682555. T 0.03
+is-reachable: main@_111 (12, 0) FAR 682038 F 0.04
+expand: main@_111 (12, 0) FAR  w(1) 682038.
+	create_child: main@.lr.ph13._crit_edge.1 (12, 33) FAR 679774 X 0.07
+expand: main@.lr.ph13._crit_edge.1 (12, 0) FAR  w(0) 679774.
+	create_child: main@.lr.ph13.1 (11, 33) FAR 684756 U 0.04
+expand: main@.lr.ph13.1 (11, 0) FAR  w(0) 684756.
+	create_child: main@.lr.ph13.1!_Cond (10, 33) FAR 686229 U 0.05
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(0) 686229.
+	create_child: main@_111 (9, 33) FAR 687995 U 0.08
+expand: main@_111 (9, 0) FAR  w(0) 687995.
+	create_child: main@.lr.ph13.2 (8, 33) FAR 686905 U 0.05
+expand: main@.lr.ph13.2 (8, 0) FAR  w(0) 686905.
+	create_child: main@.lr.ph13.2!_Cond (7, 33) FAR 687278 U 0.02
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(0) 687278. T 0.02
+is-reachable: main@.lr.ph13.2 (8, 0) FAR 686905 F 0.01
+expand: main@.lr.ph13.2 (8, 0) FAR  w(1) 686905. T 0.01
+is-reachable: main@_111 (9, 0) FAR 687995 F 0.03
+expand: main@_111 (9, 0) FAR  w(1) 687995. T 0.10
+is-reachable: main@.lr.ph13.1!_Cond (10, 0) FAR 686229 F 0.05
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(1) 686229. T 0.06
+is-reachable: main@.lr.ph13.1 (11, 0) FAR 684756 F 0.04
+expand: main@.lr.ph13.1 (11, 0) FAR  w(1) 684756. T 0.03
+is-reachable: main@.lr.ph13._crit_edge.1 (12, 0) FAR 679774 F 0.03
+expand: main@.lr.ph13._crit_edge.1 (12, 0) FAR  w(1) 679774. T 0.03
+is-reachable: main@.lr.ph13.1!_Cond (13, 0) FAR 676956 F 0.05
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(1) 676956. T 0.05
+is-reachable: main@.lr.ph13.1 (14, 0) FAR 665091 F 0.04
+expand: main@.lr.ph13.1 (14, 0) FAR  w(1) 665091. T 0.04
+is-reachable: main@.lr.ph13._crit_edge.1 (15, 0) FAR 680460 F 0.04
+expand: main@.lr.ph13._crit_edge.1 (15, 0) FAR  w(1) 680460. T 0.04
+is-reachable: main@.lr.ph13.1!_Cond (16, 0) FAR 610714 F 0.07
+expand: main@.lr.ph13.1!_Cond (16, 0) FAR  w(1) 610714. T 0.06
+is-reachable: main@.lr.ph13.1 (17, 0) FAR 610115 F 0.07
+expand: main@.lr.ph13.1 (17, 0) FAR  w(1) 610115. T 0.04
+is-reachable: main@.lr.ph13._crit_edge (18, 0) FAR 667582 F 0.09
+expand: main@.lr.ph13._crit_edge (18, 0) FAR  w(1) 667582. T 0.09
+is-reachable: main@.lr.ph13!_Cond (19, 0) FAR 639547 F 0.24
+expand: main@.lr.ph13!_Cond (19, 0) FAR  w(1) 639547. T 0.26
+is-reachable: main@.lr.ph13 (20, 0) FAR 639930 F 0.15
+expand: main@.lr.ph13 (20, 0) FAR  w(1) 639930. T 0.14
+is-reachable: main@_39 (21, 0) FAR 637521 F 0.20
+expand: main@_39 (21, 0) FAR  w(1) 637521.
+	create_child: main@.lr.ph13._crit_edge (21, 33) FAR 706891 X 0.74
+expand: main@.lr.ph13._crit_edge (21, 0) FAR  w(0) 706891.
+	create_child: main@.lr.ph13 (20, 33) FAR 620803 U 0.21
+expand: main@.lr.ph13 (20, 0) FAR  w(0) 620803.
+	create_child: main@.lr.ph13!_Cond (19, 33) FAR 611705 U 0.37
+expand: main@.lr.ph13!_Cond (19, 0) FAR  w(0) 611705.
+	create_child: main@_39 (18, 33) FAR 695694 U 0.36
+expand: main@_39 (18, 0) FAR  w(0) 695694.
+	create_child: main@.lr.ph13.1 (17, 33) FAR 702640 U 0.21
+expand: main@.lr.ph13.1 (17, 0) FAR  w(0) 702640.
+	create_child: main@.lr.ph13.1!_Cond (16, 33) FAR 680211 U 0.07
+expand: main@.lr.ph13.1!_Cond (16, 0) FAR  w(0) 680211.
+	create_child: main@_111 (15, 33) FAR 700874 U 0.12
+expand: main@_111 (15, 0) FAR  w(0) 700874.
+	create_child: main@.lr.ph13.1 (14, 33) FAR 680085 U 0.09
+expand: main@.lr.ph13.1 (14, 0) FAR  w(0) 680085.
+	create_child: main@.lr.ph13.1!_Cond (13, 33) FAR 640223 U 0.05
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(0) 640223.
+	create_child: main@_111 (12, 33) FAR 613209 U 0.09
+expand: main@_111 (12, 0) FAR  w(0) 613209.
+	create_child: main@.lr.ph13.1 (11, 33) FAR 614647 U 0.06
+expand: main@.lr.ph13.1 (11, 0) FAR  w(0) 614647.
+	create_child: main@.lr.ph13.1!_Cond (10, 33) FAR 689750 U 0.05
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(0) 689750.
+	create_child: main@_111 (9, 33) FAR 701416 U 0.08
+expand: main@_111 (9, 0) FAR  w(0) 701416.
+	create_child: main@.lr.ph13.2 (8, 33) FAR 622243 U 0.05
+expand: main@.lr.ph13.2 (8, 0) FAR  w(0) 622243.
+	create_child: main@.lr.ph13.2!_Cond (7, 33) FAR 669126 U 0.02
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(0) 669126.
+	create_child: main@_125 (6, 33) FAR 694793 U 0.03
+expand: main@_125 (6, 0) FAR  w(0) 694793.
+	create_child: main@.lr.ph13.2 (5, 33) FAR 698639 U 0.03
+expand: main@.lr.ph13.2 (5, 0) FAR  w(0) 698639.
+	create_child: main@.lr.ph13.2!_Cond (4, 33) FAR 683758 U 0.02
+expand: main@.lr.ph13.2!_Cond (4, 0) FAR  w(0) 683758. T 0.02
+is-reachable: main@.lr.ph13.2 (5, 0) FAR 698639 F 0.01
+expand: main@.lr.ph13.2 (5, 0) FAR  w(1) 698639. T 0.01
+is-reachable: main@_125 (6, 0) FAR 694793 F 0.01
+expand: main@_125 (6, 0) FAR  w(1) 694793. T 0.03
+is-reachable: main@.lr.ph13.2!_Cond (7, 0) FAR 669126 F 0.02
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(1) 669126. T 0.02
+is-reachable: main@.lr.ph13.2 (8, 0) FAR 622243 F 0.01
+expand: main@.lr.ph13.2 (8, 0) FAR  w(1) 622243. T 0.01
+is-reachable: main@_111 (9, 0) FAR 701416 F 0.04
+expand: main@_111 (9, 0) FAR  w(1) 701416. T 0.10
+is-reachable: main@.lr.ph13.1!_Cond (10, 0) FAR 689750 F 0.05
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(1) 689750. T 0.05
+is-reachable: main@.lr.ph13.1 (11, 0) FAR 614647 F 0.03
+expand: main@.lr.ph13.1 (11, 0) FAR  w(1) 614647. T 0.03
+is-reachable: main@_111 (12, 0) FAR 613209 F 0.05
+expand: main@_111 (12, 0) FAR  w(1) 613209. T 0.09
+is-reachable: main@.lr.ph13.1!_Cond (13, 0) FAR 640223 F 0.05
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(1) 640223. T 0.05
+is-reachable: main@.lr.ph13.1 (14, 0) FAR 680085 F 0.04
+expand: main@.lr.ph13.1 (14, 0) FAR  w(1) 680085. T 0.03
+is-reachable: main@_111 (15, 0) FAR 700874 F 0.04
+expand: main@_111 (15, 0) FAR  w(1) 700874.
+	create_child: main@.lr.ph13._crit_edge.1 (15, 33) FAR 707243 X 0.08
+expand: main@.lr.ph13._crit_edge.1 (15, 0) FAR  w(0) 707243.
+	create_child: main@.lr.ph13.1 (14, 33) FAR 708641 U 0.06
+expand: main@.lr.ph13.1 (14, 0) FAR  w(0) 708641.
+	create_child: main@.lr.ph13.1!_Cond (13, 33) FAR 707949 U 0.05
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(0) 707949.
+	create_child: main@_111 (12, 33) FAR 710801 U 0.10
+expand: main@_111 (12, 0) FAR  w(0) 710801.
+	create_child: main@.lr.ph13.1 (11, 33) FAR 710336 U 0.06
+expand: main@.lr.ph13.1 (11, 0) FAR  w(0) 710336.
+	create_child: main@.lr.ph13.1!_Cond (10, 33) FAR 709999 U 0.05
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(0) 709999. T 0.05
+is-reachable: main@.lr.ph13.1 (11, 0) FAR 710336 F 0.03
+expand: main@.lr.ph13.1 (11, 0) FAR  w(1) 710336. T 0.03
+is-reachable: main@_111 (12, 0) FAR 710801 F 0.03
+expand: main@_111 (12, 0) FAR  w(1) 710801.
+	create_child: main@.lr.ph13._crit_edge.1 (12, 33) FAR 712131 X 0.07
+expand: main@.lr.ph13._crit_edge.1 (12, 0) FAR  w(0) 712131.
+	create_child: main@.lr.ph13.1 (11, 33) FAR 713140 U 0.04
+expand: main@.lr.ph13.1 (11, 0) FAR  w(0) 713140.
+	create_child: main@.lr.ph13.1!_Cond (10, 33) FAR 713023 U 0.05
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(0) 713023. T 0.07
+is-reachable: main@.lr.ph13.1 (11, 0) FAR 713140 F 0.03
+expand: main@.lr.ph13.1 (11, 0) FAR  w(1) 713140. T 0.04
+is-reachable: main@.lr.ph13._crit_edge.1 (12, 0) FAR 712131 F 0.04
+expand: main@.lr.ph13._crit_edge.1 (12, 0) FAR  w(1) 712131. T 0.03
+is-reachable: main@.lr.ph13.1!_Cond (13, 0) FAR 707949 F 0.06
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(1) 707949. T 0.06
+is-reachable: main@.lr.ph13.1 (14, 0) FAR 708641 F 0.04
+expand: main@.lr.ph13.1 (14, 0) FAR  w(1) 708641. T 0.04
+is-reachable: main@.lr.ph13._crit_edge.1 (15, 0) FAR 707243 F 0.03
+expand: main@.lr.ph13._crit_edge.1 (15, 0) FAR  w(1) 707243. T 0.06
+is-reachable: main@.lr.ph13.1!_Cond (16, 0) FAR 680211 F 0.06
+expand: main@.lr.ph13.1!_Cond (16, 0) FAR  w(1) 680211. T 0.05
+is-reachable: main@.lr.ph13.1 (17, 0) FAR 702640 F 0.04
+expand: main@.lr.ph13.1 (17, 0) FAR  w(1) 702640. T 0.04
+is-reachable: main@_39 (18, 0) FAR 695694 F 0.14
+expand: main@_39 (18, 0) FAR  w(1) 695694.(smt.stats    3    758 328123 187446  4696/0   432     0    0  602.38)
+(smt.stats    4    860 384110 239243  5473/0   583     0    0  602.68)
+
+	create_child: main@.lr.ph13._crit_edge (18, 33) FAR 716209 X 2.47
+expand: main@.lr.ph13._crit_edge (18, 0) FAR  w(0) 716209.
+	create_child: main@.lr.ph13.1 (17, 33) FAR 701531 U 0.08
+expand: main@.lr.ph13.1 (17, 0) FAR  w(0) 701531.
+	create_child: main@.lr.ph13.1!_Cond (16, 33) FAR 714585 U 0.05
+expand: main@.lr.ph13.1!_Cond (16, 0) FAR  w(0) 714585.
+	create_child: main@_111 (15, 33) FAR 712767 U 0.12
+expand: main@_111 (15, 0) FAR  w(0) 712767.
+	create_child: main@.lr.ph13.1 (14, 33) FAR 710323 U 0.06
+expand: main@.lr.ph13.1 (14, 0) FAR  w(0) 710323.
+	create_child: main@.lr.ph13.1!_Cond (13, 33) FAR 710341 U 0.06
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(0) 710341.
+	create_child: main@_111 (12, 33) FAR 716906 U 0.10
+expand: main@_111 (12, 0) FAR  w(0) 716906.
+	create_child: main@.lr.ph13.1 (11, 33) FAR 717476 U 0.05
+expand: main@.lr.ph13.1 (11, 0) FAR  w(0) 717476.
+	create_child: main@.lr.ph13.1!_Cond (10, 33) FAR 720190 U 0.04
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(0) 720190.
+	create_child: main@_111 (9, 33) FAR 717860 U 0.07
+expand: main@_111 (9, 0) FAR  w(0) 717860.
+	create_child: main@.lr.ph13.2 (8, 33) FAR 722548 U 0.05
+expand: main@.lr.ph13.2 (8, 0) FAR  w(0) 722548.
+	create_child: main@.lr.ph13.2!_Cond (7, 33) FAR 444045 U 0.02
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(0) 444045. T 0.02
+is-reachable: main@.lr.ph13.2 (8, 0) FAR 722548 F 0.01
+expand: main@.lr.ph13.2 (8, 0) FAR  w(1) 722548. T 0.01
+is-reachable: main@_111 (9, 0) FAR 717860 F 0.03
+expand: main@_111 (9, 0) FAR  w(1) 717860. T 0.08
+is-reachable: main@.lr.ph13.1!_Cond (10, 0) FAR 720190 F 0.04
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(1) 720190. T 0.05
+is-reachable: main@.lr.ph13.1 (11, 0) FAR 717476 F 0.03
+expand: main@.lr.ph13.1 (11, 0) FAR  w(1) 717476. T 0.03
+is-reachable: main@_111 (12, 0) FAR 716906 F 0.03
+expand: main@_111 (12, 0) FAR  w(1) 716906. T 0.10
+is-reachable: main@.lr.ph13.1!_Cond (13, 0) FAR 710341 F 0.05
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(1) 710341. T 0.05
+is-reachable: main@.lr.ph13.1 (14, 0) FAR 710323 F 0.04
+expand: main@.lr.ph13.1 (14, 0) FAR  w(1) 710323. T 0.03
+is-reachable: main@_111 (15, 0) FAR 712767 F 0.06
+expand: main@_111 (15, 0) FAR  w(1) 712767.
+	create_child: main@.lr.ph13._crit_edge.1 (15, 33) FAR 717950 X 0.10
+expand: main@.lr.ph13._crit_edge.1 (15, 0) FAR  w(0) 717950.
+	create_child: main@.lr.ph13.1 (14, 33) FAR 713093 U 0.05
+expand: main@.lr.ph13.1 (14, 0) FAR  w(0) 713093.
+	create_child: main@.lr.ph13.1!_Cond (13, 33) FAR 713231 U 0.08
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(0) 713231.
+	create_child: main@_111 (12, 33) FAR 718741 U 0.08
+expand: main@_111 (12, 0) FAR  w(0) 718741.
+	create_child: main@.lr.ph13.1 (11, 33) FAR 727088 U 0.05
+expand: main@.lr.ph13.1 (11, 0) FAR  w(0) 727088.
+	create_child: main@.lr.ph13.1!_Cond (10, 33) FAR 701419 U 0.08
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(0) 701419.
+	create_child: main@.lr.ph13._crit_edge.1 (9, 33) FAR 724249 U 0.07
+expand: main@.lr.ph13._crit_edge.1 (9, 0) FAR  w(0) 724249. T 0.03
+is-reachable: main@.lr.ph13.1!_Cond (10, 0) FAR 701419 F 0.04
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(1) 701419. T 0.04
+is-reachable: main@.lr.ph13.1 (11, 0) FAR 727088 F 0.08
+expand: main@.lr.ph13.1 (11, 0) FAR  w(1) 727088. T 0.09
+is-reachable: main@_111 (12, 0) FAR 718741 F 0.03
+expand: main@_111 (12, 0) FAR  w(1) 718741. T 0.08
+is-reachable: main@.lr.ph13.1!_Cond (13, 0) FAR 713231 F 0.05
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(1) 713231. T 0.05
+is-reachable: main@.lr.ph13.1 (14, 0) FAR 713093 F 0.09
+expand: main@.lr.ph13.1 (14, 0) FAR  w(1) 713093. T 0.11
+is-reachable: main@.lr.ph13._crit_edge.1 (15, 0) FAR 717950 F 0.03
+expand: main@.lr.ph13._crit_edge.1 (15, 0) FAR  w(1) 717950. T 0.03
+is-reachable: main@.lr.ph13.1!_Cond (16, 0) FAR 714585 F 0.06
+expand: main@.lr.ph13.1!_Cond (16, 0) FAR  w(1) 714585. T 0.06
+is-reachable: main@.lr.ph13.1 (17, 0) FAR 701531 F 0.12
+expand: main@.lr.ph13.1 (17, 0) FAR  w(1) 701531. T 0.14
+is-reachable: main@.lr.ph13._crit_edge (18, 0) FAR 716209 F 0.09
+expand: main@.lr.ph13._crit_edge (18, 0) FAR  w(1) 716209. T 0.07
+is-reachable: main@.lr.ph13!_Cond (19, 0) FAR 611705 F 0.31
+expand: main@.lr.ph13!_Cond (19, 0) FAR  w(1) 611705. T 0.38
+is-reachable: main@.lr.ph13 (20, 0) FAR 620803 F 0.16
+expand: main@.lr.ph13 (20, 0) FAR  w(1) 620803. T 0.15
+is-reachable: main@.lr.ph13._crit_edge (21, 0) FAR 706891 F 0.10
+expand: main@.lr.ph13._crit_edge (21, 0) FAR  w(1) 706891. T 0.09
+is-reachable: main@.lr.ph13!_Cond (22, 0) FAR 582160 F 0.33
+expand: main@.lr.ph13!_Cond (22, 0) FAR  w(1) 582160. T 0.30
+is-reachable: main@.lr.ph13 (23, 0) FAR 635574 F 0.16
+expand: main@.lr.ph13 (23, 0) FAR  w(1) 635574. T 0.15
+is-reachable: main@_39 (24, 0) FAR 634847 F 0.24
+expand: main@_39 (24, 0) FAR  w(1) 634847.
+	create_child: main@.lr.ph13._crit_edge (24, 33) FAR 754434 X 1.10
+expand: main@.lr.ph13._crit_edge (24, 0) FAR  w(0) 754434.
+	create_child: main@.lr.ph13 (23, 33) FAR 735148 U 0.14
+expand: main@.lr.ph13 (23, 0) FAR  w(0) 735148.
+	create_child: main@.lr.ph13!_Cond (22, 33) FAR 743726 U 0.22
+expand: main@.lr.ph13!_Cond (22, 0) FAR  w(0) 743726.
+	create_child: main@_39 (21, 33) FAR 740433 U 0.41
+expand: main@_39 (21, 0) FAR  w(0) 740433.
+	create_child: main@.lr.ph13 (20, 33) FAR 728562 U 0.36
+expand: main@.lr.ph13 (20, 0) FAR  w(0) 728562.
+	create_child: main@.lr.ph13!_Cond (19, 33) FAR 748622 U 0.23
+expand: main@.lr.ph13!_Cond (19, 0) FAR  w(0) 748622.
+	create_child: main@_39 (18, 33) FAR 740386 U 0.48
+expand: main@_39 (18, 0) FAR  w(0) 740386.
+	create_child: main@.lr.ph13.1 (17, 33) FAR 740210 U 0.23
+expand: main@.lr.ph13.1 (17, 0) FAR  w(0) 740210.
+	create_child: main@.lr.ph13.1!_Cond (16, 33) FAR 720304 U 0.14
+expand: main@.lr.ph13.1!_Cond (16, 0) FAR  w(0) 720304.
+	create_child: main@_111 (15, 33) FAR 720227 U 0.14
+expand: main@_111 (15, 0) FAR  w(0) 720227.
+	create_child: main@.lr.ph13.1 (14, 33) FAR 724447 U 0.10
+expand: main@.lr.ph13.1 (14, 0) FAR  w(0) 724447.
+	create_child: main@.lr.ph13.1!_Cond (13, 33) FAR 744713 U 0.12
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(0) 744713.
+	create_child: main@_111 (12, 33) FAR 724617 U 0.13
+expand: main@_111 (12, 0) FAR  w(0) 724617.
+	create_child: main@.lr.ph13.1 (11, 33) FAR 744639 U 0.07
+expand: main@.lr.ph13.1 (11, 0) FAR  w(0) 744639.
+	create_child: main@.lr.ph13.1!_Cond (10, 33) FAR 724620 U 0.12
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(0) 724620.
+	create_child: main@_111 (9, 33) FAR 737978 U 0.10
+expand: main@_111 (9, 0) FAR  w(0) 737978. T 0.21
+is-reachable: main@.lr.ph13.1!_Cond (10, 0) FAR 724620 F 0.06
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(1) 724620. T 0.07
+is-reachable: main@.lr.ph13.1 (11, 0) FAR 744639 F 0.14
+expand: main@.lr.ph13.1 (11, 0) FAR  w(1) 744639. T 0.14
+is-reachable: main@_111 (12, 0) FAR 724617 F 0.05
+expand: main@_111 (12, 0) FAR  w(1) 724617.
+	create_child: main@.lr.ph13._crit_edge.1 (12, 33) FAR 747249 X 0.10
+expand: main@.lr.ph13._crit_edge.1 (12, 0) FAR  w(0) 747249.
+	create_child: main@.lr.ph13.1 (11, 33) FAR 718765 U 0.06
+expand: main@.lr.ph13.1 (11, 0) FAR  w(0) 718765.
+	create_child: main@.lr.ph13.1!_Cond (10, 33) FAR 724193 U 0.13
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(0) 724193.
+	create_child: main@_111 (9, 33) FAR 747378 U 0.09
+expand: main@_111 (9, 0) FAR  w(0) 747378.
+	create_child: main@.lr.ph13.2 (8, 33) FAR 746426 U 0.07
+expand: main@.lr.ph13.2 (8, 0) FAR  w(0) 746426.
+	create_child: main@.lr.ph13.2!_Cond (7, 33) FAR 747033 U 0.03
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(0) 747033.
+	create_child: main@.lr.ph13._crit_edge.2 (6, 33) FAR 738148 U 0.07
+expand: main@.lr.ph13._crit_edge.2 (6, 0) FAR  w(0) 738148.
+	create_child: main@.lr.ph13.2 (5, 33) FAR 738465 U 0.03
+expand: main@.lr.ph13.2 (5, 0) FAR  w(0) 738465.
+	create_child: main@.lr.ph13.2!_Cond (4, 33) FAR 738447 U 0.03
+expand: main@.lr.ph13.2!_Cond (4, 0) FAR  w(0) 738447. T 0.04
+is-reachable: main@.lr.ph13.2 (5, 0) FAR 738465 F 0.01
+expand: main@.lr.ph13.2 (5, 0) FAR  w(1) 738465. T 0.01
+is-reachable: main@.lr.ph13._crit_edge.2 (6, 0) FAR 738148 F 0.01
+expand: main@.lr.ph13._crit_edge.2 (6, 0) FAR  w(1) 738148. T 0.01
+is-reachable: main@.lr.ph13.2!_Cond (7, 0) FAR 747033 F 0.03
+expand: main@.lr.ph13.2!_Cond (7, 0) FAR  w(1) 747033. T 0.03
+is-reachable: main@.lr.ph13.2 (8, 0) FAR 746426 F 0.01
+expand: main@.lr.ph13.2 (8, 0) FAR  w(1) 746426. T 0.01
+is-reachable: main@_111 (9, 0) FAR 747378 F 0.04
+expand: main@_111 (9, 0) FAR  w(1) 747378. T 0.13
+is-reachable: main@.lr.ph13.1!_Cond (10, 0) FAR 724193 F 0.06
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(1) 724193. T 0.06
+is-reachable: main@.lr.ph13.1 (11, 0) FAR 718765 F 0.13
+expand: main@.lr.ph13.1 (11, 0) FAR  w(1) 718765. T 0.14
+is-reachable: main@.lr.ph13._crit_edge.1 (12, 0) FAR 747249 F 0.03
+expand: main@.lr.ph13._crit_edge.1 (12, 0) FAR  w(1) 747249. T 0.03
+is-reachable: main@.lr.ph13.1!_Cond (13, 0) FAR 744713 F 0.07
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(1) 744713. T 0.07
+is-reachable: main@.lr.ph13.1 (14, 0) FAR 724447 F 0.14
+expand: main@.lr.ph13.1 (14, 0) FAR  w(1) 724447. T 0.16
+is-reachable: main@_111 (15, 0) FAR 720227 F 0.06
+expand: main@_111 (15, 0) FAR  w(1) 720227. T 0.13
+is-reachable: main@.lr.ph13.1!_Cond (16, 0) FAR 720304 F 0.09
+expand: main@.lr.ph13.1!_Cond (16, 0) FAR  w(1) 720304. T 0.08
+is-reachable: main@.lr.ph13.1 (17, 0) FAR 740210 F 0.06
+expand: main@.lr.ph13.1 (17, 0) FAR  w(1) 740210. T 0.06
+is-reachable: main@_39 (18, 0) FAR 740386 F 0.17
+expand: main@_39 (18, 0) FAR  w(1) 740386.(smt.stats    5   1071 488638 280718  5347/0   476     0    0  630.81)
+(smt.stats    6   1173 545652 298426  5653/0   585     0    0  631.10)
+(smt.stats    7   1284 603471 318266  5761/0   679     0    0  631.48)
+(smt.stats    8   1385 658246 344345  6233/0   797     0    0  631.73)
+
+	create_child: main@.lr.ph13._crit_edge (18, 33) FAR 749900 X 7.04
+expand: main@.lr.ph13._crit_edge (18, 0) FAR  w(0) 749900.
+	create_child: main@.lr.ph13.1 (17, 33) FAR 733746 U 0.13
+expand: main@.lr.ph13.1 (17, 0) FAR  w(0) 733746.
+	create_child: main@.lr.ph13.1!_Cond (16, 33) FAR 733208 U 0.07
+expand: main@.lr.ph13.1!_Cond (16, 0) FAR  w(0) 733208.
+	create_child: main@_111 (15, 33) FAR 734231 U 0.13
+expand: main@_111 (15, 0) FAR  w(0) 734231.
+	create_child: main@.lr.ph13.1 (14, 33) FAR 746991 U 0.09
+expand: main@.lr.ph13.1 (14, 0) FAR  w(0) 746991.
+	create_child: main@.lr.ph13.1!_Cond (13, 33) FAR 733622 U 0.07
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(0) 733622.
+	create_child: main@_111 (12, 33) FAR 758656 U 0.11
+expand: main@_111 (12, 0) FAR  w(0) 758656.
+	create_child: main@.lr.ph13.1 (11, 33) FAR 758757 U 0.07
+expand: main@.lr.ph13.1 (11, 0) FAR  w(0) 758757.
+	create_child: main@.lr.ph13.1!_Cond (10, 33) FAR 735234 U 0.07
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(0) 735234.
+	create_child: main@_111 (9, 33) FAR 740953 U 0.12
+expand: main@_111 (9, 0) FAR  w(0) 740953. T 0.18
+is-reachable: main@.lr.ph13.1!_Cond (10, 0) FAR 735234 F 0.06
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(1) 735234. T 0.06
+is-reachable: main@.lr.ph13.1 (11, 0) FAR 758757 F 0.04
+expand: main@.lr.ph13.1 (11, 0) FAR  w(1) 758757. T 0.04
+is-reachable: main@_111 (12, 0) FAR 758656 F 0.07
+expand: main@_111 (12, 0) FAR  w(1) 758656. T 0.13
+is-reachable: main@.lr.ph13.1!_Cond (13, 0) FAR 733622 F 0.09
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(1) 733622. T 0.07
+is-reachable: main@.lr.ph13.1 (14, 0) FAR 746991 F 0.05
+expand: main@.lr.ph13.1 (14, 0) FAR  w(1) 746991. T 0.05
+is-reachable: main@_111 (15, 0) FAR 734231 F 0.06
+expand: main@_111 (15, 0) FAR  w(1) 734231.
+	create_child: main@.lr.ph13._crit_edge.1 (15, 33) FAR 757681 X 0.11
+expand: main@.lr.ph13._crit_edge.1 (15, 0) FAR  w(0) 757681.
+	create_child: main@.lr.ph13.1 (14, 33) FAR 742245 U 0.07
+expand: main@.lr.ph13.1 (14, 0) FAR  w(0) 742245.
+	create_child: main@.lr.ph13.1!_Cond (13, 33) FAR 756875 U 0.07
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(0) 756875.
+	create_child: main@.lr.ph13._crit_edge.1 (12, 33) FAR 753197 U 0.12
+expand: main@.lr.ph13._crit_edge.1 (12, 0) FAR  w(0) 753197.
+	create_child: main@.lr.ph13.1 (11, 33) FAR 755676 U 0.05
+expand: main@.lr.ph13.1 (11, 0) FAR  w(0) 755676.
+	create_child: main@.lr.ph13.1!_Cond (10, 33) FAR 756255 U 0.06
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(0) 756255. T 0.10
+is-reachable: main@.lr.ph13.1 (11, 0) FAR 755676 F 0.04
+expand: main@.lr.ph13.1 (11, 0) FAR  w(1) 755676. T 0.04
+is-reachable: main@.lr.ph13._crit_edge.1 (12, 0) FAR 753197 F 0.04
+expand: main@.lr.ph13._crit_edge.1 (12, 0) FAR  w(1) 753197. T 0.03
+is-reachable: main@.lr.ph13.1!_Cond (13, 0) FAR 756875 F 0.06
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(1) 756875. T 0.07
+is-reachable: main@.lr.ph13.1 (14, 0) FAR 742245 F 0.04
+expand: main@.lr.ph13.1 (14, 0) FAR  w(1) 742245. T 0.05
+is-reachable: main@.lr.ph13._crit_edge.1 (15, 0) FAR 757681 F 0.05
+expand: main@.lr.ph13._crit_edge.1 (15, 0) FAR  w(1) 757681. T 0.04
+is-reachable: main@.lr.ph13.1!_Cond (16, 0) FAR 733208 F 0.07
+expand: main@.lr.ph13.1!_Cond (16, 0) FAR  w(1) 733208. T 0.08
+is-reachable: main@.lr.ph13.1 (17, 0) FAR 733746 F 0.05
+expand: main@.lr.ph13.1 (17, 0) FAR  w(1) 733746. T 0.05
+is-reachable: main@.lr.ph13._crit_edge (18, 0) FAR 749900 F 0.13
+expand: main@.lr.ph13._crit_edge (18, 0) FAR  w(1) 749900. T 0.09
+is-reachable: main@.lr.ph13!_Cond (19, 0) FAR 748622 F 0.47
+expand: main@.lr.ph13!_Cond (19, 0) FAR  w(1) 748622. T 0.39
+is-reachable: main@.lr.ph13 (20, 0) FAR 728562 F 0.29
+expand: main@.lr.ph13 (20, 0) FAR  w(1) 728562. T 0.23
+is-reachable: main@_39 (21, 0) FAR 740433 F 0.34
+expand: main@_39 (21, 0) FAR  w(1) 740433.(smt.stats    9   1590 759665 385019  5628/0   291     0    0  638.33)
+(smt.stats   10   1692 814019 401290  5921/0   393     0    0  638.58)
+(smt.stats   11   1803 873516 424531  6286/0   495     0    0  638.81)
+
+	create_child: main@.lr.ph13._crit_edge (21, 33) FAR 666849 X 5.13
+expand: main@.lr.ph13._crit_edge (21, 0) FAR  w(0) 666849.
+	create_child: main@.lr.ph13 (20, 33) FAR 610561 U 0.15
+expand: main@.lr.ph13 (20, 0) FAR  w(0) 610561.
+	create_child: main@.lr.ph13!_Cond (19, 33) FAR 754962 U 0.25
+expand: main@.lr.ph13!_Cond (19, 0) FAR  w(0) 754962.
+	create_child: main@_39 (18, 33) FAR 755440 U 0.57
+expand: main@_39 (18, 0) FAR  w(0) 755440.
+	create_child: main@.lr.ph13.1 (17, 33) FAR 759127 U 0.20
+expand: main@.lr.ph13.1 (17, 0) FAR  w(0) 759127.
+	create_child: main@.lr.ph13.1!_Cond (16, 33) FAR 759368 U 0.09
+expand: main@.lr.ph13.1!_Cond (16, 0) FAR  w(0) 759368.
+	create_child: main@_111 (15, 33) FAR 761158 U 0.18
+expand: main@_111 (15, 0) FAR  w(0) 761158.
+	create_child: main@.lr.ph13.1 (14, 33) FAR 742199 U 0.12
+expand: main@.lr.ph13.1 (14, 0) FAR  w(0) 742199.
+	create_child: main@.lr.ph13.1!_Cond (13, 33) FAR 756674 U 0.10
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(0) 756674. T 0.12
+is-reachable: main@.lr.ph13.1 (14, 0) FAR 742199 F 0.04
+expand: main@.lr.ph13.1 (14, 0) FAR  w(1) 742199. T 0.05
+is-reachable: main@_111 (15, 0) FAR 761158 F 0.06
+expand: main@_111 (15, 0) FAR  w(1) 761158.
+	create_child: main@.lr.ph13._crit_edge.1 (15, 33) FAR 762674 X 0.15
+expand: main@.lr.ph13._crit_edge.1 (15, 0) FAR  w(0) 762674.
+	create_child: main@.lr.ph13.1 (14, 33) FAR 759947 U 0.06
+expand: main@.lr.ph13.1 (14, 0) FAR  w(0) 759947.
+	create_child: main@.lr.ph13.1!_Cond (13, 33) FAR 646291 U 0.08
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(0) 646291.
+	create_child: main@.lr.ph13._crit_edge.1 (12, 33) FAR 709550 U 0.12
+expand: main@.lr.ph13._crit_edge.1 (12, 0) FAR  w(0) 709550.
+	create_child: main@.lr.ph13.1 (11, 33) FAR 753352 U 0.05
+expand: main@.lr.ph13.1 (11, 0) FAR  w(0) 753352.
+	create_child: main@.lr.ph13.1!_Cond (10, 33) FAR 755335 U 0.06
+expand: main@.lr.ph13.1!_Cond (10, 0) FAR  w(0) 755335. T 0.10
+is-reachable: main@.lr.ph13.1 (11, 0) FAR 753352 F 0.04
+expand: main@.lr.ph13.1 (11, 0) FAR  w(1) 753352. T 0.04
+is-reachable: main@.lr.ph13._crit_edge.1 (12, 0) FAR 709550 F 0.04
+expand: main@.lr.ph13._crit_edge.1 (12, 0) FAR  w(1) 709550. T 0.04
+is-reachable: main@.lr.ph13.1!_Cond (13, 0) FAR 646291 F 0.07
+expand: main@.lr.ph13.1!_Cond (13, 0) FAR  w(1) 646291. T 0.08
+is-reachable: main@.lr.ph13.1 (14, 0) FAR 759947 F 0.05
+expand: main@.lr.ph13.1 (14, 0) FAR  w(1) 759947. T 0.04
+is-reachable: main@.lr.ph13._crit_edge.1 (15, 0) FAR 762674 F 0.04
+expand: main@.lr.ph13._crit_edge.1 (15, 0) FAR  w(1) 762674. T 0.04
+is-reachable: main@.lr.ph13.1!_Cond (16, 0) FAR 759368 F 0.07
+expand: main@.lr.ph13.1!_Cond (16, 0) FAR  w(1) 759368. T 0.07
+is-reachable: main@.lr.ph13.1 (17, 0) FAR 759127 F 0.05
+expand: main@.lr.ph13.1 (17, 0) FAR  w(1) 759127. T 0.05
+is-reachable: main@_39 (18, 0) FAR 755440 F 0.18
+expand: main@_39 (18, 0) FAR  w(1) 755440.(smt.stats   12   1983 964529 456647  5707/0   633     0    0  640.72)
+(smt.stats :restarts :decisions     :clauses/bin    :simplify  :memory)
+(smt.stats     :conflicts   :propagations    :lemmas     :deletions   )
+(smt.stats   13   2085 1023290 476205  6138/0   736     0    0  640.88)
+ T 3.70
+is-reachable: main@.lr.ph13!_Cond (19, 0) FAR 754962 F 0.44
+expand: main@.lr.ph13!_Cond (19, 0) FAR  w(1) 754962. T 0.29
+is-reachable: main@.lr.ph13 (20, 0) FAR 610561 F 0.24
+expand: main@.lr.ph13 (20, 0) FAR  w(1) 610561. T 0.22
+is-reachable: main@.lr.ph13._crit_edge (21, 0) FAR 666849 F 0.14
+expand: main@.lr.ph13._crit_edge (21, 0) FAR  w(1) 666849. T 0.12
+is-reachable: main@.lr.ph13!_Cond (22, 0) FAR 743726 F 0.49
+expand: main@.lr.ph13!_Cond (22, 0) FAR  w(1) 743726. T 0.28
+is-reachable: main@.lr.ph13 (23, 0) FAR 735148 F 0.36
+expand: main@.lr.ph13 (23, 0) FAR  w(1) 735148. T 0.28
+is-reachable: main@.lr.ph13._crit_edge (24, 0) FAR 754434 F 0.28
+expand: main@.lr.ph13._crit_edge (24, 0) FAR  w(1) 754434. T 0.14
+is-reachable: main@.lr.ph13!_Cond (25, 0) FAR 623992 F 0.60
+expand: main@.lr.ph13!_Cond (25, 0) FAR  w(1) 623992. T 0.54
+is-reachable: main@.lr.ph13 (26, 0) FAR 614990 F 0.53
+expand: main@.lr.ph13 (26, 0) FAR  w(1) 614990. T 0.56
+is-reachable: main@.lr.ph13._crit_edge (27, 0) FAR 617583 F 0.30
+expand: main@.lr.ph13._crit_edge (27, 0) FAR  w(1) 617583. T 0.21
+is-reachable: main@.lr.ph13!_Cond (28, 0) FAR 34910 F 1.25
+expand: main@.lr.ph13!_Cond (28, 0) FAR  w(1) 34910. T 1.09
+is-reachable: main@.lr.ph13 (29, 0) FAR 33934 F 1.39
+expand: main@.lr.ph13 (29, 0) FAR  w(1) 33934. T 1.31
+is-reachable: main@empty.loop (30, 0) FAR 32750 F 0.22
+expand: main@empty.loop (30, 0) FAR  w(1) 32750. T 2.05
+is-reachable: main@entry (31, 0) FAR 1 F 0.17
+expand: main@entry (31, 0) FAR  w(1) 1. T 0.15
+is-reachable: main@entry!_BAD (32, 0) FAR 1 T 0.00
+is-reachable: query!0 (33, 0) FAR 1 T 0.00
+(spacer::context::check_reachability :time 106.81 :before-memory 91.69 :after-memory 830.81)

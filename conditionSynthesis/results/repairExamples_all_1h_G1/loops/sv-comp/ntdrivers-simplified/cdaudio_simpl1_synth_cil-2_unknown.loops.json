@@ -1,0 +1,10 @@
+{
+    "loop_count": 1,
+    "loop_lines": [
+        {
+            "column": 5,
+            "file": "../repairExamples/sv-comp/ntdrivers-simplified/cdaudio_simpl1_synth_cil-2_unknown.c",
+            "line": 172
+        }
+    ]
+}

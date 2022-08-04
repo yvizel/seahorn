@@ -1,0 +1,12 @@
+  UNSATISFIABLE ASSERTION loop_wi..izable.sk:11: This loop was unrolled 8 times, but apparently that was not enough. Use the --bnd-unroll-amnt flag for better results.
+
+*** Rejected
+    [0;31m[1659399165.4460 - ERROR] [SKETCH] Sketch Not Resolved Error:   UNSATISFIABLE ASSERTION loop_wi..izable.sk:11: This loop was unrolled 8 times, but apparently that was not enough. Use the --bnd-unroll-amnt flag for better results.
+
+*** Rejected
+The sketch could not be resolved.[0m
+    [0;32m[1659399165.4490 - DEBUG] [SKETCH] stack trace written to file: /root/.sketch/tmp/stacktrace.txt[0m
+    [0;32m[1659399165.4491 - DEBUG] Backend solver input file at /root/.sketch/tmp/loop_with_assert_realizable.sk/input0.tmp[0m
+SKETCH version 1.7.6
+Benchmark = /host/loop_with_assert_realizable.sk
+Total time = 2564
