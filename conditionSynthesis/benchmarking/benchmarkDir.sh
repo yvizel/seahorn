@@ -55,8 +55,7 @@ doForFile() {
     # [[ -f "$5" ]] && echo "adding grammar from file $5 to file $forwardFile" && \
     #     add_grammar_to_sygus/addGrammar.sh "$forwardFile" "$5" "$7/forwardSl/$file_relative_to_dir_no_suffix.fwd.grammar.sl" && \
     #     forwardFile="$7/forwardSl/$file_relative_to_dir_no_suffix.fwd.grammar.sl"
-    { [[ "$3" == "cvc5old" ]] || [[ "$3" == "all" ]] ;} &&  ./runCVC5.sh "$forwardFile" "$7/cvc5old" "$4" "$7/forwardSl/" && \
-            rename -d 's/\.cvc5\./\.cvc5old\./' "$7/cvc5old"/**/*
+    { [[ "$3" == "cvc5old" ]] || [[ "$3" == "all" ]] ;} &&  ./runCVC5.sh "$forwardFile" "$7/cvc5old" "$4" "$7/forwardSl/"
     forwardUnwindingFile="$7/unwindingSl/$file_relative_to_dir_no_suffix.unwd.sl"
     # [[ -f "$5" ]] && echo "adding grammar from file $5 to file $forwardUnwindingFile" && \
     #     add_grammar_to_sygus/addGrammar.sh "$forwardUnwindingFile" "$5" "$7/unwindingSl/$file_relative_to_dir_no_suffix.unwd.grammar.sl" && \
@@ -71,8 +70,7 @@ doForFile() {
       [[ -f "$5" ]] && echo "adding grammar from file $5 to file $boundariesFile" && \
         add_grammar_to_sygus/addGrammar.sh "$boundariesFile" "$5" "$7/boundariesSl/$file_relative_to_dir_no_suffix.boundaries.grammar.sl" && \
         boundariesFile="$7/boundariesSl/$file_relative_to_dir_no_suffix.boundaries.grammar.sl"
-      ./runCVC5.sh "$boundariesFile" "$7/boundaries" "$4" "$7/boundariesSl/" && \
-      rename -d 's/\.cvc5\./\.boundaries\./' "$7/boundaries"/**/*
+      ./runCVC5.sh "$boundariesFile" "$7/boundaries" "$4" "$7/boundariesSl/"
     fi
   fi
 }
@@ -82,4 +80,10 @@ if [ -z ${5+x} ]; then
   ls "$1"/**/*.c | parallel -j+0 --eta doForFile "$@" "fake" {} "$new_dir_name"
 else
   ls "$1"/**/*.c | parallel -j+0 --eta doForFile "$@" {} "$new_dir_name"
+fi
+if [[ "$3" == "cvc5old" ]] || [[ "$3" == "all" ]]; then
+  rename -d 's/\.cvc5\./\.cvc5old\./' "$new_dir_name/cvc5old"/**/*
+fi
+if [[ "$3" == "boundaries" ]] || [[ "$3" == "all" ]]; then
+  rename -d 's/\.cvc5\./\.boundaries\./' "$new_dir_name/boundaries"/**/*
 fi
