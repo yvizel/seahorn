@@ -16,7 +16,7 @@ mkdir -p "$2/${file_without_prefix%/*}"
 { if [ "$(grep -c "define-fun" "$2/${file_without_prefix%%.*}.cvc5.out")" -gt 0 ]; then
   echo "realizable"
 elif [ "$(grep -c "conjecture may be infeasible" "$2/${file_without_prefix%%.*}.cvc5.out")" -gt 0 ]; then
-  echo "maybe unrealizable"
+  echo "unrealizable"
 elif [ "$(grep -c "conjecture is infeasible" "$2/${file_without_prefix%%.*}.cvc5.out")" -gt 0 ]; then
   echo "unrealizable"
 else
