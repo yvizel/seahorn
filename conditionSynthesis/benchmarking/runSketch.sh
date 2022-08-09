@@ -42,6 +42,7 @@ skfile="$without_suffix.sk"
 resfile="$without_suffix.sketch.res"
 outfile="$without_suffix.sketch.out"
 timefile="$without_suffix.sketch.time"
+errfile="$without_suffix.sketch.err"
 
 echo "Outdir: $out_dir"
 docker run --rm -v "$(realpath $out_dir)":/host poware/sketch:1.7.6 /bin/bash -c \
@@ -54,8 +55,10 @@ cp "$out_dir/$timefile.tmp" "$out_dir/$timefile"
 if ls $out_dir/sketch_$without_suffix.cpp 1> /dev/null 2>&1; then
   echo "realizable" > "$out_dir/$resfile"
   echo "Found prog for $c_file_without_prefix"
-# elif grep -q "sat" "$2/${file_without_prefix%%.*}.sketch.res"; then
-#   echo "unrealizable" > "$2/${file_without_prefix%%.*}.sketch.res"
+elif [ -f "$out_dir/$errfile" ] && grep -q "loop was unrolled" "$out_dir/$errfile"; then
+  echo "unrealizable" > "$out_dir/$resfile"
+elif [ -f "$out_dir/$errfile" ] && grep -q "unsatisfiable assertion" "$out_dir/$errfile"; then
+  echo "unrealizable" > "$out_dir/$resfile"
 else
   cat "$out_dir/$resfile" >>  "$out_dir/$outfile"
   echo "unknown" > "$out_dir/$resfile"
