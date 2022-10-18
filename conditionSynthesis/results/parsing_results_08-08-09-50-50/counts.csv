@@ -1,0 +1,11 @@
+tool,realizable,unrealizable,unknown,error
+cosyn,76,46,3,
+cvc5old,30,6,89,
+cvc5,48,20,57,
+boundaries,71,,5,49
+sketch,43,,82,
+cosyn-G1,76,46,3,
+cvc5old-G1,30,6,89,
+cvc5-G1,44,18,63,
+boundaries-G1,52,,24,49
+sketch-G1,43,,82,

@@ -1,0 +1,11 @@
+tool,realizable,unrealizable,unknown,error
+cosyn,22.61,3.94,2616.90,
+cvc5old,41.59,0.25,3600.01,
+cvc5,147.08,24.46,3600.01,
+boundaries,0.03,,3600.01,NaN
+sketch,0.73,,145.62,
+cosyn-G1,22.39,3.82,2619.83,
+cvc5old-G1,29.16,0.15,3600.01,
+cvc5-G1,76.10,3.32,3600.17,
+boundaries-G1,0.03,,3600.39,NaN
+sketch-G1,0.76,,142.22,
