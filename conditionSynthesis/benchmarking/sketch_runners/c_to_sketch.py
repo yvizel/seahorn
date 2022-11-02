@@ -10,7 +10,9 @@ from pathlib import Path
 from copy import deepcopy
 from argparse import ArgumentParser
 from collections import defaultdict
-from pycparser.c_ast import ID, ArrayDecl, Case, Compound, Constant, Decl, For, FuncDecl, FuncDef, IdentifierType, NodeVisitor, TypeDecl
+from pycparser.c_ast import ID, ArrayDecl, Case, Compound, Constant, Decl, For, FuncDecl, FuncDef, IdentifierType, NodeVisitor, TypeDecl, Node, BinaryOp
+from pycparser.plyparser import Coord
+from typing import Dict, List, Set, Tuple
 
 class CleanerVisitor(NodeVisitor):
     """
@@ -104,12 +106,17 @@ class SketchVisitor(NodeVisitor):
     # TODO change default name to sketch_array and sketch_array_n, and update test cases
     def __init__(self, base_name, array_name='a', array_len_name='n'):
         self.main_coord = None
-        self.cond_use_locations = []
-        # Global scope
-        self.current_func_decl = [{}]
+        # Declerations know at Coord
+        self.cond_use_locations: List[Tuple[Coord, List[List[TypeDecl]]]] = []
+        
+        # --- Global scope ---
+        
+        # Name to declation mappings for each "env" currently visible
+        self.current_func_decl: List[Dict[str, Decl]] = [{}]
         self.base_name = base_name
         self.defined_fun = set()
-        self.declared = set()
+        # All declerations
+        self.declared: Set[Decl] = set()
         self.bit_mode = 0
         self.nodes_to_make_gen = {}
         self.array_name = array_name
@@ -179,7 +186,7 @@ class SketchVisitor(NodeVisitor):
         self.current_func_decl.pop()
         
     
-    def visit_FuncCall(self, node):
+    def visit_FuncCall(self, node: Node):
         if os.path.basename(node.coord.file) != self.base_name:
             return
         if node.name.name == "find_condition":
@@ -221,7 +228,7 @@ class SketchVisitor(NodeVisitor):
         if node.bitsize:
             self.visit(node.bitsize)
 
-    def visit_BinaryOp(self, node):
+    def visit_BinaryOp(self, node: BinaryOp):
         temp = self.bit_mode
         if node.op in ["&&", "||"]:
             self.bit_mode += 1
@@ -297,7 +304,7 @@ def int_generator_template(base_int):
     base_gen_temp = "| base_generator_for_int_{0}({2}) " if base_int else ""
     return """generator int main_generator_for_int_{0}(int bnd{3}{1}) {{
     assert bnd > 0;
-    int t = ??(3);
+    int t = ??(4);
     int x = {{| 50 | 100 | 300 | 600 | ?? """ + base_gen_temp + """ | main_generator_for_int_{0}(bnd - 1{3}{2}) |}};
     if(t == 0){{return x;}}
     int y = {{| 50 | 100 | 300 | 600 | ?? """ + base_gen_temp + """ | main_generator_for_int_{0}(bnd - 1{3}{2}) |}};
@@ -309,21 +316,21 @@ def int_generator_template(base_int):
 
 def bool_generator_template(base_bool):
     base_gen_temp = "| base_generator_for_bool_{0}({3}) " if base_bool else ""
-    return """generator bool main_generator_for_bool_{0}(int bnd{1}) {{
+    return """generator bool main_generator_for_bool_{0}(int bool_bnd, int int_bnd{1}) {{
     assert bnd > 0;
-    int t = ??(6);
+    int t = ??(4);
     if(t==0) {{
-        int y = main_generator_for_int_{0}(bnd{2});
-        int z = main_generator_for_int_{0}(bnd{2});
-        int t2 = ??(2);
+        int y = main_generator_for_int_{0}(int_bnd{2});
+        int z = main_generator_for_int_{0}(int_bnd{2});
+        int t2 = ??(3);
         if(t2 == 0) {{return y < z;}}
         if(t2 == 1) {{return y == z;}}
         if(t2 == 2) {{return y <= z;}}
     }}
-    bool x = {{| ??(1) """ + base_gen_temp + """ | main_generator_for_bool_{0}(bnd - 1{4}) |}};
+    bool x = {{| ??(1) """ + base_gen_temp + """ | main_generator_for_bool_{0}(bool_bnd - 1, int_bnd{4}) |}};
     if(t == 3){{return x;}}
     if(t == 4){{return !x;}}
-    bool y = {{| ??(1) """ + base_gen_temp + """ | main_generator_for_bool_{0}(bnd - 1{4}) |}};
+    bool y = {{| ??(1) """ + base_gen_temp + """ | main_generator_for_bool_{0}(bool_bnd - 1, int_bnd{4}) |}};
     if(t == 5){{return x&&y;}}
     if(t == 6){{return x||y;}}
 }}"""
@@ -346,7 +353,7 @@ base_generator_template = """generator {} base_generator_for_{}_{}({}) {{
     return {};
 }}"""
 
-def collect_usages_by_type(decs):
+def collect_usages_by_type(decs: List[List[TypeDecl]]) -> Dict[str, Decl]:
     by_type = defaultdict(lambda: (list(), list()))
     # first is globals second is locals but the truth is it is  abug and we need to seperate funcs from vals
     # anyway not relevant to experimentation
@@ -368,43 +375,12 @@ def collect_usages_by_type(decs):
 root_path = str(Path(__file__).absolute().parent.parent.parent.parent) + '/'
 pycparser_util_loc = str(Path(__file__).absolute().parent) + '/'
 
-def to_sketch(c_code, gen_bnd=None):
-    if gen_bnd is None:
-        gen_bnd = 1
-    c_code = c_code.replace("sassert", "assert")
-
-    # put text into an in temporary file
-    with tempfile.NamedTemporaryFile(mode='w+', suffix='.c') as f:
-        f.write(c_code)
-        f.flush()
-        f.seek(0)
-
-        # parse the file
-        ast = pycparser.parse_file(f.name, use_cpp=True,
-            cpp_path='gcc',
-            cpp_args=['-E', r'-I{}include'.format(root_path), r'-I{}utils/fake_libc_include'.format(pycparser_util_loc)])
-        cleaner = CleanerVisitor(ast)
-        cleaner.visit(ast)
-        for r in cleaner.to_remove + cleaner.externs:
-            ast.ext.remove(r)
-        # Need to add empty definitions for f, g, g1, g2
-        names = ['f', 'g', 'g1', 'g2']
-        for ext in cleaner.externs:
-            if not ext.name in names:
-                continue
-            new_dec = deepcopy(ext)
-            new_dec.storage.remove('extern')
-            # TODO: remove hack and change examples
-            # if return not int change to void
-            if new_dec.type.type.type.names[0] != 'void':
-                new_dec.type.type.type.names[0] = 'void'
-            ast.ext.insert(0, FuncDef(new_dec, [], Compound([])))
-
-        sketcher = SketchVisitor(Path(f.name).name)
-        sketcher.visit(ast)
-        switcher = ParamOrderVisitor(sketcher.changed_params)
-        switcher.visit(ast)
-    c_code = pycparser.c_generator.CGenerator().visit(ast)
+def to_sketch(c_code, bool_gen_bnd=None, int_gen_bnd=None):
+    if bool_gen_bnd is None:
+        bool_gen_bnd = 2
+    if int_gen_bnd is None:
+        int_gen_bnd = 1
+    c_code, sketcher = create_sketcher(c_code)
 
     has_base_gen = defaultdict(lambda: False)
     generators = {}
@@ -489,7 +465,7 @@ def to_sketch(c_code, gen_bnd=None):
         prefix = ""
         if full_params:
             prefix = ", "
-        new_call = "main_generator_for_bool_{0}({2}{1})".format(coord, prefix + full_params.replace('int ', '').replace('bool ', ''), gen_bnd)
+        new_call = "main_generator_for_bool_{0}({2},{3}{1})".format(coord, prefix + full_params.replace('int ', '').replace('bool ', ''), bool_gen_bnd, int_gen_bnd)
         old_call = "main_generator_for_bool_{0}()".format(coord)
         for p in types_coord_to_params[(coord, 'int')]:
             p = 'int ' + p
@@ -501,18 +477,55 @@ def to_sketch(c_code, gen_bnd=None):
     new_text = new_text.replace('bool', 'bit')
     return new_text.splitlines()
 
+def create_sketcher(c_code):
+    c_code = c_code.replace("sassert", "assert")
+    # put text into an in temporary file
+    with tempfile.NamedTemporaryFile(mode='w+', suffix='.c') as f:
+        f.write(c_code)
+        f.flush()
+        f.seek(0)
+
+        # parse the file
+        ast = pycparser.parse_file(f.name, use_cpp=True,
+            cpp_path='gcc',
+            cpp_args=['-E', r'-I{}include'.format(root_path), r'-I{}utils/fake_libc_include'.format(pycparser_util_loc)])
+        cleaner = CleanerVisitor(ast)
+        cleaner.visit(ast)
+        for r in cleaner.to_remove + cleaner.externs:
+            ast.ext.remove(r)
+        # Need to add empty definitions for f, g, g1, g2
+        names = ['f', 'g', 'g1', 'g2']
+        for ext in cleaner.externs:
+            if not ext.name in names:
+                continue
+            new_dec = deepcopy(ext)
+            new_dec.storage.remove('extern')
+            # TODO: remove hack and change examples
+            # if return not int change to void
+            if new_dec.type.type.type.names[0] != 'void':
+                new_dec.type.type.type.names[0] = 'void'
+            ast.ext.insert(0, FuncDef(new_dec, [], Compound([])))
+
+        sketcher = SketchVisitor(Path(f.name).name)
+        sketcher.visit(ast)
+        switcher = ParamOrderVisitor(sketcher.changed_params)
+        switcher.visit(ast)
+    c_code = pycparser.c_generator.CGenerator().visit(ast)
+    return c_code,sketcher
+
 
 if __name__ == '__main__':
     arg_parser = ArgumentParser()
     arg_parser.add_argument('input')
     arg_parser.add_argument('--out', default=None)
-    arg_parser.add_argument('--genbnd', type=int, default=None)
+    arg_parser.add_argument('--intgenbnd', type=int, default=None)
+    arg_parser.add_argument('--boolgenbnd', type=int, default=None)
     args = arg_parser.parse_args()
 
     with open(args.input, 'r') as f:
         text = f.read()
 
-    lines = to_sketch(text, args.genbnd)
+    lines = to_sketch(text, bool_gen_bnd=args.boolgenbnd, int_gen_bnd=args.intgenbnd)
 
     out_path = Path(args.input)
     if args.out is not None:
