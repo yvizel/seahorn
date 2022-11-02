@@ -4,6 +4,7 @@
 # $3- string that says which tool to run. options: frontend/cosyn/cvc5old/cvc5/sketch/boundaries/all.
 # $4- timeout for all (backend) tools (in seconds).
 # $5- optional grammar file
+# $6- optional additional sketch params
 
 # For every file.c in $1, run tools according to $3.
 # For the results: create a directory with input_dir name, date and time, under $2.
@@ -21,11 +22,15 @@ if [ -z "${1##*/}" ]; then
     echo "please remove trailing slash from input directory name."
     exit
 fi
-if [ ! -z "$5" ] && [ ! -f "$5" ]; then
+if [ ! -z "$5" ] && [ ! -f "$5" ] && [[ "$5" != "fake" ]]; then
   echo "grammar file not found: $5"
   exit
 fi
 new_dir_name="$2/${1##*/}_$(date '+%d-%m-%H-%M-%S')"
+# Add params to sketch to new_dir_name with spaces as _ and without special characters
+cleaned_params=$(echo "$6" | tr ' ' '_' | tr -dc '[:alnum:]_')
+new_dir_name="${new_dir_name}_$cleaned_params"
+echo "Creating dir $new_dir_name"
 mkdir "$new_dir_name" || exit 1
 
 # Print settings file
@@ -35,7 +40,11 @@ git rev-parse HEAD >> "$settings_file"
 echo "frontend command: sea pf <file> --inline -o0 --keep-temp --temp-dir=/tmp/repair/ --step=large --horn-cond-synthesis --horn-synth-cps=h1 --horn-read-file --horn-avoid-synthesis" >> "$settings_file"
 echo "backend command: z3 <reversefile.smt2> -T:$4 -v:1 fp.xform.slice=false fp.xform.inline_linear=false fp.xform.inline_eager=false" >> "$settings_file"
 echo "cvc5 command: timeout "$4"s cvc5 <fwdfile.sl> --sygus-add-const-grammar" >> "$settings_file"
-echo "sketch command: python3 c_to_sketch.py && timeout "$4"s sketch <generated sketch file> --fe-output-code --bnd-inbits 10" >> "$settings_file"
+# if $6 not empty sketch additional params for print
+if [ ! -z "$6" ]; then
+  additional_params="<additonal params: $6>"
+fi
+echo "sketch command: python3 c_to_sketch.py $additional_params && timeout "$4"s sketch <generated sketch file> --fe-output-code" >> "$settings_file"
 echo "grammar file: $5" >> "$settings_file" 
 
 # $6 inside this function is a single .c file from $1
@@ -62,7 +71,7 @@ doForFile() {
     #     forwardUnwindingFile="$7/unwindingSl/$file_relative_to_dir_no_suffix.unwd.grammar.sl"
     { [[ "$3" == "cvc5" ]] || [[ "$3" == "all" ]] ;} &&  ./runCVC5.sh "$forwardUnwindingFile" "$7/cvc5" "$4" "$7/unwindingSl/"
   fi
-  { [[ "$3" == "sketch" ]] || [[ "$3" == "all" ]] ;} &&  ./runSketch.sh "$6" "$7/sketch" "$4" "$1"
+  { [[ "$3" == "sketch" ]] || [[ "$3" == "all" ]] ;} &&  ./runSketch.sh "$6" "$7/sketch" "$4" "$1" $8
   if [[ "$3" == "boundaries" ]] || [[ "$3" == "all" ]]; then
     ./createBoundaries.sh "$6" "$7/boundariesSl" "$4" "$1"
     boundariesFile="$7/boundariesSl/$file_relative_to_dir_no_suffix.boundaries.sl"
@@ -79,7 +88,7 @@ export -f doForFile
 if [ -z ${5+x} ]; then
   ls "$1"/**/*.c | parallel -j+0 --eta doForFile "$@" "fake" {} "$new_dir_name"
 else
-  ls "$1"/**/*.c | parallel -j+0 --eta doForFile "$@" {} "$new_dir_name"
+  ls "$1"/**/*.c | parallel -j+0 --eta doForFile "${@:1:5}" {} "$new_dir_name" "$6"
 fi
 if [[ "$3" == "cvc5old" ]] || [[ "$3" == "all" ]]; then
   rename -d 's/\.cvc5\./\.cvc5old\./' "$new_dir_name/cvc5old"/**/*

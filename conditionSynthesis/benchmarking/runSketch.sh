@@ -12,6 +12,8 @@
 # time (secs) in file.sketch.time, and complete output in file.sketch.out. 
 # All files are saved in $2, under the same directory structure as in $4.
 
+echo "params are $@"
+
 # add trailing / to $4 if missing
 basedir="$4"
 if [ ! -z "$4" ] && [[ ! "$4" =~ */ ]] ; then

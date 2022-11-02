@@ -317,7 +317,8 @@ def int_generator_template(base_int):
 def bool_generator_template(base_bool):
     base_gen_temp = "| base_generator_for_bool_{0}({3}) " if base_bool else ""
     return """generator bool main_generator_for_bool_{0}(int bool_bnd, int int_bnd{1}) {{
-    assert bnd > 0;
+    assert int_bnd > 0;
+    assert bool_bnd > 0;
     int t = ??(4);
     if(t==0) {{
         int y = main_generator_for_int_{0}(int_bnd{2});
