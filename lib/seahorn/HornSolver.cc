@@ -1,5 +1,6 @@
 #include "seahorn/HornSolver.hh"
 #include "seahorn/Expr/ExprLlvm.hh"
+#include "seahorn/Expr/ExprOpFiniteMap.hh"
 #include "seahorn/HornClauseDBTransf.hh"
 #include "seahorn/HornDbModel.hh"
 #include "seahorn/HornifyModule.hh"
@@ -11,9 +12,12 @@
 #include "boost/range/algorithm/reverse.hpp"
 
 #include "seahorn/Support/SeaDebug.h"
+#include "seahorn/CondSynthesisSygus.hh"
 #include <climits>
 
-#include "seahorn/CondSynthesisSygus.hh"
+namespace seahorn {
+extern bool InterProcMemFmaps;
+}
 
 using namespace llvm;
 
@@ -24,6 +28,10 @@ static llvm::cl::opt<std::string> ChcEngine("horn-pdr-engine",
 static llvm::cl::opt<bool>
     LocalContext("horn-solver-local-ctx", cl::init(false),
                  cl::desc("Whether to use local z3 context"));
+
+static llvm::cl::opt<bool>
+    PrintSolverStatistics("horn-solver-statistics", cl::init(false),
+                          cl::desc("Whether to print statistics of spacer"));
 
 static llvm::cl::opt<bool>
     PrintAnswer("horn-answer", cl::desc("Print Horn answer"), cl::init(false));
@@ -125,6 +133,10 @@ static llvm::cl::opt<bool>
               cl::desc("Use euf generalizer for equalities"));
 
 namespace seahorn {
+extern bool InterProcMemFmaps;
+}
+
+namespace seahorn {
 char HornSolver::ID = 0;
 
 bool HornSolver::runOnModule(Module &M) {
@@ -136,8 +148,13 @@ bool HornSolver::runOnModule(Module &M) {
 
   HornifyModule &hm = getAnalysis<HornifyModule>();
 
-  // Load the Horn clause database
-  auto &db = hm.getHornClauseDB();
+  HornClauseDB &origdb = hm.getHornClauseDB();
+  HornClauseDB tdb(origdb.getExprFactory());
+
+  if (InterProcMemFmaps) { // rewrite finite maps
+    removeFiniteMapsHornClausesTransf(origdb, tdb);
+  }
+  auto &db = InterProcMemFmaps ? tdb : origdb;
 
   std::string branchPredLine;
   std::map<std::string,std::pair<std::string,std::string>> branchToThenElseNames;
@@ -211,7 +228,8 @@ bool HornSolver::runOnModule(Module &M) {
   params.set(":spacer.max_num_contexts", PdrContexts);
   params.set(":spacer.elim_aux", true);
   params.set(":spacer.reach_dnf", true);
-  // params.set ("print_statistics", true);
+  if (PrintSolverStatistics)
+    params.set("print_statistics", true);
   params.set(":spacer.use_bg_invs", UseInvariant == solver_detail::INACTIVE ||
                                     UseInvariant == solver_detail::BG_ONLY);
   params.set(":spacer.weak_abs", WeakAbs);
@@ -368,6 +386,20 @@ void HornSolver::printInvars(Module &M, HornDbModel &model) {
     printInvars(F, model);
 }
 
+// returns the invars if the encoding contained fmaps
+static Expr processFmaps(Expr bbfapp, HornDbModel &model) {
+
+  Expr bbPredDecl = bind::name(bbfapp);
+  Expr bbPredTDecl = fmap::mkMapsDecl(bbPredDecl);
+
+  if (bbPredDecl == bbPredTDecl)
+    return model.getDef(bbfapp);
+
+  ExprMap predDeclTMap;
+  predDeclTMap[bbPredDecl] = bbPredTDecl;
+  return model.getDef(rewriteFiniteMapArgs(bbfapp, predDeclTMap));
+}
+
 void HornSolver::printInvars(Function &F, HornDbModel &model) {
   if (F.isDeclaration())
     return;
@@ -389,10 +421,12 @@ void HornSolver::printInvars(Function &F, HornDbModel &model) {
     outs() << *bind::fname(bbPred) << ":";
     const ExprVector &live = hm.live(BB);
     // Expr invars = fp.getCoverDelta (bind::fapp (bbPred, live));
-    Expr invars = model.getDef(bind::fapp(bbPred, live));
+    Expr bbfapp = bind::fapp(bbPred, live);
+    Expr invars =
+        InterProcMemFmaps ? processFmaps(bbfapp, model) : model.getDef(bbfapp);
 
     if (isOpX<AND>(invars)) {
-      outs() << "\n\t";
+      outs() << "\n";
       for (size_t i = 0; i < invars->arity(); ++i)
         outs() << "\t" << *invars->arg(i) << "\n";
     } else
